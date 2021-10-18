@@ -28,9 +28,9 @@ void MainWindow::display()
 
 void MainWindow::authorizeUser()
 {
-
     wallet_key = ui_Auth.getInputKey();
     QVector<QString> valid_keys = getUserKey();
+
     for(int index = 0; index < valid_keys.length(); index++)
     {
         if(wallet_key == valid_keys[index])
@@ -39,7 +39,7 @@ void MainWindow::authorizeUser()
             this->show();
             break;
         }
-        else if (index == valid_keys.length()-1)
+        else if (index == valid_keys.length() - 1)
         {
             QMessageBox keyErr;
             keyErr.setWindowTitle("Ошибка");
@@ -50,9 +50,10 @@ void MainWindow::authorizeUser()
         }
     }
 
+
 }
 
 void MainWindow::registerUser()
 {
-
+    registerNewUsers("11124","11122");
 }

@@ -5,7 +5,7 @@
 #include <QVector>
 
 QVector<QString> getUserKey();
-void writeUsers();
+void registerNewUsers(QString wallet_adress, QString wallet_key);
 
 
 #endif // JSON_FUNC_H

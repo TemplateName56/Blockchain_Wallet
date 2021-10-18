@@ -24,6 +24,8 @@ set(PROJECT_SOURCES
         client/gui/auth_form.ui
         client/scripts/json_func.h
         client/scripts/json_func.cpp
+        client/scripts/new_wallet_generation_procedure.h
+        client/scripts/new_wallet_generation_procedure.cpp
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
