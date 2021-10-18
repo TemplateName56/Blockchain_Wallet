@@ -22,6 +22,8 @@ set(PROJECT_SOURCES
         client/gui/auth_form.h
         client/gui/auth_form.cpp
         client/gui/auth_form.ui
+        client/scripts/json_func.h
+        client/scripts/json_func.cpp
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)

@@ -1,0 +1,12 @@
+{
+    "users": [
+        {
+            "adress": "BW0000000000000000000",
+            "walletKey": "admin"
+        },
+        {
+            "adress": "BW234131231",
+            "walletKey": "Jewq"
+        }
+    ]
+}

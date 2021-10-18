@@ -1,4 +1,4 @@
-#include "mainwindow.h"
+#include "client/gui/mainwindow.h"
 
 #include <QApplication>
 
@@ -6,6 +6,7 @@ int main(int argc, char *argv[])
 {
     QApplication Blockchain(argc, argv);
     MainWindow window;
-    window.show();
+    window.setWindowTitle("MainWindowName");
+    window.display();
     return Blockchain.exec();
 }
