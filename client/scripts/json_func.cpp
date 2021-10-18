@@ -36,6 +36,7 @@ QVector<QString> getUsersInfo(getInfo what_u_need)
 
             valid_information.append(subtree.value("walletKey").toString());
         }
+        break;
     case ADDRESS:
         for(int index = 0; index < json_array.size(); index++)
         {
@@ -45,6 +46,7 @@ QVector<QString> getUsersInfo(getInfo what_u_need)
 
             valid_information.append(subtree.value("address").toString());
         }
+        break;
     }
 
     return valid_information;

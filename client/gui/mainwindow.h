@@ -2,6 +2,12 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QIcon>
+#include <QMenu>
+#include <QMenuBar>
+#include <QToolBar>
+#include <QAction>
+#include <QStatusBar>
 #include "auth_form.h"
 
 QT_BEGIN_NAMESPACE
