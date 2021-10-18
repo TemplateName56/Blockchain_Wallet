@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include "./ui_mainwindow.h"
 #include "client/scripts/json_func.h"
+#include "client/scripts/new_wallet_generation_procedure.h"
 #include <QMessageBox>
 
 MainWindow::MainWindow(QWidget *parent)
@@ -29,7 +30,7 @@ void MainWindow::display()
 void MainWindow::authorizeUser()
 {
     wallet_key = ui_Auth.getInputKey();
-    QVector<QString> valid_keys = getUserKey();
+    QVector<QString> valid_keys = getUsersInfo(KEY);
 
     for(int index = 0; index < valid_keys.length(); index++)
     {
@@ -55,5 +56,8 @@ void MainWindow::authorizeUser()
 
 void MainWindow::registerUser()
 {
-    registerNewUsers("11124","11122");
+    registerNewUsers(randomWalletAdress(),randomWalletKey());
+    login_succesfull = true;
+    ui_Auth.close();
+    this->show();
 }

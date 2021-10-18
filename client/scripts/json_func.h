@@ -4,8 +4,14 @@
 #include <QString>
 #include <QVector>
 
-QVector<QString> getUserKey();
-void registerNewUsers(QString wallet_adress, QString wallet_key);
+enum getInfo
+{
+    ADDRESS,
+    KEY
+};
+
+QVector<QString> getUsersInfo(getInfo what_u_need);
+void registerNewUsers(QString wallet_address, QString wallet_key);
 
 
 #endif // JSON_FUNC_H

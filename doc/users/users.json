@@ -1,11 +1,11 @@
 {
     "users": [
         {
-            "adress": "BW0000000000000000000",
+            "address": "BW0000000000000000000",
             "walletKey": "admin"
         },
         {
-            "adress": "BW0000000000000000001",
+            "address": "BW0000000000000000001",
             "walletKey": "Jewq"
         }
     ]

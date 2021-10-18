@@ -6,7 +6,7 @@
 #include <QJsonDocument>
 #include <QJsonArray>
 
-QVector<QString> getUserKey()
+QVector<QString> getUsersInfo(getInfo what_u_need)
 {
     QFileInfo file_info("users.json");
     QDir::setCurrent(file_info.path());
@@ -24,19 +24,33 @@ QVector<QString> getUserKey()
     QJsonObject temp = json_document.object();
     QJsonArray json_array = temp["users"].toArray();
 
-    QVector <QString> valid_key;
-    for(int index = 0; index < json_array.size(); index++)
+    QVector <QString> valid_information;
+    switch (what_u_need)
     {
-        QJsonObject subtree = json_array.at(index).toObject();
+    case KEY:
+        for(int index = 0; index < json_array.size(); index++)
+        {
+            QJsonObject subtree = json_array.at(index).toObject();
 
-        qDebug() << subtree.value("walletKey").toString();
+            qDebug() << subtree.value("walletKey").toString();
 
-        valid_key.append(subtree.value("walletKey").toString());
+            valid_information.append(subtree.value("walletKey").toString());
+        }
+    case ADDRESS:
+        for(int index = 0; index < json_array.size(); index++)
+        {
+            QJsonObject subtree = json_array.at(index).toObject();
+
+            qDebug() << subtree.value("address").toString();
+
+            valid_information.append(subtree.value("address").toString());
+        }
     }
-    return valid_key;
+
+    return valid_information;
 }
 
-void registerNewUsers(QString wallet_adress, QString wallet_key)
+void registerNewUsers(QString wallet_address, QString wallet_key)
 {
     QFileInfo file_info("users.json");
     QDir::setCurrent(file_info.path());
@@ -48,7 +62,7 @@ void registerNewUsers(QString wallet_adress, QString wallet_key)
     }
 
     QJsonObject new_user;
-    new_user["adress"] = wallet_adress;
+    new_user["address"] = wallet_address;
     new_user["walletKey"] = wallet_key;
 
     QJsonDocument json_document(QJsonDocument::fromJson(json_file.readAll()));
