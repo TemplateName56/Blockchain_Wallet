@@ -18,21 +18,23 @@ MainWindow::MainWindow(QWidget *parent)
     QPixmap helppix("icons/helpIcon.png");
     QPixmap transactionspix("icons/transactionsIcon.png");
 
-    QMenu *main_menu;
-    main_menu = menuBar()->addMenu("&Main");
-
-    QMenu *settings_menu;
-    settings_menu = menuBar()->addMenu("&Settings");
-
-    QMenu *help_menu;
-    help_menu = menuBar()->addMenu("&Help");
-
     QAction *home = new QAction(homepix, "&Home", this);
     QAction *send = new QAction(sendpix, "&Send", this);
     QAction *recieve = new QAction(recievepix, "&Recieve", this);
-    QAction *transactions = new QAction(transactionspix, "&Transactions", this);
     QAction *help = new QAction(helppix, "&Help", this);
     QAction *quit = new QAction("&Quit", this);
+
+    quit->setShortcut(tr("Ctrl+Q"));
+
+    QAction *transactions = new QAction(transactionspix, "&Transactions", this);
+    QAction *encrypt_wallet = new QAction("&Encrypt Wallet...", this);
+    QAction *change_passphrase = new QAction("&Change Passphrase...", this);
+    QAction *options = new QAction("&Options...", this);
+
+    QAction *about_program = new QAction("&About Wallet",this);
+
+    QMenu *main_menu;
+    main_menu = menuBar()->addMenu("&Main");
 
     main_menu->addAction(home);
     main_menu->addAction(send);
@@ -40,6 +42,19 @@ MainWindow::MainWindow(QWidget *parent)
     main_menu->addAction(help);
     main_menu->addSeparator();
     main_menu->addAction(quit);
+
+    QMenu *settings_menu;
+    settings_menu = menuBar()->addMenu("&Settings");
+
+    settings_menu->addAction(encrypt_wallet);
+    settings_menu->addAction(change_passphrase);
+    settings_menu->addSeparator();
+    settings_menu->addAction(options);
+
+    QMenu *help_menu;
+    help_menu = menuBar()->addMenu("&Help");
+
+    help_menu->addAction(about_program);
 
     connect(&ui_Auth, SIGNAL(login_button_clicked()), this, SLOT(authorizeUser()));
     connect(&ui_Auth, SIGNAL(destroyed()), this, SLOT(show()));
@@ -78,7 +93,12 @@ void MainWindow::authorizeUser()
 
             ui_Auth.close();
             Sleep(250);
+            QVector<QString> user_address = getUsersInfo(ADDRESS);
+            wallet_address = user_address[index];
             this->show();
+
+            qDebug() << wallet_address;
+            qDebug() << wallet_key;
 
             break;
         }
@@ -95,16 +115,14 @@ void MainWindow::authorizeUser()
             break;
         }
     }
-
-
 }
 
 void MainWindow::registerUser()
 {
-    QString new_user_address = randomWalletAdress();
-    QString new_user_wallet_key = randomWalletKey();
+    wallet_address = randomWalletAdress();
+    wallet_key = randomWalletKey();
 
-    registerNewUsers(new_user_address, new_user_wallet_key);
+    registerNewUsers(wallet_address, wallet_key);
     login_succesfull = true;
 
     ui_Auth.close();

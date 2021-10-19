@@ -26,6 +26,8 @@ set(PROJECT_SOURCES
         client/scripts/json_func.cpp
         client/scripts/new_wallet_generation_procedure.h
         client/scripts/new_wallet_generation_procedure.cpp
+        client/scripts/program_exceptions.h
+        client/scripts/program_exceptions.cpp
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)

@@ -28,6 +28,7 @@ private:
     auth_Form ui_Auth;
 
     QString wallet_key;
+    QString wallet_address;
     bool login_succesfull;
 
 private slots:
