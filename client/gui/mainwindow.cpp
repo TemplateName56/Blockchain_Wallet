@@ -16,13 +16,21 @@ MainWindow::MainWindow(QWidget *parent)
     QPixmap sendpix("icons/sendIcon.png");
     QPixmap recievepix("icons/recieveIcon.png");
     QPixmap helppix("icons/helpIcon.png");
+    QPixmap transactionspix("icons/transactionsIcon.png");
 
     QMenu *main_menu;
-    main_menu = menuBar()->addMenu("&File");
+    main_menu = menuBar()->addMenu("&Main");
+
+    QMenu *settings_menu;
+    settings_menu = menuBar()->addMenu("&Settings");
+
+    QMenu *help_menu;
+    help_menu = menuBar()->addMenu("&Help");
 
     QAction *home = new QAction(homepix, "&Home", this);
     QAction *send = new QAction(sendpix, "&Send", this);
     QAction *recieve = new QAction(recievepix, "&Recieve", this);
+    QAction *transactions = new QAction(transactionspix, "&Transactions", this);
     QAction *help = new QAction(helppix, "&Help", this);
     QAction *quit = new QAction("&Quit", this);
 
@@ -42,9 +50,9 @@ MainWindow::MainWindow(QWidget *parent)
     toolbar->addAction(QIcon(homepix),"Home page");
     toolbar->addAction(QIcon(sendpix),"Send page");
     toolbar->addAction(QIcon(recievepix),"Recieve page");
-    toolbar->addAction(QIcon(helppix),"FAQ page");
+    toolbar->addAction(QIcon(transactionspix),"Transactions");
 
-    statusBar()->showMessage("Online");
+    statusBar()->showMessage("Connected");
 }
 
 MainWindow::~MainWindow()
@@ -76,13 +84,13 @@ void MainWindow::authorizeUser()
         }
         else if (index == valid_keys.length() - 1)
         {
-            QMessageBox keyErr;
+            QMessageBox key_error;
 
-            keyErr.setWindowTitle("Ошибка");
-            keyErr.setText("Данного ключа не существует");
-            keyErr.setIcon(QMessageBox::Critical);
+            key_error.setWindowTitle("Ошибка");
+            key_error.setText("Данного ключа не существует");
+            key_error.setIcon(QMessageBox::Critical);
 
-            keyErr.exec();
+            key_error.exec();
 
             break;
         }
