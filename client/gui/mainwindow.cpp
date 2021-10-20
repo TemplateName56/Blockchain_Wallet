@@ -20,14 +20,11 @@ MainWindow::MainWindow(QWidget *parent)
     connect(&ui_Auth, SIGNAL(destroyed()), this, SLOT(show()));
     connect(&ui_Auth, SIGNAL(register_button_clicked()), this, SLOT(registerUser()));
 
-    ui->sendMenuWidget->setVisible(false);
+    ui->sendWidget->hide();
+    ui->recieveWidget->hide();
+    ui->transactionsWidget->hide();
 
-    statusBar()->showMessage("Connected");
-}
-
-MainWindow::~MainWindow()
-{
-    delete ui;
+    statusBar()->showMessage("Connected...");
 }
 
 void MainWindow::display()
@@ -90,24 +87,34 @@ void MainWindow::registerUser()
 
 void MainWindow::homeTR()
 {
-    ui->sendMenuWidget->hide();
-    ui->mainMenuWidget->setVisible(true);
+    ui->sendWidget->hide();
+    ui->recieveWidget->hide();
+    ui->transactionsWidget->hide();
+    ui->mainWidget->setVisible(true);
 }
 
 void MainWindow::sendTR()
 {
-    ui->mainMenuWidget->hide();
-    ui->sendMenuWidget->setVisible(true);
+    ui->mainWidget->hide();
+    ui->recieveWidget->hide();
+    ui->transactionsWidget->hide();
+    ui->sendWidget->setVisible(true);
 }
 
 void MainWindow::recieveTR()
 {
-
+    ui->sendWidget->hide();
+    ui->mainWidget->hide();
+    ui->transactionsWidget->hide();
+    ui->recieveWidget->setVisible(true);
 }
 
 void MainWindow::transactionsTR()
 {
-
+    ui->sendWidget->hide();
+    ui->mainWidget->hide();
+    ui->recieveWidget->hide();
+    ui->transactionsWidget->setVisible(true);
 }
 
 void MainWindow::createActions()
@@ -137,6 +144,9 @@ void MainWindow::createActions()
     connect(quit, &QAction::triggered, qApp, &QApplication::quit);
     connect(home, &QAction::triggered, this, &MainWindow::homeTR);
     connect(send, &QAction::triggered, this, &MainWindow::sendTR);
+    connect(recieve, &QAction::triggered, this, &MainWindow::recieveTR);
+    connect(transactions, &QAction::triggered, this, &MainWindow::transactionsTR);
+
 }
 
 void MainWindow::createMenus()
@@ -170,4 +180,28 @@ void MainWindow::createMenus()
     toolbar->addAction(send);
     toolbar->addAction(recieve);
     toolbar->addAction(transactions);
+}
+
+MainWindow::~MainWindow()
+{
+    delete ui;
+
+    delete home;
+    delete send;
+    delete recieve;
+    delete transactions;
+
+    delete help;
+    delete quit;
+
+    delete encrypt_wallet;
+    delete change_passphrase;
+    delete options;
+
+    delete about_program;
+
+    delete main_menu;
+    delete settings_menu;
+    delete help_menu;
+    delete toolbar;
 }

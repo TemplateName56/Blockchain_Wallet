@@ -28,6 +28,12 @@ set(PROJECT_SOURCES
         client/scripts/new_wallet_generation_procedure.cpp
         client/scripts/program_exceptions.h
         client/scripts/program_exceptions.cpp
+        client/gui/settings_form.h
+        client/gui/settings_form.cpp
+        client/gui/settings_form.ui
+        client/gui/about_program_form.h
+        client/gui/about_program_form.cpp
+        client/gui/about_program_form.ui
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)

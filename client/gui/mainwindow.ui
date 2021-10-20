@@ -19,7 +19,7 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QWidget" name="mainMenuWidget" native="true">
+   <widget class="QWidget" name="mainWidget" native="true">
     <property name="enabled">
      <bool>true</bool>
     </property>
@@ -96,9 +96,41 @@
      </property>
     </widget>
    </widget>
-   <widget class="QWidget" name="sendMenuWidget" native="true">
+   <widget class="QWidget" name="recieveWidget" native="true">
     <property name="enabled">
-     <bool>false</bool>
+     <bool>true</bool>
+    </property>
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>0</y>
+      <width>800</width>
+      <height>600</height>
+     </rect>
+    </property>
+    <widget class="QLabel" name="label_2">
+     <property name="geometry">
+      <rect>
+       <x>300</x>
+       <y>20</y>
+       <width>150</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="text">
+      <string>Recieved transactions</string>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QWidget" name="sendWidget" native="true">
+    <property name="enabled">
+     <bool>true</bool>
     </property>
     <property name="geometry">
      <rect>
@@ -142,6 +174,32 @@
      </property>
      <property name="text">
       <string>Send</string>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QWidget" name="transactionsWidget" native="true">
+    <property name="enabled">
+     <bool>true</bool>
+    </property>
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>0</y>
+      <width>800</width>
+      <height>600</height>
+     </rect>
+    </property>
+    <widget class="QLabel" name="label_4">
+     <property name="geometry">
+      <rect>
+       <x>300</x>
+       <y>20</y>
+       <width>150</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>All transactions</string>
      </property>
     </widget>
    </widget>
