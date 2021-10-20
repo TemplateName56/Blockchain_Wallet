@@ -12,60 +12,15 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
     login_succesfull = false;
 
-    QPixmap homepix("icons/menuIcon.png");
-    QPixmap sendpix("icons/sendIcon.png");
-    QPixmap recievepix("icons/recieveIcon.png");
-    QPixmap helppix("icons/helpIcon.png");
-    QPixmap transactionspix("icons/transactionsIcon.png");
+    createActions();
+    createMenus();
 
-    QAction *home = new QAction(homepix, "&Home", this);
-    QAction *send = new QAction(sendpix, "&Send", this);
-    QAction *recieve = new QAction(recievepix, "&Recieve", this);
-    QAction *help = new QAction(helppix, "&Help", this);
-    QAction *quit = new QAction("&Quit", this);
-
-    quit->setShortcut(tr("Ctrl+Q"));
-
-    QAction *transactions = new QAction(transactionspix, "&Transactions", this);
-    QAction *encrypt_wallet = new QAction("&Encrypt Wallet...", this);
-    QAction *change_passphrase = new QAction("&Change Passphrase...", this);
-    QAction *options = new QAction("&Options...", this);
-
-    QAction *about_program = new QAction("&About Wallet",this);
-
-    QMenu *main_menu;
-    main_menu = menuBar()->addMenu("&Main");
-
-    main_menu->addAction(home);
-    main_menu->addAction(send);
-    main_menu->addAction(recieve);
-    main_menu->addAction(help);
-    main_menu->addSeparator();
-    main_menu->addAction(quit);
-
-    QMenu *settings_menu;
-    settings_menu = menuBar()->addMenu("&Settings");
-
-    settings_menu->addAction(encrypt_wallet);
-    settings_menu->addAction(change_passphrase);
-    settings_menu->addSeparator();
-    settings_menu->addAction(options);
-
-    QMenu *help_menu;
-    help_menu = menuBar()->addMenu("&Help");
-
-    help_menu->addAction(about_program);
 
     connect(&ui_Auth, SIGNAL(login_button_clicked()), this, SLOT(authorizeUser()));
     connect(&ui_Auth, SIGNAL(destroyed()), this, SLOT(show()));
     connect(&ui_Auth, SIGNAL(register_button_clicked()), this, SLOT(registerUser()));
-    connect(quit, &QAction::triggered, qApp, &QApplication::quit);
 
-    QToolBar *toolbar = addToolBar("main menu");
-    toolbar->addAction(QIcon(homepix),"Home page");
-    toolbar->addAction(QIcon(sendpix),"Send page");
-    toolbar->addAction(QIcon(recievepix),"Recieve page");
-    toolbar->addAction(QIcon(transactionspix),"Transactions");
+    ui->sendMenuWidget->setVisible(false);
 
     statusBar()->showMessage("Connected");
 }
@@ -96,6 +51,9 @@ void MainWindow::authorizeUser()
             QVector<QString> user_address = getUsersInfo(ADDRESS);
             wallet_address = user_address[index];
             this->show();
+
+            ui->walletAddressLabel->setText(wallet_address);
+            ui->walletKeyLabel->setText(wallet_key);
 
             qDebug() << wallet_address;
             qDebug() << wallet_key;
@@ -128,4 +86,88 @@ void MainWindow::registerUser()
     ui_Auth.close();
     Sleep(250);
     this->show();
+}
+
+void MainWindow::homeTR()
+{
+    ui->sendMenuWidget->hide();
+    ui->mainMenuWidget->setVisible(true);
+}
+
+void MainWindow::sendTR()
+{
+    ui->mainMenuWidget->hide();
+    ui->sendMenuWidget->setVisible(true);
+}
+
+void MainWindow::recieveTR()
+{
+
+}
+
+void MainWindow::transactionsTR()
+{
+
+}
+
+void MainWindow::createActions()
+{
+    QPixmap homepix("icons/menuIcon.png");
+    QPixmap sendpix("icons/sendIcon.png");
+    QPixmap recievepix("icons/recieveIcon.png");
+    QPixmap helppix("icons/helpIcon.png");
+    QPixmap transactionspix("icons/transactionsIcon.png");
+
+    home = new QAction(homepix, "&Home", this);
+    send = new QAction(sendpix, "&Send", this);
+    recieve = new QAction(recievepix, "&Recieve", this);
+    help = new QAction(helppix, "&Help", this);
+    quit = new QAction("&Quit", this);
+
+    quit->setShortcut(tr("Ctrl+Q"));
+
+    transactions = new QAction(transactionspix, "&Transactions", this);
+    encrypt_wallet = new QAction("&Encrypt Wallet...", this);
+    change_passphrase = new QAction("&Change Passphrase...", this);
+    options = new QAction("&Options...", this);
+
+    about_program = new QAction("&About Wallet",this);
+
+
+    connect(quit, &QAction::triggered, qApp, &QApplication::quit);
+    connect(home, &QAction::triggered, this, &MainWindow::homeTR);
+    connect(send, &QAction::triggered, this, &MainWindow::sendTR);
+}
+
+void MainWindow::createMenus()
+{
+    main_menu = menuBar()->addMenu("&Main");
+
+    main_menu->addAction(home);
+    main_menu->addAction(send);
+    main_menu->addAction(recieve);
+    main_menu->addAction(help);
+    main_menu->addSeparator();
+    main_menu->addAction(quit);
+
+
+    settings_menu = menuBar()->addMenu("&Settings");
+
+    settings_menu->addAction(encrypt_wallet);
+    settings_menu->addAction(change_passphrase);
+    settings_menu->addSeparator();
+    settings_menu->addAction(options);
+
+
+    help_menu = menuBar()->addMenu("&Help");
+
+    help_menu->addAction(about_program);
+
+
+    toolbar = addToolBar("main menu");
+
+    toolbar->addAction(home);
+    toolbar->addAction(send);
+    toolbar->addAction(recieve);
+    toolbar->addAction(transactions);
 }
