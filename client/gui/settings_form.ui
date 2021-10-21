@@ -28,7 +28,7 @@
     </rect>
    </property>
    <property name="currentIndex">
-    <number>3</number>
+    <number>2</number>
    </property>
    <widget class="QWidget" name="mainSettings">
     <attribute name="title">
@@ -44,6 +44,19 @@
     <attribute name="title">
      <string>Window</string>
     </attribute>
+    <widget class="QCheckBox" name="trayCheckBox">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>20</y>
+       <width>200</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Minimize application to tray</string>
+     </property>
+    </widget>
    </widget>
    <widget class="QWidget" name="Display">
     <attribute name="title">

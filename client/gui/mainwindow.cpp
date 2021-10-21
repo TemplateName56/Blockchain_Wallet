@@ -2,8 +2,7 @@
 #include "./ui_mainwindow.h"
 #include "client/scripts/json_func.h"
 #include "client/scripts/new_wallet.h"
-#include <windows.h>
-#include <QMessageBox>
+
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -14,11 +13,14 @@ MainWindow::MainWindow(QWidget *parent)
 
     createActions();
     createMenus();
+    createTrayMenu();
 
     connect(&ui_Auth, SIGNAL(login_button_clicked()), this, SLOT(authorizeUser()));
     connect(&ui_Auth, SIGNAL(destroyed()), this, SLOT(show()));
     connect(&ui_Auth, SIGNAL(register_button_clicked()), this, SLOT(registerUser()));
     connect(&ui_Settings, SIGNAL(languageChanged()), this, SLOT(setWindowLanguage()));
+    connect(&ui_Settings, SIGNAL(trayCheckBoxToggled()), this, SLOT(trayEnabled()));
+    connect(tray_icon, SIGNAL(activated(QSystemTrayIcon::ActivationReason)), this, SLOT(iconActivated(QSystemTrayIcon::ActivationReason)));
 
     ui->sendWidget->hide();
     ui->recieveWidget->hide();
@@ -80,6 +82,9 @@ void MainWindow::registerUser()
     registerNewUsers(wallet_address, wallet_key);
     login_succesfull = true;
 
+    ui->walletAddressLabel->setText(wallet_address);
+    ui->walletKeyLabel->setText(wallet_key);
+
     ui_Auth.close();
     Sleep(250);
     this->show();
@@ -124,6 +129,7 @@ void MainWindow::createActions()
     QPixmap recievepix("icons/recieveIcon.png");
     QPixmap helppix("icons/helpIcon.png");
     QPixmap transactionspix("icons/transactionsIcon.png");
+    //QPixmap programpix("icons/programIcon.png");
 
     home = new QAction(homepix, "&Home", this);
     send = new QAction(sendpix, "&Send", this);
@@ -138,8 +144,7 @@ void MainWindow::createActions()
     change_passphrase = new QAction("&Change Passphrase...", this);
     options = new QAction("&Options...", this);
 
-    about_program = new QAction("&About Wallet",this);
-
+    about_program = new QAction("&About Wallet", this);
 
     connect(quit, &QAction::triggered, qApp, &QApplication::quit);
     connect(home, &QAction::triggered, this, &MainWindow::homeTR);
@@ -149,7 +154,6 @@ void MainWindow::createActions()
 
     connect(options, &QAction::triggered, &ui_Settings, &settings_Form::settingsShow);
     connect(about_program, &QAction::triggered, &ui_AboutProgram, &about_program_Form::aboutShow);
-
 }
 
 void MainWindow::createMenus()
@@ -162,7 +166,6 @@ void MainWindow::createMenus()
     main_menu->addAction(help);
     main_menu->addSeparator();
     main_menu->addAction(quit);
-
 
     settings_menu = menuBar()->addMenu("&Settings");
 
@@ -185,28 +188,22 @@ void MainWindow::createMenus()
     toolbar->addAction(transactions);
 }
 
-MainWindow::~MainWindow()
+void MainWindow::createTrayMenu()
 {
-    delete ui;
+    tray_menu = new QMenu(this);
 
-    delete home;
-    delete send;
-    delete recieve;
-    delete transactions;
+    view_window = new QAction("&Show window", this);
+    connect(view_window, SIGNAL(triggered()), this, SLOT(show()));
 
-    delete help;
-    delete quit;
+    tray_menu->addAction(view_window);
+    tray_menu->addSeparator();
+    tray_menu->addAction(quit);
 
-    delete encrypt_wallet;
-    delete change_passphrase;
-    delete options;
+    tray_icon = new QSystemTrayIcon(this);
+    tray_icon->setIcon(QIcon("icons/programIcon.png"));
 
-    delete about_program;
-
-    delete main_menu;
-    delete settings_menu;
-    delete help_menu;
-    delete toolbar;
+    tray_icon->setContextMenu(tray_menu);
+    tray_icon->show();
 }
 
 void MainWindow::setWindowLanguage()
@@ -236,8 +233,83 @@ void MainWindow::setWindowLanguage()
         options->setText("&Настройки");
 
         about_program->setText("&О Программе");
-
+        view_window->setText("&Показать окно");
 
         break;
     }
+}
+
+void MainWindow::iconActivated(QSystemTrayIcon::ActivationReason reason)
+{
+    switch (reason) {
+    case QSystemTrayIcon::Trigger:
+        if(tray_enable)
+        {
+            if(!this->isVisible())
+            {
+                Sleep(250);
+                this->show();
+            }
+            else
+            {
+                Sleep(250);
+                this->hide();
+            }
+        }
+        break;
+    default:
+        break;
+    }
+}
+
+void MainWindow::closeEvent(QCloseEvent *event)
+{
+    if (tray_icon->isVisible() && tray_enable)
+    {
+        event->ignore();
+        this->hide();
+
+        QSystemTrayIcon::MessageIcon icon = QSystemTrayIcon::MessageIcon(QSystemTrayIcon::Information);
+
+        tray_icon->showMessage("Wallet","Application minimized in tray", icon, 250);
+    }
+}
+
+void MainWindow::trayEnabled()
+{
+    if(tray_enable)
+    {
+        tray_enable = false;
+    }
+    else
+    {
+        tray_enable = true;
+    }
+}
+
+MainWindow::~MainWindow()
+{
+    delete ui;
+
+    delete home;
+    delete send;
+    delete recieve;
+    delete transactions;
+
+    delete help;
+    delete quit;
+
+    delete encrypt_wallet;
+    delete change_passphrase;
+    delete options;
+
+    delete about_program;
+    delete view_window;
+
+    delete main_menu;
+    delete settings_menu;
+    delete help_menu;
+
+    delete toolbar;
+    delete tray_icon;
 }

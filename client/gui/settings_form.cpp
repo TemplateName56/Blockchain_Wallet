@@ -25,3 +25,13 @@ void settings_Form::on_languagesBox_currentIndexChanged(int index)
     emit languageChanged();
 }
 
+bool settings_Form::minimizeInTray()
+{
+    return ui->trayCheckBox->isChecked();
+}
+
+void settings_Form::on_trayCheckBox_toggled(bool checked)
+{
+    emit trayCheckBoxToggled();
+}
+

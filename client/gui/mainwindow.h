@@ -8,6 +8,12 @@
 #include <QToolBar>
 #include <QAction>
 #include <QStatusBar>
+#include <QSystemTrayIcon>
+#include <QCloseEvent>
+#include <QDialog>
+#include <windows.h>
+#include <QMessageBox>
+#include <QStyle>
 #include "auth_form.h"
 #include "settings_form.h"
 #include "about_program_form.h"
@@ -30,7 +36,11 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
+
     void display();
+
+protected:
+    void closeEvent(QCloseEvent *event);
 
 private:
     Ui::MainWindow *ui;
@@ -41,9 +51,11 @@ private:
     QString wallet_key;
     QString wallet_address;
     bool login_succesfull;
+    bool tray_enable;
 
     void createActions();
     void createMenus();
+    void createTrayMenu();
 
     QAction *home;
     QAction *send;
@@ -58,11 +70,15 @@ private:
     QAction *options;
 
     QAction *about_program;
+    QAction *view_window;
 
     QMenu *main_menu;
     QMenu *settings_menu;
     QMenu *help_menu;
+    QMenu *tray_menu;
+
     QToolBar *toolbar;
+    QSystemTrayIcon *tray_icon;
 
 private slots:
     void authorizeUser();
@@ -74,5 +90,7 @@ private slots:
     void transactionsTR();
 
     void setWindowLanguage();
+    void iconActivated(QSystemTrayIcon::ActivationReason reason);
+    void trayEnabled();
 };
 #endif // MAINWINDOW_H

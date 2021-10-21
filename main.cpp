@@ -11,6 +11,7 @@ int main(int argc, char *argv[])
     QCoreApplication::setApplicationName("Blockchain Wallet");
 
     window.setWindowTitle("My Wallet");
+    window.setWindowIcon(QIcon("icons/programIcon.png"));
     window.display();
 
     return Blockchain.exec();

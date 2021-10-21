@@ -15,17 +15,22 @@ public:
     explicit settings_Form(QWidget *parent = nullptr);
     ~settings_Form();
     int languageIndex;
+    bool minimizeInTray();
 
 signals:
     void languageChanged();
+    void trayCheckBoxToggled();
 
 private:
     Ui::settings_Form *ui;
     friend class mainwindow;
+
 public slots:
     void settingsShow();
+
 private slots:
     void on_languagesBox_currentIndexChanged(int index);
+    void on_trayCheckBox_toggled(bool checked);
 };
 
 #endif // SETTINGS_FORM_H
