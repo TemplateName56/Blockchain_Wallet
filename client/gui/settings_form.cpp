@@ -12,3 +12,16 @@ settings_Form::~settings_Form()
 {
     delete ui;
 }
+
+void settings_Form::settingsShow()
+{
+    this->show();
+}
+
+void settings_Form::on_languagesBox_currentIndexChanged(int index)
+{
+    qDebug() << index;
+    settings_Form::languageIndex = index;
+    emit languageChanged();
+}
+

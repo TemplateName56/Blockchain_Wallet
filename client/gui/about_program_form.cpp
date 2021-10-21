@@ -12,3 +12,8 @@ about_program_Form::~about_program_Form()
 {
     delete ui;
 }
+
+void about_program_Form::aboutShow()
+{
+    this->show();
+}

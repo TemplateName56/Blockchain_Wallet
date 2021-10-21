@@ -14,9 +14,18 @@ class settings_Form : public QWidget
 public:
     explicit settings_Form(QWidget *parent = nullptr);
     ~settings_Form();
+    int languageIndex;
+
+signals:
+    void languageChanged();
 
 private:
     Ui::settings_Form *ui;
+    friend class mainwindow;
+public slots:
+    void settingsShow();
+private slots:
+    void on_languagesBox_currentIndexChanged(int index);
 };
 
 #endif // SETTINGS_FORM_H

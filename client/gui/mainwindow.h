@@ -9,18 +9,19 @@
 #include <QAction>
 #include <QStatusBar>
 #include "auth_form.h"
-
-enum menu_changes
-{
-    HOME,
-    SEND,
-    RECIEVE,
-    TRANSACTIONS
-};
+#include "settings_form.h"
+#include "about_program_form.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
+
+enum languages
+{
+    English,
+    Ukranian,
+    Russian
+};
 
 class MainWindow : public QMainWindow
 {
@@ -34,6 +35,8 @@ public:
 private:
     Ui::MainWindow *ui;
     auth_Form ui_Auth;
+    settings_Form ui_Settings;
+    about_program_Form ui_AboutProgram;
 
     QString wallet_key;
     QString wallet_address;
@@ -69,5 +72,7 @@ private slots:
     void sendTR();
     void recieveTR();
     void transactionsTR();
+
+    void setWindowLanguage();
 };
 #endif // MAINWINDOW_H

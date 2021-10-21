@@ -6,6 +6,7 @@ auth_Form::auth_Form(QWidget *parent) :
     ui(new Ui::auth_Form)
 {
     ui->setupUi(this);
+    ui->walletKeyInput->setPlaceholderText("Enter your passphrase...");
 }
 
 auth_Form::~auth_Form()

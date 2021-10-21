@@ -7,12 +7,94 @@
     <x>0</x>
     <y>0</y>
     <width>500</width>
-    <height>250</height>
+    <height>300</height>
    </rect>
+  </property>
+  <property name="font">
+   <font>
+    <family>Verdana</family>
+   </font>
   </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
+  <widget class="QTabWidget" name="tabWidget">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>20</y>
+     <width>480</width>
+     <height>260</height>
+    </rect>
+   </property>
+   <property name="currentIndex">
+    <number>3</number>
+   </property>
+   <widget class="QWidget" name="mainSettings">
+    <attribute name="title">
+     <string>Main</string>
+    </attribute>
+   </widget>
+   <widget class="QWidget" name="walletSettings">
+    <attribute name="title">
+     <string>Wallet</string>
+    </attribute>
+   </widget>
+   <widget class="QWidget" name="windowSettings">
+    <attribute name="title">
+     <string>Window</string>
+    </attribute>
+   </widget>
+   <widget class="QWidget" name="Display">
+    <attribute name="title">
+     <string>Display</string>
+    </attribute>
+    <widget class="QLabel" name="label">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>20</y>
+       <width>150</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="text">
+      <string>User interface language:</string>
+     </property>
+    </widget>
+    <widget class="QComboBox" name="languagesBox">
+     <property name="geometry">
+      <rect>
+       <x>220</x>
+       <y>19</y>
+       <width>200</width>
+       <height>22</height>
+      </rect>
+     </property>
+     <item>
+      <property name="text">
+       <string>English (United States)</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Українська</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Русский</string>
+      </property>
+     </item>
+    </widget>
+   </widget>
+  </widget>
  </widget>
  <resources/>
  <connections/>

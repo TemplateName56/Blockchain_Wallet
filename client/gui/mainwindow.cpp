@@ -1,7 +1,7 @@
 #include "mainwindow.h"
 #include "./ui_mainwindow.h"
 #include "client/scripts/json_func.h"
-#include "client/scripts/new_wallet_generation_procedure.h"
+#include "client/scripts/new_wallet.h"
 #include <windows.h>
 #include <QMessageBox>
 
@@ -15,10 +15,10 @@ MainWindow::MainWindow(QWidget *parent)
     createActions();
     createMenus();
 
-
     connect(&ui_Auth, SIGNAL(login_button_clicked()), this, SLOT(authorizeUser()));
     connect(&ui_Auth, SIGNAL(destroyed()), this, SLOT(show()));
     connect(&ui_Auth, SIGNAL(register_button_clicked()), this, SLOT(registerUser()));
+    connect(&ui_Settings, SIGNAL(languageChanged()), this, SLOT(setWindowLanguage()));
 
     ui->sendWidget->hide();
     ui->recieveWidget->hide();
@@ -147,6 +147,9 @@ void MainWindow::createActions()
     connect(recieve, &QAction::triggered, this, &MainWindow::recieveTR);
     connect(transactions, &QAction::triggered, this, &MainWindow::transactionsTR);
 
+    connect(options, &QAction::triggered, &ui_Settings, &settings_Form::settingsShow);
+    connect(about_program, &QAction::triggered, &ui_AboutProgram, &about_program_Form::aboutShow);
+
 }
 
 void MainWindow::createMenus()
@@ -204,4 +207,37 @@ MainWindow::~MainWindow()
     delete settings_menu;
     delete help_menu;
     delete toolbar;
+}
+
+void MainWindow::setWindowLanguage()
+{
+    switch (ui_Settings.languageIndex) {
+    case English:
+        break;
+    case Ukranian:
+        break;
+    case Russian:
+        setWindowTitle("Мой кошелёк");
+
+        main_menu->setTitle("&Главное");
+        settings_menu->setTitle("&Настройки");
+        help_menu->setTitle("&Помощь");
+
+        home->setText("&Обзор");
+        send->setText("&Отправить");
+        recieve->setText("&Получить");
+        transactions->setText("&Транзакции");
+
+        help->setText("&Помощь");
+        quit->setText("&Выход");
+
+        encrypt_wallet->setText("&Зашифровать кошелёк");
+        change_passphrase->setText("&Изменить секретное слово");
+        options->setText("&Настройки");
+
+        about_program->setText("&О Программе");
+
+
+        break;
+    }
 }

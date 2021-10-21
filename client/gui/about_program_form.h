@@ -17,6 +17,9 @@ public:
 
 private:
     Ui::about_program_Form *ui;
+    friend class mainwindow;
+public slots:
+    void aboutShow();
 };
 
 #endif // ABOUT_PROGRAM_FORM_H

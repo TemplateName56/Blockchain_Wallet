@@ -1,4 +1,4 @@
-#include "new_wallet_generation_procedure.h"
+#include "new_wallet.h"
 #include "json_func.h"
 #include <stdlib.h>
 #include <time.h>
