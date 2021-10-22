@@ -34,6 +34,7 @@ set(PROJECT_SOURCES
         client/gui/about_program_form.h
         client/gui/about_program_form.cpp
         client/gui/about_program_form.ui
+        includes/effolkronium/random.hpp
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)

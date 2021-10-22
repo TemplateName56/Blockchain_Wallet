@@ -3,7 +3,6 @@
 #include "client/scripts/json_func.h"
 #include "client/scripts/new_wallet.h"
 
-
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)

@@ -1,8 +1,11 @@
 #include "new_wallet.h"
 #include "json_func.h"
-#include <stdlib.h>
-#include <time.h>
+#include <QDebug>
+#include "includes/effolkronium/random.hpp"
 
+using Random = effolkronium::random_static;
+
+const char random_symbols[63] = "1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
 
 QString randomWalletAdress()
 {
@@ -14,31 +17,23 @@ QString randomWalletAdress()
 
     while(i_don_want_using_goto)
     {
-        srand(1);
-        const char random_symbols[63] = "1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
         random_address = "";
 
         for(int index = 0; index < 19; index++)
         {
-            random_address += random_symbols[(rand() % 62)];
+            random_address += random_symbols[(Random::get(0, 62))];
         }
-        for(int index = 0; index < valid_addresses.length(); index++)
-        {
-            if(random_address == valid_addresses[index])
-            {
-                continue;
-            }
-            else
-            {
-                new_address += random_address;
-                i_don_want_using_goto = false;
-                break;
-            }
+        int index = valid_addresses.indexOf(random_address);
+        if(index != -1){
+            qDebug() << "I`ts here";
+        }
+        else {
+            i_don_want_using_goto = false;
+            new_address += random_address;
         }
     }
     return new_address;
 }
-
 
 QString randomWalletKey()
 {
@@ -50,8 +45,6 @@ QString randomWalletKey()
 
     while(i_don_want_using_goto)
     {
-        srand(time(0));
-        const char random_symbols[63] = "1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
         random_key = "";
 
         int count = 0;
@@ -61,27 +54,19 @@ QString randomWalletKey()
             {
                 random_key += "-";
                 count = 0;
-            }
-            else
-            {
-                random_key += random_symbols[(rand() % 62)];
+            } else {
+                random_key += random_symbols[(Random::get(0, 62))];
                 count++;
             }
         }
-        for(int index = 0; index < valid_keys.length(); index++)
-        {
-            if(random_key == valid_keys[index])
-            {
-                continue;
-            }
-            else
-            {
-                new_key += random_key;
-                i_don_want_using_goto = false;
-                break;
-            }
+        int index = valid_keys.indexOf(random_key);
+        if(index != -1){
+            qDebug() << "I`ts here";
+        }
+        else {
+            i_don_want_using_goto = false;
+            new_key = random_key;
         }
     }
-
     return new_key;
 }
