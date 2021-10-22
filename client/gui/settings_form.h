@@ -3,6 +3,13 @@
 
 #include <QWidget>
 
+enum languages
+{
+    English,
+    Ukranian,
+    Russian
+};
+
 namespace Ui {
 class settings_Form;
 }
@@ -31,6 +38,7 @@ public slots:
 private slots:
     void on_languagesBox_currentIndexChanged(int index);
     void on_trayCheckBox_toggled(bool checked);
+    void setWindowLanguage();
 };
 
 #endif // SETTINGS_FORM_H

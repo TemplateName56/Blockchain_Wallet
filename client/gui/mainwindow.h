@@ -22,13 +22,6 @@ QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
 
-enum languages
-{
-    English,
-    Ukranian,
-    Russian
-};
-
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
@@ -56,6 +49,7 @@ private:
     void createActions();
     void createMenus();
     void createTrayMenu();
+    void uiChanges();
 
     QAction *home;
     QAction *send;

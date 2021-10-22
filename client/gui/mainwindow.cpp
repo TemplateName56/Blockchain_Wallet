@@ -13,6 +13,7 @@ MainWindow::MainWindow(QWidget *parent)
     createActions();
     createMenus();
     createTrayMenu();
+    uiChanges();
 
     connect(&ui_Auth, SIGNAL(login_button_clicked()), this, SLOT(authorizeUser()));
     connect(&ui_Auth, SIGNAL(destroyed()), this, SLOT(show()));
@@ -191,7 +192,7 @@ void MainWindow::createTrayMenu()
 {
     tray_menu = new QMenu(this);
 
-    view_window = new QAction("&Show window", this);
+    view_window = new QAction("&Show Window", this);
     connect(view_window, SIGNAL(triggered()), this, SLOT(show()));
 
     tray_menu->addAction(view_window);
@@ -205,10 +206,42 @@ void MainWindow::createTrayMenu()
     tray_icon->show();
 }
 
+void MainWindow::uiChanges()
+{
+    ui->payToAddress->setPlaceholderText("Enter wallet-address");
+    ui->addUserToAddressBook->setPlaceholderText("Enter a label for this address to add it to your address book");
+}
+
 void MainWindow::setWindowLanguage()
 {
     switch (ui_Settings.languageIndex) {
     case English:
+        main_menu->setTitle("&Main");
+        settings_menu->setTitle("&Settings");
+        help_menu->setTitle("&Help");
+
+        home->setText("&Home");
+        send->setText("&Send");
+        recieve->setText("&Recieve");
+        transactions->setText("&Transactions");
+
+        help->setText("&Help");
+        quit->setText("&Quit");
+
+        encrypt_wallet->setText("&Encrypt Wallet...");
+        change_passphrase->setText("&Change Passphrase...");
+        options->setText("&Options...");
+
+        about_program->setText("&About Program");
+        view_window->setText("&Show Window");
+
+        ui->sendCoinsButton->setText("&Send");
+        ui->addresslabel->setText("Pay To:");
+        ui->addToAddressBookLabel->setText("User Label:");
+        ui->amountLabel->setText("Amount:");
+        ui->balanceLabel->setText("Balance:");
+        ui->commissionLabel->setText("Commission");
+        ui->feeCheckBox->setText("&Subsctract fee from amount");
         break;
     case Ukranian:
         break;
@@ -233,6 +266,14 @@ void MainWindow::setWindowLanguage()
 
         about_program->setText("&О Программе");
         view_window->setText("&Показать окно");
+
+        ui->sendCoinsButton->setText("&Отправить");
+        ui->addToAddressBookLabel->setText("Метка:");
+        ui->addresslabel->setText("Адресс:");
+        ui->amountLabel->setText("Сумма:");
+        ui->balanceLabel->setText("Баланс:");
+        ui->commissionLabel->setText("Комиссия");
+        ui->feeCheckBox->setText("&Вычесть комиссию из суммы");
 
         break;
     }

@@ -28,7 +28,19 @@
       <height>600</height>
      </rect>
     </property>
+    <property name="minimumSize">
+     <size>
+      <width>800</width>
+      <height>600</height>
+     </size>
+    </property>
     <widget class="QWidget" name="mainWidget">
+     <property name="minimumSize">
+      <size>
+       <width>800</width>
+       <height>600</height>
+      </size>
+     </property>
      <widget class="QLabel" name="keylabel">
       <property name="geometry">
        <rect>
@@ -95,57 +107,274 @@
      </widget>
     </widget>
     <widget class="QWidget" name="sendWidget">
-     <widget class="QLabel" name="label">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+       <horstretch>80</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>800</width>
+       <height>600</height>
+      </size>
+     </property>
+     <widget class="QGroupBox" name="sendBox">
       <property name="geometry">
        <rect>
-        <x>60</x>
-        <y>220</y>
-        <width>47</width>
-        <height>13</height>
+        <x>20</x>
+        <y>30</y>
+        <width>760</width>
+        <height>100</height>
        </rect>
       </property>
-      <property name="text">
-       <string>TextLabel</string>
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
       </property>
-     </widget>
-     <widget class="QPushButton" name="pushButton">
-      <property name="geometry">
-       <rect>
-        <x>180</x>
-        <y>250</y>
-        <width>75</width>
-        <height>23</height>
-       </rect>
+      <property name="minimumSize">
+       <size>
+        <width>760</width>
+        <height>100</height>
+       </size>
       </property>
-      <property name="text">
-       <string>PushButton</string>
-      </property>
-     </widget>
-     <widget class="QGroupBox" name="groupBox">
-      <property name="geometry">
-       <rect>
-        <x>320</x>
-        <y>170</y>
-        <width>120</width>
-        <height>80</height>
-       </rect>
+      <property name="maximumSize">
+       <size>
+        <width>760</width>
+        <height>100</height>
+       </size>
       </property>
       <property name="title">
-       <string>GroupBox</string>
+       <string/>
       </property>
+      <layout class="QGridLayout" name="gridLayout">
+       <property name="sizeConstraint">
+        <enum>QLayout::SetDefaultConstraint</enum>
+       </property>
+       <item row="1" column="0">
+        <widget class="QLabel" name="addToAddressBookLabel">
+         <property name="text">
+          <string>User Label:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="0">
+        <widget class="QLabel" name="payToLabel">
+         <property name="text">
+          <string>Pay To:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="1">
+        <widget class="QDoubleSpinBox" name="doubleSpinBox">
+         <property name="minimumSize">
+          <size>
+           <width>200</width>
+           <height>22</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>200</width>
+           <height>22</height>
+          </size>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="2">
+        <widget class="QComboBox" name="coinsBox">
+         <property name="minimumSize">
+          <size>
+           <width>65</width>
+           <height>22</height>
+          </size>
+         </property>
+         <item>
+          <property name="text">
+           <string>BTC</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>ETH</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>BWC</string>
+          </property>
+         </item>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="QLineEdit" name="payToAddress"/>
+       </item>
+       <item row="2" column="0">
+        <widget class="QLabel" name="amountLabel">
+         <property name="text">
+          <string>Amount</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1">
+        <widget class="QLineEdit" name="addUserToAddressBook">
+         <property name="inputMask">
+          <string/>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="3">
+        <widget class="QCheckBox" name="feeCheckBox">
+         <property name="minimumSize">
+          <size>
+           <width>190</width>
+           <height>20</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>Subsctract fee from amount</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
      </widget>
-     <widget class="QLineEdit" name="lineEdit">
+     <widget class="QGroupBox" name="feeBox">
       <property name="geometry">
        <rect>
-        <x>180</x>
-        <y>190</y>
-        <width>113</width>
-        <height>20</height>
+        <x>20</x>
+        <y>200</y>
+        <width>760</width>
+        <height>200</height>
        </rect>
       </property>
+      <property name="minimumSize">
+       <size>
+        <width>760</width>
+        <height>150</height>
+       </size>
+      </property>
+      <property name="title">
+       <string/>
+      </property>
+      <widget class="QLabel" name="commissionLabel">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>10</y>
+         <width>85</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Verdana</family>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="layoutDirection">
+        <enum>Qt::LeftToRight</enum>
+       </property>
+       <property name="text">
+        <string>Commission</string>
+       </property>
+      </widget>
+     </widget>
+     <widget class="QWidget" name="layoutWidget">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>410</y>
+        <width>765</width>
+        <height>25</height>
+       </rect>
+      </property>
+      <layout class="QHBoxLayout" name="horizontalLayout_2">
+       <property name="spacing">
+        <number>400</number>
+       </property>
+       <item>
+        <widget class="QPushButton" name="sendCoinsButton">
+         <property name="minimumSize">
+          <size>
+           <width>100</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>100</width>
+           <height>23</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>Send</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout">
+         <property name="spacing">
+          <number>0</number>
+         </property>
+         <property name="sizeConstraint">
+          <enum>QLayout::SetDefaultConstraint</enum>
+         </property>
+         <item>
+          <widget class="QLabel" name="balanceLabel">
+           <property name="minimumSize">
+            <size>
+             <width>60</width>
+             <height>20</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>60</width>
+             <height>20</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>Balance:</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="balanceCoins">
+           <property name="minimumSize">
+            <size>
+             <width>120</width>
+             <height>20</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>120</width>
+             <height>20</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>some BTC</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+      </layout>
      </widget>
     </widget>
     <widget class="QWidget" name="recieveWidget">
+     <property name="minimumSize">
+      <size>
+       <width>800</width>
+       <height>600</height>
+      </size>
+     </property>
      <widget class="QLabel" name="label_2">
       <property name="geometry">
        <rect>
@@ -167,6 +396,12 @@
      </widget>
     </widget>
     <widget class="QWidget" name="transactionsWidget">
+     <property name="minimumSize">
+      <size>
+       <width>800</width>
+       <height>600</height>
+      </size>
+     </property>
      <widget class="QLabel" name="label_6">
       <property name="geometry">
        <rect>
