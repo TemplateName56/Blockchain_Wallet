@@ -1,6 +1,11 @@
 #include "program_exceptions.h"
 
-program_exceptions::program_exceptions()
+MyExceptions::MyExceptions(errors_name error)
+{
+
+}
+
+void MyExceptions::getError()
 {
 
 }

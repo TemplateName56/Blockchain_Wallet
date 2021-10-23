@@ -43,8 +43,28 @@ void settings_Form::setWindowLanguage()
 {
     switch (languageIndex) {
     case English:
+        this->setWindowTitle("&Settings");
+
+        ui->tabWidget->setTabText(0,"&Main");
+        ui->tabWidget->setTabText(1,"&Wallet");
+        ui->tabWidget->setTabText(2,"&Window");
+        ui->tabWidget->setTabText(3,"&Display");
+
+        ui->trayCheckBox->setText("&When you click the \"Close \" button, minimize the window to tray");
+        ui->languageLabel->setText("User interface language");
+
         break;
     case Ukranian:
+        this->setWindowTitle("&Налащтування");
+
+        ui->tabWidget->setTabText(0,"&Головне");
+        ui->tabWidget->setTabText(1,"&Гаманець");
+        ui->tabWidget->setTabText(2,"&Вікно");
+        ui->tabWidget->setTabText(3,"&Відображення");
+
+        ui->trayCheckBox->setText("&При натисканні кнопки \"Закрити\" згортати вікно в трей");
+        ui->languageLabel->setText("Мова інтерфейсу");
+
         break;
     case Russian:
         this->setWindowTitle("&Настройки");
@@ -56,6 +76,8 @@ void settings_Form::setWindowLanguage()
 
         ui->trayCheckBox->setText("&При нажатии кнопки \"Закрыть\" сворачивать окно в трей");
         ui->languageLabel->setText("Язык интерфейса");
+
+        break;
     }
 }
 

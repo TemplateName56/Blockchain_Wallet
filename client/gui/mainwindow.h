@@ -13,7 +13,6 @@
 #include <QDialog>
 #include <windows.h>
 #include <QMessageBox>
-#include <QStyle>
 #include "auth_form.h"
 #include "settings_form.h"
 #include "about_program_form.h"
@@ -86,5 +85,7 @@ private slots:
     void setWindowLanguage();
     void iconActivated(QSystemTrayIcon::ActivationReason reason);
     void trayEnabled();
+    void on_addUserToAddressBook_textChanged(const QString &arg1);
+    void on_payToAddress_textChanged(const QString &arg1);
 };
 #endif // MAINWINDOW_H

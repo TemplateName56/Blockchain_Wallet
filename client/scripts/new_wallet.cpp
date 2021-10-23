@@ -5,7 +5,7 @@
 
 using Random = effolkronium::random_static;
 
-const char random_symbols[63] = "1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+QString random_symbols = "1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
 
 QString randomWalletAdress()
 {
@@ -21,7 +21,7 @@ QString randomWalletAdress()
 
         for(int index = 0; index < 19; index++)
         {
-            random_address += random_symbols[(Random::get(0, 62))];
+            random_address += random_symbols[(Random::get(0, 61))];
         }
         int index = valid_addresses.indexOf(random_address);
         if(index != -1){
@@ -55,7 +55,7 @@ QString randomWalletKey()
                 random_key += "-";
                 count = 0;
             } else {
-                random_key += random_symbols[(Random::get(0, 62))];
+                random_key += random_symbols[(Random::get(0, 61))];
                 count++;
             }
         }

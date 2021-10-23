@@ -4,10 +4,19 @@
 #include <exception>
 #include <QException>
 
-class program_exceptions
+enum errors_name
 {
+    INVALID_INPUT
+};
+
+class MyExceptions : public QException
+{
+private:
+    QString error_name;
 public:
-    program_exceptions();
+    MyExceptions(errors_name error);
+
+    void getError();
 };
 
 #endif // PROGRAM_EXCEPTIONS_H

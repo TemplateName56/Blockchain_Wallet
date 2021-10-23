@@ -11,6 +11,7 @@ auth_Form::auth_Form(QWidget *parent) :
 
 auth_Form::~auth_Form()
 {
+    qDebug() << "destroyed auth";
     delete ui;
 }
 

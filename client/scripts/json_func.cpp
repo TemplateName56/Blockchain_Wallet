@@ -82,5 +82,4 @@ void registerNewUsers(QString wallet_address, QString wallet_key)
 
     json_file.write(QJsonDocument(current_json).toJson(QJsonDocument::Indented));
     json_file.close();
-
 }

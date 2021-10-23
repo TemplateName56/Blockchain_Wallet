@@ -34,6 +34,19 @@
     <attribute name="title">
      <string>Main</string>
     </attribute>
+    <widget class="QLabel" name="label">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>20</y>
+       <width>60</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Default </string>
+     </property>
+    </widget>
    </widget>
    <widget class="QWidget" name="walletSettings">
     <attribute name="title">
@@ -67,7 +80,7 @@
       <rect>
        <x>20</x>
        <y>20</y>
-       <width>150</width>
+       <width>160</width>
        <height>20</height>
       </rect>
      </property>

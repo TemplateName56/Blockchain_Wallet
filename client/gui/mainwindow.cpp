@@ -22,9 +22,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(&ui_Settings, SIGNAL(trayCheckBoxToggled()), this, SLOT(trayEnabled()));
     connect(tray_icon, SIGNAL(activated(QSystemTrayIcon::ActivationReason)), this, SLOT(iconActivated(QSystemTrayIcon::ActivationReason)));
 
-    ui->sendWidget->hide();
-    ui->recieveWidget->hide();
-    ui->transactionsWidget->hide();
+    ui->stackedWidget->setCurrentIndex(0);
 
     statusBar()->showMessage("Connected...");
 }
@@ -92,34 +90,22 @@ void MainWindow::registerUser()
 
 void MainWindow::homeTR()
 {
-    ui->sendWidget->hide();
-    ui->recieveWidget->hide();
-    ui->transactionsWidget->hide();
-    ui->mainWidget->setVisible(true);
+    ui->stackedWidget->setCurrentIndex(0);
 }
 
 void MainWindow::sendTR()
 {
-    ui->mainWidget->hide();
-    ui->recieveWidget->hide();
-    ui->transactionsWidget->hide();
-    ui->sendWidget->setVisible(true);
+    ui->stackedWidget->setCurrentIndex(1);
 }
 
 void MainWindow::recieveTR()
 {
-    ui->sendWidget->hide();
-    ui->mainWidget->hide();
-    ui->transactionsWidget->hide();
-    ui->recieveWidget->setVisible(true);
+    ui->stackedWidget->setCurrentIndex(2);
 }
 
 void MainWindow::transactionsTR()
 {
-    ui->sendWidget->hide();
-    ui->mainWidget->hide();
-    ui->recieveWidget->hide();
-    ui->transactionsWidget->setVisible(true);
+    ui->stackedWidget->setCurrentIndex(3);
 }
 
 void MainWindow::createActions()
@@ -193,7 +179,7 @@ void MainWindow::createTrayMenu()
     tray_menu = new QMenu(this);
 
     view_window = new QAction("&Show Window", this);
-    connect(view_window, SIGNAL(triggered()), this, SLOT(show()));
+    connect(view_window, &QAction::triggered, this, &MainWindow::show);
 
     tray_menu->addAction(view_window);
     tray_menu->addSeparator();
@@ -216,6 +202,8 @@ void MainWindow::setWindowLanguage()
 {
     switch (ui_Settings.languageIndex) {
     case English:
+        this->setWindowTitle("My Wallet");
+
         main_menu->setTitle("&Main");
         settings_menu->setTitle("&Settings");
         help_menu->setTitle("&Help");
@@ -236,14 +224,44 @@ void MainWindow::setWindowLanguage()
         view_window->setText("&Show Window");
 
         ui->sendCoinsButton->setText("&Send");
-        ui->addresslabel->setText("Pay To:");
+        ui->payToLabel->setText("Pay To:");
         ui->addToAddressBookLabel->setText("User Label:");
         ui->amountLabel->setText("Amount:");
         ui->balanceLabel->setText("Balance:");
         ui->commissionLabel->setText("Commission");
         ui->feeCheckBox->setText("&Subsctract fee from amount");
+
         break;
     case Ukranian:
+        this->setWindowTitle("Мій Гаманець");
+
+        main_menu->setTitle("&Головна");
+        settings_menu->setTitle("&Налаштування");
+        help_menu->setTitle("&Допомога");
+
+        home->setText("&Огляд");
+        send->setText("&Надіслати");
+        recieve->setText("&Отримати");
+        transactions->setText("&Транзакції");
+
+        help->setText("&Допомога");
+        quit->setText("&Вихід");
+
+        encrypt_wallet->setText("&Шифрування гаманця");
+        change_passphrase->setText("&Змінити парольну фразу");
+        options->setText("&Налаштування");
+
+        about_program->setText("&Про Програму");
+        view_window->setText("&Показати вікно");
+
+        ui->sendCoinsButton->setText("&Надіслати");
+        ui->addToAddressBookLabel->setText("Ярлик:");
+        ui->payToLabel->setText("Адреса:");
+        ui->amountLabel->setText("Сума:");
+        ui->balanceLabel->setText("Баланс:");
+        ui->commissionLabel->setText("Комісія");
+        ui->feeCheckBox->setText("&Відніміть від суми комісію");
+
         break;
     case Russian:
         setWindowTitle("Мой кошелёк");
@@ -269,7 +287,7 @@ void MainWindow::setWindowLanguage()
 
         ui->sendCoinsButton->setText("&Отправить");
         ui->addToAddressBookLabel->setText("Метка:");
-        ui->addresslabel->setText("Адресс:");
+        ui->payToLabel->setText("Адресс:");
         ui->amountLabel->setText("Сумма:");
         ui->balanceLabel->setText("Баланс:");
         ui->commissionLabel->setText("Комиссия");
@@ -308,10 +326,17 @@ void MainWindow::closeEvent(QCloseEvent *event)
     {
         event->ignore();
         this->hide();
+        ui_Settings.hide();
+        ui_AboutProgram.hide();
 
         QSystemTrayIcon::MessageIcon icon = QSystemTrayIcon::MessageIcon(QSystemTrayIcon::Information);
 
         tray_icon->showMessage("Wallet","Application minimized in tray", icon, 250);
+    }
+    else
+    {
+        ui_Settings.close();
+        ui_AboutProgram.close();
     }
 }
 
@@ -325,6 +350,16 @@ void MainWindow::trayEnabled()
     {
         tray_enable = true;
     }
+}
+
+void MainWindow::on_addUserToAddressBook_textChanged(const QString &arg1)
+{
+
+}
+
+void MainWindow::on_payToAddress_textChanged(const QString &arg1)
+{
+
 }
 
 MainWindow::~MainWindow()
@@ -349,6 +384,7 @@ MainWindow::~MainWindow()
     delete main_menu;
     delete settings_menu;
     delete help_menu;
+    delete tray_menu;
 
     delete toolbar;
     delete tray_icon;
