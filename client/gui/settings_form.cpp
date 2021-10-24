@@ -9,6 +9,11 @@ settings_Form::settings_Form(QWidget *parent) :
     this->setWindowTitle("Settings");
     ui->tabWidget->setCurrentIndex(0);
 
+    readSettings();
+    ui->languagesBox->setCurrentIndex(languageIndex);
+    setWindowLanguage();
+
+
     connect(this, SIGNAL(languageChanged()), this, SLOT(setWindowLanguage()));
 }
 
@@ -39,11 +44,53 @@ void settings_Form::on_trayCheckBox_toggled(bool checked)
     emit trayCheckBoxToggled();
 }
 
+void settings_Form::readSettings()
+{
+    QFileInfo file_info("settings.json");
+    QDir::setCurrent(file_info.path());
+    QFile json_file("settings.json");
+
+    if (!json_file.open(QIODevice::ReadOnly))
+    {
+        qDebug() << "Not opened";
+    }
+
+    QJsonDocument json_document(QJsonDocument::fromJson(json_file.readAll()));
+    json_file.close();
+
+    QJsonObject current_json = json_document.object();
+
+    settings_Form::languageIndex = current_json.value("Language").toInt();
+}
+
+void settings_Form::writeSettings()
+{
+    QFileInfo file_info("settings.json");
+    QDir::setCurrent(file_info.path());
+    QFile json_file("settings.json");
+
+    if (!json_file.open(QIODevice::WriteOnly))
+    {
+        qDebug() << "Not write";
+    }
+
+    QJsonObject current_json;
+
+    current_json.insert("Language",settings_Form::languageIndex);
+
+    json_file.write(QJsonDocument(current_json).toJson(QJsonDocument::Indented));
+    json_file.close();
+}
+
+void settings_Form::closeEvent(QCloseEvent *event)
+{
+    writeSettings();
+}
 void settings_Form::setWindowLanguage()
 {
     switch (languageIndex) {
     case English:
-        this->setWindowTitle("&Settings");
+        this->setWindowTitle("Settings");
 
         ui->tabWidget->setTabText(0,"&Main");
         ui->tabWidget->setTabText(1,"&Wallet");
@@ -55,7 +102,7 @@ void settings_Form::setWindowLanguage()
 
         break;
     case Ukranian:
-        this->setWindowTitle("&Налащтування");
+        this->setWindowTitle("Налаштування");
 
         ui->tabWidget->setTabText(0,"&Головне");
         ui->tabWidget->setTabText(1,"&Гаманець");
@@ -67,7 +114,7 @@ void settings_Form::setWindowLanguage()
 
         break;
     case Russian:
-        this->setWindowTitle("&Настройки");
+        this->setWindowTitle("Настройки");
 
         ui->tabWidget->setTabText(0,"&Главное");
         ui->tabWidget->setTabText(1,"&Кошелёк");

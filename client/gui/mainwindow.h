@@ -16,6 +16,7 @@
 #include "auth_form.h"
 #include "settings_form.h"
 #include "about_program_form.h"
+#include "client/scripts/program_exceptions.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }

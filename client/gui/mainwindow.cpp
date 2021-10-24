@@ -22,7 +22,9 @@ MainWindow::MainWindow(QWidget *parent)
     connect(&ui_Settings, SIGNAL(trayCheckBoxToggled()), this, SLOT(trayEnabled()));
     connect(tray_icon, SIGNAL(activated(QSystemTrayIcon::ActivationReason)), this, SLOT(iconActivated(QSystemTrayIcon::ActivationReason)));
 
+
     ui->stackedWidget->setCurrentIndex(0);
+    setWindowLanguage();
 
     statusBar()->showMessage("Connected...");
 }
@@ -37,38 +39,33 @@ void MainWindow::authorizeUser()
     wallet_key = ui_Auth.getInputKey();
     QVector<QString> valid_keys = getUsersInfo(KEY);
 
-    for(int index = 0; index < valid_keys.length(); index++)
+    int index = valid_keys.indexOf(wallet_key);
+
+    if(index != -1)
     {
-        if(wallet_key == valid_keys[index])
-        {
-            login_succesfull = true;
+        login_succesfull = true;
 
-            ui_Auth.close();
-            Sleep(250);
-            QVector<QString> user_address = getUsersInfo(ADDRESS);
-            wallet_address = user_address[index];
-            this->show();
+        ui_Auth.close();
+        Sleep(250);
+        QVector<QString> user_address = getUsersInfo(ADDRESS);
+        wallet_address = user_address[index];
+        this->show();
 
-            ui->walletAddressLabel->setText(wallet_address);
-            ui->walletKeyLabel->setText(wallet_key);
+        ui->walletAddressLabel->setText(wallet_address);
+        ui->walletKeyLabel->setText(wallet_key);
 
-            qDebug() << wallet_address;
-            qDebug() << wallet_key;
+        qDebug() << wallet_address;
+        qDebug() << wallet_key;
+    }
+    else
+    {
+        QMessageBox key_error;
 
-            break;
-        }
-        else if (index == valid_keys.length() - 1)
-        {
-            QMessageBox key_error;
+        key_error.setWindowTitle("Ошибка");
+        key_error.setText("Данного ключа не существует");
+        key_error.setIcon(QMessageBox::Critical);
 
-            key_error.setWindowTitle("Ошибка");
-            key_error.setText("Данного ключа не существует");
-            key_error.setIcon(QMessageBox::Critical);
-
-            key_error.exec();
-
-            break;
-        }
+        key_error.exec();
     }
 }
 

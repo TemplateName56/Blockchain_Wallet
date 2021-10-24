@@ -2,6 +2,14 @@
 #define SETTINGS_FORM_H
 
 #include <QWidget>
+#include <QString>
+#include <QVector>
+#include <QFile>
+#include <QFileDialog>
+#include <QDir>
+#include <QJsonObject>
+#include <QJsonDocument>
+#include <QJsonArray>
 
 enum languages
 {
@@ -24,6 +32,9 @@ public:
     int languageIndex;
     bool minimizeInTray();
 
+protected:
+    void closeEvent(QCloseEvent *event);
+
 signals:
     void languageChanged();
     void trayCheckBoxToggled();
@@ -31,6 +42,8 @@ signals:
 private:
     Ui::settings_Form *ui;
     friend class mainwindow;
+    void readSettings();
+    void writeSettings();
 
 public slots:
     void settingsShow();

@@ -1,10 +1,4 @@
 #include "json_func.h"
-#include <QFile>
-#include <QFileDialog>
-#include <QDir>
-#include <QJsonObject>
-#include <QJsonDocument>
-#include <QJsonArray>
 
 QVector<QString> getUsersInfo(getInfo what_u_need)
 {

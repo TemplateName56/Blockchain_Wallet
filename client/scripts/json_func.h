@@ -3,6 +3,12 @@
 
 #include <QString>
 #include <QVector>
+#include <QFile>
+#include <QFileDialog>
+#include <QDir>
+#include <QJsonObject>
+#include <QJsonDocument>
+#include <QJsonArray>
 
 enum getInfo
 {

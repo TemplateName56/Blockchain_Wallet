@@ -24,10 +24,12 @@ QString randomWalletAdress()
             random_address += random_symbols[(Random::get(0, 61))];
         }
         int index = valid_addresses.indexOf(random_address);
-        if(index != -1){
-            qDebug() << "I`ts here";
+        if(index != -1)
+        {
+            qDebug() << "Its here";
         }
-        else {
+        else
+        {
             i_don_want_using_goto = false;
             new_address += random_address;
         }
@@ -54,16 +56,20 @@ QString randomWalletKey()
             {
                 random_key += "-";
                 count = 0;
-            } else {
+            }
+            else
+            {
                 random_key += random_symbols[(Random::get(0, 61))];
                 count++;
             }
         }
         int index = valid_keys.indexOf(random_key);
-        if(index != -1){
-            qDebug() << "I`ts here";
+        if(index != -1)
+        {
+            qDebug() << "Its here";
         }
-        else {
+        else
+        {
             i_don_want_using_goto = false;
             new_key = random_key;
         }
