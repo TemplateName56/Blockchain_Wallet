@@ -3,6 +3,7 @@
 #include "client/scripts/json_func.h"
 #include "client/scripts/new_wallet.h"
 
+
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -15,6 +16,7 @@ MainWindow::MainWindow(QWidget *parent)
     createMenus();
     createTrayMenu();
     uiChanges();
+    requestsHistory();
 
     connect(&ui_Auth, SIGNAL(login_button_clicked()), this, SLOT(authorizeUser()));
     connect(&ui_Auth, SIGNAL(destroyed()), this, SLOT(show()));
@@ -448,6 +450,49 @@ void MainWindow::setupTransactionsOverview()
     transactionsGroup->addAnimation(transaction_3);
     transactionsGroup->addAnimation(transaction_4);
     transactionsGroup->addAnimation(transaction_5);
+}
+
+void MainWindow::requestsHistory()
+{
+    request_view_model = new QStandardItemModel(this);
+    request_view_model->setColumnCount(4);
+    request_view_model->setHorizontalHeaderLabels(QStringList() << "Date" << "Label" << "Message" << "Amount");
+    ui->requestsView->setModel(request_view_model);
+    ui->requestsView->setColumnWidth(0,100);
+    ui->requestsView->setColumnWidth(1,200);
+    ui->requestsView->setColumnWidth(2,341);
+    ui->requestsView->setColumnWidth(3,100);
+
+
+    QFile requestsList("requestsList.csv");
+    if(!requestsList.open(QIODevice::ReadOnly | QIODevice::Text))
+    {
+        qDebug() << "Not open1";
+    }
+    else
+    {
+        QTextStream in(&requestsList);
+        while(!in.atEnd())
+        {
+            QString requests = in.readLine();
+            qDebug() << "DSA: " << requests;
+            QList<QStandardItem *> newRequestsList;
+
+            int count = 0;
+            for(const QString &item : requests.split(";"))
+            {
+                newRequestsList.append(new QStandardItem(item));
+                count++;
+            }
+            for(int i = 0; i < count; i++)
+            {
+                newRequestsList[i]->setTextAlignment(Qt::AlignCenter);
+            }
+            request_view_model->insertRow(request_view_model->rowCount(), newRequestsList);
+        }
+        requestsList.close();
+    }
+    //ui->requestsView->resizeColumnsToContents();
 }
 
 void MainWindow::newTransaction()

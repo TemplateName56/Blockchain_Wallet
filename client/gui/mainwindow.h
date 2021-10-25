@@ -19,6 +19,7 @@
 #include "client/scripts/program_exceptions.h"
 #include <QPropertyAnimation>
 #include <QParallelAnimationGroup>
+#include <QStandardItemModel>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -33,6 +34,7 @@ public:
     ~MainWindow();
 
     void display();
+    void requestsHistory();
 
 signals:
     void tempTriggered(); // delete after test
@@ -48,6 +50,8 @@ private:
 
     QString wallet_key;
     QString wallet_address;
+
+    QStandardItemModel *request_view_model;
 
     bool login_succesfull;
     bool tray_enable = false;

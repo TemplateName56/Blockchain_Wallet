@@ -13,7 +13,6 @@ QVector<QString> getUsersInfo(getInfo what_u_need)
 
     QJsonDocument json_document(QJsonDocument::fromJson(json_file.readAll()));
     json_file.close();
-    qDebug() << json_document;
 
     QJsonObject temp = json_document.object();
     QJsonArray json_array = temp["users"].toArray();
@@ -25,9 +24,6 @@ QVector<QString> getUsersInfo(getInfo what_u_need)
         for(int index = 0; index < json_array.size(); index++)
         {
             QJsonObject subtree = json_array.at(index).toObject();
-
-            qDebug() << subtree.value("walletKey").toString();
-
             valid_information.append(subtree.value("walletKey").toString());
         }
         break;
@@ -35,9 +31,6 @@ QVector<QString> getUsersInfo(getInfo what_u_need)
         for(int index = 0; index < json_array.size(); index++)
         {
             QJsonObject subtree = json_array.at(index).toObject();
-
-            qDebug() << subtree.value("address").toString();
-
             valid_information.append(subtree.value("address").toString());
         }
         break;
