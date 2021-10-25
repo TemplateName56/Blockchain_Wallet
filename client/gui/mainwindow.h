@@ -17,6 +17,8 @@
 #include "settings_form.h"
 #include "about_program_form.h"
 #include "client/scripts/program_exceptions.h"
+#include <QPropertyAnimation>
+#include <QParallelAnimationGroup>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -32,6 +34,9 @@ public:
 
     void display();
 
+signals:
+    void tempTriggered(); // delete after test
+
 protected:
     void closeEvent(QCloseEvent *event);
 
@@ -43,13 +48,23 @@ private:
 
     QString wallet_key;
     QString wallet_address;
+
     bool login_succesfull;
-    bool tray_enable;
+    bool tray_enable = false;
+
+    int last_transaction_notify = 5;
+
+    int y_tr1_pos = 10;
+    int y_tr2_pos = 100;
+    int y_tr3_pos = 190;
+    int y_tr4_pos = 280;
+    int y_tr5_pos = 370;
 
     void createActions();
     void createMenus();
     void createTrayMenu();
     void uiChanges();
+    void setupTransactionsOverview();
 
     QAction *home;
     QAction *send;
@@ -74,6 +89,13 @@ private:
     QToolBar *toolbar;
     QSystemTrayIcon *tray_icon;
 
+    QParallelAnimationGroup *transactionsGroup;
+    QPropertyAnimation *transaction_1;
+    QPropertyAnimation *transaction_2;
+    QPropertyAnimation *transaction_3;
+    QPropertyAnimation *transaction_4;
+    QPropertyAnimation *transaction_5;
+
 private slots:
     void authorizeUser();
     void registerUser();
@@ -88,5 +110,11 @@ private slots:
     void trayEnabled();
     void on_addUserToAddressBook_textChanged(const QString &arg1);
     void on_payToAddress_textChanged(const QString &arg1);
+
+    void newTransaction();
+    void on_tempPushButton_clicked();
+
+
+    void tempSlot(); // delete after test
 };
 #endif // MAINWINDOW_H

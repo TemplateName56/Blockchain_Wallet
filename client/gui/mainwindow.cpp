@@ -9,6 +9,7 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
     login_succesfull = false;
+    transactionsGroup = new QParallelAnimationGroup;
 
     createActions();
     createMenus();
@@ -22,6 +23,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(&ui_Settings, SIGNAL(trayCheckBoxToggled()), this, SLOT(trayEnabled()));
     connect(tray_icon, SIGNAL(activated(QSystemTrayIcon::ActivationReason)), this, SLOT(iconActivated(QSystemTrayIcon::ActivationReason)));
 
+    connect(this,SIGNAL(tempTriggered()),this,SLOT(tempSlot())); // delete after test
 
     ui->stackedWidget->setCurrentIndex(0);
     setWindowLanguage();
@@ -228,6 +230,7 @@ void MainWindow::setWindowLanguage()
         ui->commissionLabel->setText("Commission");
         ui->feeCheckBox->setText("&Subsctract fee from amount");
 
+        ui->transactionsOverviewLabel->setText("Transactions");
         break;
     case Ukranian:
         this->setWindowTitle("Мій Гаманець");
@@ -259,6 +262,7 @@ void MainWindow::setWindowLanguage()
         ui->commissionLabel->setText("Комісія");
         ui->feeCheckBox->setText("&Відніміть від суми комісію");
 
+        ui->transactionsOverviewLabel->setText("Транзакції");
         break;
     case Russian:
         setWindowTitle("Мой кошелёк");
@@ -290,6 +294,7 @@ void MainWindow::setWindowLanguage()
         ui->commissionLabel->setText("Комиссия");
         ui->feeCheckBox->setText("&Вычесть комиссию из суммы");
 
+        ui->transactionsOverviewLabel->setText("Транзакции");
         break;
     }
 }
@@ -359,6 +364,97 @@ void MainWindow::on_payToAddress_textChanged(const QString &arg1)
 
 }
 
+void MainWindow::setupTransactionsOverview()
+{
+    transactionsGroup->clear();
+
+    switch (last_transaction_notify) {
+    case 1:
+        last_transaction_notify = 5;
+        y_tr2_pos += 100;
+        y_tr3_pos += 100;
+        y_tr4_pos += 100;
+        y_tr5_pos += 100;
+        y_tr1_pos = 10;
+        ui->transactionInfo_1->move(10,-80);
+        break;
+    case 2:
+        last_transaction_notify = 1;
+        y_tr1_pos += 100;
+        y_tr3_pos += 100;
+        y_tr4_pos += 100;
+        y_tr5_pos += 100;
+        y_tr2_pos = 10;
+        ui->transactionInfo_2->move(10,-80);
+        break;
+    case 3:
+        last_transaction_notify = 2;
+        y_tr1_pos += 100;
+        y_tr2_pos += 100;
+        y_tr4_pos += 100;
+        y_tr5_pos += 100;
+        y_tr3_pos = 10;
+        ui->transactionInfo_3->move(10,-80);
+        break;
+    case 4:
+        last_transaction_notify = 3;
+        y_tr1_pos += 100;
+        y_tr2_pos += 100;
+        y_tr3_pos += 100;
+        y_tr5_pos += 100;
+        y_tr4_pos = 10;
+        ui->transactionInfo_4->move(10,-80);
+        break;
+    case 5:
+        last_transaction_notify = 4;
+        y_tr1_pos += 100;
+        y_tr2_pos += 100;
+        y_tr3_pos += 100;
+        y_tr4_pos += 100;
+        y_tr5_pos = 10;
+        ui->transactionInfo_5->move(10,-80);
+        break;
+    default:
+        break;
+    }
+
+    transaction_1 = new QPropertyAnimation(ui->transactionInfo_1, "geometry");
+    transaction_1->setDuration(500);
+    transaction_1->setStartValue(ui->transactionInfo_1->geometry());
+    transaction_1->setEndValue(ui->transactionInfo_1->geometry().translated(0, 90));
+
+    transaction_2 = new QPropertyAnimation(ui->transactionInfo_2, "geometry");
+    transaction_2->setDuration(500);
+    transaction_2->setStartValue(ui->transactionInfo_2->geometry());
+    transaction_2->setEndValue(ui->transactionInfo_2->geometry().translated(0, 90));
+
+    transaction_3 = new QPropertyAnimation(ui->transactionInfo_3, "geometry");
+    transaction_3->setDuration(500);
+    transaction_3->setStartValue(ui->transactionInfo_3->geometry());
+    transaction_3->setEndValue(ui->transactionInfo_3->geometry().translated(0, 90));
+
+    transaction_4 = new QPropertyAnimation(ui->transactionInfo_4, "geometry");
+    transaction_4->setDuration(500);
+    transaction_4->setStartValue(ui->transactionInfo_4->geometry());
+    transaction_4->setEndValue(ui->transactionInfo_4->geometry().translated(0, 90));
+
+    transaction_5 = new QPropertyAnimation(ui->transactionInfo_5, "geometry");
+    transaction_5->setDuration(500);
+    transaction_5->setStartValue(ui->transactionInfo_5->geometry());
+    transaction_5->setEndValue(ui->transactionInfo_5->geometry().translated(0, 90));
+
+    transactionsGroup->addAnimation(transaction_1);
+    transactionsGroup->addAnimation(transaction_2);
+    transactionsGroup->addAnimation(transaction_3);
+    transactionsGroup->addAnimation(transaction_4);
+    transactionsGroup->addAnimation(transaction_5);
+}
+
+void MainWindow::newTransaction()
+{
+
+}
+
 MainWindow::~MainWindow()
 {
     delete ui;
@@ -385,4 +481,19 @@ MainWindow::~MainWindow()
 
     delete toolbar;
     delete tray_icon;
+
+    delete transactionsGroup;
 }
+
+void MainWindow::tempSlot()
+{
+    // delete after test
+}
+
+void MainWindow::on_tempPushButton_clicked() // delete after test
+{
+    setupTransactionsOverview();
+    transactionsGroup->start();
+    emit tempTriggered();
+}
+
