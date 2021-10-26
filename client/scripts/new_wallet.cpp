@@ -26,7 +26,7 @@ QString randomWalletAdress()
         int index = valid_addresses.indexOf(random_address);
         if(index != -1)
         {
-            qDebug() << "Its here";
+            qDebug() << "We have one";
         }
         else
         {
@@ -66,7 +66,7 @@ QString randomWalletKey()
         int index = valid_keys.indexOf(random_key);
         if(index != -1)
         {
-            qDebug() << "Its here";
+            qDebug() << "We have one";
         }
         else
         {

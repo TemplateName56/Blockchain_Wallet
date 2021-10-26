@@ -1,5 +1,14 @@
 #include "json_func.h"
 
+void fileExists(const QString &file_path)
+{
+    QFileInfo check_file(file_path);
+    if(!check_file.exists() && !check_file.isFile())
+    {
+        throw ProgramException(FILE_EXIST_ERROR);
+    }
+}
+
 QVector<QString> getUsersInfo(getInfo what_u_need)
 {
     QFileInfo file_info("users.json");
@@ -9,6 +18,7 @@ QVector<QString> getUsersInfo(getInfo what_u_need)
     if (!json_file.open(QIODevice::ReadOnly))
     {
         qDebug() << "Not opened";
+        throw ProgramException(FILE_READ_ERROR);
     }
 
     QJsonDocument json_document(QJsonDocument::fromJson(json_file.readAll()));
@@ -33,6 +43,8 @@ QVector<QString> getUsersInfo(getInfo what_u_need)
             QJsonObject subtree = json_array.at(index).toObject();
             valid_information.append(subtree.value("address").toString());
         }
+        break;
+    default:
         break;
     }
 
@@ -65,6 +77,7 @@ void registerNewUsers(QString wallet_address, QString wallet_key)
     if (!json_file.open(QIODevice::WriteOnly))
     {
         qDebug() << "Not write";
+        throw new ProgramException(FILE_WRITE_ERROR);
     }
 
     json_file.write(QJsonDocument(current_json).toJson(QJsonDocument::Indented));

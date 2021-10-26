@@ -26,8 +26,8 @@ set(PROJECT_SOURCES
         client/scripts/json_func.cpp
         client/scripts/new_wallet.h
         client/scripts/new_wallet.cpp
-        client/scripts/program_exceptions.h
-        client/scripts/program_exceptions.cpp
+        client/tests/program_exception.h
+        client/tests/program_exception.cpp
         client/gui/settings_form.h
         client/gui/settings_form.cpp
         client/gui/settings_form.ui

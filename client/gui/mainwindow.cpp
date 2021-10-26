@@ -1,14 +1,19 @@
 #include "mainwindow.h"
 #include "./ui_mainwindow.h"
-#include "client/scripts/json_func.h"
-#include "client/scripts/new_wallet.h"
-
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
+    try {
+        fileExists("users.json");
+        fileExists("settings.json");
+        fileExists("requestsList.csv");
+    }  catch (ProgramException &error) {
+        error.getError();
+    }
     ui->setupUi(this);
+
     login_succesfull = false;
     transactionsGroup = new QParallelAnimationGroup;
 
@@ -24,8 +29,6 @@ MainWindow::MainWindow(QWidget *parent)
     connect(&ui_Settings, SIGNAL(languageChanged()), this, SLOT(setWindowLanguage()));
     connect(&ui_Settings, SIGNAL(trayCheckBoxToggled()), this, SLOT(trayEnabled()));
     connect(tray_icon, SIGNAL(activated(QSystemTrayIcon::ActivationReason)), this, SLOT(iconActivated(QSystemTrayIcon::ActivationReason)));
-
-    connect(this,SIGNAL(tempTriggered()),this,SLOT(tempSlot())); // delete after test
 
     ui->stackedWidget->setCurrentIndex(0);
     setWindowLanguage();
@@ -173,6 +176,8 @@ void MainWindow::createMenus()
     toolbar->addAction(send);
     toolbar->addAction(recieve);
     toolbar->addAction(transactions);
+
+    toolbar->setIconSize(QSize(90,30));
 }
 
 void MainWindow::createTrayMenu()
@@ -297,6 +302,8 @@ void MainWindow::setWindowLanguage()
         ui->feeCheckBox->setText("&Вычесть комиссию из суммы");
 
         ui->transactionsOverviewLabel->setText("Транзакции");
+        break;
+    default:
         break;
     }
 }
@@ -458,10 +465,13 @@ void MainWindow::requestsHistory()
     request_view_model->setColumnCount(4);
     request_view_model->setHorizontalHeaderLabels(QStringList() << "Date" << "Label" << "Message" << "Amount");
     ui->requestsView->setModel(request_view_model);
+
+    ui->requestsView->verticalHeader()->setVisible(false);
+
     ui->requestsView->setColumnWidth(0,100);
     ui->requestsView->setColumnWidth(1,200);
-    ui->requestsView->setColumnWidth(2,341);
-    ui->requestsView->setColumnWidth(3,100);
+    ui->requestsView->setColumnWidth(2,350);
+    ui->requestsView->setColumnWidth(3,108);
 
 
     QFile requestsList("requestsList.csv");
@@ -475,7 +485,6 @@ void MainWindow::requestsHistory()
         while(!in.atEnd())
         {
             QString requests = in.readLine();
-            qDebug() << "DSA: " << requests;
             QList<QStandardItem *> newRequestsList;
 
             int count = 0;
@@ -492,7 +501,19 @@ void MainWindow::requestsHistory()
         }
         requestsList.close();
     }
-    //ui->requestsView->resizeColumnsToContents();
+
+    QStandardItemModel *history_view_model = new QStandardItemModel(this);
+    history_view_model->setColumnCount(4);
+    history_view_model->setHorizontalHeaderLabels(QStringList() << "Date" << "From" << "To" << "Amount");
+    ui->historyView->setModel(history_view_model);
+
+    ui->historyView->verticalHeader()->setVisible(false);
+
+    ui->historyView->setColumnWidth(0,100);
+    ui->historyView->setColumnWidth(1,275);
+    ui->historyView->setColumnWidth(2,275);
+    ui->historyView->setColumnWidth(3,108);
+
 }
 
 void MainWindow::newTransaction()
@@ -528,17 +549,5 @@ MainWindow::~MainWindow()
     delete tray_icon;
 
     delete transactionsGroup;
-}
-
-void MainWindow::tempSlot()
-{
-    // delete after test
-}
-
-void MainWindow::on_tempPushButton_clicked() // delete after test
-{
-    setupTransactionsOverview();
-    transactionsGroup->start();
-    emit tempTriggered();
 }
 

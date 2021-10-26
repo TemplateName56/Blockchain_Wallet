@@ -16,7 +16,9 @@
 #include "auth_form.h"
 #include "settings_form.h"
 #include "about_program_form.h"
-#include "client/scripts/program_exceptions.h"
+#include "client/tests/program_exception.h"
+#include "client/scripts/json_func.h"
+#include "client/scripts/new_wallet.h"
 #include <QPropertyAnimation>
 #include <QParallelAnimationGroup>
 #include <QStandardItemModel>
@@ -37,7 +39,6 @@ public:
     void requestsHistory();
 
 signals:
-    void tempTriggered(); // delete after test
 
 protected:
     void closeEvent(QCloseEvent *event);
@@ -116,9 +117,5 @@ private slots:
     void on_payToAddress_textChanged(const QString &arg1);
 
     void newTransaction();
-    void on_tempPushButton_clicked();
-
-
-    void tempSlot(); // delete after test
 };
 #endif // MAINWINDOW_H

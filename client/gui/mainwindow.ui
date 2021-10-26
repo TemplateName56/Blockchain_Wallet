@@ -47,7 +47,7 @@
      </size>
     </property>
     <property name="currentIndex">
-     <number>2</number>
+     <number>0</number>
     </property>
     <widget class="QWidget" name="mainWidget">
      <property name="minimumSize">
@@ -59,11 +59,23 @@
      <widget class="QLabel" name="keylabel">
       <property name="geometry">
        <rect>
-        <x>20</x>
-        <y>40</y>
+        <x>400</x>
+        <y>460</y>
         <width>100</width>
         <height>20</height>
        </rect>
+      </property>
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>100</width>
+        <height>20</height>
+       </size>
       </property>
       <property name="text">
        <string>Passphrase:</string>
@@ -72,8 +84,8 @@
      <widget class="QLabel" name="walletAddressLabel">
       <property name="geometry">
        <rect>
-        <x>90</x>
-        <y>20</y>
+        <x>470</x>
+        <y>440</y>
         <width>250</width>
         <height>20</height>
        </rect>
@@ -84,6 +96,12 @@
         <verstretch>0</verstretch>
        </sizepolicy>
       </property>
+      <property name="minimumSize">
+       <size>
+        <width>250</width>
+        <height>20</height>
+       </size>
+      </property>
       <property name="text">
        <string/>
       </property>
@@ -91,11 +109,23 @@
      <widget class="QLabel" name="walletKeyLabel">
       <property name="geometry">
        <rect>
-        <x>110</x>
-        <y>40</y>
+        <x>490</x>
+        <y>460</y>
         <width>250</width>
         <height>20</height>
        </rect>
+      </property>
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>250</width>
+        <height>20</height>
+       </size>
       </property>
       <property name="text">
        <string/>
@@ -104,8 +134,8 @@
      <widget class="QLabel" name="addresslabel">
       <property name="geometry">
        <rect>
-        <x>20</x>
-        <y>20</y>
+        <x>400</x>
+        <y>440</y>
         <width>60</width>
         <height>20</height>
        </rect>
@@ -115,6 +145,12 @@
         <horstretch>0</horstretch>
         <verstretch>0</verstretch>
        </sizepolicy>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>60</width>
+        <height>20</height>
+       </size>
       </property>
       <property name="text">
        <string>Address:</string>
@@ -647,19 +683,6 @@
        </widget>
       </widget>
      </widget>
-     <widget class="QPushButton" name="tempPushButton">
-      <property name="geometry">
-       <rect>
-        <x>100</x>
-        <y>450</y>
-        <width>75</width>
-        <height>23</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>PushButton</string>
-      </property>
-     </widget>
      <widget class="QLabel" name="transactionsOverviewLabel">
       <property name="geometry">
        <rect>
@@ -680,6 +703,96 @@
        <string>Transactions</string>
       </property>
      </widget>
+     <widget class="QLabel" name="balanceLabel">
+      <property name="geometry">
+       <rect>
+        <x>40</x>
+        <y>40</y>
+        <width>60</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Verdana</family>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>Balance</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="bwcLabel">
+      <property name="geometry">
+       <rect>
+        <x>40</x>
+        <y>60</y>
+        <width>50</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>50</width>
+        <height>20</height>
+       </size>
+      </property>
+      <property name="text">
+       <string>BWC</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="bwcNLabel">
+      <property name="geometry">
+       <rect>
+        <x>40</x>
+        <y>80</y>
+        <width>50</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>50</width>
+        <height>20</height>
+       </size>
+      </property>
+      <property name="text">
+       <string>BWC-N</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="bwcQLabel">
+      <property name="geometry">
+       <rect>
+        <x>40</x>
+        <y>100</y>
+        <width>50</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>50</width>
+        <height>20</height>
+       </size>
+      </property>
+      <property name="text">
+       <string>BWC-Q</string>
+      </property>
+     </widget>
+     <widget class="Line" name="line">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>60</y>
+        <width>118</width>
+        <height>3</height>
+       </rect>
+      </property>
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+     </widget>
     </widget>
     <widget class="QWidget" name="sendWidget">
      <property name="sizePolicy">
@@ -694,17 +807,131 @@
        <height>600</height>
       </size>
      </property>
+     <widget class="QGroupBox" name="feeBox">
+      <property name="geometry">
+       <rect>
+        <x>11</x>
+        <y>122</y>
+        <width>779</width>
+        <height>150</height>
+       </rect>
+      </property>
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>760</width>
+        <height>150</height>
+       </size>
+      </property>
+      <property name="title">
+       <string/>
+      </property>
+      <widget class="QLabel" name="commissionLabel">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>10</y>
+         <width>85</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Verdana</family>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="layoutDirection">
+        <enum>Qt::LeftToRight</enum>
+       </property>
+       <property name="text">
+        <string>Commission</string>
+       </property>
+      </widget>
+      <widget class="QRadioButton" name="recomValueButton">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>40</y>
+         <width>150</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>150</width>
+         <height>20</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>Recommended value:</string>
+       </property>
+      </widget>
+      <widget class="QRadioButton" name="custinValueButton">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>70</y>
+         <width>150</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>150</width>
+         <height>20</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>Custom value:</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="recomValueLabel">
+       <property name="geometry">
+        <rect>
+         <x>170</x>
+         <y>40</y>
+         <width>150</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>TextLabel</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+     </widget>
      <widget class="QGroupBox" name="sendBox">
       <property name="geometry">
        <rect>
-        <x>20</x>
-        <y>30</y>
+        <x>11</x>
+        <y>12</y>
         <width>760</width>
         <height>100</height>
        </rect>
       </property>
       <property name="sizePolicy">
-       <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+       <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
         <horstretch>0</horstretch>
         <verstretch>0</verstretch>
        </sizepolicy>
@@ -824,67 +1051,28 @@
        </item>
       </layout>
      </widget>
-     <widget class="QGroupBox" name="feeBox">
-      <property name="geometry">
-       <rect>
-        <x>20</x>
-        <y>200</y>
-        <width>760</width>
-        <height>200</height>
-       </rect>
-      </property>
-      <property name="minimumSize">
-       <size>
-        <width>760</width>
-        <height>150</height>
-       </size>
-      </property>
-      <property name="title">
-       <string/>
-      </property>
-      <widget class="QLabel" name="commissionLabel">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>10</y>
-         <width>85</width>
-         <height>20</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <family>Verdana</family>
-         <weight>75</weight>
-         <bold>true</bold>
-        </font>
-       </property>
-       <property name="layoutDirection">
-        <enum>Qt::LeftToRight</enum>
-       </property>
-       <property name="text">
-        <string>Commission</string>
-       </property>
-      </widget>
-     </widget>
      <widget class="QWidget" name="layoutWidget">
       <property name="geometry">
        <rect>
-        <x>20</x>
-        <y>410</y>
-        <width>765</width>
+        <x>13</x>
+        <y>284</y>
+        <width>776</width>
         <height>25</height>
        </rect>
       </property>
-      <layout class="QHBoxLayout" name="horizontalLayout_2">
-       <property name="spacing">
-        <number>400</number>
-       </property>
-       <item>
+      <layout class="QGridLayout" name="gridLayout_3">
+       <item row="0" column="0">
         <widget class="QPushButton" name="sendCoinsButton">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
          <property name="minimumSize">
           <size>
-           <width>100</width>
-           <height>0</height>
+           <width>150</width>
+           <height>23</height>
           </size>
          </property>
          <property name="maximumSize">
@@ -898,53 +1086,93 @@
          </property>
         </widget>
        </item>
-       <item>
-        <layout class="QHBoxLayout" name="horizontalLayout">
-         <property name="spacing">
-          <number>0</number>
+       <item row="0" column="1">
+        <widget class="QPushButton" name="clearSendButton">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
          </property>
-         <property name="sizeConstraint">
-          <enum>QLayout::SetDefaultConstraint</enum>
+         <property name="minimumSize">
+          <size>
+           <width>100</width>
+           <height>23</height>
+          </size>
          </property>
-         <item>
-          <widget class="QLabel" name="balanceLabel">
-           <property name="minimumSize">
-            <size>
-             <width>60</width>
-             <height>20</height>
-            </size>
-           </property>
-           <property name="maximumSize">
-            <size>
-             <width>60</width>
-             <height>20</height>
-            </size>
-           </property>
-           <property name="text">
-            <string>Balance:</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QLabel" name="balanceCoins">
-           <property name="minimumSize">
-            <size>
-             <width>120</width>
-             <height>20</height>
-            </size>
-           </property>
-           <property name="maximumSize">
-            <size>
-             <width>120</width>
-             <height>20</height>
-            </size>
-           </property>
-           <property name="text">
-            <string>some BWC</string>
-           </property>
-          </widget>
-         </item>
-        </layout>
+         <property name="text">
+          <string>Clear</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="4">
+        <widget class="QLabel" name="balanceCoins">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>140</width>
+           <height>20</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>120</width>
+           <height>20</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>some BWC</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="3">
+        <widget class="QLabel" name="balanceTextLabel">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>60</width>
+           <height>20</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>60</width>
+           <height>20</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>Balance:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="2">
+        <spacer name="horizontalSpacer_3">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeType">
+          <enum>QSizePolicy::Fixed</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>300</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
        </item>
       </layout>
      </widget>
@@ -982,7 +1210,7 @@
       </property>
       <layout class="QGridLayout" name="gridLayout_2">
        <item row="0" column="0">
-        <widget class="QLabel" name="walletLabel">
+        <widget class="QLabel" name="requestLabel">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
            <horstretch>0</horstretch>
@@ -1122,7 +1350,7 @@
         </widget>
        </item>
        <item row="2" column="1">
-        <widget class="QLineEdit" name="lineEdit">
+        <widget class="QLineEdit" name="messageLine">
          <property name="minimumSize">
           <size>
            <width>300</width>
@@ -1207,7 +1435,7 @@
        <enum>Qt::ElideLeft</enum>
       </property>
      </widget>
-     <widget class="QLabel" name="label">
+     <widget class="QLabel" name="historyLabel">
       <property name="geometry">
        <rect>
         <x>20</x>
@@ -1241,17 +1469,49 @@
        <height>600</height>
       </size>
      </property>
-     <widget class="QLabel" name="label_6">
+     <widget class="QLabel" name="transactionsLabel">
       <property name="geometry">
        <rect>
-        <x>270</x>
-        <y>10</y>
-        <width>150</width>
+        <x>320</x>
+        <y>20</y>
+        <width>160</width>
         <height>20</height>
        </rect>
       </property>
+      <property name="minimumSize">
+       <size>
+        <width>160</width>
+        <height>20</height>
+       </size>
+      </property>
+      <property name="font">
+       <font>
+        <family>Verdana</family>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
       <property name="text">
-       <string>All transactions</string>
+       <string>All transactions history</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
+     <widget class="QTableView" name="historyView">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>40</y>
+        <width>760</width>
+        <height>460</height>
+       </rect>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>760</width>
+        <height>460</height>
+       </size>
       </property>
      </widget>
     </widget>
