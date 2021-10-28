@@ -17,7 +17,6 @@ QVector<QString> getUsersInfo(getInfo what_u_need)
 
     if (!json_file.open(QIODevice::ReadOnly))
     {
-        qDebug() << "Not opened";
         throw ProgramException(FILE_READ_ERROR);
     }
 
@@ -59,7 +58,7 @@ void registerNewUsers(QString wallet_address, QString wallet_key)
 
     if (!json_file.open(QIODevice::ReadOnly))
     {
-        qDebug() << "Not read";
+        throw ProgramException(FILE_READ_ERROR);
     }
 
     QJsonObject new_user;
@@ -76,7 +75,6 @@ void registerNewUsers(QString wallet_address, QString wallet_key)
     current_json["users"] = json_array;
     if (!json_file.open(QIODevice::WriteOnly))
     {
-        qDebug() << "Not write";
         throw new ProgramException(FILE_WRITE_ERROR);
     }
 

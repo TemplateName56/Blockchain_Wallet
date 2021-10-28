@@ -43,53 +43,55 @@ void MainWindow::display()
 
 void MainWindow::authorizeUser()
 {
-    wallet_key = ui_Auth.getInputKey();
-    QVector<QString> valid_keys = getUsersInfo(KEY);
+    try {
+        wallet_key = ui_Auth.getInputKey();
+        QVector<QString> valid_keys = getUsersInfo(KEY);
 
-    int index = valid_keys.indexOf(wallet_key);
+        int index = valid_keys.indexOf(wallet_key);
 
-    if(index != -1)
-    {
-        login_succesfull = true;
+        if(index != -1)
+        {
+            login_succesfull = true;
 
-        ui_Auth.close();
-        Sleep(250);
-        QVector<QString> user_address = getUsersInfo(ADDRESS);
-        wallet_address = user_address[index];
-        this->show();
+            ui_Auth.close();
+            Sleep(250);
+            QVector<QString> user_address = getUsersInfo(ADDRESS);
+            wallet_address = user_address[index];
+            this->show();
 
-        ui->walletAddressLabel->setText(wallet_address);
-        ui->walletKeyLabel->setText(wallet_key);
+            ui->walletAddressLabel->setText(wallet_address);
+            ui->walletKeyLabel->setText(wallet_key);
 
-        qDebug() << wallet_address;
-        qDebug() << wallet_key;
-    }
-    else
-    {
-        QMessageBox key_error;
-
-        key_error.setWindowTitle("Ошибка");
-        key_error.setText("Данного ключа не существует");
-        key_error.setIcon(QMessageBox::Critical);
-
-        key_error.exec();
+            qDebug() << wallet_address;
+            qDebug() << wallet_key;
+        }
+        else
+        {
+            throw ProgramException(INVALID_KEY);
+        }
+    } catch (ProgramException &error) {
+        error.getError();
     }
 }
 
 void MainWindow::registerUser()
 {
-    wallet_address = randomWalletAdress();
-    wallet_key = randomWalletKey();
+    try {
+        wallet_address = randomWalletAdress();
+        wallet_key = randomWalletKey();
 
-    registerNewUsers(wallet_address, wallet_key);
-    login_succesfull = true;
+        registerNewUsers(wallet_address, wallet_key);
+        login_succesfull = true;
 
-    ui->walletAddressLabel->setText(wallet_address);
-    ui->walletKeyLabel->setText(wallet_key);
+        ui->walletAddressLabel->setText(wallet_address);
+        ui->walletKeyLabel->setText(wallet_key);
 
-    ui_Auth.close();
-    Sleep(250);
-    this->show();
+        ui_Auth.close();
+        Sleep(250);
+        this->show();
+    }  catch (ProgramException &error) {
+        error.getError();
+    }
 }
 
 void MainWindow::homeTR()
@@ -202,110 +204,6 @@ void MainWindow::uiChanges()
 {
     ui->payToAddress->setPlaceholderText("Enter wallet-address");
     ui->addUserToAddressBook->setPlaceholderText("Enter a label for this address to add it to your address book");
-}
-
-void MainWindow::setWindowLanguage()
-{
-    switch (ui_Settings.languageIndex) {
-    case English:
-        this->setWindowTitle("My Wallet");
-
-        main_menu->setTitle("&Main");
-        settings_menu->setTitle("&Settings");
-        help_menu->setTitle("&Help");
-
-        home->setText("&Home");
-        send->setText("&Send");
-        recieve->setText("&Recieve");
-        transactions->setText("&Transactions");
-
-        help->setText("&Help");
-        quit->setText("&Quit");
-
-        encrypt_wallet->setText("&Encrypt Wallet...");
-        change_passphrase->setText("&Change Passphrase...");
-        options->setText("&Options...");
-
-        about_program->setText("&About Program");
-        view_window->setText("&Show Window");
-
-        ui->sendCoinsButton->setText("&Send");
-        ui->payToLabel->setText("Pay To:");
-        ui->addToAddressBookLabel->setText("User Label:");
-        ui->amountLabel->setText("Amount:");
-        ui->balanceLabel->setText("Balance:");
-        ui->commissionLabel->setText("Commission");
-        ui->feeCheckBox->setText("&Subsctract fee from amount");
-
-        ui->transactionsOverviewLabel->setText("Transactions");
-        break;
-    case Ukranian:
-        this->setWindowTitle("Мій Гаманець");
-
-        main_menu->setTitle("&Головна");
-        settings_menu->setTitle("&Налаштування");
-        help_menu->setTitle("&Допомога");
-
-        home->setText("&Огляд");
-        send->setText("&Надіслати");
-        recieve->setText("&Отримати");
-        transactions->setText("&Транзакції");
-
-        help->setText("&Допомога");
-        quit->setText("&Вихід");
-
-        encrypt_wallet->setText("&Шифрування гаманця");
-        change_passphrase->setText("&Змінити парольну фразу");
-        options->setText("&Налаштування");
-
-        about_program->setText("&Про Програму");
-        view_window->setText("&Показати вікно");
-
-        ui->sendCoinsButton->setText("&Надіслати");
-        ui->addToAddressBookLabel->setText("Ярлик:");
-        ui->payToLabel->setText("Адреса:");
-        ui->amountLabel->setText("Сума:");
-        ui->balanceLabel->setText("Баланс:");
-        ui->commissionLabel->setText("Комісія");
-        ui->feeCheckBox->setText("&Відніміть від суми комісію");
-
-        ui->transactionsOverviewLabel->setText("Транзакції");
-        break;
-    case Russian:
-        setWindowTitle("Мой кошелёк");
-
-        main_menu->setTitle("&Главное");
-        settings_menu->setTitle("&Настройки");
-        help_menu->setTitle("&Помощь");
-
-        home->setText("&Обзор");
-        send->setText("&Отправить");
-        recieve->setText("&Получить");
-        transactions->setText("&Транзакции");
-
-        help->setText("&Помощь");
-        quit->setText("&Выход");
-
-        encrypt_wallet->setText("&Зашифровать кошелёк");
-        change_passphrase->setText("&Изменить секретное слово");
-        options->setText("&Настройки");
-
-        about_program->setText("&О Программе");
-        view_window->setText("&Показать окно");
-
-        ui->sendCoinsButton->setText("&Отправить");
-        ui->addToAddressBookLabel->setText("Метка:");
-        ui->payToLabel->setText("Адресс:");
-        ui->amountLabel->setText("Сумма:");
-        ui->balanceLabel->setText("Баланс:");
-        ui->commissionLabel->setText("Комиссия");
-        ui->feeCheckBox->setText("&Вычесть комиссию из суммы");
-
-        ui->transactionsOverviewLabel->setText("Транзакции");
-        break;
-    default:
-        break;
-    }
 }
 
 void MainWindow::iconActivated(QSystemTrayIcon::ActivationReason reason)
@@ -519,6 +417,110 @@ void MainWindow::requestsHistory()
 void MainWindow::newTransaction()
 {
 
+}
+
+void MainWindow::setWindowLanguage()
+{
+    switch (ui_Settings.languageIndex) {
+    case ENGLISH:
+        this->setWindowTitle("My Wallet");
+
+        main_menu->setTitle("&Main");
+        settings_menu->setTitle("&Settings");
+        help_menu->setTitle("&Help");
+
+        home->setText("&Home");
+        send->setText("&Send");
+        recieve->setText("&Recieve");
+        transactions->setText("&Transactions");
+
+        help->setText("&Help");
+        quit->setText("&Quit");
+
+        encrypt_wallet->setText("&Encrypt Wallet...");
+        change_passphrase->setText("&Change Passphrase...");
+        options->setText("&Options...");
+
+        about_program->setText("&About Program");
+        view_window->setText("&Show Window");
+
+        ui->sendCoinsButton->setText("&Send");
+        ui->payToLabel->setText("Pay To:");
+        ui->addToAddressBookLabel->setText("User Label:");
+        ui->amountLabel->setText("Amount:");
+        ui->balanceLabel->setText("Balance:");
+        ui->commissionLabel->setText("Commission");
+        ui->feeCheckBox->setText("&Subsctract fee from amount");
+
+        ui->transactionsOverviewLabel->setText("Transactions");
+        break;
+    case UKRANIAN:
+        this->setWindowTitle("Мій Гаманець");
+
+        main_menu->setTitle("&Головна");
+        settings_menu->setTitle("&Налаштування");
+        help_menu->setTitle("&Допомога");
+
+        home->setText("&Огляд");
+        send->setText("&Надіслати");
+        recieve->setText("&Отримати");
+        transactions->setText("&Транзакції");
+
+        help->setText("&Допомога");
+        quit->setText("&Вихід");
+
+        encrypt_wallet->setText("&Шифрування гаманця");
+        change_passphrase->setText("&Змінити парольну фразу");
+        options->setText("&Налаштування");
+
+        about_program->setText("&Про Програму");
+        view_window->setText("&Показати вікно");
+
+        ui->sendCoinsButton->setText("&Надіслати");
+        ui->addToAddressBookLabel->setText("Ярлик:");
+        ui->payToLabel->setText("Адреса:");
+        ui->amountLabel->setText("Сума:");
+        ui->balanceLabel->setText("Баланс:");
+        ui->commissionLabel->setText("Комісія");
+        ui->feeCheckBox->setText("&Відніміть від суми комісію");
+
+        ui->transactionsOverviewLabel->setText("Транзакції");
+        break;
+    case RUSSIAN:
+        setWindowTitle("Мой кошелёк");
+
+        main_menu->setTitle("&Главное");
+        settings_menu->setTitle("&Настройки");
+        help_menu->setTitle("&Помощь");
+
+        home->setText("&Обзор");
+        send->setText("&Отправить");
+        recieve->setText("&Получить");
+        transactions->setText("&Транзакции");
+
+        help->setText("&Помощь");
+        quit->setText("&Выход");
+
+        encrypt_wallet->setText("&Зашифровать кошелёк");
+        change_passphrase->setText("&Изменить секретное слово");
+        options->setText("&Настройки");
+
+        about_program->setText("&О Программе");
+        view_window->setText("&Показать окно");
+
+        ui->sendCoinsButton->setText("&Отправить");
+        ui->addToAddressBookLabel->setText("Метка:");
+        ui->payToLabel->setText("Адресс:");
+        ui->amountLabel->setText("Сумма:");
+        ui->balanceLabel->setText("Баланс:");
+        ui->commissionLabel->setText("Комиссия");
+        ui->feeCheckBox->setText("&Вычесть комиссию из суммы");
+
+        ui->transactionsOverviewLabel->setText("Транзакции");
+        break;
+    default:
+        break;
+    }
 }
 
 MainWindow::~MainWindow()

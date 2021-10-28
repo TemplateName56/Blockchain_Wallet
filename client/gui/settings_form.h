@@ -13,9 +13,9 @@
 
 enum languages
 {
-    English,
-    Ukranian,
-    Russian
+    ENGLISH,
+    UKRANIAN,
+    RUSSIAN
 };
 
 namespace Ui {

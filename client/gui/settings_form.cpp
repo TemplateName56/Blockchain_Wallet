@@ -1,5 +1,6 @@
 #include "settings_form.h"
 #include "ui_settings_form.h"
+#include "client/tests/program_exception.h"
 
 settings_Form::settings_Form(QWidget *parent) :
     QWidget(parent),
@@ -29,7 +30,6 @@ void settings_Form::settingsShow()
 
 void settings_Form::on_languagesBox_currentIndexChanged(int index)
 {
-    qDebug() << index;
     settings_Form::languageIndex = index;
     emit languageChanged();
 }
@@ -52,7 +52,7 @@ void settings_Form::readSettings()
 
     if (!json_file.open(QIODevice::ReadOnly))
     {
-        qDebug() << "Not opened";
+        throw ProgramException(FILE_READ_ERROR);
     }
 
     QJsonDocument json_document(QJsonDocument::fromJson(json_file.readAll()));
@@ -71,7 +71,7 @@ void settings_Form::writeSettings()
 
     if (!json_file.open(QIODevice::WriteOnly))
     {
-        qDebug() << "Not write";
+        throw ProgramException(FILE_WRITE_ERROR);
     }
 
     QJsonObject current_json;
@@ -89,7 +89,7 @@ void settings_Form::closeEvent(QCloseEvent *event)
 void settings_Form::setWindowLanguage()
 {
     switch (languageIndex) {
-    case English:
+    case ENGLISH:
         this->setWindowTitle("Settings");
 
         ui->tabWidget->setTabText(0,"&Main");
@@ -101,7 +101,7 @@ void settings_Form::setWindowLanguage()
         ui->languageLabel->setText("User interface language");
 
         break;
-    case Ukranian:
+    case UKRANIAN:
         this->setWindowTitle("Налаштування");
 
         ui->tabWidget->setTabText(0,"&Головне");
@@ -113,7 +113,7 @@ void settings_Form::setWindowLanguage()
         ui->languageLabel->setText("Мова інтерфейсу");
 
         break;
-    case Russian:
+    case RUSSIAN:
         this->setWindowTitle("Настройки");
 
         ui->tabWidget->setTabText(0,"&Главное");
