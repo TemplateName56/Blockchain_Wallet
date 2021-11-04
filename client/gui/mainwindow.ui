@@ -47,7 +47,7 @@
      </size>
     </property>
     <property name="currentIndex">
-     <number>0</number>
+     <number>1</number>
     </property>
     <widget class="QWidget" name="mainWidget">
      <property name="minimumSize">
@@ -884,7 +884,7 @@
         <rect>
          <x>10</x>
          <y>70</y>
-         <width>150</width>
+         <width>120</width>
          <height>20</height>
         </rect>
        </property>
@@ -896,7 +896,7 @@
        </property>
        <property name="minimumSize">
         <size>
-         <width>150</width>
+         <width>120</width>
          <height>20</height>
         </size>
        </property>
@@ -904,21 +904,80 @@
         <string>Custom value:</string>
        </property>
       </widget>
-      <widget class="QLabel" name="recomValueLabel">
+      <widget class="QLineEdit" name="recomValueLE">
        <property name="geometry">
         <rect>
          <x>170</x>
          <y>40</y>
-         <width>150</width>
+         <width>170</width>
          <height>20</height>
         </rect>
        </property>
-       <property name="text">
-        <string>TextLabel</string>
+       <property name="minimumSize">
+        <size>
+         <width>170</width>
+         <height>20</height>
+        </size>
        </property>
        <property name="alignment">
         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
        </property>
+       <property name="readOnly">
+        <bool>true</bool>
+       </property>
+      </widget>
+      <widget class="QLineEdit" name="customValueLE">
+       <property name="geometry">
+        <rect>
+         <x>170</x>
+         <y>70</y>
+         <width>170</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>170</width>
+         <height>20</height>
+        </size>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+       <property name="readOnly">
+        <bool>true</bool>
+       </property>
+      </widget>
+      <widget class="QComboBox" name="priorityComboBox">
+       <property name="geometry">
+        <rect>
+         <x>360</x>
+         <y>69</y>
+         <width>120</width>
+         <height>22</height>
+        </rect>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>120</width>
+         <height>22</height>
+        </size>
+       </property>
+       <item>
+        <property name="text">
+         <string>High Priority</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Medium Priority</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Low Priority</string>
+        </property>
+       </item>
       </widget>
      </widget>
      <widget class="QGroupBox" name="sendBox">

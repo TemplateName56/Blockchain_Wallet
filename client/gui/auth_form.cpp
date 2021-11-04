@@ -7,11 +7,11 @@ auth_Form::auth_Form(QWidget *parent) :
 {
     ui->setupUi(this);
     ui->walletKeyInput->setPlaceholderText("Enter your private key...");
+    ui->walletKeyInput->setToolTip("Just enter private key...");
 }
 
 auth_Form::~auth_Form()
 {
-    qDebug() << "destroyed auth";
     delete ui;
 }
 

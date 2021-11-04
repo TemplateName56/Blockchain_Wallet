@@ -14,12 +14,12 @@ ProgramException::ProgramException(errorsNames new_error)
 
 void ProgramException::getError()
 {
-    error_messageBox.setWindowTitle("Ошибка");
+    error_messageBox.setWindowTitle("Error");
     switch (error_name) {
     case INVALID_INPUT:
         break;
     case INVALID_KEY:
-        error_messageBox.setText("Данного ключа не существует");
+        error_messageBox.setText("This key not exists");
         error_messageBox.setIcon(QMessageBox::Critical);
 
         error_messageBox.exec();
@@ -37,12 +37,14 @@ void ProgramException::getError()
         error_messageBox.setIcon(QMessageBox::Critical);
 
         error_messageBox.exec();
+        QTimer::singleShot(0, qApp, &QCoreApplication::quit);
         break;
     case FILE_WRITE_ERROR:
         error_messageBox.setText("FILE WRITE ERROR");
         error_messageBox.setIcon(QMessageBox::Critical);
 
         error_messageBox.exec();
+        QTimer::singleShot(0, qApp, &QCoreApplication::quit);
         break;
     default:
         break;

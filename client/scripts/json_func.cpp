@@ -11,6 +11,11 @@ void fileExists(const QString &file_path)
 
 QVector<QString> getUsersInfo(getInfo what_u_need)
 {
+    try {
+        fileExists("users.json");
+    }  catch (ProgramException &error) {
+        error.getError();
+    }
     QFileInfo file_info("users.json");
     QDir::setCurrent(file_info.path());
     QFile json_file("users.json");
@@ -52,6 +57,11 @@ QVector<QString> getUsersInfo(getInfo what_u_need)
 
 void registerNewUsers(QString wallet_address, QString wallet_key)
 {
+    try {
+        fileExists("users.json");
+    }  catch (ProgramException &error) {
+        error.getError();
+    }
     QFileInfo file_info("users.json");
     QDir::setCurrent(file_info.path());
     QFile json_file("users.json");

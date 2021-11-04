@@ -94,7 +94,7 @@ private:
     QToolBar *toolbar;
     QSystemTrayIcon *tray_icon;
 
-    QParallelAnimationGroup *transactionsGroup;
+    QParallelAnimationGroup *transactionsGroup = new QParallelAnimationGroup;
     QPropertyAnimation *transaction_1;
     QPropertyAnimation *transaction_2;
     QPropertyAnimation *transaction_3;

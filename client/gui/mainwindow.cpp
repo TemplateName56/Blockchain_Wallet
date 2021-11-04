@@ -5,17 +5,14 @@ MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
+    ui->setupUi(this);
     try {
-        fileExists("users.json");
-        fileExists("settings.json");
         fileExists("requestsList.csv");
     }  catch (ProgramException &error) {
         error.getError();
     }
-    ui->setupUi(this);
 
     login_succesfull = false;
-    transactionsGroup = new QParallelAnimationGroup;
 
     createActions();
     createMenus();
@@ -375,7 +372,7 @@ void MainWindow::requestsHistory()
     QFile requestsList("requestsList.csv");
     if(!requestsList.open(QIODevice::ReadOnly | QIODevice::Text))
     {
-        qDebug() << "Not open1";
+        throw new ProgramException(FILE_READ_ERROR);
     }
     else
     {
@@ -421,6 +418,7 @@ void MainWindow::newTransaction()
 
 void MainWindow::setWindowLanguage()
 {
+    // need rework
     switch (ui_Settings.languageIndex) {
     case ENGLISH:
         this->setWindowTitle("My Wallet");
