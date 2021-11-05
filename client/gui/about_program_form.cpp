@@ -6,7 +6,6 @@ about_program_Form::about_program_Form(QWidget *parent) :
     ui(new Ui::about_program_Form)
 {
     ui->setupUi(this);
-    this->setWindowTitle("About Program");
 }
 
 about_program_Form::~about_program_Form()

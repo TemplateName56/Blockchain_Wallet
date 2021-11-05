@@ -13,15 +13,18 @@
 #include <QDialog>
 #include <windows.h>
 #include <QMessageBox>
-#include "auth_form.h"
-#include "settings_form.h"
-#include "about_program_form.h"
-#include "client/tests/program_exception.h"
-#include "client/scripts/json_func.h"
-#include "client/scripts/new_wallet.h"
 #include <QPropertyAnimation>
 #include <QParallelAnimationGroup>
 #include <QStandardItemModel>
+
+#include "auth_form.h"
+#include "settings_form.h"
+#include "about_program_form.h"
+#include "encrypt_wallet_form.h"
+#include "change_passphrase_form.h"
+#include "client/tests/program_exception.h"
+#include "client/scripts/json_func.h"
+#include "client/scripts/new_wallet.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -48,6 +51,8 @@ private:
     auth_Form ui_Auth;
     settings_Form ui_Settings;
     about_program_Form ui_AboutProgram;
+    encrypt_wallet_Form ui_EncryptWallet;
+    change_passphrase_Form ui_ChangePass;
 
     QString wallet_key;
     QString wallet_address;

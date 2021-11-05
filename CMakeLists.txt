@@ -35,6 +35,18 @@ set(PROJECT_SOURCES
         client/gui/about_program_form.cpp
         client/gui/about_program_form.ui
         includes/effolkronium/random.hpp
+        client/gui/encrypt_wallet_form.h
+        client/gui/encrypt_wallet_form.cpp
+        client/gui/encrypt_wallet_form.ui
+        client/gui/change_passphrase_form.h
+        client/gui/change_passphrase_form.cpp
+        client/gui/change_passphrase_form.ui
+        client/scripts/program_algorithms.h
+        client/scripts/program_algorithms.cpp
+        client/scripts/csv_func.h
+        client/scripts/csv_func.cpp
+        client/blockchain/blockchain.h
+        client/blockchain/blockchain.cpp
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)

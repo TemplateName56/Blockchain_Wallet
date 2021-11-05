@@ -11,7 +11,9 @@ enum errorsNames{
     FILE_EXIST_ERROR,
     FILE_READ_ERROR,
     FILE_WRITE_ERROR,
-    ADDRESS_NOT_EXISTS
+    ADDRESS_NOT_EXISTS,
+    INVALID_CONS_VALUE,
+    INCORRECT_ADDRESS
 };
 
 class ProgramException : public QException

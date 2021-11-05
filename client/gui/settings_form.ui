@@ -22,7 +22,7 @@
    </font>
   </property>
   <property name="windowTitle">
-   <string>Form</string>
+   <string>Settings</string>
   </property>
   <widget class="QTabWidget" name="tabWidget">
    <property name="geometry">
