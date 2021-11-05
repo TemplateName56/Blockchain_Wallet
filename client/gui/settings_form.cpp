@@ -1,19 +1,12 @@
 #include "settings_form.h"
 #include "ui_settings_form.h"
 #include "client/tests/program_exception.h"
-#include "client/scripts/json_func.h"
 
 settings_Form::settings_Form(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::settings_Form)
 {
     ui->setupUi(this);
-    try {
-        fileExists("settings.json");
-    }  catch (ProgramException &error) {
-        error.getError();
-    }
-    this->setWindowTitle("Settings");
     ui->tabWidget->setCurrentIndex(0);
 
     readSettings();
@@ -58,7 +51,7 @@ void settings_Form::readSettings()
 
     if (!json_file.open(QIODevice::ReadOnly))
     {
-        throw ProgramException(FILE_READ_ERROR);
+        //throw ProgramException(FILE_READ_ERROR); i think this dont need
     }
 
     QJsonDocument json_document(QJsonDocument::fromJson(json_file.readAll()));
