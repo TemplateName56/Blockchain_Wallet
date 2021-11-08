@@ -8,4 +8,5 @@ void sort();
 string hash(string str);
 int ConvertIntoLetter(int rezult);
 
+
 #endif // PROGRAM_ALGORITHMS_H
