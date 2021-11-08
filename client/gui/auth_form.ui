@@ -67,7 +67,7 @@
         <enum>Qt::LeftToRight</enum>
        </property>
        <property name="text">
-        <string>Ласкаво просимо</string>
+        <string>Welcome</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignCenter</set>
@@ -141,7 +141,7 @@
         </size>
        </property>
        <property name="text">
-        <string>Вхiд</string>
+        <string>Login</string>
        </property>
        <property name="default">
         <bool>true</bool>
@@ -163,7 +163,7 @@
         </size>
        </property>
        <property name="text">
-        <string>Реєстрація</string>
+        <string>Registration</string>
        </property>
       </widget>
      </item>

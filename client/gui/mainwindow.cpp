@@ -28,6 +28,8 @@ MainWindow::MainWindow(QWidget *parent)
     connect(&ui_Settings, SIGNAL(trayCheckBoxToggled()), this, SLOT(trayEnabled()));
     connect(tray_icon, SIGNAL(activated(QSystemTrayIcon::ActivationReason)), this, SLOT(iconActivated(QSystemTrayIcon::ActivationReason)));
 
+    connect(this, SIGNAL(sendButton_clicked()), this, SLOT(newTransaction()));
+
     ui->stackedWidget->setCurrentIndex(0);
     setWindowLanguage();
 
@@ -355,6 +357,8 @@ void MainWindow::setupTransactionsOverview()
     transactionsGroup->addAnimation(transaction_3);
     transactionsGroup->addAnimation(transaction_4);
     transactionsGroup->addAnimation(transaction_5);
+
+    transactionsGroup->start();
 }
 
 void MainWindow::requestsHistory()
@@ -371,7 +375,7 @@ void MainWindow::requestsHistory()
     ui->requestsView->setColumnWidth(2,350);
     ui->requestsView->setColumnWidth(3,108);
 
-
+    /*
     QFile requestsList("requestsList.csv");
     if(!requestsList.open(QIODevice::ReadOnly | QIODevice::Text))
     {
@@ -398,6 +402,37 @@ void MainWindow::requestsHistory()
             request_view_model->insertRow(request_view_model->rowCount(), newRequestsList);
         }
         requestsList.close();
+    }*/
+
+    CSV file("requestsList.csv");
+
+    for(int index = 1; index < 3; index++)
+    {
+        QList<QStandardItem *> newRequestsList;
+        for(int c = 1; c <= 4; c++)
+        {
+            switch(c){
+            case 1:
+                newRequestsList.append(new QStandardItem(file.get_date_csv(index)));
+                break;
+            case 2:
+                newRequestsList.append(new QStandardItem(file.get_label_csv(index)));
+                break;
+            case 3:
+                newRequestsList.append(new QStandardItem(file.get_message_csv(index)));
+                break;
+            case 4:
+                newRequestsList.append(new QStandardItem(file.get_money_csv(index)));
+                break;
+            default:
+                break;
+            }
+        }
+        for(int i = 0; i < newRequestsList.length(); i++)
+        {
+            newRequestsList[i]->setTextAlignment(Qt::AlignCenter);
+        }
+        request_view_model->insertRow(request_view_model->rowCount(), newRequestsList);
     }
 
     QStandardItemModel *history_view_model = new QStandardItemModel(this);
@@ -414,11 +449,46 @@ void MainWindow::requestsHistory()
 
 }
 
-
-
 void MainWindow::newTransaction()
 {
-
+    QDate current;
+    current = current.currentDate();
+    QPixmap sendpix("icons/sendIcon.png");
+    switch(last_transaction_notify){
+    case 1:
+        ui->amount_1->setText(QString::number(amount));
+        ui->transactionIcon_1->setPixmap(QIcon("icons/sendIcon.png").pixmap(64,64));
+        ui->transactionDate_1->setText(current.toString("yyyy.MM.dd"));
+        ui->wallerAddress_1->setText(reciever_address);
+        break;
+    case 2:
+        ui->amount_2->setText(QString::number(amount));
+        ui->transactionIcon_2->setPixmap(QIcon("icons/sendIcon.png").pixmap(64,64));
+        ui->transactionDate_2->setText(current.toString("yyyy.MM.dd"));
+        ui->wallerAddress_2->setText(reciever_address);
+        break;
+    case 3:
+        ui->amount_3->setText(QString::number(amount));
+        ui->transactionIcon_3->setPixmap(QIcon("icons/sendIcon.png").pixmap(64,64));
+        ui->transactionDate_3->setText(current.toString("yyyy.MM.dd"));
+        ui->wallerAddress_3->setText(reciever_address);
+        break;
+    case 4:
+        ui->amount_4->setText(QString::number(amount));
+        ui->transactionIcon_4->setPixmap(QIcon("icons/sendIcon.png").pixmap(64,64));
+        ui->transactionDate_4->setText(current.toString("yyyy.MM.dd"));
+        ui->wallerAddress_4->setText(reciever_address);
+        break;
+    case 5:
+        ui->amount_5->setText(QString::number(amount));
+        ui->transactionIcon_5->setPixmap(QIcon("icons/sendIcon.png").pixmap(64,64));
+        ui->transactionDate_5->setText(current.toString("yyyy.MM.dd"));
+        ui->wallerAddress_5->setText(reciever_address);
+        break;
+    default:
+        break;
+    }
+    setupTransactionsOverview();
 }
 
 void MainWindow::setWindowLanguage()
@@ -426,6 +496,7 @@ void MainWindow::setWindowLanguage()
     // need rework
     switch (ui_Settings.languageIndex) {
     case ENGLISH:
+        ui_Auth.setWindowLanguage(ui_Settings.languageIndex);
         this->setWindowTitle("My Wallet");
 
         main_menu->setTitle("&Main");
@@ -444,7 +515,7 @@ void MainWindow::setWindowLanguage()
         change_passphrase->setText("&Change Passphrase...");
         options->setText("&Options...");
 
-        about_program->setText("&About Program");
+        about_program->setText("&About Wallet");
         view_window->setText("&Show Window");
 
         ui->sendCoinsButton->setText("&Send");
@@ -458,6 +529,7 @@ void MainWindow::setWindowLanguage()
         ui->transactionsOverviewLabel->setText("Transactions");
         break;
     case UKRANIAN:
+        ui_Auth.setWindowLanguage(ui_Settings.languageIndex);
         this->setWindowTitle("Мій Гаманець");
 
         main_menu->setTitle("&Головна");
@@ -490,6 +562,7 @@ void MainWindow::setWindowLanguage()
         ui->transactionsOverviewLabel->setText("Транзакції");
         break;
     case RUSSIAN:
+        ui_Auth.setWindowLanguage(ui_Settings.languageIndex);
         setWindowTitle("Мой кошелёк");
 
         main_menu->setTitle("&Главное");
@@ -554,5 +627,74 @@ MainWindow::~MainWindow()
     delete tray_icon;
 
     delete transactionsGroup;
+}
+
+
+void MainWindow::on_sendCoinsButton_clicked()
+{
+    emit sendButton_clicked();
+}
+
+
+void MainWindow::on_payToAddress_textEdited(const QString &arg1)
+{
+    this->reciever_address = arg1;
+}
+
+
+void MainWindow::on_amountSpinBox_valueChanged(double arg1)
+{
+    this->amount = arg1;
+    if(recomActivated)
+    {
+       emit on_recomValueButton_clicked();
+    }
+    else
+    {
+        emit on_priorityComboBox_currentIndexChanged(0);
+    }
+}
+
+
+void MainWindow::on_feeCheckBox_stateChanged(int arg1)
+{
+
+}
+
+
+void MainWindow::on_priorityComboBox_currentIndexChanged(int index)
+{
+    switch(index) {
+    case 0:
+        fee = amount * 0.15;
+        ui->customValueLE->setText(QString::number(fee));
+        break;
+    case 1:
+        fee = amount * 0.10;
+        ui->customValueLE->setText(QString::number(fee));
+        break;
+    case 2:
+        fee = amount * 0.05;
+        ui->customValueLE->setText(QString::number(fee));
+        break;
+    default:
+        break;
+    }
+}
+
+
+void MainWindow::on_custinValueButton_clicked()
+{
+    recomActivated = false;
+    ui->priorityComboBox->setCurrentIndex(0);
+    emit on_priorityComboBox_currentIndexChanged(0);
+}
+
+
+void MainWindow::on_recomValueButton_clicked()
+{
+    recomActivated = true;
+    fee = amount * 0.05;
+    ui->recomValueLE->setText(QString::number(fee));
 }
 
