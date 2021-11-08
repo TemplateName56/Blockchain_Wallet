@@ -25,7 +25,6 @@ public:
     QString get_hash(int number_block);
     QString get_hash_previous(int number_block);
     int get_number(int number_block);
-    QString get_number_str(int number_block);
     QString get_currency(int number_block);
     int get_time_of_creation(int number_block);
     QString get_address_recipient(int number_block);

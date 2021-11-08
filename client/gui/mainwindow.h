@@ -25,6 +25,8 @@
 #include "client/tests/program_exception.h"
 #include "client/scripts/json_func.h"
 #include "client/scripts/new_wallet.h"
+#include "client/scripts/csv_func.h"
+
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
