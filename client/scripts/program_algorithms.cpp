@@ -10,21 +10,21 @@ string hash(string str)
     string rezult;
         int minimallenght = 2;
         int realminimallenght = 0;
-        int orogonallenghtstr = (str.size());
+        int lenghtstr = (str.size());
         while (minimallenght <= 16)
         {
             realminimallenght = (minimallenght *= 2);
         }
-        while (minimallenght < orogonallenghtstr)
+        while (minimallenght < lenghtstr)
         {
             minimallenght *= 2;
         }
-        if ((minimallenght - orogonallenghtstr) < minimallenght)
+        if ((minimallenght - lenghtstr) < minimallenght)
         {
             minimallenght *= 2;
         }
 
-        int addCount = minimallenght - orogonallenghtstr;
+        int addCount = minimallenght - lenghtstr;
 
         for (int i = 0; i < addCount; i++)
         {
@@ -33,7 +33,7 @@ string hash(string str)
 
 
         int maxlenghtstr = (str.size());
-        while (str.size() != realminimallenght)
+        while (str.size() != realminimallenght) // получение хеша длинной 32 символа
         {
             for (int i = 0, center = str.size() / 2; i < center; i++)
             {
@@ -45,7 +45,7 @@ string hash(string str)
 
         int rem = realminimallenght - 16;
         int tmp = 16;
-        for (int i = 0, Compresss = realminimallenght / rem; rezult.size() < tmp; i++)
+        for (int i = 0, Compresss = realminimallenght / rem; rezult.size() < tmp; i++)// сжатие хеша до длинны в 16 символов
         {
             if (i % Compresss == 0)
             {
