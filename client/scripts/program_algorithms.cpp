@@ -8,32 +8,28 @@ void sort()
 string hash(string str)
 {
     string rezult;
-        int minimallenght = 2;
+        int minimallenght = 2;//длина 2^n степени
         int realminimallenght = 0;
-        int lenghtstr = (str.size());
-        while (minimallenght <= 16)
+        int lenghtstr = (str.size()); // длинна строки
+        while (minimallenght <= 16)//получение размера строки 32 символа
         {
             realminimallenght = (minimallenght *= 2);
         }
-        while (minimallenght < lenghtstr)
-        {
-            minimallenght *= 2;
-        }
-        if ((minimallenght - lenghtstr) < minimallenght)
+
+        if ((minimallenght - lenghtstr) < minimallenght) //получение минимально длинны превышающей строку
         {
             minimallenght *= 2;
         }
 
-        int addCount = minimallenght - lenghtstr;
+        int Count = minimallenght - lenghtstr;
 
-        for (int i = 0; i < addCount; i++)
+        for (int i = 0; i < Count; i++)
         {
             str += ConvertIntoLetter(str[i] + str[i + 1]);
         }
 
-
-        int maxlenghtstr = (str.size());
-        while (str.size() != realminimallenght) // получение хеша длинной 32 символа
+       int lenghthash=realminimallenght-16;
+        while (str.size() != lenghthash) // получение хеша длинной 16 символов
         {
             for (int i = 0, center = str.size() / 2; i < center; i++)
             {
@@ -42,22 +38,7 @@ string hash(string str)
             str = rezult;
             rezult.clear();
         }
-
-        int rem = realminimallenght - 16;
-        int tmp = 16;
-        for (int i = 0, Compresss = realminimallenght / rem; rezult.size() < tmp; i++)// сжатие хеша до длинны в 16 символов
-        {
-            if (i % Compresss == 0)
-            {
-                rezult += ConvertIntoLetter(str[i] + str[++i]);
-            }
-            else
-            {
-                rezult += str[i];
-            }
-        }
-
-        return rezult;
+        return str;
 }
 
 int ConvertIntoLetter(int rezult)
