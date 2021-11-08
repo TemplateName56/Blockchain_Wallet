@@ -436,18 +436,51 @@ void MainWindow::requestsHistory()
     }
 
     QStandardItemModel *history_view_model = new QStandardItemModel(this);
-    history_view_model->setColumnCount(4);
-    history_view_model->setHorizontalHeaderLabels(QStringList() << "Date" << "From" << "To" << "Amount");
-    ui->historyView->setModel(history_view_model);
+        history_view_model->setColumnCount(5);
+        history_view_model->setHorizontalHeaderLabels(QStringList() << "№" << "From" << "To" << "Money" << "Currency");
+        ui->historyView->setModel(history_view_model);
 
-    ui->historyView->verticalHeader()->setVisible(false);
+        ui->historyView->verticalHeader()->setVisible(false);
 
-    ui->historyView->setColumnWidth(0,100);
-    ui->historyView->setColumnWidth(1,275);
-    ui->historyView->setColumnWidth(2,275);
-    ui->historyView->setColumnWidth(3,108);
+        ui->historyView->setColumnWidth(0,100);
+        ui->historyView->setColumnWidth(1,225);
+        ui->historyView->setColumnWidth(2,225);
+        ui->historyView->setColumnWidth(3,108);
+        ui->historyView->setColumnWidth(4,108);
+
+        JSON json_file("block2_10.json");
+        qDebug() << json_file.get_array_size();
+
+        for(int i = 1; i <= json_file.get_array_size(); i++){
+            QList<QStandardItem *> HistoryList;
+            int count = 0;
+            for(int c = 0; c < 5; c++){
+                if(c == 0){
+                    HistoryList.append(new QStandardItem(QString::number(json_file.get_number(i))));
+                }else if(c == 1){
+                    HistoryList.append(new QStandardItem(json_file.get_address_sender(i)));
+                }else if(c == 2){
+                    HistoryList.append(new QStandardItem(json_file.get_address_recipient(i)));
+                }else if(c == 3){
+                    HistoryList.append(new QStandardItem(QString::number(json_file.get_money(i))));
+                }else if(c == 4){
+                    HistoryList.append(new QStandardItem(json_file.get_currency(i)));
+                }
+                    qDebug() << json_file.get_address_recipient(c);
+                    count++;
+                    qDebug() << count;
+                }
+            for(int i = 0; i < count; i++)
+            {
+                HistoryList[i]->setTextAlignment(Qt::AlignCenter);
+            }
+            history_view_model->insertRow(history_view_model->rowCount(), HistoryList);
+        //HistoryList.close();
+        }
 
 }
+
+
 
 void MainWindow::newTransaction()
 {
