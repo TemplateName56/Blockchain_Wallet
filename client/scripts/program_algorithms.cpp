@@ -56,7 +56,4 @@ int ConvertIntoLetter(int rezult)
         }
         return rezult;
 }
-double comission(int amount,int percent) //расчет комисии по проценту
-{
-    return (amount / 100) * percent;
-}
+
