@@ -7,6 +7,6 @@ using namespace std;
 void sort();
 string hash(string str);
 int ConvertIntoLetter(int rezult);
-int comission(int amount,int percent);
+double comission(int amount,int percent);
 
 #endif // PROGRAM_ALGORITHMS_H
