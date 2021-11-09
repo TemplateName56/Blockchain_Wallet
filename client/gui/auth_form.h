@@ -15,6 +15,7 @@ public:
     explicit auth_Form(QWidget *parent = nullptr);
     ~auth_Form();
     QString getInputKey();
+    void setWindowLanguage(int Language);
 
 signals:
     void login_button_clicked();

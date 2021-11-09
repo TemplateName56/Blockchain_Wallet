@@ -16,6 +16,7 @@
 #include <QPropertyAnimation>
 #include <QParallelAnimationGroup>
 #include <QStandardItemModel>
+#include <QDate>
 
 #include "auth_form.h"
 #include "settings_form.h"
@@ -25,6 +26,8 @@
 #include "client/tests/program_exception.h"
 #include "client/scripts/json_func.h"
 #include "client/scripts/new_wallet.h"
+#include "client/scripts/csv_func.h"
+
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -42,14 +45,16 @@ public:
     void requestsHistory();
 
 signals:
-
+    void sendButton_clicked();
+    void newTrasaction_clicked();
 protected:
     void closeEvent(QCloseEvent *event);
 
 private:
     Ui::MainWindow *ui;
-    auth_Form ui_Auth;
+
     settings_Form ui_Settings;
+    auth_Form ui_Auth;
     about_program_Form ui_AboutProgram;
     encrypt_wallet_Form ui_EncryptWallet;
     change_passphrase_Form ui_ChangePass;
@@ -61,6 +66,13 @@ private:
 
     bool login_succesfull;
     bool tray_enable = false;
+
+    QString reciever_address;
+    double amount;
+    double fee;
+    QString coins_type;
+
+    bool recomActivated = true;
 
     int last_transaction_notify = 5;
 
@@ -122,5 +134,12 @@ private slots:
     void on_payToAddress_textChanged(const QString &arg1);
 
     void newTransaction();
+    void on_sendCoinsButton_clicked();
+    void on_payToAddress_textEdited(const QString &arg1);
+    void on_amountSpinBox_valueChanged(double arg1);
+    void on_feeCheckBox_stateChanged(int arg1);
+    void on_priorityComboBox_currentIndexChanged(int index);
+    void on_custinValueButton_clicked();
+    void on_recomValueButton_clicked();
 };
 #endif // MAINWINDOW_H

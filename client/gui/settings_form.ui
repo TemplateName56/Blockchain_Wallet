@@ -111,17 +111,17 @@
      </property>
      <item>
       <property name="text">
-       <string>English (United States)</string>
+       <string>English (Англійська)</string>
       </property>
      </item>
      <item>
       <property name="text">
-       <string>Українська</string>
+       <string>Ukranian (Українська)</string>
       </property>
      </item>
      <item>
       <property name="text">
-       <string>Русский</string>
+       <string>Russian (Російська)</string>
       </property>
      </item>
     </widget>

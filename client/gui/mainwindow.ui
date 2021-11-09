@@ -47,7 +47,7 @@
      </size>
     </property>
     <property name="currentIndex">
-     <number>1</number>
+     <number>0</number>
     </property>
     <widget class="QWidget" name="mainWidget">
      <property name="minimumSize">
@@ -878,6 +878,9 @@
        <property name="text">
         <string>Recommended value:</string>
        </property>
+       <property name="checked">
+        <bool>true</bool>
+       </property>
       </widget>
       <widget class="QRadioButton" name="custinValueButton">
        <property name="geometry">
@@ -1048,6 +1051,9 @@
          <property name="decimals">
           <number>6</number>
          </property>
+         <property name="maximum">
+          <double>9999.989999999999782</double>
+         </property>
          <property name="singleStep">
           <double>0.000001000000000</double>
          </property>
@@ -1079,7 +1085,11 @@
         </widget>
        </item>
        <item row="0" column="1">
-        <widget class="QLineEdit" name="payToAddress"/>
+        <widget class="QLineEdit" name="payToAddress">
+         <property name="alignment">
+          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         </property>
+        </widget>
        </item>
        <item row="2" column="0">
         <widget class="QLabel" name="amountLabel">
@@ -1092,6 +1102,9 @@
         <widget class="QLineEdit" name="addUserToAddressBook">
          <property name="inputMask">
           <string/>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
          </property>
         </widget>
        </item>

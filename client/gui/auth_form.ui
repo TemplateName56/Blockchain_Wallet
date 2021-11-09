@@ -163,7 +163,7 @@
         </size>
        </property>
        <property name="text">
-        <string>Register</string>
+        <string>Registration</string>
        </property>
       </widget>
      </item>
