@@ -61,9 +61,6 @@ void MainWindow::authorizeUser()
 
             ui->walletAddressLabel->setText(wallet_address);
             ui->walletKeyLabel->setText(wallet_key);
-
-            qDebug() << wallet_address;
-            qDebug() << wallet_key;
         }
         else
         {

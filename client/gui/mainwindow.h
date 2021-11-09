@@ -52,6 +52,7 @@ protected:
 
 private:
     Ui::MainWindow *ui;
+
     settings_Form ui_Settings;
     auth_Form ui_Auth;
     about_program_Form ui_AboutProgram;
