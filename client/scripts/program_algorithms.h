@@ -5,7 +5,7 @@
 using namespace std;
 
 void sort();
-string hash(string str);
+string hashMySTR(string str);
 int ConvertIntoLetter(int rezult);
 
 

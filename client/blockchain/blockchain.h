@@ -3,32 +3,52 @@
 #include <QString>
 #include <QVector>
 
-struct Balances{
+struct Balance{
     QString address;
+
     double balance_amount_BWC;
-    double balance_amount_BWC_NIKITA;
+    double balance_amount_BWC_N;
     double balance_amout_BWC_Q;
 };
 
-struct Block{
-    QString hash;
-    QString *pre_hash;
-
-    long int id;
-
+struct TransactionData{
     QString sender;
     QString reciever;
+
     double amount;
     QString coins_type;
+
     QString date;
 
-    QVector<Balances> users_balance;
+    TransactionData(){}
+    TransactionData(QString sender, QString reciever, double amount,
+                    QString coins_type, QString date){
+        this->sender = sender;
+        this->reciever = reciever;
+        this->amount = amount;
+        this->coins_type = coins_type;
+        this->date = date;
+    }
+};
+
+class Block{
+private:
+    int index;
+
+    QString hash;
+    QString *prev_hash;
+
+    QVector<Balance> users_balance;
+public:
+    Block(int index, TransactionData data);
+
+    TransactionData block_data;
 };
 
 class Blockchain
 {
-    Block *blocks;
-    int size;
+private:
+
 public:
     Blockchain();
 };

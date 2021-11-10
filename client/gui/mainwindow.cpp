@@ -356,6 +356,7 @@ void MainWindow::setupTransactionsOverview()
     transactionsGroup->addAnimation(transaction_5);
 
     transactionsGroup->start();
+
 }
 
 void MainWindow::requestsHistory()
@@ -446,7 +447,7 @@ void MainWindow::requestsHistory()
         ui->historyView->setColumnWidth(4,108);
 
         JSON json_file("block2_10.json");
-        qDebug() << json_file.get_array_size();
+        //qDebug() << json_file.get_array_size();
 
         for(int i = 1; i <= json_file.get_array_size(); i++){
             QList<QStandardItem *> HistoryList;
@@ -463,9 +464,9 @@ void MainWindow::requestsHistory()
                 }else if(c == 4){
                     HistoryList.append(new QStandardItem(json_file.get_currency(i)));
                 }
-                    qDebug() << json_file.get_address_recipient(c);
+                    //qDebug() << json_file.get_address_recipient(c);
                     count++;
-                    qDebug() << count;
+                    //qDebug() << count;
                 }
             for(int i = 0; i < count; i++)
             {
@@ -483,7 +484,7 @@ void MainWindow::newTransaction()
 {
     QDate current;
     current = current.currentDate();
-    QPixmap sendpix("icons/sendIcon.png");
+
     switch(last_transaction_notify){
     case 1:
         ui->amount_1->setText(QString::number(amount));
