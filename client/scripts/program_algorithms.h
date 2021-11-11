@@ -4,9 +4,14 @@
 
 using namespace std;
 
-void sort();
-string hash(string str);
-int ConvertIntoLetter(int rezult);
-
+class algoritms
+{
+public:
+    string Hash(string str);
+    int ConvertIntoLetter(int rezult);
+    void Sort(int *arr,int n);
+    string Encryption(string str, int key);
+    string Decryption(string str, int key);
+};
 
 #endif // PROGRAM_ALGORITHMS_H

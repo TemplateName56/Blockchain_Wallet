@@ -1,13 +1,14 @@
 #include "program_exception.h"
 #include "QApplication"
 #include <QTimer>
+#include <QIcon>
 
 ProgramException::ProgramException()
 {
 
 }
 
-ProgramException::ProgramException(errorsNames new_error)
+ProgramException::ProgramException(ErrorsNames new_error)
 {
     error_name = new_error;
 }
@@ -15,6 +16,8 @@ ProgramException::ProgramException(errorsNames new_error)
 void ProgramException::getError()
 {
     error_messageBox.setWindowTitle("Error");
+    error_messageBox.setWindowIcon(QIcon("icons/programIcon.png"));
+
     switch (error_name) {
     case INVALID_INPUT:
         break;
