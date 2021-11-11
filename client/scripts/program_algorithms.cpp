@@ -14,7 +14,7 @@ void algoritms::sort(int *arr,int n)
         }
 }
 
- string algoritms::hashMySTR(string str)
+ string algoritms::hash(string str)
 {
     string rezult;
         int minimallenght = 2;//длина 2^n степени

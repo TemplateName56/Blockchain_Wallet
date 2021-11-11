@@ -7,7 +7,7 @@ using namespace std;
 class algoritms
 {
  public:
-    string hashMySTR(string str);
+    string hash(string str);
     int ConvertIntoLetter(int rezult);
     void sort(int *arr,int n);
 };
