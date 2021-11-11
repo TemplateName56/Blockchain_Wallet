@@ -7,9 +7,11 @@ using namespace std;
 class algoritms
 {
  public:
-    string hash(string str);
+    string Hash(string str);
     int ConvertIntoLetter(int rezult);
-    void sort(int *arr,int n);
+    void Sort(int *arr,int n);
+    string Encryption(string str, int key);
+    string Decryption(string str, int key);
 };
 /*
 void sort();

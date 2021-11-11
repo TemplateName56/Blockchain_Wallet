@@ -1,6 +1,6 @@
 #include "program_algorithms.h"
 
-void algoritms::sort(int *arr,int n)
+void algoritms::Sort(int *arr,int n)
 {
     for(int i = 1; i < n; ++i)
         {
@@ -14,7 +14,7 @@ void algoritms::sort(int *arr,int n)
         }
 }
 
- string algoritms::hash(string str)
+ string algoritms::Hash(string str)
 {
     string rezult;
         int minimallenght = 2;//длина 2^n степени
@@ -65,4 +65,22 @@ int algoritms::ConvertIntoLetter(int rezult)
         }
         return rezult;
 }
+
+ string algoritms::Encryption(string str, int key)
+ {
+     for (int i = 0; i < str.size(); i++)
+         {
+             str[i] = str[i] + key;
+         }
+         return str;
+ }
+
+ string algoritms::Decryption(string str, int key)
+ {
+     for (int i = 0; i < str.size(); i++)
+         {
+             str[i] = str[i] - key;
+         }
+         return str;
+ }
 
