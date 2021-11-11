@@ -1,11 +1,20 @@
 #include "program_algorithms.h"
 
-void sort()
+void algoritms::Sort(int *arr,int n)
 {
-
+    for(int i = 1; i < n; ++i)
+        {
+            for(int j = 0; j < n-i; j++)
+            {
+                if(arr[j] > arr[j+1])
+                {
+                   swap(arr[j],arr[j+1]);
+                }
+            }
+        }
 }
 
-string hashMySTR(string str)
+ string algoritms::Hash(string str)
 {
     string rezult;
         int minimallenght = 2;//длина 2^n степени
@@ -41,7 +50,7 @@ string hashMySTR(string str)
         return str;
 }
 
-int ConvertIntoLetter(int rezult)
+int algoritms::ConvertIntoLetter(int rezult)
 {
     while (!(((rezult <= 57) && (rezult >= 48)) || ((rezult <= 90) && (rezult >= 65)) || ((rezult <= 122) && (rezult >= 97))))
         {
@@ -56,4 +65,22 @@ int ConvertIntoLetter(int rezult)
         }
         return rezult;
 }
+
+ string algoritms::Encryption(string str, int key)
+ {
+     for (int i = 0; i < str.size(); i++)
+         {
+             str[i] = str[i] + key;
+         }
+         return str;
+ }
+
+ string algoritms::Decryption(string str, int key)
+ {
+     for (int i = 0; i < str.size(); i++)
+         {
+             str[i] = str[i] - key;
+         }
+         return str;
+ }
 
