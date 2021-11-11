@@ -5,14 +5,18 @@ Block::Block(int index, TransactionData data, QString prev_hash)
     this->id = index;
     this->block_data = data;
     this->hash = generateHash();
+    qDebug() << this->hash;
     this->prev_hash = prev_hash;
 }
 
 QString Block::generateHash()
 {
-    QString to_hash = (block_data.sender + block_data.reciever + QString::number(block_data.amount) + block_data.timestamp);
+    algoritms hash_block;
 
-    return to_hash;
+    QString to_hash = (block_data.sender + block_data.reciever + QString::number(block_data.amount) + block_data.timestamp + "BWCSALT");
+    QString result = QString::fromStdString(hash_block.Hash(to_hash.toStdString()));
+
+    return result;
 }
 
 int Block::getIndex()

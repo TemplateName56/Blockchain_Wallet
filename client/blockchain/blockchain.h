@@ -1,7 +1,10 @@
 #ifndef BLOCKCHAIN_H
 #define BLOCKCHAIN_H
+
 #include <QString>
 #include <QVector>
+#include <QDebug>
+#include <QDateTime>
 #include "client/scripts/program_algorithms.h"
 
 enum CoinsType{
@@ -47,13 +50,14 @@ struct TransactionData{
     QString timestamp;
 
     TransactionData(){}
-    TransactionData(QString sender, QString reciever, double amount,
-                    CoinsType coins_type, QString timestamp){
+    TransactionData(QString sender, QString reciever,
+                    double amount, CoinsType coins_type){
+        QDateTime current_time = QDateTime::currentDateTime();
         this->sender = sender;
         this->reciever = reciever;
         this->amount = amount;
         this->coins_type = coins_type;
-        this->timestamp = timestamp;
+        this->timestamp = current_time.toString();
     }
 };
 
