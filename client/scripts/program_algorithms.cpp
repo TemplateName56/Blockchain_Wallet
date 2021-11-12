@@ -84,3 +84,7 @@ int algoritms::ConvertIntoLetter(int rezult)
          return str;
  }
 
+ int algoritms::Consensus(int comission)
+ {
+
+ }
