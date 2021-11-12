@@ -6,7 +6,7 @@ using namespace std;
 
 class algoritms
 {
- public:
+public:
     string Hash(string str);
     int ConvertIntoLetter(int rezult);
     void Sort(int *arr,int n);
@@ -14,10 +14,5 @@ class algoritms
     string Decryption(string str, int key);
     int Consensus(int comission);
 };
-/*
-void sort();
-string hashMySTR(string str);
-int ConvertIntoLetter(int rezult);*/
-
 
 #endif // PROGRAM_ALGORITHMS_H
