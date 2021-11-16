@@ -17,10 +17,11 @@ int main(int argc, char *argv[])
     Blockchain newchain;
     for(int index = 1; index <= 3; index++)
     {
-        newchain.addBlock(index,TransactionData("petya","vasya",rand() % 3,BWC), newchain.getLastBlock().getPrevBlockHash());
+        newchain.addBlock(index,TransactionData("petya","vasya",rand() % 56,BWC), newchain.getLastBlock().getBlockHash());
         Sleep(1000);
     }
     newchain.show();
+    newchain.writeChain();
 
     return BlockchainWallet.exec();
 }
