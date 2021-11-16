@@ -1,11 +1,16 @@
 #include "blockchain.h"
 
+Block::Block()
+{
+
+}
+
 Block::Block(int index, TransactionData data, QString prev_hash)
 {
     this->id = index;
     this->block_data = data;
     this->hash = generateHash();
-    qDebug() << this->hash;
+    //qDebug() << this->hash;
     this->prev_hash = prev_hash;
 }
 
@@ -68,19 +73,38 @@ void Block::setUserBalance(QString address)
     }
 }
 
-Blockchain::Blockchain()
+Block::~Block()
 {
 
+}
+
+Blockchain::Blockchain()
+{
+    createGenesisBlock();
+}
+
+void Blockchain::createGenesisBlock()
+{
+    Block genesis(0, TransactionData("genesis", "admin", 9999, BWC), "0");
+    this->chain.push_back(genesis);
 }
 
 QVector<Block> Blockchain::getChain()
 {
-
+    readChain();
+    return this->chain;
 }
+
+
 
 Block Blockchain::getLastBlock()
 {
+    return this->chain[chain.length() - 1];
+}
 
+bool Blockchain::isChainValid()
+{
+    return true;
 }
 
 void Blockchain::readChain()
@@ -88,14 +112,26 @@ void Blockchain::readChain()
 
 }
 
-bool Blockchain::isChainValid()
+void Blockchain::addBlock(int index, TransactionData data, QString prev_hash)
 {
-
+    Block new_block(index, data, prev_hash);
+    this->chain.push_back(new_block);
 }
 
-void Blockchain::addBlock()
+void Blockchain::show()
 {
-
+    // temp show func
+    for(int index = 0; index < chain.length(); index++)
+    {
+        qDebug() << chain[index].getIndex();
+        qDebug() << chain[index].getBlockHash();
+        qDebug() << chain[index].getPrevBlockHash();
+        qDebug() << chain[index].block_data.sender;
+        qDebug() << chain[index].block_data.reciever;
+        qDebug() << chain[index].block_data.amount;
+        qDebug() << chain[index].block_data.coins_type;
+        qDebug() << chain[index].block_data.timestamp;
+    }
 }
 
 Blockchain::~Blockchain()

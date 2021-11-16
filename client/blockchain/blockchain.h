@@ -62,17 +62,17 @@ struct TransactionData{
 };
 
 class Block{
-private:
     int id;
 
     QString hash;
     QString prev_hash;
 
-    TransactionData block_data;
-
     QVector<Balance> users_balance;
 public:
+    Block();
     Block(int index, TransactionData data, QString prev_hash);
+
+    TransactionData block_data;
 
     QString generateHash();
 
@@ -83,27 +83,27 @@ public:
 
     Balance getUserBalance(QString address);
     void setUserBalance(QString address);
+    ~Block();
 };
 
 class Blockchain
 {
-private:
-    //Block GenesisBlock;
+    void createGenesisBlock();
 
     QVector<Block> chain;
 public:
     Blockchain();
 
     QVector<Block> getChain();
+    //QString getPrevBlockHash();
 
     Block getLastBlock();
 
-    void readChain();
-
     bool isChainValid();
 
-    void addBlock();
-
+    void readChain();
+    void addBlock(int index, TransactionData data, QString prev_hash);
+    void show();
 
     ~Blockchain();
 };
