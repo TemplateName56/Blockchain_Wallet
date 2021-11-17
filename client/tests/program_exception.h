@@ -13,7 +13,8 @@ enum ErrorsNames{
     FILE_WRITE_ERROR,
     ADDRESS_NOT_EXISTS,
     INVALID_CONS_VALUE,
-    INCORRECT_ADDRESS
+    INCORRECT_ADDRESS,
+    HASH_COLLISION
 };
 
 class ProgramException : public QException
@@ -24,9 +25,9 @@ public:
     ProgramException();
     ProgramException(ErrorsNames new_error);
 
-    ~ProgramException();
-
     void getError();
+
+    ~ProgramException();
 };
 
 #endif // PROGRAMEXCEPTION_H

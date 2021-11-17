@@ -6,6 +6,8 @@
 #include <QDebug>
 #include <QDateTime>
 #include "client/scripts/program_algorithms.h"
+#include "client/tests/program_exception.h"
+#include "client/scripts/json_func.h"
 
 enum CoinsType{
     BWC,
@@ -62,17 +64,17 @@ struct TransactionData{
 };
 
 class Block{
-private:
     int id;
 
     QString hash;
     QString prev_hash;
 
-    TransactionData block_data;
-
-    QVector<Balance> users_balance;
 public:
+    Block();
     Block(int index, TransactionData data, QString prev_hash);
+
+    TransactionData block_data;
+    QVector<Balance> users_balance;
 
     QString generateHash();
 
@@ -82,13 +84,13 @@ public:
     QString getPrevBlockHash();
 
     Balance getUserBalance(QString address);
-    void setUserBalance(QString address);
+    void setUserBalance(QString address, bool is_reciever = false);
+    ~Block();
 };
 
 class Blockchain
 {
-private:
-    //Block GenesisBlock;
+    void createGenesisBlock();
 
     QVector<Block> chain;
 public:
@@ -98,12 +100,14 @@ public:
 
     Block getLastBlock();
 
-    void readChain();
-
     bool isChainValid();
+    void collisionCheck();
 
-    void addBlock();
+    void readChain();
+    void writeChain();
 
+    void addBlock(int index, TransactionData data, QString prev_hash);
+    void show();
 
     ~Blockchain();
 };

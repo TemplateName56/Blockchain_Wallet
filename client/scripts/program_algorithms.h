@@ -12,6 +12,7 @@ public:
     void Sort(int *arr,int n);
     string Encryption(string str, int key);
     string Decryption(string str, int key);
+    int Consensus(int comission);
 };
 
 #endif // PROGRAM_ALGORITHMS_H

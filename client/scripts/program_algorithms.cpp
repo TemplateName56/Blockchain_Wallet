@@ -82,3 +82,7 @@ string algoritms::Decryption(string str, int key)
     return str;
 }
 
+ int algoritms::Consensus(int comission)
+ {
+
+ }

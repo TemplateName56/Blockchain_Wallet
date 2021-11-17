@@ -373,35 +373,6 @@ void MainWindow::requestsHistory()
     ui->requestsView->setColumnWidth(2,350);
     ui->requestsView->setColumnWidth(3,108);
 
-    /*
-    QFile requestsList("requestsList.csv");
-    if(!requestsList.open(QIODevice::ReadOnly | QIODevice::Text))
-    {
-        throw new ProgramException(FILE_READ_ERROR);
-    }
-    else
-    {
-        QTextStream in(&requestsList);
-        while(!in.atEnd())
-        {
-            QString requests = in.readLine();
-            QList<QStandardItem *> newRequestsList;
-
-            int count = 0;
-            for(const QString &item : requests.split(";"))
-            {
-                newRequestsList.append(new QStandardItem(item));
-                count++;
-            }
-            for(int i = 0; i < count; i++)
-            {
-                newRequestsList[i]->setTextAlignment(Qt::AlignCenter);
-            }
-            request_view_model->insertRow(request_view_model->rowCount(), newRequestsList);
-        }
-        requestsList.close();
-    }*/
-
     CSV file("requestsList.csv");
 
     for(int index = 1; index < 3; index++)
@@ -678,7 +649,7 @@ void MainWindow::on_amountSpinBox_valueChanged(double arg1)
     this->amount = arg1;
     if(recomActivated)
     {
-       emit on_recomValueButton_clicked();
+        emit on_recomValueButton_clicked();
     }
     else
     {
