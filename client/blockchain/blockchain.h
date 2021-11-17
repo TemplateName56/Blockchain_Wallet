@@ -101,6 +101,7 @@ public:
     Block getLastBlock();
 
     bool isChainValid();
+    void collisionCheck();
 
     void readChain();
     void writeChain();

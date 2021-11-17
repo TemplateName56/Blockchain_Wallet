@@ -356,7 +356,7 @@ void registerNewUsers(QString wallet_address, QString wallet_key)
     current_json["users"] = json_array;
     if (!json_file.open(QIODevice::WriteOnly))
     {
-        throw new ProgramException(FILE_WRITE_ERROR);
+        throw ProgramException(FILE_WRITE_ERROR);
     }
 
     json_file.write(QJsonDocument(current_json).toJson(QJsonDocument::Indented));

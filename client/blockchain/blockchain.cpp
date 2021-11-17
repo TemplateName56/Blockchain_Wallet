@@ -10,7 +10,6 @@ Block::Block(int index, TransactionData data, QString prev_hash)
     this->id = index;
     this->block_data = data;
     this->hash = generateHash();
-    //qDebug() << this->hash;
     this->prev_hash = prev_hash;
 }
 
@@ -130,12 +129,36 @@ QVector<Block> Blockchain::getChain()
 
 Block Blockchain::getLastBlock()
 {
-    return this->chain[chain.length() - 1];
+    return this->chain.last();
 }
 
 bool Blockchain::isChainValid()
 {
+    for(int index = (chain.length() - 2); index >= 0; index--)
+    {
+        if(chain[index].getBlockHash() != chain[index + 1].getPrevBlockHash())
+        {
+            return false;
+        }
+    }
     return true;
+}
+
+void Blockchain::collisionCheck()
+{
+    QVector<QString> hashes;
+    for(int index = 0; index < chain.length(); index++)
+    {
+        hashes.push_back(chain[index].getBlockHash());
+    }
+    for(int index = 0; index < hashes.length(); index++)
+    {
+        if(hashes.lastIndexOf(hashes[index]) != index)
+        {
+            qDebug() << "We more than two, but less then four!";
+            throw ProgramException(HASH_COLLISION);
+        }
+    }
 }
 
 void Blockchain::readChain()
@@ -153,10 +176,16 @@ void Blockchain::readChain()
     {
         throw ProgramException(FILE_READ_ERROR);
     }
+    json_file.close();
 }
 
 void Blockchain::writeChain()
 {
+    try {
+        fileExists("chain.json");
+    }  catch (ProgramException &error) {
+        error.getError();
+    }
     QJsonObject new_chain;
     QJsonArray chain_array;
 
@@ -175,6 +204,9 @@ void Blockchain::writeChain()
         new_block_data.insert("Coins Type", chain[index].block_data.coins_type);
         new_block_data.insert("TimeStamp", chain[index].block_data.timestamp);
 
+        block_data_array.removeFirst();
+        block_data_array.push_back(new_block_data);
+
         while(balances.count())
         {
             balances.pop_back();
@@ -185,9 +217,6 @@ void Blockchain::writeChain()
             balance.insert("Balance BWC", chain[index].users_balance[j].balance_amount_BWC);
             balances.push_back(balance);
         }
-
-        block_data_array.removeFirst();
-        block_data_array.push_back(new_block_data);
 
         new_block.insert("Block Data", block_data_array);
 
@@ -200,13 +229,14 @@ void Blockchain::writeChain()
         chain_array.push_back(new_block);
     }
     new_chain.insert("Blockchain", chain_array);
+
     QFileInfo file_info("chain.json");
     QDir::setCurrent(file_info.path());
     QFile json_file("chain.json");
 
     if(!json_file.open(QIODevice::WriteOnly))
     {
-        qDebug() << "FUCK!!!";
+        throw ProgramException(FILE_WRITE_ERROR);
     }
     json_file.write(QJsonDocument(new_chain).toJson(QJsonDocument::Indented));
     json_file.close();
