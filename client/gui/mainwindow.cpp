@@ -12,6 +12,7 @@ MainWindow::MainWindow(QWidget *parent)
     }  catch (ProgramException &error) {
         error.getError();
     }
+    ui->priorityComboBox->setEnabled(false);
 
     login_succesfull = false;
 
@@ -57,6 +58,13 @@ void MainWindow::authorizeUser()
             Sleep(250);
             QVector<QString> user_address = getUsersInfo(ADDRESS);
             wallet_address = user_address[index];
+
+            Balance current_user = chain.getLastBlock().getUserBalance(wallet_address);
+
+            ui->bwcBalance->setText(QString::number(current_user.balance_amount_BWC));
+            ui->bwcNBalance->setText(QString::number(current_user.balance_amount_BWC_N));
+            ui->bwcQBalance->setText(QString::number(current_user.balance_amount_BWC_Q));
+
             this->show();
 
             ui->walletAddressLabel->setText(wallet_address);
@@ -85,6 +93,13 @@ void MainWindow::registerUser()
 
         ui_Auth.close();
         Sleep(250);
+
+        Balance current_user = chain.getLastBlock().getUserBalance(wallet_address);
+
+        ui->bwcBalance->setText(QString::number(current_user.balance_amount_BWC));
+        ui->bwcNBalance->setText(QString::number(current_user.balance_amount_BWC_N));
+        ui->bwcQBalance->setText(QString::number(current_user.balance_amount_BWC_Q));
+
         this->show();
     }  catch (ProgramException &error) {
         error.getError();
@@ -449,10 +464,30 @@ void MainWindow::requestsHistory()
 
 }
 
-
+bool MainWindow::isAmountCorrect(double amount)
+{
+    Balance this_user = chain.getLastBlock().getUserBalance(wallet_address);
+    if(this_user.balance_amount_BWC == 0 &&
+            this_user.balance_amount_BWC_N == 0 &&
+            this_user.balance_amount_BWC_Q == 0)
+    {
+        return false;
+    }
+    return true;
+}
 
 void MainWindow::newTransaction()
 {
+    try {
+        if(!isAmountCorrect(amount))
+        {
+            qDebug() << "No money man";
+            throw ProgramException(INVALID_COINS_VALUE);
+        }
+    }  catch (ProgramException &error) {
+        error.getError();
+    }
+
     QDate current;
     current = current.currentDate();
 
@@ -688,6 +723,7 @@ void MainWindow::on_priorityComboBox_currentIndexChanged(int index)
 void MainWindow::on_custinValueButton_clicked()
 {
     recomActivated = false;
+    ui->priorityComboBox->setEnabled(true);
     ui->priorityComboBox->setCurrentIndex(0);
     emit on_priorityComboBox_currentIndexChanged(0);
 }
@@ -696,6 +732,7 @@ void MainWindow::on_custinValueButton_clicked()
 void MainWindow::on_recomValueButton_clicked()
 {
     recomActivated = true;
+    ui->priorityComboBox->setEnabled(false);
     fee = amount * 0.05;
     ui->recomValueLE->setText(QString::number(fee));
 }

@@ -47,11 +47,13 @@ Balance Block::getUserBalance(QString address)
             return users_balance[index];
         }
     }
+    return Balance(address, 0);
 }
 
 void Block::setUserBalance(QString address, bool is_reciever)
 {
     bool he_is_new = true;
+
     for(int index = 0; index < users_balance.length(); index++)
     {
         if(address == users_balance[index].address)

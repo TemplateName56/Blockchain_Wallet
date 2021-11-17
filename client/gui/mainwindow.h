@@ -27,6 +27,7 @@
 #include "client/scripts/json_func.h"
 #include "client/scripts/new_wallet.h"
 #include "client/scripts/csv_func.h"
+#include "client/blockchain/blockchain.h"
 
 
 QT_BEGIN_NAMESPACE
@@ -44,6 +45,8 @@ public:
     void display();
     void requestsHistory();
 
+    bool isAmountCorrect(double amount);
+
 signals:
     void sendButton_clicked();
     void newTrasaction_clicked();
@@ -52,6 +55,8 @@ protected:
 
 private:
     Ui::MainWindow *ui;
+
+    Blockchain chain;
 
     settings_Form ui_Settings;
     auth_Form ui_Auth;

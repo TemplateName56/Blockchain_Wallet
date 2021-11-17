@@ -40,6 +40,12 @@ struct Balance{
             break;
         }
     }
+    Balance(QString address, double balance_amount){
+        this->address = address;
+        this->balance_amount_BWC = balance_amount;
+        this->balance_amount_BWC_N = balance_amount;
+        this->balance_amount_BWC_Q = balance_amount;
+    }
 };
 
 struct TransactionData{
