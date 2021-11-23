@@ -48,7 +48,7 @@ struct Balance{
     }
 };
 
-struct TransactionData{
+class TransactionData{
     QString sender;
     QString reciever;
 
@@ -59,17 +59,22 @@ struct TransactionData{
     short priority;
 
     QString timestamp;
-
-    TransactionData(){}
+public:
+    TransactionData();
     TransactionData(QString sender, QString reciever,
-                    double amount, CoinsType coins_type){
-        QDateTime current_time = QDateTime::currentDateTime();
-        this->sender = sender;
-        this->reciever = reciever;
-        this->amount = amount;
-        this->coins_type = coins_type;
-        this->timestamp = current_time.toString();
-    }
+                    double amount, CoinsType coins_type,
+                    double fee, short priority);
+
+    QString getSender();
+    QString getReciever();
+
+    double getAmount();
+    CoinsType getCoinsType();
+
+    double getFee();
+    short getPriority();
+
+    QString getTimeStamp();
 };
 
 class Block{

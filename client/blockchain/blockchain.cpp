@@ -1,5 +1,62 @@
 #include "blockchain.h"
 
+TransactionData::TransactionData()
+{
+
+}
+
+TransactionData::TransactionData(QString sender, QString reciever,
+                                 double amount, CoinsType coins_type,
+                                 double fee, short priority)
+{
+    QDateTime current_time = QDateTime::currentDateTime();
+    this->sender = sender;
+    this->reciever = reciever;
+
+    this->amount = amount;
+    this->coins_type = coins_type;
+
+    this->fee_amount = fee;
+    this->priority = priority;
+
+    this->timestamp = current_time.toString();
+}
+
+QString TransactionData::getSender()
+{
+    return this->sender;
+}
+
+QString TransactionData::getReciever()
+{
+    return this->reciever;
+}
+
+double TransactionData::getAmount()
+{
+    return this->amount;
+}
+
+CoinsType TransactionData::getCoinsType()
+{
+    return this->coins_type;
+}
+
+double TransactionData::getFee()
+{
+    return this->fee_amount;
+}
+
+short TransactionData::getPriority()
+{
+    return this->priority;
+}
+
+QString TransactionData::getTimeStamp()
+{
+    return this->timestamp;
+}
+
 Block::Block()
 {
 
@@ -17,7 +74,10 @@ QString Block::generateHash()
 {
     algoritms hash_block;
 
-    QString to_hash = (block_data.sender + block_data.reciever + QString::number(block_data.amount) + QString::number(block_data.priority) + block_data.timestamp + "SALT");
+    QString to_hash = (block_data.getSender() + block_data.getReciever() +
+                       QString::number(block_data.getAmount()) + QString::number(block_data.getFee()) +
+                       QString::number(block_data.getPriority()) + block_data.getTimeStamp() + "SALT");
+
     QString result = QString::fromStdString(hash_block.Hash(to_hash.toStdString()));
 
     return result;
@@ -61,15 +121,15 @@ void Block::setUserBalance(QString address, bool is_reciever)
             he_is_new = false;
             if(is_reciever)
             {
-                switch (block_data.coins_type) {
+                switch (block_data.getCoinsType()) {
                 case BWC:
-                    users_balance[index].balance_amount_BWC += block_data.amount;
+                    users_balance[index].balance_amount_BWC += block_data.getAmount();
                     break;
                 case BWC_N:
-                    users_balance[index].balance_amount_BWC_N += block_data.amount;
+                    users_balance[index].balance_amount_BWC_N += block_data.getAmount();
                     break;
                 case BWC_Q:
-                    users_balance[index].balance_amount_BWC_Q += block_data.amount;
+                    users_balance[index].balance_amount_BWC_Q += block_data.getAmount();
                     break;
                 default:
                     break;
@@ -77,15 +137,15 @@ void Block::setUserBalance(QString address, bool is_reciever)
             }
             else
             {
-                switch (block_data.coins_type) {
+                switch (block_data.getCoinsType()) {
                 case BWC:
-                    users_balance[index].balance_amount_BWC -= block_data.amount;
+                    users_balance[index].balance_amount_BWC -= (block_data.getAmount() + block_data.getFee());
                     break;
                 case BWC_N:
-                    users_balance[index].balance_amount_BWC_N -= block_data.amount;
+                    users_balance[index].balance_amount_BWC_N -= (block_data.getAmount() + block_data.getFee());
                     break;
                 case BWC_Q:
-                    users_balance[index].balance_amount_BWC_Q -= block_data.amount;
+                    users_balance[index].balance_amount_BWC_Q -= (block_data.getAmount() + block_data.getFee());
                     break;
                 default:
                     break;
@@ -97,11 +157,11 @@ void Block::setUserBalance(QString address, bool is_reciever)
     {
         if(is_reciever)
         {
-            users_balance.push_back(Balance(address, block_data.amount, BWC));
+            users_balance.push_back(Balance(address, block_data.getAmount(), BWC));
         }
         else
         {
-            users_balance.push_back(Balance(address, -block_data.amount, BWC));
+            users_balance.push_back(Balance(address, -(block_data.getAmount() + block_data.getFee()), BWC));
         }
     }
 }
@@ -118,9 +178,9 @@ Blockchain::Blockchain()
 
 void Blockchain::createGenesisBlock()
 {
-    Block genesis(0, TransactionData("genesis", "BW0000000000000000000", 9999.999999, BWC), "0");
+    Block genesis(0, TransactionData("genesis", "BW0000000000000000000", 9999.999999, BWC, 0, 1), "0");
     this->chain.push_back(genesis);
-    chain.last().setUserBalance(chain.last().block_data.reciever, true);
+    chain.last().setUserBalance(chain.last().block_data.getReciever(), true);
 }
 
 QVector<Block> Blockchain::getChain()
@@ -200,11 +260,13 @@ void Blockchain::writeChain()
 
     for(int index = 0; index < chain.length(); index++)
     {
-        new_block_data.insert("Sender", chain[index].block_data.sender);
-        new_block_data.insert("Reciever", chain[index].block_data.reciever);
-        new_block_data.insert("Amount", chain[index].block_data.amount);
-        new_block_data.insert("Coins Type", chain[index].block_data.coins_type);
-        new_block_data.insert("TimeStamp", chain[index].block_data.timestamp);
+        new_block_data.insert("Sender", chain[index].block_data.getSender());
+        new_block_data.insert("Reciever", chain[index].block_data.getReciever());
+        new_block_data.insert("Amount", chain[index].block_data.getAmount());
+        new_block_data.insert("Coins Type", chain[index].block_data.getCoinsType());
+        new_block_data.insert("Fee", chain[index].block_data.getFee());
+        new_block_data.insert("Priority", chain[index].block_data.getPriority());
+        new_block_data.insert("TimeStamp", chain[index].block_data.getTimeStamp());
 
         block_data_array.removeFirst();
         block_data_array.push_back(new_block_data);
@@ -248,8 +310,8 @@ void Blockchain::addBlock(int index, TransactionData data, QString prev_hash)
 {
     this->chain.push_back(Block(index, data, prev_hash));
     chain.last().users_balance = chain[chain.length() - 2].users_balance;
-    chain.last().setUserBalance(chain.last().block_data.sender);
-    chain.last().setUserBalance(chain.last().block_data.reciever, true);
+    chain.last().setUserBalance(chain.last().block_data.getSender());
+    chain.last().setUserBalance(chain.last().block_data.getReciever(), true);
 }
 
 void Blockchain::show()
@@ -261,11 +323,11 @@ void Blockchain::show()
         qDebug() << chain[index].getIndex();
         qDebug() << chain[index].getBlockHash();
         qDebug() << chain[index].getPrevBlockHash();
-        qDebug() << chain[index].block_data.sender;
-        qDebug() << chain[index].block_data.reciever;
-        qDebug() << chain[index].block_data.amount;
-        qDebug() << chain[index].block_data.coins_type;
-        qDebug() << chain[index].block_data.timestamp;
+        qDebug() << chain[index].block_data.getSender();
+        qDebug() << chain[index].block_data.getReciever();
+        qDebug() << chain[index].block_data.getAmount();
+        qDebug() << chain[index].block_data.getCoinsType();
+        qDebug() << chain[index].block_data.getTimeStamp();
         qDebug() << "------------------------------------------";
     }
 }
