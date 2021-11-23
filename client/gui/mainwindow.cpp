@@ -30,6 +30,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(tray_icon, SIGNAL(activated(QSystemTrayIcon::ActivationReason)), this, SLOT(iconActivated(QSystemTrayIcon::ActivationReason)));
 
     connect(this, SIGNAL(sendButton_clicked()), this, SLOT(newTransaction()));
+    connect(transactionsGroup, SIGNAL(finished()), this, SLOT(animationBlock()));
 
     ui->stackedWidget->setCurrentIndex(0);
     setWindowLanguage();
@@ -302,6 +303,8 @@ void MainWindow::on_payToAddress_textChanged(const QString &arg1)
 
 void MainWindow::setupTransactionsOverview()
 {
+    animation_finished = false;
+
     transactionsGroup->clear();
 
     switch (last_transaction_notify) {
@@ -365,27 +368,27 @@ void MainWindow::setupTransactionsOverview()
     }
 
     transaction_1 = new QPropertyAnimation(ui->transactionInfo_1, "geometry");
-    transaction_1->setDuration(500);
+    transaction_1->setDuration(600);
     transaction_1->setStartValue(ui->transactionInfo_1->geometry());
     transaction_1->setEndValue(ui->transactionInfo_1->geometry().translated(0, 90));
 
     transaction_2 = new QPropertyAnimation(ui->transactionInfo_2, "geometry");
-    transaction_2->setDuration(500);
+    transaction_2->setDuration(600);
     transaction_2->setStartValue(ui->transactionInfo_2->geometry());
     transaction_2->setEndValue(ui->transactionInfo_2->geometry().translated(0, 90));
 
     transaction_3 = new QPropertyAnimation(ui->transactionInfo_3, "geometry");
-    transaction_3->setDuration(500);
+    transaction_3->setDuration(600);
     transaction_3->setStartValue(ui->transactionInfo_3->geometry());
     transaction_3->setEndValue(ui->transactionInfo_3->geometry().translated(0, 90));
 
     transaction_4 = new QPropertyAnimation(ui->transactionInfo_4, "geometry");
-    transaction_4->setDuration(500);
+    transaction_4->setDuration(600);
     transaction_4->setStartValue(ui->transactionInfo_4->geometry());
     transaction_4->setEndValue(ui->transactionInfo_4->geometry().translated(0, 90));
 
     transaction_5 = new QPropertyAnimation(ui->transactionInfo_5, "geometry");
-    transaction_5->setDuration(500);
+    transaction_5->setDuration(600);
     transaction_5->setStartValue(ui->transactionInfo_5->geometry());
     transaction_5->setEndValue(ui->transactionInfo_5->geometry().translated(0, 90));
 
@@ -396,7 +399,6 @@ void MainWindow::setupTransactionsOverview()
     transactionsGroup->addAnimation(transaction_5);
 
     transactionsGroup->start();
-
 }
 
 void MainWindow::requestsHistory()
@@ -486,7 +488,6 @@ void MainWindow::requestsHistory()
             history_view_model->insertRow(history_view_model->rowCount(), HistoryList);
         //HistoryList.close();
         }
-
 }
 
 bool MainWindow::isAmountCorrect(double amount, CoinsType coins_type)
@@ -525,43 +526,72 @@ void MainWindow::newTransaction()
             qDebug() << "No money man";
             throw ProgramException(INVALID_COINS_VALUE);
         }
-        chain.addBlock(1, TransactionData(wallet_address, reciever_address, amount, BWC, fee, priority), "1");
+        if(animation_finished)
+        {
+            if(blocks_queue.empty())
+            {
+                chain.addBlock(chain.getLastBlock().getIndex() + 1,
+                                TransactionData(wallet_address, reciever_address, amount, coins_type, fee, priority),
+                                chain.getLastBlock().getBlockHash());
+            }
+            else
+            {
+                chain.addBlock(blocks_queue.dequeue());
+            }
 
-        switch(last_transaction_notify){
-        case 1:
-            ui->amount_1->setText(QString::number(amount));
-            ui->transactionIcon_1->setPixmap(QIcon("icons/sendIcon.png").pixmap(64,64));
-            ui->transactionDate_1->setText(chain.getLastBlock().block_data.getTimeStamp());
-            ui->wallerAddress_1->setText(reciever_address);
-            break;
-        case 2:
-            ui->amount_2->setText(QString::number(amount));
-            ui->transactionIcon_2->setPixmap(QIcon("icons/sendIcon.png").pixmap(64,64));
-            ui->transactionDate_2->setText(chain.getLastBlock().block_data.getTimeStamp());
-            ui->wallerAddress_2->setText(reciever_address);
-            break;
-        case 3:
-            ui->amount_3->setText(QString::number(amount));
-            ui->transactionIcon_3->setPixmap(QIcon("icons/sendIcon.png").pixmap(64,64));
-            ui->transactionDate_3->setText(chain.getLastBlock().block_data.getTimeStamp());
-            ui->wallerAddress_3->setText(reciever_address);
-            break;
-        case 4:
-            ui->amount_4->setText(QString::number(amount));
-            ui->transactionIcon_4->setPixmap(QIcon("icons/sendIcon.png").pixmap(64,64));
-            ui->transactionDate_4->setText(chain.getLastBlock().block_data.getTimeStamp());
-            ui->wallerAddress_4->setText(reciever_address);
-            break;
-        case 5:
-            ui->amount_5->setText(QString::number(amount));
-            ui->transactionIcon_5->setPixmap(QIcon("icons/sendIcon.png").pixmap(64,64));
-            ui->transactionDate_5->setText(chain.getLastBlock().block_data.getTimeStamp());
-            ui->wallerAddress_5->setText(reciever_address);
-            break;
-        default:
-            break;
+            switch(last_transaction_notify){
+            case 1:
+                ui->amount_1->setText(QString::number(amount));
+                ui->transactionIcon_1->setPixmap(QIcon("icons/sendIcon.png").pixmap(64,64));
+                ui->transactionDate_1->setText(chain.getLastBlock().block_data.getTimeStamp());
+                ui->wallerAddress_1->setText(reciever_address);
+                break;
+            case 2:
+                ui->amount_2->setText(QString::number(amount));
+                ui->transactionIcon_2->setPixmap(QIcon("icons/sendIcon.png").pixmap(64,64));
+                ui->transactionDate_2->setText(chain.getLastBlock().block_data.getTimeStamp());
+                ui->wallerAddress_2->setText(reciever_address);
+                break;
+            case 3:
+                ui->amount_3->setText(QString::number(amount));
+                ui->transactionIcon_3->setPixmap(QIcon("icons/sendIcon.png").pixmap(64,64));
+                ui->transactionDate_3->setText(chain.getLastBlock().block_data.getTimeStamp());
+                ui->wallerAddress_3->setText(reciever_address);
+                break;
+            case 4:
+                ui->amount_4->setText(QString::number(amount));
+                ui->transactionIcon_4->setPixmap(QIcon("icons/sendIcon.png").pixmap(64,64));
+                ui->transactionDate_4->setText(chain.getLastBlock().block_data.getTimeStamp());
+                ui->wallerAddress_4->setText(reciever_address);
+                break;
+            case 5:
+                ui->amount_5->setText(QString::number(amount));
+                ui->transactionIcon_5->setPixmap(QIcon("icons/sendIcon.png").pixmap(64,64));
+                ui->transactionDate_5->setText(chain.getLastBlock().block_data.getTimeStamp());
+                ui->wallerAddress_5->setText(reciever_address);
+                break;
+            default:
+                break;
+            }
+            setupTransactionsOverview();
         }
-        setupTransactionsOverview();
+        else
+        {
+            if(blocks_queue.empty())
+            {
+                Block new_block(chain.getLastBlock().getIndex() + 1,
+                                TransactionData(wallet_address, reciever_address, amount, coins_type, fee, priority),
+                                chain.getLastBlock().getBlockHash());
+                blocks_queue.enqueue(new_block);
+            }
+            else
+            {
+                Block new_block(blocks_queue.head().getIndex() + 1,
+                                TransactionData(wallet_address, reciever_address, amount, coins_type, fee, priority),
+                                blocks_queue.head().getBlockHash());
+                blocks_queue.enqueue(new_block);
+            }
+        }
     }  catch (ProgramException &error) {
         error.getError();
     }
@@ -800,6 +830,19 @@ void MainWindow::on_coinsBox_currentIndexChanged(int index)
         break;
     default:
         break;
+    }
+}
+
+void MainWindow::animationBlock()
+{
+    if(!blocks_queue.empty())
+    {
+        animation_finished = true;
+        emit newTransaction();
+    }
+    else
+    {
+        animation_finished = true;
     }
 }
 

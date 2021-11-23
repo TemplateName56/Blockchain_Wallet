@@ -106,6 +106,7 @@ public:
     void writeChain();
 
     void addBlock(int index, TransactionData data, QString prev_hash);
+    void addBlock(Block new_block);
     void show();
 
     ~Blockchain();

@@ -361,6 +361,14 @@ void Blockchain::addBlock(int index, TransactionData data, QString prev_hash)
     chain.last().setUserBalance(chain.last().block_data.getReciever(), true);
 }
 
+void Blockchain::addBlock(Block new_block)
+{
+    this->chain.push_back(new_block);
+    chain.last().users_balance = chain[chain.length() - 2].users_balance;
+    chain.last().setUserBalance(chain.last().block_data.getSender());
+    chain.last().setUserBalance(chain.last().block_data.getReciever(), true);
+}
+
 void Blockchain::show()
 {
     // temp show func
