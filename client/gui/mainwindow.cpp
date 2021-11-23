@@ -61,9 +61,9 @@ void MainWindow::authorizeUser()
 
             Balance current_user = chain.getLastBlock().getUserBalance(wallet_address);
 
-            ui->bwcBalance->setText(QString::number(current_user.balance_amount_BWC));
-            ui->bwcNBalance->setText(QString::number(current_user.balance_amount_BWC_N));
-            ui->bwcQBalance->setText(QString::number(current_user.balance_amount_BWC_Q));
+            ui->bwcBalance->setText(QString::number(current_user.getBalance(BWC)));
+            ui->bwcNBalance->setText(QString::number(current_user.getBalance(BWC_N)));
+            ui->bwcQBalance->setText(QString::number(current_user.getBalance(BWC_Q)));
 
             this->show();
 
@@ -96,9 +96,9 @@ void MainWindow::registerUser()
 
         Balance current_user = chain.getLastBlock().getUserBalance(wallet_address);
 
-        ui->bwcBalance->setText(QString::number(current_user.balance_amount_BWC));
-        ui->bwcNBalance->setText(QString::number(current_user.balance_amount_BWC_N));
-        ui->bwcQBalance->setText(QString::number(current_user.balance_amount_BWC_Q));
+        ui->bwcBalance->setText(QString::number(current_user.getBalance(BWC)));
+        ui->bwcNBalance->setText(QString::number(current_user.getBalance(BWC_N)));
+        ui->bwcQBalance->setText(QString::number(current_user.getBalance(BWC_Q)));
 
         this->show();
     }  catch (ProgramException &error) {
@@ -489,68 +489,82 @@ void MainWindow::requestsHistory()
 
 }
 
-bool MainWindow::isAmountCorrect(double amount)
+bool MainWindow::isAmountCorrect(double amount, CoinsType coins_type)
 {
     Balance this_user = chain.getLastBlock().getUserBalance(wallet_address);
-    if(this_user.balance_amount_BWC == 0 &&
-            this_user.balance_amount_BWC_N == 0 &&
-            this_user.balance_amount_BWC_Q == 0)
-    {
-        return false;
+    switch (coins_type) {
+    case BWC:
+        if(this_user.getBalance(BWC) > amount)
+        {
+            return true;
+        }
+        break;
+    case BWC_N:
+        if(this_user.getBalance(BWC_N) > amount)
+        {
+            return true;
+        }
+        break;
+    case BWC_Q:
+        if(this_user.getBalance(BWC_Q) > amount)
+        {
+            return true;
+        }
+        break;
+    default:
+        break;
     }
-    return true;
+    return false;
 }
 
 void MainWindow::newTransaction()
 {
     try {
-        if(!isAmountCorrect(amount))
+        if(isAmountCorrect(amount, coins_type) == false)
         {
             qDebug() << "No money man";
             throw ProgramException(INVALID_COINS_VALUE);
         }
+        chain.addBlock(1, TransactionData(wallet_address, reciever_address, amount, BWC, fee, priority), "1");
+
+        switch(last_transaction_notify){
+        case 1:
+            ui->amount_1->setText(QString::number(amount));
+            ui->transactionIcon_1->setPixmap(QIcon("icons/sendIcon.png").pixmap(64,64));
+            ui->transactionDate_1->setText(chain.getLastBlock().block_data.getTimeStamp());
+            ui->wallerAddress_1->setText(reciever_address);
+            break;
+        case 2:
+            ui->amount_2->setText(QString::number(amount));
+            ui->transactionIcon_2->setPixmap(QIcon("icons/sendIcon.png").pixmap(64,64));
+            ui->transactionDate_2->setText(chain.getLastBlock().block_data.getTimeStamp());
+            ui->wallerAddress_2->setText(reciever_address);
+            break;
+        case 3:
+            ui->amount_3->setText(QString::number(amount));
+            ui->transactionIcon_3->setPixmap(QIcon("icons/sendIcon.png").pixmap(64,64));
+            ui->transactionDate_3->setText(chain.getLastBlock().block_data.getTimeStamp());
+            ui->wallerAddress_3->setText(reciever_address);
+            break;
+        case 4:
+            ui->amount_4->setText(QString::number(amount));
+            ui->transactionIcon_4->setPixmap(QIcon("icons/sendIcon.png").pixmap(64,64));
+            ui->transactionDate_4->setText(chain.getLastBlock().block_data.getTimeStamp());
+            ui->wallerAddress_4->setText(reciever_address);
+            break;
+        case 5:
+            ui->amount_5->setText(QString::number(amount));
+            ui->transactionIcon_5->setPixmap(QIcon("icons/sendIcon.png").pixmap(64,64));
+            ui->transactionDate_5->setText(chain.getLastBlock().block_data.getTimeStamp());
+            ui->wallerAddress_5->setText(reciever_address);
+            break;
+        default:
+            break;
+        }
+        setupTransactionsOverview();
     }  catch (ProgramException &error) {
         error.getError();
     }
-
-    QDate current;
-    current = current.currentDate();
-
-    switch(last_transaction_notify){
-    case 1:
-        ui->amount_1->setText(QString::number(amount));
-        ui->transactionIcon_1->setPixmap(QIcon("icons/sendIcon.png").pixmap(64,64));
-        ui->transactionDate_1->setText(current.toString("yyyy.MM.dd"));
-        ui->wallerAddress_1->setText(reciever_address);
-        break;
-    case 2:
-        ui->amount_2->setText(QString::number(amount));
-        ui->transactionIcon_2->setPixmap(QIcon("icons/sendIcon.png").pixmap(64,64));
-        ui->transactionDate_2->setText(current.toString("yyyy.MM.dd"));
-        ui->wallerAddress_2->setText(reciever_address);
-        break;
-    case 3:
-        ui->amount_3->setText(QString::number(amount));
-        ui->transactionIcon_3->setPixmap(QIcon("icons/sendIcon.png").pixmap(64,64));
-        ui->transactionDate_3->setText(current.toString("yyyy.MM.dd"));
-        ui->wallerAddress_3->setText(reciever_address);
-        break;
-    case 4:
-        ui->amount_4->setText(QString::number(amount));
-        ui->transactionIcon_4->setPixmap(QIcon("icons/sendIcon.png").pixmap(64,64));
-        ui->transactionDate_4->setText(current.toString("yyyy.MM.dd"));
-        ui->wallerAddress_4->setText(reciever_address);
-        break;
-    case 5:
-        ui->amount_5->setText(QString::number(amount));
-        ui->transactionIcon_5->setPixmap(QIcon("icons/sendIcon.png").pixmap(64,64));
-        ui->transactionDate_5->setText(current.toString("yyyy.MM.dd"));
-        ui->wallerAddress_5->setText(reciever_address);
-        break;
-    default:
-        break;
-    }
-    setupTransactionsOverview();
 }
 
 void MainWindow::setWindowLanguage()
@@ -731,14 +745,17 @@ void MainWindow::on_priorityComboBox_currentIndexChanged(int index)
     switch(index) {
     case 0:
         fee = amount * 0.15;
+        priority = 1;
         ui->customValueLE->setText(QString::number(fee));
         break;
     case 1:
         fee = amount * 0.10;
+        priority = 2;
         ui->customValueLE->setText(QString::number(fee));
         break;
     case 2:
         fee = amount * 0.05;
+        priority = 3;
         ui->customValueLE->setText(QString::number(fee));
         break;
     default:
@@ -761,6 +778,28 @@ void MainWindow::on_recomValueButton_clicked()
     recomActivated = true;
     ui->priorityComboBox->setEnabled(false);
     fee = amount * 0.05;
+    priority = 3;
     ui->recomValueLE->setText(QString::number(fee));
+}
+
+
+void MainWindow::on_coinsBox_currentIndexChanged(int index)
+{
+    switch (index) {
+    case 0:
+        qDebug() << index;
+        this->coins_type = BWC;
+        break;
+    case 1:
+        qDebug() << index;
+        this->coins_type = BWC_N;
+        break;
+    case 2:
+        qDebug() << index;
+        this->coins_type = BWC_Q;
+        break;
+    default:
+        break;
+    }
 }
 

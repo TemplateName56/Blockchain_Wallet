@@ -15,37 +15,22 @@ enum CoinsType{
     BWC_Q
 };
 
-struct Balance{
+class Balance{
     QString address;
 
     double balance_amount_BWC = 0;
     double balance_amount_BWC_N = 0;
     double balance_amount_BWC_Q = 0;
-
-    Balance(){}
+public:
+    Balance();
     Balance(QString address, double balance_amount,
-            CoinsType coins_type){
-        this->address = address;
-        switch (coins_type) {
-        case BWC:
-            this->balance_amount_BWC = balance_amount;
-            break;
-        case BWC_N:
-            this->balance_amount_BWC_N = balance_amount;
-            break;
-        case BWC_Q:
-            this->balance_amount_BWC_Q = balance_amount;
-            break;
-        default:
-            break;
-        }
-    }
-    Balance(QString address, double balance_amount){
-        this->address = address;
-        this->balance_amount_BWC = balance_amount;
-        this->balance_amount_BWC_N = balance_amount;
-        this->balance_amount_BWC_Q = balance_amount;
-    }
+            CoinsType coins_type);
+    Balance(QString address, double balance_amount);
+
+    QString getAddress();
+
+    double getBalance(CoinsType coins_type);
+    double setBalance(double amount, CoinsType coins_type);
 };
 
 class TransactionData{

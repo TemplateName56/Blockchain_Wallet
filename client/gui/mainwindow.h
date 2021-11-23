@@ -46,7 +46,7 @@ public:
     void display();
     void requestsHistory();
 
-    bool isAmountCorrect(double amount);
+    bool isAmountCorrect(double amount, CoinsType coins_type);
 
 signals:
     void sendButton_clicked();
@@ -75,8 +75,9 @@ private:
 
     QString reciever_address;
     double amount;
+    CoinsType coins_type = BWC;
     double fee;
-    QString coins_type;
+    short priority = 3;
 
     bool recomActivated = true;
 
@@ -151,5 +152,6 @@ private slots:
     void on_priorityComboBox_currentIndexChanged(int index);
     void on_custinValueButton_clicked();
     void on_recomValueButton_clicked();
+    void on_coinsBox_currentIndexChanged(int index);
 };
 #endif // MAINWINDOW_H

@@ -1,5 +1,74 @@
 #include "blockchain.h"
 
+Balance::Balance()
+{
+
+}
+
+Balance::Balance(QString address, double balance_amount,
+                 CoinsType coins_type){
+    this->address = address;
+    switch (coins_type) {
+    case BWC:
+        this->balance_amount_BWC = balance_amount;
+        break;
+    case BWC_N:
+        this->balance_amount_BWC_N = balance_amount;
+        break;
+    case BWC_Q:
+        this->balance_amount_BWC_Q = balance_amount;
+        break;
+    default:
+        break;
+    }
+}
+
+Balance::Balance(QString address, double balance_amount){
+    this->address = address;
+    this->balance_amount_BWC = balance_amount;
+    this->balance_amount_BWC_N = balance_amount;
+    this->balance_amount_BWC_Q = balance_amount;
+}
+
+QString Balance::getAddress()
+{
+    return this->address;
+}
+
+double Balance::getBalance(CoinsType coins_type)
+{
+    switch (coins_type) {
+    case BWC:
+        return this->balance_amount_BWC;
+        break;
+    case BWC_N:
+        return this->balance_amount_BWC_N;
+        break;
+    case BWC_Q:
+        return this->balance_amount_BWC_Q;
+        break;
+    default:
+        break;
+    }
+}
+
+double Balance::setBalance(double amount, CoinsType coins_type)
+{
+    switch (coins_type) {
+    case BWC:
+        this->balance_amount_BWC += amount;
+        break;
+    case BWC_N:
+        this->balance_amount_BWC_N += amount;
+        break;
+    case BWC_Q:
+        this->balance_amount_BWC_Q += amount;
+        break;
+    default:
+        break;
+    }
+}
+
 TransactionData::TransactionData()
 {
 
@@ -102,7 +171,7 @@ Balance Block::getUserBalance(QString address)
 {
     for(int index = 0; index < users_balance.length(); index++)
     {
-        if(address == users_balance[index].address)
+        if(address == users_balance[index].getAddress())
         {
             return users_balance[index];
         }
@@ -116,40 +185,16 @@ void Block::setUserBalance(QString address, bool is_reciever)
 
     for(int index = 0; index < users_balance.length(); index++)
     {
-        if(address == users_balance[index].address)
+        if(address == users_balance[index].getAddress())
         {
             he_is_new = false;
             if(is_reciever)
             {
-                switch (block_data.getCoinsType()) {
-                case BWC:
-                    users_balance[index].balance_amount_BWC += block_data.getAmount();
-                    break;
-                case BWC_N:
-                    users_balance[index].balance_amount_BWC_N += block_data.getAmount();
-                    break;
-                case BWC_Q:
-                    users_balance[index].balance_amount_BWC_Q += block_data.getAmount();
-                    break;
-                default:
-                    break;
-                }
+                users_balance[index].setBalance(block_data.getAmount(), block_data.getCoinsType());
             }
             else
             {
-                switch (block_data.getCoinsType()) {
-                case BWC:
-                    users_balance[index].balance_amount_BWC -= (block_data.getAmount() + block_data.getFee());
-                    break;
-                case BWC_N:
-                    users_balance[index].balance_amount_BWC_N -= (block_data.getAmount() + block_data.getFee());
-                    break;
-                case BWC_Q:
-                    users_balance[index].balance_amount_BWC_Q -= (block_data.getAmount() + block_data.getFee());
-                    break;
-                default:
-                    break;
-                }
+                users_balance[index].setBalance(-(block_data.getAmount() + block_data.getFee()), block_data.getCoinsType());
             }
         }
     }
@@ -277,8 +322,10 @@ void Blockchain::writeChain()
         }
         for(int j = 0; j < chain[index].users_balance.length(); j++)
         {
-            balance.insert("Address", chain[index].users_balance[j].address);
-            balance.insert("Balance BWC", chain[index].users_balance[j].balance_amount_BWC);
+            balance.insert("Address", chain[index].users_balance[j].getAddress());
+            balance.insert("Balance BWC", chain[index].users_balance[j].getBalance(BWC));
+            balance.insert("Balance BWC-N", chain[index].users_balance[j].getBalance(BWC_N));
+            balance.insert("Balance BWC-Q", chain[index].users_balance[j].getBalance(BWC_Q));
             balances.push_back(balance);
         }
 
