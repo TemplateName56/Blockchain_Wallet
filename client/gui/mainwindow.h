@@ -1,6 +1,7 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+
 #include <QMainWindow>
 #include <QIcon>
 #include <QMenu>
@@ -98,6 +99,8 @@ private:
     QAction *recieve;
     QAction *transactions;
 
+    QAction *all_blocks;
+
     QAction *help;
     QAction *quit;
 
@@ -132,6 +135,7 @@ private slots:
     void sendTR();
     void recieveTR();
     void transactionsTR();
+    void blocksTR();
 
     void setWindowLanguage();
     void iconActivated(QSystemTrayIcon::ActivationReason reason);

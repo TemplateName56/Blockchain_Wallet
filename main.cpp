@@ -19,7 +19,7 @@ int main(int argc, char *argv[])
     for(int index = 1; index <= 3; index++)
     {
         newchain.addBlock(index,TransactionData("petya", "vasya", rand() % 56, BWC), newchain.getLastBlock().getBlockHash());
-        //Sleep(1000);
+        Sleep(1000);
     }
     newchain.show();
 

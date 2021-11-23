@@ -55,6 +55,9 @@ struct TransactionData{
     double amount;
     CoinsType coins_type;
 
+    double fee_amount;
+    short priority;
+
     QString timestamp;
 
     TransactionData(){}

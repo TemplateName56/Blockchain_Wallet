@@ -17,7 +17,7 @@ QString Block::generateHash()
 {
     algoritms hash_block;
 
-    QString to_hash = (block_data.sender + block_data.reciever + QString::number(block_data.amount) + block_data.timestamp + "BWCSALT");
+    QString to_hash = (block_data.sender + block_data.reciever + QString::number(block_data.amount) + QString::number(block_data.priority) + block_data.timestamp + "SALT");
     QString result = QString::fromStdString(hash_block.Hash(to_hash.toStdString()));
 
     return result;
@@ -118,7 +118,7 @@ Blockchain::Blockchain()
 
 void Blockchain::createGenesisBlock()
 {
-    Block genesis(0, TransactionData("genesis", "admin", 9999, BWC), "0");
+    Block genesis(0, TransactionData("genesis", "BW0000000000000000000", 9999.999999, BWC), "0");
     this->chain.push_back(genesis);
     chain.last().setUserBalance(chain.last().block_data.reciever, true);
 }

@@ -126,6 +126,11 @@ void MainWindow::transactionsTR()
     ui->stackedWidget->setCurrentIndex(3);
 }
 
+void MainWindow::blocksTR()
+{
+    ui->stackedWidget->setCurrentIndex(4);
+}
+
 void MainWindow::createActions()
 {
     QPixmap homepix("icons/menuIcon.png");
@@ -140,6 +145,8 @@ void MainWindow::createActions()
     recieve = new QAction(recievepix, "&Recieve", this);
     help = new QAction(helppix, "&Help", this);
     quit = new QAction("&Quit", this);
+
+    all_blocks = new QAction(transactionspix, "&Blocks", this);
 
     quit->setShortcut(tr("Ctrl+Q"));
 
@@ -156,6 +163,8 @@ void MainWindow::createActions()
     connect(recieve, &QAction::triggered, this, &MainWindow::recieveTR);
     connect(transactions, &QAction::triggered, this, &MainWindow::transactionsTR);
 
+    connect(all_blocks, &QAction::triggered, this, &MainWindow::blocksTR);
+
     connect(options, &QAction::triggered, &ui_Settings, &settings_Form::settingsShow);
     connect(about_program, &QAction::triggered, &ui_AboutProgram, &about_program_Form::aboutShow);
     connect(encrypt_wallet, &QAction::triggered, &ui_EncryptWallet, &encrypt_wallet_Form::showEncrypt);
@@ -164,12 +173,19 @@ void MainWindow::createActions()
 
 void MainWindow::createMenus()
 {
+    ui->transactionInfo_1->setVisible(false);
+    ui->transactionInfo_2->setVisible(false);
+    ui->transactionInfo_3->setVisible(false);
+    ui->transactionInfo_4->setVisible(false);
+    ui->transactionInfo_5->setVisible(false);
+
     main_menu = menuBar()->addMenu("&Main");
 
     main_menu->addAction(home);
     main_menu->addAction(send);
     main_menu->addAction(recieve);
     main_menu->addAction(help);
+    main_menu->addAction(all_blocks);
     main_menu->addSeparator();
     main_menu->addAction(quit);
 
@@ -180,11 +196,9 @@ void MainWindow::createMenus()
     settings_menu->addSeparator();
     settings_menu->addAction(options);
 
-
     help_menu = menuBar()->addMenu("&Help");
 
     help_menu->addAction(about_program);
-
 
     toolbar = addToolBar("main menu");
 
@@ -192,6 +206,7 @@ void MainWindow::createMenus()
     toolbar->addAction(send);
     toolbar->addAction(recieve);
     toolbar->addAction(transactions);
+    toolbar->addAction(all_blocks);
 
     toolbar->setIconSize(QSize(90,30));
 }
@@ -297,6 +312,8 @@ void MainWindow::setupTransactionsOverview()
         y_tr4_pos += 100;
         y_tr5_pos += 100;
         y_tr1_pos = 10;
+
+        ui->transactionInfo_1->setVisible(true);
         ui->transactionInfo_1->move(10,-80);
         break;
     case 2:
@@ -306,6 +323,8 @@ void MainWindow::setupTransactionsOverview()
         y_tr4_pos += 100;
         y_tr5_pos += 100;
         y_tr2_pos = 10;
+
+        ui->transactionInfo_2->setVisible(true);
         ui->transactionInfo_2->move(10,-80);
         break;
     case 3:
@@ -315,6 +334,8 @@ void MainWindow::setupTransactionsOverview()
         y_tr4_pos += 100;
         y_tr5_pos += 100;
         y_tr3_pos = 10;
+
+        ui->transactionInfo_3->setVisible(true);
         ui->transactionInfo_3->move(10,-80);
         break;
     case 4:
@@ -324,6 +345,8 @@ void MainWindow::setupTransactionsOverview()
         y_tr3_pos += 100;
         y_tr5_pos += 100;
         y_tr4_pos = 10;
+
+        ui->transactionInfo_4->setVisible(true);
         ui->transactionInfo_4->move(10,-80);
         break;
     case 5:
@@ -333,6 +356,8 @@ void MainWindow::setupTransactionsOverview()
         y_tr3_pos += 100;
         y_tr4_pos += 100;
         y_tr5_pos = 10;
+
+        ui->transactionInfo_5->setVisible(true);
         ui->transactionInfo_5->move(10,-80);
         break;
     default:
@@ -644,6 +669,8 @@ MainWindow::~MainWindow()
     delete send;
     delete recieve;
     delete transactions;
+
+    delete all_blocks;
 
     delete help;
     delete quit;
