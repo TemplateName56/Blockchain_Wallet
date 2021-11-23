@@ -15,52 +15,51 @@ enum CoinsType{
     BWC_Q
 };
 
-struct Balance{
+class Balance{
     QString address;
 
     double balance_amount_BWC = 0;
     double balance_amount_BWC_N = 0;
     double balance_amount_BWC_Q = 0;
-
-    Balance(){}
+public:
+    Balance();
     Balance(QString address, double balance_amount,
-            CoinsType coins_type){
-        this->address = address;
-        switch (coins_type) {
-        case BWC:
-            this->balance_amount_BWC = balance_amount;
-            break;
-        case BWC_N:
-            this->balance_amount_BWC_N = balance_amount;
-            break;
-        case BWC_Q:
-            this->balance_amount_BWC_Q = balance_amount;
-            break;
-        default:
-            break;
-        }
-    }
+            CoinsType coins_type);
+    Balance(QString address, double balance_amount);
+
+    QString getAddress();
+
+    double getBalance(CoinsType coins_type);
+    double setBalance(double amount, CoinsType coins_type);
 };
 
-struct TransactionData{
+class TransactionData{
     QString sender;
     QString reciever;
 
     double amount;
     CoinsType coins_type;
 
-    QString timestamp;
+    double fee_amount;
+    short priority;
 
-    TransactionData(){}
+    QString timestamp;
+public:
+    TransactionData();
     TransactionData(QString sender, QString reciever,
-                    double amount, CoinsType coins_type){
-        QDateTime current_time = QDateTime::currentDateTime();
-        this->sender = sender;
-        this->reciever = reciever;
-        this->amount = amount;
-        this->coins_type = coins_type;
-        this->timestamp = current_time.toString();
-    }
+                    double amount, CoinsType coins_type,
+                    double fee, short priority);
+
+    QString getSender();
+    QString getReciever();
+
+    double getAmount();
+    CoinsType getCoinsType();
+
+    double getFee();
+    short getPriority();
+
+    QString getTimeStamp();
 };
 
 class Block{

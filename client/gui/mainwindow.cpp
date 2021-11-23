@@ -12,6 +12,7 @@ MainWindow::MainWindow(QWidget *parent)
     }  catch (ProgramException &error) {
         error.getError();
     }
+    ui->priorityComboBox->setEnabled(false);
 
     login_succesfull = false;
 
@@ -57,6 +58,13 @@ void MainWindow::authorizeUser()
             Sleep(250);
             QVector<QString> user_address = getUsersInfo(ADDRESS);
             wallet_address = user_address[index];
+
+            Balance current_user = chain.getLastBlock().getUserBalance(wallet_address);
+
+            ui->bwcBalance->setText(QString::number(current_user.getBalance(BWC)));
+            ui->bwcNBalance->setText(QString::number(current_user.getBalance(BWC_N)));
+            ui->bwcQBalance->setText(QString::number(current_user.getBalance(BWC_Q)));
+
             this->show();
 
             ui->walletAddressLabel->setText(wallet_address);
@@ -85,6 +93,13 @@ void MainWindow::registerUser()
 
         ui_Auth.close();
         Sleep(250);
+
+        Balance current_user = chain.getLastBlock().getUserBalance(wallet_address);
+
+        ui->bwcBalance->setText(QString::number(current_user.getBalance(BWC)));
+        ui->bwcNBalance->setText(QString::number(current_user.getBalance(BWC_N)));
+        ui->bwcQBalance->setText(QString::number(current_user.getBalance(BWC_Q)));
+
         this->show();
     }  catch (ProgramException &error) {
         error.getError();
@@ -111,6 +126,11 @@ void MainWindow::transactionsTR()
     ui->stackedWidget->setCurrentIndex(3);
 }
 
+void MainWindow::blocksTR()
+{
+    ui->stackedWidget->setCurrentIndex(4);
+}
+
 void MainWindow::createActions()
 {
     QPixmap homepix("icons/menuIcon.png");
@@ -125,6 +145,8 @@ void MainWindow::createActions()
     recieve = new QAction(recievepix, "&Recieve", this);
     help = new QAction(helppix, "&Help", this);
     quit = new QAction("&Quit", this);
+
+    all_blocks = new QAction(transactionspix, "&Blocks", this);
 
     quit->setShortcut(tr("Ctrl+Q"));
 
@@ -141,6 +163,8 @@ void MainWindow::createActions()
     connect(recieve, &QAction::triggered, this, &MainWindow::recieveTR);
     connect(transactions, &QAction::triggered, this, &MainWindow::transactionsTR);
 
+    connect(all_blocks, &QAction::triggered, this, &MainWindow::blocksTR);
+
     connect(options, &QAction::triggered, &ui_Settings, &settings_Form::settingsShow);
     connect(about_program, &QAction::triggered, &ui_AboutProgram, &about_program_Form::aboutShow);
     connect(encrypt_wallet, &QAction::triggered, &ui_EncryptWallet, &encrypt_wallet_Form::showEncrypt);
@@ -149,12 +173,19 @@ void MainWindow::createActions()
 
 void MainWindow::createMenus()
 {
+    ui->transactionInfo_1->setVisible(false);
+    ui->transactionInfo_2->setVisible(false);
+    ui->transactionInfo_3->setVisible(false);
+    ui->transactionInfo_4->setVisible(false);
+    ui->transactionInfo_5->setVisible(false);
+
     main_menu = menuBar()->addMenu("&Main");
 
     main_menu->addAction(home);
     main_menu->addAction(send);
     main_menu->addAction(recieve);
     main_menu->addAction(help);
+    main_menu->addAction(all_blocks);
     main_menu->addSeparator();
     main_menu->addAction(quit);
 
@@ -165,11 +196,9 @@ void MainWindow::createMenus()
     settings_menu->addSeparator();
     settings_menu->addAction(options);
 
-
     help_menu = menuBar()->addMenu("&Help");
 
     help_menu->addAction(about_program);
-
 
     toolbar = addToolBar("main menu");
 
@@ -177,6 +206,7 @@ void MainWindow::createMenus()
     toolbar->addAction(send);
     toolbar->addAction(recieve);
     toolbar->addAction(transactions);
+    toolbar->addAction(all_blocks);
 
     toolbar->setIconSize(QSize(90,30));
 }
@@ -282,6 +312,8 @@ void MainWindow::setupTransactionsOverview()
         y_tr4_pos += 100;
         y_tr5_pos += 100;
         y_tr1_pos = 10;
+
+        ui->transactionInfo_1->setVisible(true);
         ui->transactionInfo_1->move(10,-80);
         break;
     case 2:
@@ -291,6 +323,8 @@ void MainWindow::setupTransactionsOverview()
         y_tr4_pos += 100;
         y_tr5_pos += 100;
         y_tr2_pos = 10;
+
+        ui->transactionInfo_2->setVisible(true);
         ui->transactionInfo_2->move(10,-80);
         break;
     case 3:
@@ -300,6 +334,8 @@ void MainWindow::setupTransactionsOverview()
         y_tr4_pos += 100;
         y_tr5_pos += 100;
         y_tr3_pos = 10;
+
+        ui->transactionInfo_3->setVisible(true);
         ui->transactionInfo_3->move(10,-80);
         break;
     case 4:
@@ -309,6 +345,8 @@ void MainWindow::setupTransactionsOverview()
         y_tr3_pos += 100;
         y_tr5_pos += 100;
         y_tr4_pos = 10;
+
+        ui->transactionInfo_4->setVisible(true);
         ui->transactionInfo_4->move(10,-80);
         break;
     case 5:
@@ -318,6 +356,8 @@ void MainWindow::setupTransactionsOverview()
         y_tr3_pos += 100;
         y_tr4_pos += 100;
         y_tr5_pos = 10;
+
+        ui->transactionInfo_5->setVisible(true);
         ui->transactionInfo_5->move(10,-80);
         break;
     default:
@@ -449,48 +489,82 @@ void MainWindow::requestsHistory()
 
 }
 
-
-
-void MainWindow::newTransaction()
+bool MainWindow::isAmountCorrect(double amount, CoinsType coins_type)
 {
-    QDate current;
-    current = current.currentDate();
-
-    switch(last_transaction_notify){
-    case 1:
-        ui->amount_1->setText(QString::number(amount));
-        ui->transactionIcon_1->setPixmap(QIcon("icons/sendIcon.png").pixmap(64,64));
-        ui->transactionDate_1->setText(current.toString("yyyy.MM.dd"));
-        ui->wallerAddress_1->setText(reciever_address);
+    Balance this_user = chain.getLastBlock().getUserBalance(wallet_address);
+    switch (coins_type) {
+    case BWC:
+        if(this_user.getBalance(BWC) > amount)
+        {
+            return true;
+        }
         break;
-    case 2:
-        ui->amount_2->setText(QString::number(amount));
-        ui->transactionIcon_2->setPixmap(QIcon("icons/sendIcon.png").pixmap(64,64));
-        ui->transactionDate_2->setText(current.toString("yyyy.MM.dd"));
-        ui->wallerAddress_2->setText(reciever_address);
+    case BWC_N:
+        if(this_user.getBalance(BWC_N) > amount)
+        {
+            return true;
+        }
         break;
-    case 3:
-        ui->amount_3->setText(QString::number(amount));
-        ui->transactionIcon_3->setPixmap(QIcon("icons/sendIcon.png").pixmap(64,64));
-        ui->transactionDate_3->setText(current.toString("yyyy.MM.dd"));
-        ui->wallerAddress_3->setText(reciever_address);
-        break;
-    case 4:
-        ui->amount_4->setText(QString::number(amount));
-        ui->transactionIcon_4->setPixmap(QIcon("icons/sendIcon.png").pixmap(64,64));
-        ui->transactionDate_4->setText(current.toString("yyyy.MM.dd"));
-        ui->wallerAddress_4->setText(reciever_address);
-        break;
-    case 5:
-        ui->amount_5->setText(QString::number(amount));
-        ui->transactionIcon_5->setPixmap(QIcon("icons/sendIcon.png").pixmap(64,64));
-        ui->transactionDate_5->setText(current.toString("yyyy.MM.dd"));
-        ui->wallerAddress_5->setText(reciever_address);
+    case BWC_Q:
+        if(this_user.getBalance(BWC_Q) > amount)
+        {
+            return true;
+        }
         break;
     default:
         break;
     }
-    setupTransactionsOverview();
+    return false;
+}
+
+void MainWindow::newTransaction()
+{
+    try {
+        if(isAmountCorrect(amount, coins_type) == false)
+        {
+            qDebug() << "No money man";
+            throw ProgramException(INVALID_COINS_VALUE);
+        }
+        chain.addBlock(1, TransactionData(wallet_address, reciever_address, amount, BWC, fee, priority), "1");
+
+        switch(last_transaction_notify){
+        case 1:
+            ui->amount_1->setText(QString::number(amount));
+            ui->transactionIcon_1->setPixmap(QIcon("icons/sendIcon.png").pixmap(64,64));
+            ui->transactionDate_1->setText(chain.getLastBlock().block_data.getTimeStamp());
+            ui->wallerAddress_1->setText(reciever_address);
+            break;
+        case 2:
+            ui->amount_2->setText(QString::number(amount));
+            ui->transactionIcon_2->setPixmap(QIcon("icons/sendIcon.png").pixmap(64,64));
+            ui->transactionDate_2->setText(chain.getLastBlock().block_data.getTimeStamp());
+            ui->wallerAddress_2->setText(reciever_address);
+            break;
+        case 3:
+            ui->amount_3->setText(QString::number(amount));
+            ui->transactionIcon_3->setPixmap(QIcon("icons/sendIcon.png").pixmap(64,64));
+            ui->transactionDate_3->setText(chain.getLastBlock().block_data.getTimeStamp());
+            ui->wallerAddress_3->setText(reciever_address);
+            break;
+        case 4:
+            ui->amount_4->setText(QString::number(amount));
+            ui->transactionIcon_4->setPixmap(QIcon("icons/sendIcon.png").pixmap(64,64));
+            ui->transactionDate_4->setText(chain.getLastBlock().block_data.getTimeStamp());
+            ui->wallerAddress_4->setText(reciever_address);
+            break;
+        case 5:
+            ui->amount_5->setText(QString::number(amount));
+            ui->transactionIcon_5->setPixmap(QIcon("icons/sendIcon.png").pixmap(64,64));
+            ui->transactionDate_5->setText(chain.getLastBlock().block_data.getTimeStamp());
+            ui->wallerAddress_5->setText(reciever_address);
+            break;
+        default:
+            break;
+        }
+        setupTransactionsOverview();
+    }  catch (ProgramException &error) {
+        error.getError();
+    }
 }
 
 void MainWindow::setWindowLanguage()
@@ -610,6 +684,8 @@ MainWindow::~MainWindow()
     delete recieve;
     delete transactions;
 
+    delete all_blocks;
+
     delete help;
     delete quit;
 
@@ -669,14 +745,17 @@ void MainWindow::on_priorityComboBox_currentIndexChanged(int index)
     switch(index) {
     case 0:
         fee = amount * 0.15;
+        priority = 1;
         ui->customValueLE->setText(QString::number(fee));
         break;
     case 1:
         fee = amount * 0.10;
+        priority = 2;
         ui->customValueLE->setText(QString::number(fee));
         break;
     case 2:
         fee = amount * 0.05;
+        priority = 3;
         ui->customValueLE->setText(QString::number(fee));
         break;
     default:
@@ -688,6 +767,7 @@ void MainWindow::on_priorityComboBox_currentIndexChanged(int index)
 void MainWindow::on_custinValueButton_clicked()
 {
     recomActivated = false;
+    ui->priorityComboBox->setEnabled(true);
     ui->priorityComboBox->setCurrentIndex(0);
     emit on_priorityComboBox_currentIndexChanged(0);
 }
@@ -696,7 +776,30 @@ void MainWindow::on_custinValueButton_clicked()
 void MainWindow::on_recomValueButton_clicked()
 {
     recomActivated = true;
+    ui->priorityComboBox->setEnabled(false);
     fee = amount * 0.05;
+    priority = 3;
     ui->recomValueLE->setText(QString::number(fee));
+}
+
+
+void MainWindow::on_coinsBox_currentIndexChanged(int index)
+{
+    switch (index) {
+    case 0:
+        qDebug() << index;
+        this->coins_type = BWC;
+        break;
+    case 1:
+        qDebug() << index;
+        this->coins_type = BWC_N;
+        break;
+    case 2:
+        qDebug() << index;
+        this->coins_type = BWC_Q;
+        break;
+    default:
+        break;
+    }
 }
 

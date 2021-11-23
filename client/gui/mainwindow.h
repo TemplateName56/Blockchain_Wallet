@@ -1,6 +1,7 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+
 #include <QMainWindow>
 #include <QIcon>
 #include <QMenu>
@@ -27,6 +28,7 @@
 #include "client/scripts/json_func.h"
 #include "client/scripts/new_wallet.h"
 #include "client/scripts/csv_func.h"
+#include "client/blockchain/blockchain.h"
 
 
 QT_BEGIN_NAMESPACE
@@ -44,6 +46,8 @@ public:
     void display();
     void requestsHistory();
 
+    bool isAmountCorrect(double amount, CoinsType coins_type);
+
 signals:
     void sendButton_clicked();
     void newTrasaction_clicked();
@@ -52,6 +56,8 @@ protected:
 
 private:
     Ui::MainWindow *ui;
+
+    Blockchain chain;
 
     settings_Form ui_Settings;
     auth_Form ui_Auth;
@@ -69,8 +75,9 @@ private:
 
     QString reciever_address;
     double amount;
+    CoinsType coins_type = BWC;
     double fee;
-    QString coins_type;
+    short priority = 3;
 
     bool recomActivated = true;
 
@@ -92,6 +99,8 @@ private:
     QAction *send;
     QAction *recieve;
     QAction *transactions;
+
+    QAction *all_blocks;
 
     QAction *help;
     QAction *quit;
@@ -127,6 +136,7 @@ private slots:
     void sendTR();
     void recieveTR();
     void transactionsTR();
+    void blocksTR();
 
     void setWindowLanguage();
     void iconActivated(QSystemTrayIcon::ActivationReason reason);
@@ -142,5 +152,6 @@ private slots:
     void on_priorityComboBox_currentIndexChanged(int index);
     void on_custinValueButton_clicked();
     void on_recomValueButton_clicked();
+    void on_coinsBox_currentIndexChanged(int index);
 };
 #endif // MAINWINDOW_H
