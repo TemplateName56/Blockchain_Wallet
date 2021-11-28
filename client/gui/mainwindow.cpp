@@ -46,7 +46,10 @@ void MainWindow::display()
 void MainWindow::authorizeUser()
 {
     try {
-        wallet_key = ui_Auth.getInputKey();
+        algoritms use_algoritm;
+
+        wallet_key = QString::fromStdString(use_algoritm.Hash(ui_Auth.getInputKey().toStdString() + "SALT"));
+
         QVector<QString> valid_keys = getUsersInfo(KEY);
 
         int index = valid_keys.indexOf(wallet_key);
@@ -86,7 +89,7 @@ void MainWindow::registerUser()
         wallet_address = randomWalletAdress();
         wallet_key = randomWalletKey();
 
-        registerNewUsers(wallet_address, wallet_key);
+        registerNewUsers(wallet_address, wallet_key + "SALT");
         login_succesfull = true;
 
         ui->walletAddressLabel->setText(wallet_address);

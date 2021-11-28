@@ -10,6 +10,7 @@
 #include <QJsonDocument>
 #include <QJsonArray>
 #include "client/tests/program_exception.h"
+#include "client/scripts/program_algorithms.h"
 
 #include <iostream>
 #include <QtDebug>

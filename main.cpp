@@ -14,25 +14,5 @@ int main(int argc, char *argv[])
     window.setWindowIcon(QIcon("icons/programIcon.png"));
     window.display();
 
-    // delete after tests
-    Blockchain newchain;
-    for(int index = 1; index <= 3; index++)
-    {
-        newchain.addBlock(index,TransactionData("petya", "vasya", rand() % 56, BWC, 1, 0), newchain.getLastBlock().getBlockHash());
-        Sleep(1000);
-    }
-    newchain.show();
-
-    newchain.writeChain();
-
-    qDebug() << newchain.isChainValid();
-
-    try {
-        newchain.collisionCheck();
-    }  catch (ProgramException &error) {
-        error.getError();
-    }
-
-
     return BlockchainWallet.exec();
 }
