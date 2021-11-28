@@ -18,6 +18,7 @@
 #include <QParallelAnimationGroup>
 #include <QStandardItemModel>
 #include <QDate>
+#include <QQueue>
 
 #include "auth_form.h"
 #include "settings_form.h"
@@ -58,6 +59,7 @@ private:
     Ui::MainWindow *ui;
 
     Blockchain chain;
+    QQueue<Block> blocks_queue;
 
     settings_Form ui_Settings;
     auth_Form ui_Auth;
@@ -80,6 +82,7 @@ private:
     short priority = 3;
 
     bool recomActivated = true;
+    bool animation_finished = true;
 
     int last_transaction_notify = 5;
 
@@ -145,6 +148,7 @@ private slots:
     void on_payToAddress_textChanged(const QString &arg1);
 
     void newTransaction();
+    void animationBlock();
     void on_sendCoinsButton_clicked();
     void on_payToAddress_textEdited(const QString &arg1);
     void on_amountSpinBox_valueChanged(double arg1);

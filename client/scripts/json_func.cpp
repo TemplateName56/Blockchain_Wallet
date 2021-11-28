@@ -333,6 +333,9 @@ void registerNewUsers(QString wallet_address, QString wallet_key)
     }  catch (ProgramException &error) {
         error.getError();
     }
+
+    algoritms use_algoritm;
+
     QFileInfo file_info("users.json");
     QDir::setCurrent(file_info.path());
     QFile json_file("users.json");
@@ -343,8 +346,9 @@ void registerNewUsers(QString wallet_address, QString wallet_key)
     }
 
     QJsonObject new_user;
+
     new_user["address"] = wallet_address;
-    new_user["walletKey"] = wallet_key;
+    new_user["walletKey"] = QString::fromStdString(use_algoritm.Hash(wallet_key.toStdString()));
 
     QJsonDocument json_document(QJsonDocument::fromJson(json_file.readAll()));
     json_file.close();
