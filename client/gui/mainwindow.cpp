@@ -14,6 +14,8 @@ MainWindow::MainWindow(QWidget *parent)
     }
     ui->priorityComboBox->setEnabled(false);
 
+
+    qRegisterMetaType<TransactionData>("TransactionData");
     login_succesfull = false;
 
     createActions();
@@ -29,8 +31,8 @@ MainWindow::MainWindow(QWidget *parent)
     connect(&ui_Settings, SIGNAL(trayCheckBoxToggled()), this, SLOT(trayEnabled()));
     connect(tray_icon, SIGNAL(activated(QSystemTrayIcon::ActivationReason)), this, SLOT(iconActivated(QSystemTrayIcon::ActivationReason)));
 
-    connect(this, SIGNAL(sendButton_clicked()), this, SLOT(newTransaction()));
-    connect(transactionsGroup, SIGNAL(finished()), this, SLOT(animationBlock()));
+    connect(this, SIGNAL(sendButton_clicked(TransactionData)), this, SLOT(newTransaction()));
+    connect(this, SIGNAL(sendButton_clicked(TransactionData)), val_1, SLOT(addTransaction(TransactionData)), Qt::QueuedConnection);
 
     ui->stackedWidget->setCurrentIndex(0);
     setWindowLanguage();
@@ -48,11 +50,11 @@ void MainWindow::authorizeUser()
     try {
         algoritms use_algoritm;
 
-        wallet_key = QString::fromStdString(use_algoritm.Hash(ui_Auth.getInputKey().toStdString() + "SALT"));
+        wallet_key = ui_Auth.getInputKey();
 
         QVector<QString> valid_keys = getUsersInfo(KEY);
 
-        int index = valid_keys.indexOf(wallet_key);
+        int index = valid_keys.indexOf(QString::fromStdString(use_algoritm.Hash(wallet_key.toStdString() + "SALT")));
 
         if(index != -1)
         {
@@ -177,12 +179,6 @@ void MainWindow::createActions()
 
 void MainWindow::createMenus()
 {
-    ui->transactionInfo_1->setVisible(false);
-    ui->transactionInfo_2->setVisible(false);
-    ui->transactionInfo_3->setVisible(false);
-    ui->transactionInfo_4->setVisible(false);
-    ui->transactionInfo_5->setVisible(false);
-
     main_menu = menuBar()->addMenu("&Main");
 
     main_menu->addAction(home);
@@ -304,106 +300,6 @@ void MainWindow::on_payToAddress_textChanged(const QString &arg1)
 
 }
 
-void MainWindow::setupTransactionsOverview()
-{
-    animation_finished = false;
-
-    transactionsGroup->clear();
-
-    switch (last_transaction_notify) {
-    case 1:
-        last_transaction_notify = 5;
-        y_tr2_pos += 100;
-        y_tr3_pos += 100;
-        y_tr4_pos += 100;
-        y_tr5_pos += 100;
-        y_tr1_pos = 10;
-
-        ui->transactionInfo_1->setVisible(true);
-        ui->transactionInfo_1->move(10,-80);
-        break;
-    case 2:
-        last_transaction_notify = 1;
-        y_tr1_pos += 100;
-        y_tr3_pos += 100;
-        y_tr4_pos += 100;
-        y_tr5_pos += 100;
-        y_tr2_pos = 10;
-
-        ui->transactionInfo_2->setVisible(true);
-        ui->transactionInfo_2->move(10,-80);
-        break;
-    case 3:
-        last_transaction_notify = 2;
-        y_tr1_pos += 100;
-        y_tr2_pos += 100;
-        y_tr4_pos += 100;
-        y_tr5_pos += 100;
-        y_tr3_pos = 10;
-
-        ui->transactionInfo_3->setVisible(true);
-        ui->transactionInfo_3->move(10,-80);
-        break;
-    case 4:
-        last_transaction_notify = 3;
-        y_tr1_pos += 100;
-        y_tr2_pos += 100;
-        y_tr3_pos += 100;
-        y_tr5_pos += 100;
-        y_tr4_pos = 10;
-
-        ui->transactionInfo_4->setVisible(true);
-        ui->transactionInfo_4->move(10,-80);
-        break;
-    case 5:
-        last_transaction_notify = 4;
-        y_tr1_pos += 100;
-        y_tr2_pos += 100;
-        y_tr3_pos += 100;
-        y_tr4_pos += 100;
-        y_tr5_pos = 10;
-
-        ui->transactionInfo_5->setVisible(true);
-        ui->transactionInfo_5->move(10,-80);
-        break;
-    default:
-        break;
-    }
-
-    transaction_1 = new QPropertyAnimation(ui->transactionInfo_1, "geometry");
-    transaction_1->setDuration(600);
-    transaction_1->setStartValue(ui->transactionInfo_1->geometry());
-    transaction_1->setEndValue(ui->transactionInfo_1->geometry().translated(0, 90));
-
-    transaction_2 = new QPropertyAnimation(ui->transactionInfo_2, "geometry");
-    transaction_2->setDuration(600);
-    transaction_2->setStartValue(ui->transactionInfo_2->geometry());
-    transaction_2->setEndValue(ui->transactionInfo_2->geometry().translated(0, 90));
-
-    transaction_3 = new QPropertyAnimation(ui->transactionInfo_3, "geometry");
-    transaction_3->setDuration(600);
-    transaction_3->setStartValue(ui->transactionInfo_3->geometry());
-    transaction_3->setEndValue(ui->transactionInfo_3->geometry().translated(0, 90));
-
-    transaction_4 = new QPropertyAnimation(ui->transactionInfo_4, "geometry");
-    transaction_4->setDuration(600);
-    transaction_4->setStartValue(ui->transactionInfo_4->geometry());
-    transaction_4->setEndValue(ui->transactionInfo_4->geometry().translated(0, 90));
-
-    transaction_5 = new QPropertyAnimation(ui->transactionInfo_5, "geometry");
-    transaction_5->setDuration(600);
-    transaction_5->setStartValue(ui->transactionInfo_5->geometry());
-    transaction_5->setEndValue(ui->transactionInfo_5->geometry().translated(0, 90));
-
-    transactionsGroup->addAnimation(transaction_1);
-    transactionsGroup->addAnimation(transaction_2);
-    transactionsGroup->addAnimation(transaction_3);
-    transactionsGroup->addAnimation(transaction_4);
-    transactionsGroup->addAnimation(transaction_5);
-
-    transactionsGroup->start();
-}
-
 void MainWindow::requestsHistory()
 {
     request_view_model = new QStandardItemModel(this);
@@ -519,85 +415,6 @@ bool MainWindow::isAmountCorrect(double amount, CoinsType coins_type)
         break;
     }
     return false;
-}
-
-void MainWindow::newTransaction()
-{
-    try {
-        if(isAmountCorrect(amount, coins_type) == false)
-        {
-            qDebug() << "No money man";
-            throw ProgramException(INVALID_COINS_VALUE);
-        }
-        if(animation_finished)
-        {
-            if(blocks_queue.empty())
-            {
-                chain.addBlock(chain.getLastBlock().getIndex() + 1,
-                                TransactionData(wallet_address, reciever_address, amount, coins_type, fee, priority),
-                                chain.getLastBlock().getBlockHash());
-            }
-            else
-            {
-                chain.addBlock(blocks_queue.dequeue());
-            }
-
-            switch(last_transaction_notify){
-            case 1:
-                ui->amount_1->setText(QString::number(amount));
-                ui->transactionIcon_1->setPixmap(QIcon("icons/sendIcon.png").pixmap(64,64));
-                ui->transactionDate_1->setText(chain.getLastBlock().block_data.getTimeStamp());
-                ui->wallerAddress_1->setText(reciever_address);
-                break;
-            case 2:
-                ui->amount_2->setText(QString::number(amount));
-                ui->transactionIcon_2->setPixmap(QIcon("icons/sendIcon.png").pixmap(64,64));
-                ui->transactionDate_2->setText(chain.getLastBlock().block_data.getTimeStamp());
-                ui->wallerAddress_2->setText(reciever_address);
-                break;
-            case 3:
-                ui->amount_3->setText(QString::number(amount));
-                ui->transactionIcon_3->setPixmap(QIcon("icons/sendIcon.png").pixmap(64,64));
-                ui->transactionDate_3->setText(chain.getLastBlock().block_data.getTimeStamp());
-                ui->wallerAddress_3->setText(reciever_address);
-                break;
-            case 4:
-                ui->amount_4->setText(QString::number(amount));
-                ui->transactionIcon_4->setPixmap(QIcon("icons/sendIcon.png").pixmap(64,64));
-                ui->transactionDate_4->setText(chain.getLastBlock().block_data.getTimeStamp());
-                ui->wallerAddress_4->setText(reciever_address);
-                break;
-            case 5:
-                ui->amount_5->setText(QString::number(amount));
-                ui->transactionIcon_5->setPixmap(QIcon("icons/sendIcon.png").pixmap(64,64));
-                ui->transactionDate_5->setText(chain.getLastBlock().block_data.getTimeStamp());
-                ui->wallerAddress_5->setText(reciever_address);
-                break;
-            default:
-                break;
-            }
-            setupTransactionsOverview();
-        }
-        else
-        {
-            if(blocks_queue.empty())
-            {
-                Block new_block(chain.getLastBlock().getIndex() + 1,
-                                TransactionData(wallet_address, reciever_address, amount, coins_type, fee, priority),
-                                chain.getLastBlock().getBlockHash());
-                blocks_queue.enqueue(new_block);
-            }
-            else
-            {
-                Block new_block(blocks_queue.head().getIndex() + 1,
-                                TransactionData(wallet_address, reciever_address, amount, coins_type, fee, priority),
-                                blocks_queue.head().getBlockHash());
-                blocks_queue.enqueue(new_block);
-            }
-        }
-    }  catch (ProgramException &error) {
-        error.getError();
-    }
 }
 
 void MainWindow::setWindowLanguage()
@@ -736,14 +553,12 @@ MainWindow::~MainWindow()
 
     delete toolbar;
     delete tray_icon;
-
-    delete transactionsGroup;
 }
 
 
 void MainWindow::on_sendCoinsButton_clicked()
 {
-    emit sendButton_clicked();
+    emit sendButton_clicked(TransactionData(wallet_address, reciever_address, amount, coins_type, fee, priority));
 }
 
 
@@ -820,32 +635,16 @@ void MainWindow::on_coinsBox_currentIndexChanged(int index)
 {
     switch (index) {
     case 0:
-        qDebug() << index;
         this->coins_type = BWC;
         break;
     case 1:
-        qDebug() << index;
         this->coins_type = BWC_N;
         break;
     case 2:
-        qDebug() << index;
         this->coins_type = BWC_Q;
         break;
     default:
         break;
-    }
-}
-
-void MainWindow::animationBlock()
-{
-    if(!blocks_queue.empty())
-    {
-        animation_finished = true;
-        emit newTransaction();
-    }
-    else
-    {
-        animation_finished = true;
     }
 }
 

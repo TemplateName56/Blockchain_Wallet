@@ -2,7 +2,8 @@
 #define PROGRAM_ALGORITHMS_H
 #include<string>
 
-using namespace std;
+using std::string;
+using std::swap;
 
 class algoritms
 {

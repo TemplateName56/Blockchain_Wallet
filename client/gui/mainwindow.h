@@ -19,6 +19,7 @@
 #include <QStandardItemModel>
 #include <QDate>
 #include <QQueue>
+#include <QMetaType>
 
 #include "auth_form.h"
 #include "settings_form.h"
@@ -50,8 +51,10 @@ public:
     bool isAmountCorrect(double amount, CoinsType coins_type);
 
 signals:
-    void sendButton_clicked();
+    void sendButton_clicked(TransactionData new_data);
     void newTrasaction_clicked();
+    void sendTransaction(TransactionData new_transaction);
+
 protected:
     void closeEvent(QCloseEvent *event);
 
@@ -59,6 +62,12 @@ private:
     Ui::MainWindow *ui;
 
     Blockchain chain;
+    Validator* val_1 = new Validator;
+    Validator val_2;
+    Validator val_3;
+
+    QQueue<TransactionData> transactions_queue;
+
     QQueue<Block> blocks_queue;
 
     settings_Form ui_Settings;
@@ -92,12 +101,6 @@ private:
     int y_tr4_pos = 280;
     int y_tr5_pos = 370;
 
-    void createActions();
-    void createMenus();
-    void createTrayMenu();
-    void uiChanges();
-    void setupTransactionsOverview();
-
     QAction *home;
     QAction *send;
     QAction *recieve;
@@ -123,13 +126,10 @@ private:
     QToolBar *toolbar;
     QSystemTrayIcon *tray_icon;
 
-    QParallelAnimationGroup *transactionsGroup = new QParallelAnimationGroup;
-
-    QPropertyAnimation *transaction_1;
-    QPropertyAnimation *transaction_2;
-    QPropertyAnimation *transaction_3;
-    QPropertyAnimation *transaction_4;
-    QPropertyAnimation *transaction_5;
+    void createActions();
+    void createMenus();
+    void createTrayMenu();
+    void uiChanges();
 
 private slots:
     void authorizeUser();
@@ -144,18 +144,20 @@ private slots:
     void setWindowLanguage();
     void iconActivated(QSystemTrayIcon::ActivationReason reason);
     void trayEnabled();
+
     void on_addUserToAddressBook_textChanged(const QString &arg1);
     void on_payToAddress_textChanged(const QString &arg1);
-
-    void newTransaction();
-    void animationBlock();
-    void on_sendCoinsButton_clicked();
     void on_payToAddress_textEdited(const QString &arg1);
-    void on_amountSpinBox_valueChanged(double arg1);
-    void on_feeCheckBox_stateChanged(int arg1);
-    void on_priorityComboBox_currentIndexChanged(int index);
+
+    void on_sendCoinsButton_clicked();
     void on_custinValueButton_clicked();
     void on_recomValueButton_clicked();
+
+    void on_amountSpinBox_valueChanged(double arg1);
+
+    void on_feeCheckBox_stateChanged(int arg1);
+
+    void on_priorityComboBox_currentIndexChanged(int index);
     void on_coinsBox_currentIndexChanged(int index);
 };
 #endif // MAINWINDOW_H

@@ -116,7 +116,7 @@ double TransactionData::getFee()
     return this->fee_amount;
 }
 
-short TransactionData::getPriority()
+short TransactionData::getPriority() const
 {
     return this->priority;
 }
@@ -390,4 +390,20 @@ void Blockchain::show()
 Blockchain::~Blockchain()
 {
 
+}
+
+Validator::Validator(QObject *parent) : QObject(parent)
+{
+
+}
+
+void Validator::addTransaction(TransactionData new_transaction)
+{
+    transactions_queue.push(new_transaction);
+    chain.addBlock(chain.getLastBlock().getIndex(), new_transaction, chain.getLastBlock().getBlockHash());
+}
+
+bool operator<(const TransactionData& T1, const TransactionData& T2)
+{
+    return T1.getPriority() < T2.getPriority();
 }

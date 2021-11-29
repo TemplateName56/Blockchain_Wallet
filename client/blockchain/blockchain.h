@@ -5,6 +5,10 @@
 #include <QVector>
 #include <QDebug>
 #include <QDateTime>
+#include <QObject>
+
+#include <queue>
+
 #include "client/scripts/program_algorithms.h"
 #include "client/tests/program_exception.h"
 #include "client/scripts/json_func.h"
@@ -57,7 +61,7 @@ public:
     CoinsType getCoinsType();
 
     double getFee();
-    short getPriority();
+    short getPriority() const;
 
     QString getTimeStamp();
 };
@@ -111,5 +115,23 @@ public:
 
     ~Blockchain();
 };
+
+class Validator : public QObject
+{
+    Q_OBJECT
+private:
+    Blockchain chain;
+    int authority;
+
+    std::priority_queue<TransactionData> transactions_queue;
+
+public:
+    explicit Validator(QObject *parent = nullptr);
+
+public slots:
+    void addTransaction(TransactionData new_transaction);
+};
+
+bool operator<(const TransactionData& T1, const TransactionData& T2);
 
 #endif // BLOCKCHAIN_H
