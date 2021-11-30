@@ -7,8 +7,6 @@
 #include <QDateTime>
 #include <QObject>
 
-#include <queue>
-
 #include "client/scripts/program_algorithms.h"
 #include "client/tests/program_exception.h"
 #include "client/scripts/json_func.h"
@@ -16,7 +14,8 @@
 enum CoinsType{
     BWC,
     BWC_N,
-    BWC_Q
+    BWC_Q,
+    CoinsTypeERROR
 };
 
 class Balance{
@@ -34,7 +33,7 @@ public:
     QString getAddress();
 
     double getBalance(CoinsType coins_type);
-    double setBalance(double amount, CoinsType coins_type);
+    void setBalance(double amount, CoinsType coins_type);
 };
 
 class TransactionData{
@@ -53,6 +52,9 @@ public:
     TransactionData(QString sender, QString reciever,
                     double amount, CoinsType coins_type,
                     double fee, short priority);
+    TransactionData(QString sender, QString reciever,
+                    double amount, CoinsType coins_type,
+                    double fee, short priority, QString timestamp);
 
     QString getSender();
     QString getReciever();
@@ -75,6 +77,7 @@ class Block{
 public:
     Block();
     Block(int index, TransactionData data, QString prev_hash);
+    Block(int index, TransactionData data, QString prev_hash, QString hash);
 
     TransactionData block_data;
     QVector<Balance> users_balance;
@@ -102,6 +105,7 @@ public:
     QVector<Block> getChain();
 
     Block getLastBlock();
+    int getChainLenght();
 
     bool isChainValid();
     void collisionCheck();
@@ -110,7 +114,9 @@ public:
     void writeChain();
 
     void addBlock(int index, TransactionData data, QString prev_hash);
+    void addBlock(int index, TransactionData data, QString prev_hash, QString hash);
     void addBlock(Block new_block);
+
     void show();
 
     ~Blockchain();
@@ -123,15 +129,14 @@ private:
     Blockchain chain;
     int authority;
 
-    std::priority_queue<TransactionData> transactions_queue;
-
 public:
     explicit Validator(QObject *parent = nullptr);
+    Blockchain getChain();
 
+signals:
+    void newBlock();
 public slots:
     void addTransaction(TransactionData new_transaction);
 };
-
-bool operator<(const TransactionData& T1, const TransactionData& T2);
 
 #endif // BLOCKCHAIN_H

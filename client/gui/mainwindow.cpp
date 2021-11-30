@@ -14,9 +14,7 @@ MainWindow::MainWindow(QWidget *parent)
     }
     ui->priorityComboBox->setEnabled(false);
 
-
     qRegisterMetaType<TransactionData>("TransactionData");
-    login_succesfull = false;
 
     createActions();
     createMenus();
@@ -25,14 +23,15 @@ MainWindow::MainWindow(QWidget *parent)
     requestsHistory();
 
     connect(&ui_Auth, SIGNAL(login_button_clicked()), this, SLOT(authorizeUser()));
-    connect(&ui_Auth, SIGNAL(destroyed()), this, SLOT(show()));
     connect(&ui_Auth, SIGNAL(register_button_clicked()), this, SLOT(registerUser()));
+    connect(&ui_Auth, SIGNAL(destroyed()), this, SLOT(show()));
+
     connect(&ui_Settings, SIGNAL(languageChanged()), this, SLOT(setWindowLanguage()));
     connect(&ui_Settings, SIGNAL(trayCheckBoxToggled()), this, SLOT(trayEnabled()));
+
     connect(tray_icon, SIGNAL(activated(QSystemTrayIcon::ActivationReason)), this, SLOT(iconActivated(QSystemTrayIcon::ActivationReason)));
 
-    connect(this, SIGNAL(sendButton_clicked(TransactionData)), this, SLOT(newTransaction()));
-    connect(this, SIGNAL(sendButton_clicked(TransactionData)), val_1, SLOT(addTransaction(TransactionData)), Qt::QueuedConnection);
+    connect(this, SIGNAL(sendButton_clicked(TransactionData)), &val_1, SLOT(addTransaction(TransactionData)), Qt::QueuedConnection);
 
     ui->stackedWidget->setCurrentIndex(0);
     setWindowLanguage();
@@ -58,8 +57,6 @@ void MainWindow::authorizeUser()
 
         if(index != -1)
         {
-            login_succesfull = true;
-
             ui_Auth.close();
             Sleep(250);
             QVector<QString> user_address = getUsersInfo(ADDRESS);
@@ -92,7 +89,6 @@ void MainWindow::registerUser()
         wallet_key = randomWalletKey();
 
         registerNewUsers(wallet_address, wallet_key + "SALT");
-        login_succesfull = true;
 
         ui->walletAddressLabel->setText(wallet_address);
         ui->walletKeyLabel->setText(wallet_key);
@@ -525,37 +521,6 @@ void MainWindow::setWindowLanguage()
     }
 }
 
-MainWindow::~MainWindow()
-{
-    delete ui;
-
-    delete home;
-    delete send;
-    delete recieve;
-    delete transactions;
-
-    delete all_blocks;
-
-    delete help;
-    delete quit;
-
-    delete encrypt_wallet;
-    delete change_passphrase;
-    delete options;
-
-    delete about_program;
-    delete view_window;
-
-    delete main_menu;
-    delete settings_menu;
-    delete help_menu;
-    delete tray_menu;
-
-    delete toolbar;
-    delete tray_icon;
-}
-
-
 void MainWindow::on_sendCoinsButton_clicked()
 {
     emit sendButton_clicked(TransactionData(wallet_address, reciever_address, amount, coins_type, fee, priority));
@@ -646,5 +611,37 @@ void MainWindow::on_coinsBox_currentIndexChanged(int index)
     default:
         break;
     }
+}
+
+MainWindow::~MainWindow()
+{
+    delete ui;
+
+    delete request_view_model;
+
+    delete home;
+    delete send;
+    delete recieve;
+    delete transactions;
+
+    delete all_blocks;
+
+    delete help;
+    delete quit;
+
+    delete encrypt_wallet;
+    delete change_passphrase;
+    delete options;
+
+    delete about_program;
+    delete view_window;
+
+    delete main_menu;
+    delete settings_menu;
+    delete help_menu;
+    delete tray_menu;
+
+    delete toolbar;
+    delete tray_icon;
 }
 

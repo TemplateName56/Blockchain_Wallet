@@ -62,13 +62,9 @@ private:
     Ui::MainWindow *ui;
 
     Blockchain chain;
-    Validator* val_1 = new Validator;
+    Validator val_1;
     Validator val_2;
     Validator val_3;
-
-    QQueue<TransactionData> transactions_queue;
-
-    QQueue<Block> blocks_queue;
 
     settings_Form ui_Settings;
     auth_Form ui_Auth;
@@ -79,10 +75,8 @@ private:
     QString wallet_key;
     QString wallet_address;
 
-    QStandardItemModel *request_view_model;
-
-    bool login_succesfull;
     bool tray_enable = false;
+    bool recomActivated = true;
 
     QString reciever_address;
     double amount;
@@ -90,16 +84,7 @@ private:
     double fee;
     short priority = 3;
 
-    bool recomActivated = true;
-    bool animation_finished = true;
-
-    int last_transaction_notify = 5;
-
-    int y_tr1_pos = 10;
-    int y_tr2_pos = 100;
-    int y_tr3_pos = 190;
-    int y_tr4_pos = 280;
-    int y_tr5_pos = 370;
+    QStandardItemModel *request_view_model;
 
     QAction *home;
     QAction *send;
