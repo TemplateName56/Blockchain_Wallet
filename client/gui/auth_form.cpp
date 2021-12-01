@@ -15,7 +15,7 @@ auth_Form::~auth_Form()
 
 void auth_Form::on_walletKeyInput_textEdited(const QString &arg1)
 {
-    auth_Form::user_key = arg1;
+    this->user_key = arg1;
 }
 
 
@@ -32,7 +32,7 @@ void auth_Form::on_registerButton_clicked()
 
 QString auth_Form::getInputKey()
 {
-    return auth_Form::user_key;
+    return this->user_key;
 }
 
 void auth_Form::setWindowLanguage(int Language)

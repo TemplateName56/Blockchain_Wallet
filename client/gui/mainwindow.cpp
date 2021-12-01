@@ -297,13 +297,15 @@ void MainWindow::addTransactionCard(QString label, QString timeStamp, double amo
     new_card->setData(label, timeStamp, amount, coins_type, 0);
     if(counter == 3)
     {
-        QLayoutItem *item = ui->cardsLayout->takeAt(0);
+        QLayoutItem *item = ui->cardsLayout->takeAt(2);
         delete item->widget();
         delete item;
-        counter = 0;
     }
-    ui->cardsLayout->addWidget(new_card);
-    counter++;
+    else
+    {
+        counter++;
+    }
+    ui->cardsLayout->insertWidget(0, new_card);
 }
 
 void MainWindow::newTransaction(QString wallet_address, TransactionData data)
@@ -320,7 +322,7 @@ void MainWindow::newTransaction(QString wallet_address, TransactionData data)
 
 void MainWindow::on_payToAddress_textChanged(const QString &arg1)
 {
-
+    this->reciever_address = arg1;
 }
 
 void MainWindow::requestsHistory()
@@ -551,7 +553,7 @@ void MainWindow::setWindowLanguage()
 void MainWindow::on_sendCoinsButton_clicked()
 {
     try {
-        if(isAmountCorrect(amount, coins_type))
+        if(!isAmountCorrect(amount + fee, coins_type))
         {
             throw ProgramException(INVALID_COINS_VALUE);
         }
@@ -570,12 +572,6 @@ void MainWindow::on_sendCoinsButton_clicked()
         error.getError();
     }
 
-}
-
-
-void MainWindow::on_payToAddress_textEdited(const QString &arg1)
-{
-    this->reciever_address = arg1;
 }
 
 

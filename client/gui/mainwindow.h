@@ -140,8 +140,6 @@ private slots:
     void on_payToAddress_textChanged(const QString &arg1);
     void on_sendTransactionLabel_textChanged(const QString &arg1);
 
-    void on_payToAddress_textEdited(const QString &arg1);
-
     void on_sendCoinsButton_clicked();
     void on_customValueButton_clicked();
     void on_recomValueButton_clicked();
