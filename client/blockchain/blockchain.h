@@ -77,12 +77,14 @@ class Block
 
     QString hash;
     QString prev_hash;
+
+    TransactionData block_data;
 public:
     Block();
     Block(int index, TransactionData data, QString prev_hash);
     Block(int index, TransactionData data, QString prev_hash, QString hash);
 
-    TransactionData block_data;
+
     QVector<Balance> users_balance;
 
     QString generateHash();
@@ -91,6 +93,8 @@ public:
 
     QString getBlockHash();
     QString getPrevBlockHash();
+
+    TransactionData getBlockData();
 
     Balance getUserBalance(QString address);
     void setUserBalance(QString address, bool is_reciever = false);
