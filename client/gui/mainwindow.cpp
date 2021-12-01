@@ -33,6 +33,10 @@ MainWindow::MainWindow(QWidget *parent)
 
     connect(this, SIGNAL(sendButton_clicked(TransactionData)), &val_1, SLOT(addTransaction(TransactionData)), Qt::QueuedConnection);
 
+    connect(&val_1, SIGNAL(sendTransaction(QString,TransactionData)), this, SLOT(newTransaction(QString,TransactionData)));
+    connect(&val_2, SIGNAL(sendTransaction(QString,TransactionData)), this, SLOT(newTransaction(QString,TransactionData)));
+    connect(&val_3, SIGNAL(sendTransaction(QString,TransactionData)), this, SLOT(newTransaction(QString,TransactionData)));
+
     ui->stackedWidget->setCurrentIndex(0);
     setWindowLanguage();
 
@@ -62,7 +66,7 @@ void MainWindow::authorizeUser()
             QVector<QString> user_address = getUsersInfo(ADDRESS);
             wallet_address = user_address[index];
 
-            Balance current_user = chain.getLastBlock().getUserBalance(wallet_address);
+            Balance current_user = val_1.getChain().getLastBlock().getUserBalance(wallet_address);
 
             ui->bwcBalance->setText(QString::number(current_user.getBalance(BWC)));
             ui->bwcNBalance->setText(QString::number(current_user.getBalance(BWC_N)));
@@ -96,7 +100,7 @@ void MainWindow::registerUser()
         ui_Auth.close();
         Sleep(250);
 
-        Balance current_user = chain.getLastBlock().getUserBalance(wallet_address);
+        Balance current_user = val_1.getChain().getLastBlock().getUserBalance(wallet_address);
 
         ui->bwcBalance->setText(QString::number(current_user.getBalance(BWC)));
         ui->bwcNBalance->setText(QString::number(current_user.getBalance(BWC_N)));
@@ -228,7 +232,7 @@ void MainWindow::createTrayMenu()
 void MainWindow::uiChanges()
 {
     ui->payToAddress->setPlaceholderText("Enter wallet-address");
-    ui->addUserToAddressBook->setPlaceholderText("Enter a label for this address to add it to your address book");
+    ui->sendTransactionLabel->setPlaceholderText("Enter a label for this address to add it to your address book");
 }
 
 void MainWindow::iconActivated(QSystemTrayIcon::ActivationReason reason)
@@ -286,9 +290,32 @@ void MainWindow::trayEnabled()
     }
 }
 
-void MainWindow::on_addUserToAddressBook_textChanged(const QString &arg1)
+void MainWindow::addTransactionCard(QString label, QString timeStamp, double amount, CoinsType coins_type, int transaction_type)
 {
+    transactionsCardView *new_card = new transactionsCardView;
 
+    new_card->setData(label, timeStamp, amount, coins_type, 0);
+    if(counter == 3)
+    {
+        QLayoutItem *item = ui->cardsLayout->takeAt(0);
+        delete item->widget();
+        delete item;
+        counter = 0;
+    }
+    ui->cardsLayout->addWidget(new_card);
+    counter++;
+}
+
+void MainWindow::newTransaction(QString wallet_address, TransactionData data)
+{
+    if(wallet_address == this->wallet_address)
+    {
+        Balance current_user = val_1.getChain().getLastBlock().getUserBalance(wallet_address);
+
+        ui->bwcBalance->setText(QString::number(current_user.getBalance(BWC)));
+        ui->bwcNBalance->setText(QString::number(current_user.getBalance(BWC_N)));
+        ui->bwcQBalance->setText(QString::number(current_user.getBalance(BWC_Q)));
+    }
 }
 
 void MainWindow::on_payToAddress_textChanged(const QString &arg1)
@@ -387,7 +414,7 @@ void MainWindow::requestsHistory()
 
 bool MainWindow::isAmountCorrect(double amount, CoinsType coins_type)
 {
-    Balance this_user = chain.getLastBlock().getUserBalance(wallet_address);
+    Balance this_user = val_1.getChain().getLastBlock().getUserBalance(wallet_address);
     switch (coins_type) {
     case BWC:
         if(this_user.getBalance(BWC) > amount)
@@ -523,7 +550,26 @@ void MainWindow::setWindowLanguage()
 
 void MainWindow::on_sendCoinsButton_clicked()
 {
-    emit sendButton_clicked(TransactionData(wallet_address, reciever_address, amount, coins_type, fee, priority));
+    try {
+        if(isAmountCorrect(amount, coins_type))
+        {
+            throw ProgramException(INVALID_COINS_VALUE);
+        }
+        emit sendButton_clicked(TransactionData(wallet_address, reciever_address, amount, coins_type, fee, priority));
+
+        QDateTime timeStamp = QDateTime::currentDateTime();
+
+        emit addTransactionCard(transaction_label, timeStamp.toString(), amount, coins_type, 0);
+
+        Balance current_user = val_1.getChain().getLastBlock().getUserBalance(wallet_address);
+
+        ui->bwcBalance->setText(QString::number(current_user.getBalance(BWC)));
+        ui->bwcNBalance->setText(QString::number(current_user.getBalance(BWC_N)));
+        ui->bwcQBalance->setText(QString::number(current_user.getBalance(BWC_Q)));
+    }  catch (ProgramException &error) {
+        error.getError();
+    }
+
 }
 
 
@@ -577,7 +623,7 @@ void MainWindow::on_priorityComboBox_currentIndexChanged(int index)
 }
 
 
-void MainWindow::on_custinValueButton_clicked()
+void MainWindow::on_customValueButton_clicked()
 {
     recomActivated = false;
     ui->priorityComboBox->setEnabled(true);
@@ -611,6 +657,11 @@ void MainWindow::on_coinsBox_currentIndexChanged(int index)
     default:
         break;
     }
+}
+
+void MainWindow::on_sendTransactionLabel_textChanged(const QString &arg1)
+{
+    this->transaction_label = arg1;
 }
 
 MainWindow::~MainWindow()

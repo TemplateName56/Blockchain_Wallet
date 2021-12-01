@@ -47,7 +47,7 @@
      </size>
     </property>
     <property name="currentIndex">
-     <number>0</number>
+     <number>1</number>
     </property>
     <widget class="QWidget" name="mainWidget">
      <property name="minimumSize">
@@ -159,8 +159,8 @@
      <widget class="QLabel" name="transactionsOverviewLabel">
       <property name="geometry">
        <rect>
-        <x>390</x>
-        <y>20</y>
+        <x>370</x>
+        <y>40</y>
         <width>90</width>
         <height>20</height>
        </rect>
@@ -332,6 +332,30 @@
        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
       </property>
      </widget>
+     <widget class="QScrollArea" name="scrollArea">
+      <property name="geometry">
+       <rect>
+        <x>370</x>
+        <y>60</y>
+        <width>420</width>
+        <height>300</height>
+       </rect>
+      </property>
+      <property name="widgetResizable">
+       <bool>true</bool>
+      </property>
+      <widget class="QWidget" name="scrollAreaWidgetContents">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>418</width>
+         <height>298</height>
+        </rect>
+       </property>
+       <layout class="QVBoxLayout" name="cardsLayout"/>
+      </widget>
+     </widget>
     </widget>
     <widget class="QWidget" name="sendWidget">
      <property name="sizePolicy">
@@ -421,7 +445,7 @@
         <bool>true</bool>
        </property>
       </widget>
-      <widget class="QRadioButton" name="custinValueButton">
+      <widget class="QRadioButton" name="customValueButton">
        <property name="geometry">
         <rect>
          <x>10</x>
@@ -559,7 +583,7 @@
        <item row="1" column="0">
         <widget class="QLabel" name="addToAddressBookLabel">
          <property name="text">
-          <string>User Label:</string>
+          <string>Label:</string>
          </property>
         </widget>
        </item>
@@ -638,7 +662,7 @@
         </widget>
        </item>
        <item row="1" column="1">
-        <widget class="QLineEdit" name="addUserToAddressBook">
+        <widget class="QLineEdit" name="sendTransactionLabel">
          <property name="inputMask">
           <string/>
          </property>

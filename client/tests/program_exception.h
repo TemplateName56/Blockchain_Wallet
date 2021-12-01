@@ -5,7 +5,8 @@
 #include <QFileInfo>
 #include <QMessageBox>
 
-enum ErrorsNames{
+enum ErrorsNames
+{
     INVALID_INPUT,
     INVALID_KEY,
     FILE_EXIST_ERROR,
@@ -13,8 +14,8 @@ enum ErrorsNames{
     FILE_WRITE_ERROR,
     ADDRESS_NOT_EXISTS,
     INVALID_COINS_VALUE,
-    INCORRECT_ADDRESS,
-    HASH_COLLISION
+    HASH_COLLISION,
+    BLOCKCHAIN_NOT_VALID
 };
 
 class ProgramException : public QException

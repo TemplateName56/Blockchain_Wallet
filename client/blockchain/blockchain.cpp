@@ -481,8 +481,11 @@ Validator::Validator(QObject *parent) : QObject(parent)
 void Validator::addTransaction(TransactionData new_transaction)
 {
     chain.addBlock(chain.getLastBlock().getIndex(), new_transaction, chain.getLastBlock().getBlockHash());
+
     chain.writeChain();
-    chain.show();
+    authority += 1;
+
+    emit sendTransaction(chain.getLastBlock().block_data.getReciever(), chain.getLastBlock().block_data);
 }
 
 Blockchain Validator::getChain()

@@ -47,6 +47,9 @@ set(PROJECT_SOURCES
         client/scripts/csv_func.cpp
         client/blockchain/blockchain.h
         client/blockchain/blockchain.cpp
+        client/gui/transactionscardview.h
+        client/gui/transactionscardview.cpp
+        client/gui/transactionscardview.ui
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)

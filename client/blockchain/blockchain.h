@@ -11,14 +11,16 @@
 #include "client/tests/program_exception.h"
 #include "client/scripts/json_func.h"
 
-enum CoinsType{
+enum CoinsType
+{
     BWC,
     BWC_N,
     BWC_Q,
     CoinsTypeERROR
 };
 
-class Balance{
+class Balance
+{
     QString address;
 
     double balance_amount_BWC = 0;
@@ -36,7 +38,8 @@ public:
     void setBalance(double amount, CoinsType coins_type);
 };
 
-class TransactionData{
+class TransactionData
+{
     QString sender;
     QString reciever;
 
@@ -68,12 +71,12 @@ public:
     QString getTimeStamp();
 };
 
-class Block{
+class Block
+{
     int id;
 
     QString hash;
     QString prev_hash;
-
 public:
     Block();
     Block(int index, TransactionData data, QString prev_hash);
@@ -128,6 +131,7 @@ class Validator : public QObject
 private:
     Blockchain chain;
     int authority;
+    bool blocked = false;
 
 public:
     explicit Validator(QObject *parent = nullptr);
@@ -135,6 +139,8 @@ public:
 
 signals:
     void newBlock();
+    void sendTransaction(QString, TransactionData);
+
 public slots:
     void addTransaction(TransactionData new_transaction);
 };

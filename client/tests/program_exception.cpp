@@ -49,6 +49,12 @@ void ProgramException::getError()
         error_messageBox.exec();
         QTimer::singleShot(0, qApp, &QCoreApplication::quit);
         break;
+    case ADDRESS_NOT_EXISTS:
+        break;
+    case INVALID_COINS_VALUE:
+        break;
+    case HASH_COLLISION:
+        break;
     default:
         break;
     }
