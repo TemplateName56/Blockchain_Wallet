@@ -1,5 +1,23 @@
 #include "blockchain.h"
 
+CoinsType toCoinsType(int CoinId)
+{
+    switch (CoinId) {
+    case 0:
+        return BWC;
+        break;
+    case 1:
+        return BWC_N;
+        break;
+    case 2:
+        return BWC_Q;
+        break;
+    default:
+        return CoinsTypeERROR;
+        break;
+    }
+}
+
 Balance::Balance()
 {
 
@@ -48,11 +66,12 @@ double Balance::getBalance(CoinsType coins_type)
         return this->balance_amount_BWC_Q;
         break;
     default:
+        return 0;
         break;
     }
 }
 
-double Balance::setBalance(double amount, CoinsType coins_type)
+void Balance::setBalance(double amount, CoinsType coins_type)
 {
     switch (coins_type) {
     case BWC:
@@ -91,6 +110,22 @@ TransactionData::TransactionData(QString sender, QString reciever,
     this->timestamp = current_time.toString();
 }
 
+TransactionData::TransactionData(QString sender, QString reciever,
+                                 double amount, CoinsType coins_type,
+                                 double fee, short priority, QString timestamp)
+{
+    this->sender = sender;
+    this->reciever = reciever;
+
+    this->amount = amount;
+    this->coins_type = coins_type;
+
+    this->fee_amount = fee;
+    this->priority = priority;
+
+    this->timestamp = timestamp;
+}
+
 QString TransactionData::getSender()
 {
     return this->sender;
@@ -116,7 +151,7 @@ double TransactionData::getFee()
     return this->fee_amount;
 }
 
-short TransactionData::getPriority()
+short TransactionData::getPriority() const
 {
     return this->priority;
 }
@@ -136,6 +171,14 @@ Block::Block(int index, TransactionData data, QString prev_hash)
     this->id = index;
     this->block_data = data;
     this->hash = generateHash();
+    this->prev_hash = prev_hash;
+}
+
+Block::Block(int index, TransactionData data, QString prev_hash, QString hash)
+{
+    this->id = index;
+    this->block_data = data;
+    this->hash = hash;
     this->prev_hash = prev_hash;
 }
 
@@ -219,11 +262,12 @@ Block::~Block()
 Blockchain::Blockchain()
 {
     createGenesisBlock();
+    readChain();
 }
 
 void Blockchain::createGenesisBlock()
 {
-    Block genesis(0, TransactionData("genesis", "BW0000000000000000000", 9999.999999, BWC, 0, 1), "0");
+    Block genesis(0, TransactionData("genesis", "BW0000000000000000000", 10000, BWC, 0, 1), "0");
     this->chain.push_back(genesis);
     chain.last().setUserBalance(chain.last().block_data.getReciever(), true);
 }
@@ -237,6 +281,11 @@ QVector<Block> Blockchain::getChain()
 Block Blockchain::getLastBlock()
 {
     return this->chain.last();
+}
+
+int Blockchain::getChainLenght()
+{
+    return this->chain.length();
 }
 
 bool Blockchain::isChainValid()
@@ -283,7 +332,31 @@ void Blockchain::readChain()
     {
         throw ProgramException(FILE_READ_ERROR);
     }
+    QJsonDocument json_document(QJsonDocument::fromJson(json_file.readAll()));
     json_file.close();
+
+    QJsonObject temp = json_document.object();
+    QJsonArray json_array = temp["Blockchain"].toArray();
+
+    for(int index = 1; index < json_array.size(); index++)
+    {
+        QJsonObject subtree_1 = json_array.at(index).toObject();
+        QJsonArray subtree_2 = subtree_1["Block Data"].toArray();
+
+        QJsonObject subtree = subtree_2.at(0).toObject();
+
+        addBlock(subtree_1.value("Id").toInt(),
+                 TransactionData(subtree.value("Sender").toString(),
+                                 subtree.value("Reciever").toString(),
+                                 subtree.value("Amount").toDouble(),
+                                 toCoinsType(subtree.value("Coins Type").toInt()),
+                                 subtree.value("Fee").toDouble(),
+                                 subtree.value("Priority").toDouble(),
+                                 subtree.value("TimeStamp").toString()),
+                 subtree_1.value("Previous Hash").toString(),
+                 subtree_1.value("Hash").toString()
+                 );
+    }
 }
 
 void Blockchain::writeChain()
@@ -361,6 +434,14 @@ void Blockchain::addBlock(int index, TransactionData data, QString prev_hash)
     chain.last().setUserBalance(chain.last().block_data.getReciever(), true);
 }
 
+void Blockchain::addBlock(int index, TransactionData data, QString prev_hash, QString hash)
+{
+    this->chain.push_back(Block(index, data, prev_hash, hash));
+    chain.last().users_balance = chain[chain.length() - 2].users_balance;
+    chain.last().setUserBalance(chain.last().block_data.getSender());
+    chain.last().setUserBalance(chain.last().block_data.getReciever(), true);
+}
+
 void Blockchain::addBlock(Block new_block)
 {
     this->chain.push_back(new_block);
@@ -390,4 +471,24 @@ void Blockchain::show()
 Blockchain::~Blockchain()
 {
 
+}
+
+Validator::Validator(QObject *parent) : QObject(parent)
+{
+
+}
+
+void Validator::addTransaction(TransactionData new_transaction)
+{
+    chain.addBlock(chain.getLastBlock().getIndex(), new_transaction, chain.getLastBlock().getBlockHash());
+
+    chain.writeChain();
+    authority += 1;
+
+    emit sendTransaction(chain.getLastBlock().block_data.getReciever(), chain.getLastBlock().block_data);
+}
+
+Blockchain Validator::getChain()
+{
+    return this->chain;
 }

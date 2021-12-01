@@ -15,8 +15,6 @@
 #include <iostream>
 #include <QtDebug>
 
-using namespace std;
-
 class JSON {
 public:
     JSON(QString fileName);

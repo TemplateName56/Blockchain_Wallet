@@ -9,7 +9,7 @@
 #include <QTime>
 #include <QDateTime>
 
-using namespace std;
+using std::cout;
 
 class CSV {
 public:

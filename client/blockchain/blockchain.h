@@ -5,17 +5,22 @@
 #include <QVector>
 #include <QDebug>
 #include <QDateTime>
+#include <QObject>
+
 #include "client/scripts/program_algorithms.h"
 #include "client/tests/program_exception.h"
 #include "client/scripts/json_func.h"
 
-enum CoinsType{
+enum CoinsType
+{
     BWC,
     BWC_N,
-    BWC_Q
+    BWC_Q,
+    CoinsTypeERROR
 };
 
-class Balance{
+class Balance
+{
     QString address;
 
     double balance_amount_BWC = 0;
@@ -30,10 +35,11 @@ public:
     QString getAddress();
 
     double getBalance(CoinsType coins_type);
-    double setBalance(double amount, CoinsType coins_type);
+    void setBalance(double amount, CoinsType coins_type);
 };
 
-class TransactionData{
+class TransactionData
+{
     QString sender;
     QString reciever;
 
@@ -49,6 +55,9 @@ public:
     TransactionData(QString sender, QString reciever,
                     double amount, CoinsType coins_type,
                     double fee, short priority);
+    TransactionData(QString sender, QString reciever,
+                    double amount, CoinsType coins_type,
+                    double fee, short priority, QString timestamp);
 
     QString getSender();
     QString getReciever();
@@ -57,20 +66,21 @@ public:
     CoinsType getCoinsType();
 
     double getFee();
-    short getPriority();
+    short getPriority() const;
 
     QString getTimeStamp();
 };
 
-class Block{
+class Block
+{
     int id;
 
     QString hash;
     QString prev_hash;
-
 public:
     Block();
     Block(int index, TransactionData data, QString prev_hash);
+    Block(int index, TransactionData data, QString prev_hash, QString hash);
 
     TransactionData block_data;
     QVector<Balance> users_balance;
@@ -98,6 +108,7 @@ public:
     QVector<Block> getChain();
 
     Block getLastBlock();
+    int getChainLenght();
 
     bool isChainValid();
     void collisionCheck();
@@ -106,10 +117,32 @@ public:
     void writeChain();
 
     void addBlock(int index, TransactionData data, QString prev_hash);
+    void addBlock(int index, TransactionData data, QString prev_hash, QString hash);
     void addBlock(Block new_block);
+
     void show();
 
     ~Blockchain();
+};
+
+class Validator : public QObject
+{
+    Q_OBJECT
+private:
+    Blockchain chain;
+    int authority;
+    bool blocked = false;
+
+public:
+    explicit Validator(QObject *parent = nullptr);
+    Blockchain getChain();
+
+signals:
+    void newBlock();
+    void sendTransaction(QString, TransactionData);
+
+public slots:
+    void addTransaction(TransactionData new_transaction);
 };
 
 #endif // BLOCKCHAIN_H

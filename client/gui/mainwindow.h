@@ -19,12 +19,14 @@
 #include <QStandardItemModel>
 #include <QDate>
 #include <QQueue>
+#include <QMetaType>
 
 #include "auth_form.h"
 #include "settings_form.h"
 #include "about_program_form.h"
 #include "encrypt_wallet_form.h"
 #include "change_passphrase_form.h"
+#include "transactionscardview.h"
 #include "client/tests/program_exception.h"
 #include "client/scripts/json_func.h"
 #include "client/scripts/new_wallet.h"
@@ -39,7 +41,6 @@ QT_END_NAMESPACE
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
-
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
@@ -50,16 +51,19 @@ public:
     bool isAmountCorrect(double amount, CoinsType coins_type);
 
 signals:
-    void sendButton_clicked();
+    void sendButton_clicked(TransactionData new_data);
     void newTrasaction_clicked();
+    void sendTransaction(TransactionData new_transaction);
+
 protected:
     void closeEvent(QCloseEvent *event);
 
 private:
     Ui::MainWindow *ui;
 
-    Blockchain chain;
-    QQueue<Block> blocks_queue;
+    Validator val_1;
+    Validator val_2;
+    Validator val_3;
 
     settings_Form ui_Settings;
     auth_Form ui_Auth;
@@ -70,33 +74,17 @@ private:
     QString wallet_key;
     QString wallet_address;
 
-    QStandardItemModel *request_view_model;
-
-    bool login_succesfull;
     bool tray_enable = false;
+    bool recomActivated = true;
 
     QString reciever_address;
+    QString transaction_label;
     double amount;
     CoinsType coins_type = BWC;
     double fee;
     short priority = 3;
 
-    bool recomActivated = true;
-    bool animation_finished = true;
-
-    int last_transaction_notify = 5;
-
-    int y_tr1_pos = 10;
-    int y_tr2_pos = 100;
-    int y_tr3_pos = 190;
-    int y_tr4_pos = 280;
-    int y_tr5_pos = 370;
-
-    void createActions();
-    void createMenus();
-    void createTrayMenu();
-    void uiChanges();
-    void setupTransactionsOverview();
+    QStandardItemModel *request_view_model;
 
     QAction *home;
     QAction *send;
@@ -123,13 +111,13 @@ private:
     QToolBar *toolbar;
     QSystemTrayIcon *tray_icon;
 
-    QParallelAnimationGroup *transactionsGroup = new QParallelAnimationGroup;
+    int counter = 0;
+    QList<transactionsCardView> card_list;
 
-    QPropertyAnimation *transaction_1;
-    QPropertyAnimation *transaction_2;
-    QPropertyAnimation *transaction_3;
-    QPropertyAnimation *transaction_4;
-    QPropertyAnimation *transaction_5;
+    void createActions();
+    void createMenus();
+    void createTrayMenu();
+    void uiChanges();
 
 private slots:
     void authorizeUser();
@@ -144,18 +132,25 @@ private slots:
     void setWindowLanguage();
     void iconActivated(QSystemTrayIcon::ActivationReason reason);
     void trayEnabled();
-    void on_addUserToAddressBook_textChanged(const QString &arg1);
-    void on_payToAddress_textChanged(const QString &arg1);
 
-    void newTransaction();
-    void animationBlock();
-    void on_sendCoinsButton_clicked();
+    void addTransactionCard(QString label, QString timeStamp, double amount, CoinsType coins_type, int transaction_type);
+
+    void newTransaction(QString wallet_address, TransactionData data);
+
+    void on_payToAddress_textChanged(const QString &arg1);
+    void on_sendTransactionLabel_textChanged(const QString &arg1);
+
     void on_payToAddress_textEdited(const QString &arg1);
-    void on_amountSpinBox_valueChanged(double arg1);
-    void on_feeCheckBox_stateChanged(int arg1);
-    void on_priorityComboBox_currentIndexChanged(int index);
-    void on_custinValueButton_clicked();
+
+    void on_sendCoinsButton_clicked();
+    void on_customValueButton_clicked();
     void on_recomValueButton_clicked();
+
+    void on_amountSpinBox_valueChanged(double arg1);
+
+    void on_feeCheckBox_stateChanged(int arg1);
+
+    void on_priorityComboBox_currentIndexChanged(int index);
     void on_coinsBox_currentIndexChanged(int index);
 };
 #endif // MAINWINDOW_H
