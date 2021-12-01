@@ -419,19 +419,19 @@ bool MainWindow::isAmountCorrect(double amount, CoinsType coins_type)
     Balance this_user = val_1.getChain().getLastBlock().getUserBalance(wallet_address);
     switch (coins_type) {
     case BWC:
-        if(this_user.getBalance(BWC) > amount)
+        if(this_user.getBalance(BWC) >= amount)
         {
             return true;
         }
         break;
     case BWC_N:
-        if(this_user.getBalance(BWC_N) > amount)
+        if(this_user.getBalance(BWC_N) >= amount)
         {
             return true;
         }
         break;
     case BWC_Q:
-        if(this_user.getBalance(BWC_Q) > amount)
+        if(this_user.getBalance(BWC_Q) >= amount)
         {
             return true;
         }
@@ -557,10 +557,8 @@ void MainWindow::on_sendCoinsButton_clicked()
         {
             throw ProgramException(INVALID_COINS_VALUE);
         }
-        emit sendButton_clicked(TransactionData(wallet_address, reciever_address, amount, coins_type, fee, priority));
-
         QDateTime timeStamp = QDateTime::currentDateTime();
-
+        emit sendButton_clicked(TransactionData(wallet_address, reciever_address, amount, coins_type, fee, priority));
         emit addTransactionCard(transaction_label, timeStamp.toString(), amount, coins_type, 0);
 
         Balance current_user = val_1.getChain().getLastBlock().getUserBalance(wallet_address);

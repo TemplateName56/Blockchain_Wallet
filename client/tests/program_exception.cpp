@@ -50,8 +50,16 @@ void ProgramException::getError()
         QTimer::singleShot(0, qApp, &QCoreApplication::quit);
         break;
     case ADDRESS_NOT_EXISTS:
+        error_messageBox.setText("This address not available");
+        error_messageBox.setIcon(QMessageBox::Critical);
+
+        error_messageBox.exec();
         break;
     case INVALID_COINS_VALUE:
+        error_messageBox.setText("You don't have enough money");
+        error_messageBox.setIcon(QMessageBox::Critical);
+
+        error_messageBox.exec();
         break;
     case HASH_COLLISION:
         break;

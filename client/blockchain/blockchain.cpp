@@ -210,6 +210,11 @@ QString Block::getPrevBlockHash()
     return this->prev_hash;
 }
 
+TransactionData Block::getBlockData()
+{
+    return this->block_data;
+}
+
 Balance Block::getUserBalance(QString address)
 {
     for(int index = 0; index < users_balance.length(); index++)
@@ -269,7 +274,7 @@ void Blockchain::createGenesisBlock()
 {
     Block genesis(0, TransactionData("genesis", "BW0000000000000000000", 10000, BWC, 0, 1), "0");
     this->chain.push_back(genesis);
-    chain.last().setUserBalance(chain.last().block_data.getReciever(), true);
+    chain.last().setUserBalance(chain.last().getBlockData().getReciever(), true);
 }
 
 QVector<Block> Blockchain::getChain()
@@ -378,13 +383,13 @@ void Blockchain::writeChain()
 
     for(int index = 0; index < chain.length(); index++)
     {
-        new_block_data.insert("Sender", chain[index].block_data.getSender());
-        new_block_data.insert("Reciever", chain[index].block_data.getReciever());
-        new_block_data.insert("Amount", chain[index].block_data.getAmount());
-        new_block_data.insert("Coins Type", chain[index].block_data.getCoinsType());
-        new_block_data.insert("Fee", chain[index].block_data.getFee());
-        new_block_data.insert("Priority", chain[index].block_data.getPriority());
-        new_block_data.insert("TimeStamp", chain[index].block_data.getTimeStamp());
+        new_block_data.insert("Sender", chain[index].getBlockData().getSender());
+        new_block_data.insert("Reciever", chain[index].getBlockData().getReciever());
+        new_block_data.insert("Amount", chain[index].getBlockData().getAmount());
+        new_block_data.insert("Coins Type", chain[index].getBlockData().getCoinsType());
+        new_block_data.insert("Fee", chain[index].getBlockData().getFee());
+        new_block_data.insert("Priority", chain[index].getBlockData().getPriority());
+        new_block_data.insert("TimeStamp", chain[index].getBlockData().getTimeStamp());
 
         block_data_array.removeFirst();
         block_data_array.push_back(new_block_data);
@@ -430,24 +435,24 @@ void Blockchain::addBlock(int index, TransactionData data, QString prev_hash)
 {
     this->chain.push_back(Block(index, data, prev_hash));
     chain.last().users_balance = chain[chain.length() - 2].users_balance;
-    chain.last().setUserBalance(chain.last().block_data.getSender());
-    chain.last().setUserBalance(chain.last().block_data.getReciever(), true);
+    chain.last().setUserBalance(chain.last().getBlockData().getSender());
+    chain.last().setUserBalance(chain.last().getBlockData().getReciever(), true);
 }
 
 void Blockchain::addBlock(int index, TransactionData data, QString prev_hash, QString hash)
 {
     this->chain.push_back(Block(index, data, prev_hash, hash));
     chain.last().users_balance = chain[chain.length() - 2].users_balance;
-    chain.last().setUserBalance(chain.last().block_data.getSender());
-    chain.last().setUserBalance(chain.last().block_data.getReciever(), true);
+    chain.last().setUserBalance(chain.last().getBlockData().getSender());
+    chain.last().setUserBalance(chain.last().getBlockData().getReciever(), true);
 }
 
 void Blockchain::addBlock(Block new_block)
 {
     this->chain.push_back(new_block);
     chain.last().users_balance = chain[chain.length() - 2].users_balance;
-    chain.last().setUserBalance(chain.last().block_data.getSender());
-    chain.last().setUserBalance(chain.last().block_data.getReciever(), true);
+    chain.last().setUserBalance(chain.last().getBlockData().getSender());
+    chain.last().setUserBalance(chain.last().getBlockData().getReciever(), true);
 }
 
 void Blockchain::show()
@@ -459,11 +464,11 @@ void Blockchain::show()
         qDebug() << chain[index].getIndex();
         qDebug() << chain[index].getBlockHash();
         qDebug() << chain[index].getPrevBlockHash();
-        qDebug() << chain[index].block_data.getSender();
-        qDebug() << chain[index].block_data.getReciever();
-        qDebug() << chain[index].block_data.getAmount();
-        qDebug() << chain[index].block_data.getCoinsType();
-        qDebug() << chain[index].block_data.getTimeStamp();
+        qDebug() << chain[index].getBlockData().getSender();
+        qDebug() << chain[index].getBlockData().getReciever();
+        qDebug() << chain[index].getBlockData().getAmount();
+        qDebug() << chain[index].getBlockData().getCoinsType();
+        qDebug() << chain[index].getBlockData().getTimeStamp();
         qDebug() << "------------------------------------------";
     }
 }
@@ -485,7 +490,7 @@ void Validator::addTransaction(TransactionData new_transaction)
     chain.writeChain();
     authority += 1;
 
-    emit sendTransaction(chain.getLastBlock().block_data.getReciever(), chain.getLastBlock().block_data);
+    emit sendTransaction(chain.getLastBlock().getBlockData().getReciever(), chain.getLastBlock().getBlockData());
 }
 
 Blockchain Validator::getChain()
