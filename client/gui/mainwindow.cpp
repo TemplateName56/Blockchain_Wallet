@@ -690,3 +690,11 @@ MainWindow::~MainWindow()
     delete tray_icon;
 }
 
+
+void MainWindow::on_clearSendButton_clicked()
+{
+    ui->payToAddress->clear();
+    ui->sendTransactionLabel->clear();
+    ui->amountSpinBox->clear();
+}
+

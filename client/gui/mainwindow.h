@@ -150,5 +150,6 @@ private slots:
 
     void on_priorityComboBox_currentIndexChanged(int index);
     void on_coinsBox_currentIndexChanged(int index);
+    void on_clearSendButton_clicked();
 };
 #endif // MAINWINDOW_H
