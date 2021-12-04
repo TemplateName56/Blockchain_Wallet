@@ -1,4 +1,6 @@
 #include "program_algorithms.h"
+#include "client/blockchain/blockchain.h"
+#include <QVector>
 
 void algoritms::Sort(int *arr,int n)
 {
@@ -68,7 +70,7 @@ string algoritms::Encryption(string str, int key)
 {
     for (int i = 0; i < str.size(); i++)
     {
-        str[i] = str[i] + key;
+        str[i] = str[i] + key+(i*(i+1)+4);
     }
     return str;
 }
@@ -77,12 +79,50 @@ string algoritms::Decryption(string str, int key)
 {
     for (int i = 0; i < str.size(); i++)
     {
-        str[i] = str[i] - key;
+        str[i] = str[i] - key+(i*(i+1)+4);
     }
     return str;
 }
 
- int algoritms::Consensus(int comission)
+ Validator algoritms::Consensus(int comission, Validator *arr,int size)
  {
+    QVector<Validator> massValid;
+    for(int i=0;i<size;i++)
+    {
+        massValid.append(arr[i]);
+    }
+    if(comission==15)
+    {
+    for(int i=0;i<size;i++)
+    {
+        if(massValid[i].getAuthority()>=75)
+      {
+            Validator rez(massValid[i]);
+            return rez;
+        }
+        }
+    }
+    if(comission==10)
+    {
+    for(int i=0;i<size;i++)
+    {
+        if(massValid[i].getAuthority()<75&&massValid[i].getAuthority()>=50)
+      {
+            Validator rez(massValid[i]);
+            return rez;
+        }
+        }
+    }
+    if(comission==5)
+    {
+    for(int i=0;i<size;i++)
+    {
+        if(massValid[i].getAuthority()<50)
+      {
+            Validator rez(massValid[i]);
+            return rez;
+        }
+        }
+    }
 
  }
