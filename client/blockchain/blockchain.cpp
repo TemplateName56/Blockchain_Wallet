@@ -359,8 +359,7 @@ void Blockchain::readChain()
                                  subtree.value("Priority").toDouble(),
                                  subtree.value("TimeStamp").toString()),
                  subtree_1.value("Previous Hash").toString(),
-                 subtree_1.value("Hash").toString()
-                 );
+                 subtree_1.value("Hash").toString());
     }
 }
 
@@ -499,20 +498,15 @@ Blockchain Validator::getChain()
 }
 void Validator::setChain(Blockchain temp)
 {
-
+    this->chain = temp;
 }
 
 int Validator::getAuthority()
 {
     return this->authority;
 }
-Validator::Validator()
-{
 
-}
-Validator::Validator(Validator const &valid)
+void Validator::setAuthority(int authority)
 {
-   this->authority=valid.authority;
-    this->blocked=valid.blocked;
-    this->chain=valid.chain;
+    this->authority = authority;
 }

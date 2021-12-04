@@ -1,5 +1,6 @@
 #ifndef PROGRAM_ALGORITHMS_H
 #define PROGRAM_ALGORITHMS_H
+
 #include<string>
 #include "client/blockchain/blockchain.h"
 
@@ -14,6 +15,6 @@ public:
     void Sort(int *arr,int n);
     string Encryption(string str, int key);
     string Decryption(string str, int key);
-    Validator Consensus(int comission, Validator *arr,int size, Blockchain chainblock);
+    //Validator Consensus(int comission, Validator *arr,int size, Blockchain chainblock);
 };
 #endif // PROGRAM_ALGORITHMS_H

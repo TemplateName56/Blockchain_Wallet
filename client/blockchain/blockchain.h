@@ -139,11 +139,12 @@ private:
 
 public:
     explicit Validator(QObject *parent = nullptr);
-    Validator();
-    Validator(Validator const &valid);
+
     Blockchain getChain();
     void setChain(Blockchain temp);
-int getAuthority();
+    int getAuthority();
+
+    void setAuthority(int authority);
 signals:
     void newBlock();
     void sendTransaction(QString, TransactionData);
