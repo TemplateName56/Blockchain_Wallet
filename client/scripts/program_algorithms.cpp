@@ -84,25 +84,28 @@ string algoritms::Decryption(string str, int key)
     return str;
 }
 
- Validator algoritms::Consensus(int comission, Validator *arr,int size)
+ Validator algoritms::Consensus(int comission, Validator *arr,int size, Blockchain chainblock)
  {
     QVector<Validator> massValid;
+    QVector<Block> TempChain=chainblock.getChain();
     for(int i=0;i<size;i++)
     {
         massValid.append(arr[i]);
     }
-    if(comission==15)
+    if(comission==3)
     {
     for(int i=0;i<size;i++)
     {
         if(massValid[i].getAuthority()>=75)
       {
+            Blockchain tmp;
+
             Validator rez(massValid[i]);
             return rez;
         }
-        }
+       }
     }
-    if(comission==10)
+    if(comission==2)
     {
     for(int i=0;i<size;i++)
     {
@@ -113,7 +116,7 @@ string algoritms::Decryption(string str, int key)
         }
         }
     }
-    if(comission==5)
+    if(comission==1)
     {
     for(int i=0;i<size;i++)
     {
@@ -124,5 +127,6 @@ string algoritms::Decryption(string str, int key)
         }
         }
     }
+
 
  }

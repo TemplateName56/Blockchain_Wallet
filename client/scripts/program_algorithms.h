@@ -14,6 +14,6 @@ public:
     void Sort(int *arr,int n);
     string Encryption(string str, int key);
     string Decryption(string str, int key);
-    Validator Consensus(int comission, Validator *arr,int size);
+    Validator Consensus(int comission, Validator *arr,int size, Blockchain chainblock);
 };
 #endif // PROGRAM_ALGORITHMS_H

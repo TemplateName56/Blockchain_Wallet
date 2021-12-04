@@ -142,6 +142,7 @@ public:
     Validator();
     Validator(Validator const &valid);
     Blockchain getChain();
+    void setChain(Blockchain temp);
 int getAuthority();
 signals:
     void newBlock();

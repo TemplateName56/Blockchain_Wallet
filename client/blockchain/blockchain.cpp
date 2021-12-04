@@ -497,6 +497,10 @@ Blockchain Validator::getChain()
 {
     return this->chain;
 }
+void Validator::setChain(Blockchain temp)
+{
+
+}
 
 int Validator::getAuthority()
 {
