@@ -1,6 +1,7 @@
 #ifndef PROGRAM_ALGORITHMS_H
 #define PROGRAM_ALGORITHMS_H
 #include<string>
+#include "client/blockchain/blockchain.h"
 
 using std::string;
 using std::swap;
@@ -13,7 +14,6 @@ public:
     void Sort(int *arr,int n);
     string Encryption(string str, int key);
     string Decryption(string str, int key);
-    int Consensus(int comission);
+    Validator Consensus(int comission, Validator *arr,int size);
 };
-
 #endif // PROGRAM_ALGORITHMS_H

@@ -497,3 +497,18 @@ Blockchain Validator::getChain()
 {
     return this->chain;
 }
+
+int Validator::getAuthority()
+{
+    return this->authority;
+}
+Validator::Validator()
+{
+
+}
+Validator::Validator(Validator const &valid)
+{
+   this->authority=valid.authority;
+    this->blocked=valid.blocked;
+    this->chain=valid.chain;
+}
