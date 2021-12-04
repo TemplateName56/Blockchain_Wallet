@@ -321,7 +321,7 @@ void Blockchain::collisionCheck()
         }
     }
 }
-
+/*
 void Blockchain::readChain()
 {
     try {
@@ -362,6 +362,44 @@ void Blockchain::readChain()
                  subtree_1.value("Hash").toString());
     }
 }
+*/
+
+void Blockchain::readChain()
+{
+    /*
+    try {
+        fileExists("chain.json");
+    }  catch (ProgramException &error) {
+        error.getError();
+    }
+    */
+    JSON file("chain.json");
+
+/*
+    if (!json_file.open(QIODevice::ReadOnly))
+    {
+        throw ProgramException(FILE_READ_ERROR);
+    }
+  */
+    for(int index = 1; index < file.new_get_array_size_blockchain(); index++)
+    {
+        for(int j = 1; j < file.new_get_array_size_block_data(index); j++){
+            addBlock(file.new_get_id(index),
+                     TransactionData(file.new_get_sender(index,j),
+                                     file.new_get_reciever(index,j),
+                                     file.new_get_amount(index,j),
+                                     toCoinsType(file.new_get_CoinsType(index, j)),
+                                     file.new_get_fee(index,j),
+                                     file.new_get_priority(index,j),
+                                     file.new_get_timestamp(index,j)),
+                    file.new_get_prev_hash(index),
+                    file.new_get_hash(index));
+        }
+
+    }
+
+}
+
 
 void Blockchain::writeChain()
 {
