@@ -51,8 +51,11 @@ public:
     bool isAmountCorrect(double amount, CoinsType coins_type);
 
 signals:
-    void sendButton_clicked(TransactionData new_data);
+    void sendButton_clicked_val_1(TransactionData new_data);
+    void sendButton_clicked_val_2(TransactionData new_data);
+    void sendButton_clicked_val_3(TransactionData new_data);
     void newTrasaction_clicked();
+
     void sendTransaction(TransactionData new_transaction);
 
 protected:
@@ -143,6 +146,7 @@ private slots:
     void on_sendCoinsButton_clicked();
     void on_customValueButton_clicked();
     void on_recomValueButton_clicked();
+    void on_clearSendButton_clicked();
 
     void on_amountSpinBox_valueChanged(double arg1);
 
@@ -150,6 +154,5 @@ private slots:
 
     void on_priorityComboBox_currentIndexChanged(int index);
     void on_coinsBox_currentIndexChanged(int index);
-    void on_clearSendButton_clicked();
 };
 #endif // MAINWINDOW_H

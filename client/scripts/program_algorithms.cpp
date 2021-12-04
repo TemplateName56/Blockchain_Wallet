@@ -129,14 +129,14 @@ string algoritms::Decryption(string str, int key)
 //    }
 //}
 
-void compareValidator(Validator *val_1, Validator *val_2)
-{
-    if(val_1->getChain().getChainLenght() > val_2->getChain().getChainLenght())
-    {
-        val_2->setChain(val_1->getChain());
-    }
-    else if(val_1->getChain().getChainLenght() < val_2->getChain().getChainLenght())
-    {
-        val_1->setChain(val_2->getChain());
-    }
-}
+//void algoritms::compareValidator(Validator &val_1, Validator &val_2)
+//{
+//    if(val_1.getChain().getChainLenght() > val_2.getChain().getChainLenght())
+//    {
+//        val_2.setChain(val_1.getChain());
+//    }
+//    else if(val_1.getChain().getChainLenght() < val_2.getChain().getChainLenght())
+//    {
+//        val_1.setChain(val_2.getChain());
+//    }
+//}

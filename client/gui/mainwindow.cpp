@@ -14,6 +14,10 @@ MainWindow::MainWindow(QWidget *parent)
     }
     ui->priorityComboBox->setEnabled(false);
 
+    val_1.setAuthority(100);
+    val_2.setAuthority(75);
+    val_3.setAuthority(1);
+
     qRegisterMetaType<TransactionData>("TransactionData");
 
     createActions();
@@ -31,7 +35,9 @@ MainWindow::MainWindow(QWidget *parent)
 
     connect(tray_icon, SIGNAL(activated(QSystemTrayIcon::ActivationReason)), this, SLOT(iconActivated(QSystemTrayIcon::ActivationReason)));
 
-    connect(this, SIGNAL(sendButton_clicked(TransactionData)), &val_1, SLOT(addTransaction(TransactionData)), Qt::QueuedConnection);
+    connect(this, SIGNAL(sendButton_clicked_val_1(TransactionData)), &val_1, SLOT(addTransaction(TransactionData)), Qt::QueuedConnection);
+    connect(this, SIGNAL(sendButton_clicked_val_2(TransactionData)), &val_2, SLOT(addTransaction(TransactionData)), Qt::QueuedConnection);
+    connect(this, SIGNAL(sendButton_clicked_val_3(TransactionData)), &val_3, SLOT(addTransaction(TransactionData)), Qt::QueuedConnection);
 
     connect(&val_1, SIGNAL(sendTransaction(QString,TransactionData)), this, SLOT(newTransaction(QString,TransactionData)));
     connect(&val_2, SIGNAL(sendTransaction(QString,TransactionData)), this, SLOT(newTransaction(QString,TransactionData)));
@@ -310,6 +316,39 @@ void MainWindow::addTransactionCard(QString label, QString timeStamp, double amo
 
 void MainWindow::newTransaction(QString wallet_address, TransactionData data)
 {
+    qDebug() << val_1.getChain().getChainLenght();
+    qDebug() << val_2.getChain().getChainLenght();
+    qDebug() << val_3.getChain().getChainLenght();
+
+    if(val_1.getChain().getChainLenght() > val_2.getChain().getChainLenght())
+    {
+        val_2.setChain(val_1.getChain());
+    }
+    if(val_2.getChain().getChainLenght() > val_1.getChain().getChainLenght())
+    {
+        val_1.setChain(val_2.getChain());
+    }
+    if(val_1.getChain().getChainLenght() > val_3.getChain().getChainLenght())
+    {
+        val_3.setChain(val_1.getChain());
+    }
+    if(val_3.getChain().getChainLenght() > val_1.getChain().getChainLenght())
+    {
+        val_1.setChain(val_3.getChain());
+    }
+    if(val_3.getChain().getChainLenght() > val_2.getChain().getChainLenght())
+    {
+        val_2.setChain(val_3.getChain());
+    }
+    if(val_2.getChain().getChainLenght() > val_3.getChain().getChainLenght())
+    {
+        val_3.setChain(val_2.getChain());
+    }
+
+    qDebug() << val_1.getChain().getChainLenght();
+    qDebug() << val_2.getChain().getChainLenght();
+    qDebug() << val_3.getChain().getChainLenght();
+
     if(wallet_address == this->wallet_address)
     {
         Balance current_user = val_1.getChain().getLastBlock().getUserBalance(wallet_address);
@@ -558,7 +597,62 @@ void MainWindow::on_sendCoinsButton_clicked()
             throw ProgramException(INVALID_COINS_VALUE);
         }
         QDateTime timeStamp = QDateTime::currentDateTime();
-        emit sendButton_clicked(TransactionData(wallet_address, reciever_address, amount, coins_type, fee, priority));
+
+        int max_authority = std::max(val_1.getAuthority(), val_2.getAuthority());
+        qDebug() << max_authority;
+        max_authority = std::max(max_authority, val_3.getAuthority());
+        qDebug() << max_authority;
+
+        int min_authority = std::min(val_1.getAuthority(), val_2.getAuthority());
+        min_authority = std::min(min_authority, val_3.getAuthority());
+
+        switch (priority) {
+        case 1:
+            if(val_1.getAuthority() == max_authority)
+            {
+                emit sendButton_clicked_val_1(TransactionData(wallet_address, reciever_address, amount, coins_type, fee, priority));
+            }
+            else if(val_2.getAuthority() == max_authority)
+            {
+                emit sendButton_clicked_val_2(TransactionData(wallet_address, reciever_address, amount, coins_type, fee, priority));
+            }
+            else if(val_3.getAuthority() == max_authority)
+            {
+                emit sendButton_clicked_val_3(TransactionData(wallet_address, reciever_address, amount, coins_type, fee, priority));
+            }
+            break;
+        case 2:
+            if(val_1.getAuthority() < max_authority && val_1.getAuthority() > min_authority)
+            {
+                emit sendButton_clicked_val_1(TransactionData(wallet_address, reciever_address, amount, coins_type, fee, priority));
+            }
+            else if(val_2.getAuthority() < max_authority && val_2.getAuthority() > min_authority)
+            {
+                emit sendButton_clicked_val_2(TransactionData(wallet_address, reciever_address, amount, coins_type, fee, priority));
+            }
+            else if(val_3.getAuthority() < max_authority && val_3.getAuthority() > min_authority)
+            {
+                emit sendButton_clicked_val_3(TransactionData(wallet_address, reciever_address, amount, coins_type, fee, priority));
+            }
+            break;
+        case 3:
+            if(val_1.getAuthority() == min_authority)
+            {
+                emit sendButton_clicked_val_1(TransactionData(wallet_address, reciever_address, amount, coins_type, fee, priority));
+            }
+            else if(val_2.getAuthority() == min_authority)
+            {
+                emit sendButton_clicked_val_2(TransactionData(wallet_address, reciever_address, amount, coins_type, fee, priority));
+            }
+            else if(val_3.getAuthority() == min_authority)
+            {
+                emit sendButton_clicked_val_3(TransactionData(wallet_address, reciever_address, amount, coins_type, fee, priority));
+            }
+            break;
+        default:
+            break;
+        }
+
         emit addTransactionCard(transaction_label, timeStamp.toString(), amount, coins_type, 0);
 
         Balance current_user = val_1.getChain().getLastBlock().getUserBalance(wallet_address);

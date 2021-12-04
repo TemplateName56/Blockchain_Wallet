@@ -16,5 +16,6 @@ public:
     string Encryption(string str, int key);
     string Decryption(string str, int key);
     //Validator Consensus(int comission, Validator *arr,int size, Blockchain chainblock);
+    //void compareValidator(Validator &val_1, Validator &val_2);
 };
 #endif // PROGRAM_ALGORITHMS_H

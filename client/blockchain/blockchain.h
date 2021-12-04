@@ -134,7 +134,7 @@ class Validator : public QObject
     Q_OBJECT
 private:
     Blockchain chain;
-    int authority;
+    int authority = 1;
     bool blocked = false;
 
 public:
