@@ -68,20 +68,28 @@ int algoritms::ConvertIntoLetter(int rezult)
 
 string algoritms::Encryption(string str, int key)
 {
-    for (int i = 0; i < str.size(); i++)
-    {
-        str[i] = str[i] + key+(i*(i+1)+4);
-    }
-    return str;
+    int code=key;
+        code *= 3;
+        code += 1;
+        code += 6;
+        for (int i = 0; i < str.size(); i++)
+        {
+            str[i] = str[i] + (key+code+i);
+        }
+        return str;
 }
 
 string algoritms::Decryption(string str, int key)
 {
-    for (int i = 0; i < str.size(); i++)
-    {
-        str[i] = str[i] - key+(i*(i+1)+4);
-    }
-    return str;
+    int code = key;
+        code *= 3;
+        code += 1;
+        code += 6;
+        for (int i = 0; i < str.size(); i++)
+        {
+            str[i] = str[i] - (key + code + i);
+        }
+        return str;
 }
 
 //Validator algoritms::Consensus(int comission, Validator *arr,int size, Blockchain chainblock)

@@ -149,6 +149,8 @@ private slots:
     void on_customValueButton_clicked();
     void on_recomValueButton_clicked();
     void on_clearSendButton_clicked();
+    void on_prevBlockBTN_clicked();
+    void on_nextBlockBTN_clicked();
 
     void on_amountSpinBox_valueChanged(double arg1);
 
@@ -156,9 +158,6 @@ private slots:
 
     void on_priorityComboBox_currentIndexChanged(int index);
     void on_coinsBox_currentIndexChanged(int index);
-
-    void on_prevBlockBTN_clicked();
-    void on_nextBlockBTN_clicked();
 
     void blocksPrev();
     void blocksNext();

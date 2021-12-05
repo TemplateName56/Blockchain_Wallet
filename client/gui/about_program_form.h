@@ -2,6 +2,7 @@
 #define ABOUT_PROGRAM_FORM_H
 
 #include <QWidget>
+#include <QIcon>
 
 namespace Ui {
 class about_program_Form;

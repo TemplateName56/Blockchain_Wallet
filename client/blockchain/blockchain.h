@@ -122,7 +122,7 @@ public:
     void writeChain();
 
     void addBlock(int index, TransactionData data, QString prev_hash);
-    void addBlock(int index, TransactionData data, QString prev_hash, QString hash);
+    void addBlock(int index, TransactionData data, QString prev_hash, QString hash, bool genesis);
     void addBlock(Block new_block);
 
     void show();

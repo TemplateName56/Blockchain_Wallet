@@ -6,6 +6,8 @@ auth_Form::auth_Form(QWidget *parent) :
     ui(new Ui::auth_Form)
 {
     ui->setupUi(this);
+    ui->label->setPixmap(QIcon("icons/programIcon.png").pixmap(50,50));
+    this->setWindowIcon(QIcon("icons/programIcon.png"));
 }
 
 auth_Form::~auth_Form()

@@ -130,6 +130,7 @@ void MainWindow::registerUser()
         ui->bwcQBalance->setText(QString::number(current_user.getBalance(BWC_Q)));
 
         this->show();
+        throw ProgramException(SAVE_PASSPHRASE, wallet_key);
     }  catch (ProgramException &error) {
         error.getError();
     }
@@ -164,16 +165,18 @@ void MainWindow::createActions()
 {
     QPixmap homepix("icons/menuIcon.png");
     QPixmap sendpix("icons/sendIcon.png");
-    QPixmap recievepix("icons/recieveIcon.png");
+    QPixmap recievepix("icons/recieveIcon.jpg");
     QPixmap helppix("icons/helpIcon.png");
     QPixmap transactionspix("icons/transactionsIcon.png");
+    QPixmap quitpix("icons/quitIcon.png");
+
     //QPixmap programpix("icons/programIcon.png");
 
     home = new QAction(homepix, "&Home", this);
     send = new QAction(sendpix, "&Send", this);
     recieve = new QAction(recievepix, "&Recieve", this);
     help = new QAction(helppix, "&Help", this);
-    quit = new QAction("&Quit", this);
+    quit = new QAction(quitpix, "&Quit", this);
 
     all_blocks = new QAction(transactionspix, "&Blocks", this);
 
@@ -822,11 +825,35 @@ void MainWindow::on_nextBlockBTN_clicked()
 
 void MainWindow::blocksPrev()
 {
-
+    if(block_index > 0)
+    {
+        block_index--;
+        ui->idInf->setText(QString::number(val_1.getBlockChain().getBlock(block_index).getIndex()));
+        ui->hashInf->setText(val_1.getBlockChain().getBlock(block_index).getBlockHash());
+        ui->prevHashInf->setText(val_1.getBlockChain().getBlock(block_index).getPrevBlockHash());
+        ui->senderInf->setText(val_1.getBlockChain().getBlock(block_index).getBlockData().getSender());
+        ui->recieverInf->setText(val_1.getBlockChain().getBlock(block_index).getBlockData().getReciever());
+        ui->timestampInf->setText(val_1.getBlockChain().getBlock(block_index).getBlockData().getTimeStamp());
+        ui->amountInf->setText(QString::number(val_1.getBlockChain().getBlock(block_index).getBlockData().getAmount()));
+        ui->coinsTypeInf->setText(coinsTypeToString(val_1.getBlockChain().getBlock(block_index).getBlockData().getCoinsType()));
+        ui->feeInf->setText(QString::number(val_1.getBlockChain().getBlock(block_index).getBlockData().getFee()));
+    }
 }
 
 void MainWindow::blocksNext()
 {
-
+    if(block_index < val_1.getBlockChain().getChainLenght() - 1)
+    {
+        block_index++;
+        ui->idInf->setText(QString::number(val_1.getBlockChain().getBlock(block_index).getIndex()));
+        ui->hashInf->setText(val_1.getBlockChain().getBlock(block_index).getBlockHash());
+        ui->prevHashInf->setText(val_1.getBlockChain().getBlock(block_index).getPrevBlockHash());
+        ui->senderInf->setText(val_1.getBlockChain().getBlock(block_index).getBlockData().getSender());
+        ui->recieverInf->setText(val_1.getBlockChain().getBlock(block_index).getBlockData().getReciever());
+        ui->timestampInf->setText(val_1.getBlockChain().getBlock(block_index).getBlockData().getTimeStamp());
+        ui->amountInf->setText(QString::number(val_1.getBlockChain().getBlock(block_index).getBlockData().getAmount()));
+        ui->coinsTypeInf->setText(coinsTypeToString(val_1.getBlockChain().getBlock(block_index).getBlockData().getCoinsType()));
+        ui->feeInf->setText(QString::number(val_1.getBlockChain().getBlock(block_index).getBlockData().getFee()));
+    }
 }
 
