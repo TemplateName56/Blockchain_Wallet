@@ -610,6 +610,16 @@ void MainWindow::setWindowLanguage()
 void MainWindow::on_sendCoinsButton_clicked()
 {
     try {
+        if(reciever_address.length() != 17)
+        {
+            throw ProgramException(INVALID_ADDRESS);
+        }
+        QVector<QString> exists_address = getUsersInfo(ADDRESS);
+        int exist_flag = exists_address.indexOf(reciever_address);
+        if(exist_flag == -1)
+        {
+            throw ProgramException(ADDRESS_NOT_EXISTS);
+        }
         if(!isAmountCorrect(amount + fee, coins_type))
         {
             throw ProgramException(INVALID_COINS_VALUE);
@@ -749,12 +759,15 @@ void MainWindow::on_coinsBox_currentIndexChanged(int index)
     switch (index) {
     case 0:
         this->coins_type = BWC;
+        ui->balanceCoins->setText(ui->bwcBalance->text() + " BWC");
         break;
     case 1:
         this->coins_type = BWC_N;
+        ui->balanceCoins->setText(ui->bwcNBalance->text() + " BWC-N");
         break;
     case 2:
         this->coins_type = BWC_Q;
+        ui->balanceCoins->setText(ui->bwcQBalance->text() + " BWC-Q");
         break;
     default:
         break;

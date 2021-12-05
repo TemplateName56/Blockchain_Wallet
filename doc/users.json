@@ -1,12 +1,12 @@
 {
     "users": [
         {
-            "address": "BW0000000000000000000",
+            "address": "BW000000000000000",
             "admin": 1,
             "walletKey": "vuPFMnFxNzWPjFwL"
         },
         {
-            "address": "BW0000000000000000001",
+            "address": "BW000000000000001",
             "admin": 0,
             "walletKey": "0F0Up0y1GYoyRtmn"
         }

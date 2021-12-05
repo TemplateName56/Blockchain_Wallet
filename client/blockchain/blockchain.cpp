@@ -186,9 +186,11 @@ QString Block::generateHash()
 {
     algoritms hash_block;
 
-    QString to_hash = (block_data.getSender() + block_data.getReciever() +
-                       QString::number(block_data.getAmount()) + QString::number(block_data.getFee()) +
-                       QString::number(block_data.getPriority()) + block_data.getTimeStamp() + "SALT");
+    QString to_hash = (block_data.getSender() +
+                       block_data.getReciever() +
+                       QString::number(block_data.getAmount()) +
+                       QString::number(block_data.getFee()) +
+                       block_data.getTimeStamp() + "SALT");
 
     QString result = QString::fromStdString(hash_block.Hash(to_hash.toStdString()));
 

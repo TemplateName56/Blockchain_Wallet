@@ -19,7 +19,7 @@ QString randomWalletAdress()
     {
         random_address = "";
 
-        for(int index = 0; index < 19; index++)
+        for(int index = 0; index < 15; index++)
         {
             random_address += random_symbols[(Random::get(0, 61))];
         }
