@@ -164,16 +164,18 @@ void MainWindow::createActions()
 {
     QPixmap homepix("icons/menuIcon.png");
     QPixmap sendpix("icons/sendIcon.png");
-    QPixmap recievepix("icons/recieveIcon.png");
+    QPixmap recievepix("icons/recieveIcon.jpg");
     QPixmap helppix("icons/helpIcon.png");
     QPixmap transactionspix("icons/transactionsIcon.png");
+    QPixmap quitpix("icons/quitIcon.png");
+
     //QPixmap programpix("icons/programIcon.png");
 
     home = new QAction(homepix, "&Home", this);
     send = new QAction(sendpix, "&Send", this);
     recieve = new QAction(recievepix, "&Recieve", this);
     help = new QAction(helppix, "&Help", this);
-    quit = new QAction("&Quit", this);
+    quit = new QAction(quitpix, "&Quit", this);
 
     all_blocks = new QAction(transactionspix, "&Blocks", this);
 
