@@ -18,6 +18,8 @@ MainWindow::MainWindow(QWidget *parent)
     val_2.setAuthority(75);
     val_3.setAuthority(1);
 
+    val_1.getChain().show();
+
     qRegisterMetaType<TransactionData>("TransactionData");
 
     createActions();
@@ -74,6 +76,15 @@ void MainWindow::authorizeUser()
 
             Balance current_user = val_1.getChain().getLastBlock().getUserBalance(wallet_address);
 
+            QVector<QString> users_admin = getUsersInfo(ADMIN);
+            QString admin_check = users_admin[index];
+
+            if(admin_check == "0")
+            {
+                main_menu->removeAction(all_blocks);
+                toolbar->removeAction(all_blocks);
+            }
+
             ui->bwcBalance->setText(QString::number(current_user.getBalance(BWC)));
             ui->bwcNBalance->setText(QString::number(current_user.getBalance(BWC_N)));
             ui->bwcQBalance->setText(QString::number(current_user.getBalance(BWC_Q)));
@@ -102,6 +113,9 @@ void MainWindow::registerUser()
 
         ui->walletAddressLabel->setText(wallet_address);
         ui->walletKeyLabel->setText(wallet_key);
+
+        main_menu->removeAction(all_blocks);
+        toolbar->removeAction(all_blocks);
 
         ui_Auth.close();
         Sleep(250);
@@ -163,7 +177,6 @@ void MainWindow::createActions()
     quit->setShortcut(tr("Ctrl+Q"));
 
     transactions = new QAction(transactionspix, "&Transactions", this);
-    encrypt_wallet = new QAction("&Encrypt Wallet...", this);
     change_passphrase = new QAction("&Change Passphrase...", this);
     options = new QAction("&Options...", this);
 
@@ -179,7 +192,6 @@ void MainWindow::createActions()
 
     connect(options, &QAction::triggered, &ui_Settings, &settings_Form::settingsShow);
     connect(about_program, &QAction::triggered, &ui_AboutProgram, &about_program_Form::aboutShow);
-    connect(encrypt_wallet, &QAction::triggered, &ui_EncryptWallet, &encrypt_wallet_Form::showEncrypt);
     connect(change_passphrase, &QAction::triggered, &ui_ChangePass, &change_passphrase_Form::changePassphraseShow);
 }
 
@@ -190,14 +202,13 @@ void MainWindow::createMenus()
     main_menu->addAction(home);
     main_menu->addAction(send);
     main_menu->addAction(recieve);
-    main_menu->addAction(help);
+    main_menu->addAction(help);   
     main_menu->addAction(all_blocks);
     main_menu->addSeparator();
     main_menu->addAction(quit);
 
     settings_menu = menuBar()->addMenu("&Settings");
 
-    settings_menu->addAction(encrypt_wallet);
     settings_menu->addAction(change_passphrase);
     settings_menu->addSeparator();
     settings_menu->addAction(options);
@@ -501,7 +512,6 @@ void MainWindow::setWindowLanguage()
         help->setText("&Help");
         quit->setText("&Quit");
 
-        encrypt_wallet->setText("&Encrypt Wallet...");
         change_passphrase->setText("&Change Passphrase...");
         options->setText("&Options...");
 
@@ -534,7 +544,6 @@ void MainWindow::setWindowLanguage()
         help->setText("&Допомога");
         quit->setText("&Вихід");
 
-        encrypt_wallet->setText("&Шифрування гаманця");
         change_passphrase->setText("&Змінити парольну фразу");
         options->setText("&Налаштування");
 
@@ -567,7 +576,6 @@ void MainWindow::setWindowLanguage()
         help->setText("&Помощь");
         quit->setText("&Выход");
 
-        encrypt_wallet->setText("&Зашифровать кошелёк");
         change_passphrase->setText("&Изменить секретное слово");
         options->setText("&Настройки");
 
@@ -768,7 +776,6 @@ MainWindow::~MainWindow()
     delete help;
     delete quit;
 
-    delete encrypt_wallet;
     delete change_passphrase;
     delete options;
 

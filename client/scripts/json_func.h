@@ -76,7 +76,8 @@ private:
 enum getInfo
 {
     ADDRESS,
-    KEY
+    KEY,
+    ADMIN
 };
 
 void fileExists(const QString &file_path);

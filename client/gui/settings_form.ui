@@ -34,7 +34,7 @@
     </rect>
    </property>
    <property name="currentIndex">
-    <number>3</number>
+    <number>0</number>
    </property>
    <widget class="QWidget" name="mainSettings">
     <attribute name="title">
@@ -53,11 +53,6 @@
       <string>Default </string>
      </property>
     </widget>
-   </widget>
-   <widget class="QWidget" name="walletSettings">
-    <attribute name="title">
-     <string>Wallet</string>
-    </attribute>
    </widget>
    <widget class="QWidget" name="windowSettings">
     <attribute name="title">

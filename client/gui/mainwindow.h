@@ -24,7 +24,6 @@
 #include "auth_form.h"
 #include "settings_form.h"
 #include "about_program_form.h"
-#include "encrypt_wallet_form.h"
 #include "change_passphrase_form.h"
 #include "transactionscardview.h"
 #include "client/tests/program_exception.h"
@@ -71,7 +70,6 @@ private:
     settings_Form ui_Settings;
     auth_Form ui_Auth;
     about_program_Form ui_AboutProgram;
-    encrypt_wallet_Form ui_EncryptWallet;
     change_passphrase_Form ui_ChangePass;
 
     QString wallet_key;
@@ -99,7 +97,6 @@ private:
     QAction *help;
     QAction *quit;
 
-    QAction *encrypt_wallet;
     QAction *change_passphrase;
     QAction *options;
 

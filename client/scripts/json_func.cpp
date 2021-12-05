@@ -547,6 +547,13 @@ QVector<QString> getUsersInfo(getInfo what_u_need)
             valid_information.append(subtree.value("address").toString());
         }
         break;
+    case ADMIN:
+        for(int index = 0; index < json_array.size(); index++)
+        {
+            QJsonObject subtree = json_array.at(index).toObject();
+            valid_information.append(QString::number(subtree.value("admin").toInt()));
+        }
+        break;
     default:
         break;
     }
@@ -577,6 +584,7 @@ void registerNewUsers(QString wallet_address, QString wallet_key)
 
     new_user["address"] = wallet_address;
     new_user["walletKey"] = QString::fromStdString(use_algoritm.Hash(wallet_key.toStdString()));
+    new_user["admin"] = 0;
 
     QJsonDocument json_document(QJsonDocument::fromJson(json_file.readAll()));
     json_file.close();
