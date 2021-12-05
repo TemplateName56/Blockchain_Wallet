@@ -15,16 +15,19 @@ enum ErrorsNames
     ADDRESS_NOT_EXISTS,
     INVALID_COINS_VALUE,
     HASH_COLLISION,
-    BLOCKCHAIN_NOT_VALID
+    BLOCKCHAIN_NOT_VALID,
+    SAVE_PASSPHRASE
 };
 
 class ProgramException : public QException
 {
     ErrorsNames error_name;
     QMessageBox error_messageBox;
+    QString wallet_key;
 public:
     ProgramException();
-    ProgramException(ErrorsNames new_error);
+    ProgramException(ErrorsNames error_name);
+    ProgramException(ErrorsNames error_name, QString wallet_key);
 
     void getError();
 

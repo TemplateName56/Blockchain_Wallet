@@ -8,9 +8,15 @@ ProgramException::ProgramException()
 
 }
 
-ProgramException::ProgramException(ErrorsNames new_error)
+ProgramException::ProgramException(ErrorsNames error_name)
 {
-    error_name = new_error;
+    this->error_name = error_name;
+}
+
+ProgramException::ProgramException(ErrorsNames error_name, QString wallet_key)
+{
+    this->error_name = error_name;
+    this->wallet_key = wallet_key;
 }
 
 void ProgramException::getError()
@@ -62,6 +68,13 @@ void ProgramException::getError()
         error_messageBox.exec();
         break;
     case HASH_COLLISION:
+        break;
+    case SAVE_PASSPHRASE:
+        error_messageBox.setWindowTitle("Infomation");
+        error_messageBox.setText("Your passphrase: " + wallet_key + "\nif u lose them, you should cant restore them.");
+        error_messageBox.setIcon(QMessageBox::Information);
+
+        error_messageBox.exec();
         break;
     default:
         break;
