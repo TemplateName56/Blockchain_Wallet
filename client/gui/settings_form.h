@@ -38,6 +38,7 @@ protected:
 signals:
     void languageChanged();
     void trayCheckBoxToggled();
+    void coinsTypeChanged(int);
 
 private:
     Ui::settings_Form *ui;
@@ -52,6 +53,7 @@ private slots:
     void on_languagesBox_currentIndexChanged(int index);
     void on_trayCheckBox_toggled(bool checked);
     void setWindowLanguage();
+    void on_defaultCoinsTypeCB_currentIndexChanged(int index);
 };
 
 #endif // SETTINGS_FORM_H

@@ -35,6 +35,8 @@ MainWindow::MainWindow(QWidget *parent)
     connect(&ui_Settings, SIGNAL(languageChanged()), this, SLOT(setWindowLanguage()));
     connect(&ui_Settings, SIGNAL(trayCheckBoxToggled()), this, SLOT(trayEnabled()));
 
+    connect(&ui_Settings, SIGNAL(coinsTypeChanged(int)), this, SLOT(on_coinsBox_currentIndexChanged(int)));
+
     connect(tray_icon, SIGNAL(activated(QSystemTrayIcon::ActivationReason)), this, SLOT(iconActivated(QSystemTrayIcon::ActivationReason)));
 
     connect(this, SIGNAL(sendButton_clicked_val_1(TransactionData)), &val_1, SLOT(addTransaction(TransactionData)), Qt::QueuedConnection);
@@ -317,7 +319,7 @@ void MainWindow::addTransactionCard(QString label, QString timeStamp, double amo
 {
     transactionsCardView *new_card = new transactionsCardView;
 
-    new_card->setData(label, timeStamp, amount, coins_type, 0);
+    new_card->setData(label, timeStamp, amount, coins_type, transaction_type);
     if(counter == 3)
     {
         QLayoutItem *item = ui->cardsLayout->takeAt(2);
@@ -361,6 +363,16 @@ void MainWindow::newTransaction(QString wallet_address, TransactionData data)
     if(wallet_address == this->wallet_address)
     {
         Balance current_user = val_1.getBlockChain().getLastBlock().getUserBalance(wallet_address);
+
+        ui->bwcBalance->setText(QString::number(current_user.getBalance(BWC)));
+        ui->bwcNBalance->setText(QString::number(current_user.getBalance(BWC_N)));
+        ui->bwcQBalance->setText(QString::number(current_user.getBalance(BWC_Q)));
+
+        emit addTransactionCard(data.getSender(), data.getTimeStamp(), data.getAmount(), data.getCoinsType(), 1);
+    }
+    else
+    {
+        Balance current_user = val_1.getBlockChain().getLastBlock().getUserBalance(this->wallet_address);
 
         ui->bwcBalance->setText(QString::number(current_user.getBalance(BWC)));
         ui->bwcNBalance->setText(QString::number(current_user.getBalance(BWC_N)));
@@ -678,12 +690,6 @@ void MainWindow::on_sendCoinsButton_clicked()
         }
 
         emit addTransactionCard(transaction_label, timeStamp.toString(), amount, coins_type, 0);
-
-        Balance current_user = val_1.getBlockChain().getLastBlock().getUserBalance(wallet_address);
-
-        ui->bwcBalance->setText(QString::number(current_user.getBalance(BWC)));
-        ui->bwcNBalance->setText(QString::number(current_user.getBalance(BWC_N)));
-        ui->bwcQBalance->setText(QString::number(current_user.getBalance(BWC_Q)));
     }  catch (ProgramException &error) {
         error.getError();
     }
@@ -756,6 +762,7 @@ void MainWindow::on_recomValueButton_clicked()
 
 void MainWindow::on_coinsBox_currentIndexChanged(int index)
 {
+    ui->coinsBox->setCurrentIndex(index);
     switch (index) {
     case 0:
         this->coins_type = BWC;
