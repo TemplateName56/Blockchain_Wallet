@@ -111,6 +111,7 @@ public:
 
     QVector<Block> getChain();
 
+    Block getBlock(int index);
     Block getLastBlock();
     int getChainLenght();
 
@@ -134,15 +135,17 @@ class Validator : public QObject
     Q_OBJECT
 private:
     Blockchain chain;
-    int authority;
+    int authority = 1;
     bool blocked = false;
 
 public:
     explicit Validator(QObject *parent = nullptr);
-    Validator();
-    Validator(Validator const &valid);
-    Blockchain getChain();
-int getAuthority();
+
+    Blockchain getBlockChain();
+    void setBlockChain(Blockchain temp);
+    int getAuthority();
+
+    void setAuthority(int authority);
 signals:
     void newBlock();
     void sendTransaction(QString, TransactionData);

@@ -24,7 +24,6 @@
 #include "auth_form.h"
 #include "settings_form.h"
 #include "about_program_form.h"
-#include "encrypt_wallet_form.h"
 #include "change_passphrase_form.h"
 #include "transactionscardview.h"
 #include "client/tests/program_exception.h"
@@ -51,8 +50,14 @@ public:
     bool isAmountCorrect(double amount, CoinsType coins_type);
 
 signals:
-    void sendButton_clicked(TransactionData new_data);
+    void sendButton_clicked_val_1(TransactionData new_data);
+    void sendButton_clicked_val_2(TransactionData new_data);
+    void sendButton_clicked_val_3(TransactionData new_data);
     void newTrasaction_clicked();
+
+    void allBlocksView_next_clicked();
+    void allBlocksView_prev_clicked();
+
     void sendTransaction(TransactionData new_transaction);
 
 protected:
@@ -65,10 +70,11 @@ private:
     Validator val_2;
     Validator val_3;
 
+    int block_index = 0;
+
     settings_Form ui_Settings;
     auth_Form ui_Auth;
     about_program_Form ui_AboutProgram;
-    encrypt_wallet_Form ui_EncryptWallet;
     change_passphrase_Form ui_ChangePass;
 
     QString wallet_key;
@@ -96,7 +102,6 @@ private:
     QAction *help;
     QAction *quit;
 
-    QAction *encrypt_wallet;
     QAction *change_passphrase;
     QAction *options;
 
@@ -143,6 +148,7 @@ private slots:
     void on_sendCoinsButton_clicked();
     void on_customValueButton_clicked();
     void on_recomValueButton_clicked();
+    void on_clearSendButton_clicked();
 
     void on_amountSpinBox_valueChanged(double arg1);
 
@@ -150,6 +156,11 @@ private slots:
 
     void on_priorityComboBox_currentIndexChanged(int index);
     void on_coinsBox_currentIndexChanged(int index);
-    void on_clearSendButton_clicked();
+
+    void on_prevBlockBTN_clicked();
+    void on_nextBlockBTN_clicked();
+
+    void blocksPrev();
+    void blocksNext();
 };
 #endif // MAINWINDOW_H

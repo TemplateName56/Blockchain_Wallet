@@ -283,6 +283,14 @@ QVector<Block> Blockchain::getChain()
     return this->chain;
 }
 
+Block Blockchain::getBlock(int index)
+{
+    if(index >= 0 && index < chain.length())
+    {
+        return chain[index];
+    }
+}
+
 Block Blockchain::getLastBlock()
 {
     return this->chain.last();
@@ -321,7 +329,7 @@ void Blockchain::collisionCheck()
         }
     }
 }
-
+/*
 void Blockchain::readChain()
 {
     try {
@@ -359,10 +367,47 @@ void Blockchain::readChain()
                                  subtree.value("Priority").toDouble(),
                                  subtree.value("TimeStamp").toString()),
                  subtree_1.value("Previous Hash").toString(),
-                 subtree_1.value("Hash").toString()
-                 );
+                 subtree_1.value("Hash").toString());
     }
 }
+*/
+
+void Blockchain::readChain()
+{
+    /*
+    try {
+        fileExists("chain.json");
+    }  catch (ProgramException &error) {
+        error.getError();
+    }
+    */
+    JSON file("chain.json");
+
+/*
+    if (!json_file.open(QIODevice::ReadOnly))
+    {
+        throw ProgramException(FILE_READ_ERROR);
+    }
+  */
+    for(int index = 1; index < file.new_get_array_size_blockchain(); index++)
+    {
+        for(int j = 1; j < file.new_get_array_size_block_data(index); j++){
+            addBlock(file.new_get_id(index),
+                     TransactionData(file.new_get_sender(index,j),
+                                     file.new_get_reciever(index,j),
+                                     file.new_get_amount(index,j),
+                                     toCoinsType(file.new_get_CoinsType(index, j)),
+                                     file.new_get_fee(index,j),
+                                     file.new_get_priority(index,j),
+                                     file.new_get_timestamp(index,j)),
+                    file.new_get_prev_hash(index),
+                    file.new_get_hash(index));
+        }
+
+    }
+
+}
+
 
 void Blockchain::writeChain()
 {
@@ -485,7 +530,7 @@ Validator::Validator(QObject *parent) : QObject(parent)
 
 void Validator::addTransaction(TransactionData new_transaction)
 {
-    chain.addBlock(chain.getLastBlock().getIndex(), new_transaction, chain.getLastBlock().getBlockHash());
+    chain.addBlock(chain.getLastBlock().getIndex() + 1, new_transaction, chain.getLastBlock().getBlockHash());
 
     chain.writeChain();
     authority += 1;
@@ -493,22 +538,21 @@ void Validator::addTransaction(TransactionData new_transaction)
     emit sendTransaction(chain.getLastBlock().getBlockData().getReciever(), chain.getLastBlock().getBlockData());
 }
 
-Blockchain Validator::getChain()
+Blockchain Validator::getBlockChain()
 {
     return this->chain;
+}
+void Validator::setBlockChain(Blockchain temp)
+{
+    this->chain = temp;
 }
 
 int Validator::getAuthority()
 {
     return this->authority;
 }
-Validator::Validator()
-{
 
-}
-Validator::Validator(Validator const &valid)
+void Validator::setAuthority(int authority)
 {
-   this->authority=valid.authority;
-    this->blocked=valid.blocked;
-    this->chain=valid.chain;
+    this->authority = authority;
 }

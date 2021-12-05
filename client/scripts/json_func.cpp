@@ -14,6 +14,234 @@ JSON::JSON(QString fileName)
      //qDebug() << "\n\ndoc_constructor :" << doc;
 }
 
+QString JSON:: new_get_hash(int number_block){
+    QJsonObject json = doc.object();
+    QJsonArray jsonArray = json["Blockchain"].toArray();
+    QJsonValue value = jsonArray.at(number_block-1);
+    QString address = value["Hash"].toString();;
+    return address;
+}
+
+QString JSON:: new_get_prev_hash(int number_block){
+    QJsonObject json = doc.object();
+    QJsonArray jsonArray = json["Blockchain"].toArray();
+    QJsonValue value = jsonArray.at(number_block-1);
+    QString Prev_hash = value["Previous Hash"].toString();;
+    return Prev_hash;
+}
+
+int JSON:: new_get_id(int number_block){
+    QJsonObject json = doc.object();
+    QJsonArray jsonArray = json["Blockchain"].toArray();
+    QJsonValue value = jsonArray.at(number_block-1);
+    int id = value["ID"].toInt();
+    return id;
+}
+
+
+QString JSON:: new_get_address(int number_block, int num_balance){
+    QJsonObject root = doc.object();
+    QJsonArray tlmtArray = root.value("Blockchain").toArray();
+    QJsonObject obj = tlmtArray[number_block-1].toObject();
+    QJsonArray gps_array = obj.value("Balaces").toArray();
+    QJsonObject gps_obj = gps_array[num_balance-1].toObject();
+    QJsonValue value2 = gps_array.at(num_balance-1);
+    QString adress = value2["Address"].toString();
+    return adress ;
+}
+
+double JSON:: new_get_BWC_balance(int number_block, int num_balance){
+    QJsonObject root = doc.object();
+    QJsonArray tlmtArray = root.value("Blockchain").toArray();
+    QJsonObject obj = tlmtArray[number_block-1].toObject();
+    QJsonArray gps_array = obj.value("Balaces").toArray();
+    QJsonObject gps_obj = gps_array[num_balance-1].toObject();
+    QJsonValue value2 = gps_array.at(num_balance-1);
+    double BWC_balance = value2["Balance BWC"].toDouble();
+    return BWC_balance;
+}
+
+double JSON:: new_get_BWC_N_balance(int number_block, int num_balance){
+    QJsonObject root = doc.object();
+    QJsonArray tlmtArray = root.value("Blockchain").toArray();
+    QJsonObject obj = tlmtArray[number_block-1].toObject();
+    QJsonArray gps_array = obj.value("Balaces").toArray();
+    QJsonObject gps_obj = gps_array[num_balance-1].toObject();
+    QJsonValue value2 = gps_array.at(num_balance-1);
+    double BWC_N_balance = value2["Balance BWC-N"].toDouble();
+    return BWC_N_balance;
+}
+
+double JSON:: new_get_BWC_Q_balance(int number_block, int num_balance){
+    QJsonObject root = doc.object();
+    QJsonArray tlmtArray = root.value("Blockchain").toArray();
+    QJsonObject obj = tlmtArray[number_block-1].toObject();
+    QJsonArray gps_array = obj.value("Balaces").toArray();
+    QJsonObject gps_obj = gps_array[num_balance-1].toObject();
+    QJsonValue value2 = gps_array.at(num_balance-1);
+    double BWC_Q_balance = value2["Balance BWC-Q"].toDouble();
+    return BWC_Q_balance;
+}
+
+double JSON:: new_get_amount(int number_block, int num_data){
+    QJsonObject root = doc.object();
+    QJsonArray tlmtArray = root.value("Blockchain").toArray();
+    QJsonObject obj = tlmtArray[number_block-1].toObject();
+    QJsonArray gps_array = obj.value("Block Data").toArray();
+    QJsonObject gps_obj = gps_array[num_data-1].toObject();
+    QJsonValue value2 = gps_array.at(num_data-1);
+    double amount = value2["Amount"].toDouble();
+    return amount;
+}
+
+double JSON:: new_get_fee(int number_block, int num_data){
+    QJsonObject root = doc.object();
+    QJsonArray tlmtArray = root.value("Blockchain").toArray();
+    QJsonObject obj = tlmtArray[number_block-1].toObject();
+    QJsonArray gps_array = obj.value("Block Data").toArray();
+    QJsonObject gps_obj = gps_array[num_data-1].toObject();
+    QJsonValue value2 = gps_array.at(num_data-1);
+    double fee = value2["Fee"].toDouble();
+    return fee;
+}
+
+int JSON:: new_get_priority(int number_block, int num_data){
+    QJsonObject root = doc.object();
+    QJsonArray tlmtArray = root.value("Blockchain").toArray();
+    QJsonObject obj = tlmtArray[number_block-1].toObject();
+    QJsonArray gps_array = obj.value("Block Data").toArray();
+    QJsonObject gps_obj = gps_array[num_data-1].toObject();
+    QJsonValue value2 = gps_array.at(num_data-1);
+    int priority = value2["Priority"].toInt();
+    return priority;
+}
+
+QString JSON:: new_get_reciever(int number_block, int num_data){
+    QJsonObject root = doc.object();
+    QJsonArray tlmtArray = root.value("Blockchain").toArray();
+    QJsonObject obj = tlmtArray[number_block-1].toObject();
+    QJsonArray gps_array = obj.value("Block Data").toArray();
+    QJsonObject gps_obj = gps_array[num_data-1].toObject();
+    QJsonValue value2 = gps_array.at(num_data-1);
+    QString priority = value2["Reciever"].toString();
+    return priority;
+}
+
+QString JSON:: new_get_sender(int number_block, int num_data){
+    QJsonObject root = doc.object();
+    QJsonArray tlmtArray = root.value("Blockchain").toArray();
+    QJsonObject obj = tlmtArray[number_block-1].toObject();
+    QJsonArray gps_array = obj.value("Block Data").toArray();
+    QJsonObject gps_obj = gps_array[num_data-1].toObject();
+    QJsonValue value2 = gps_array.at(num_data-1);
+    QString sender = value2["Sender"].toString();
+    return sender;
+}
+
+QString JSON:: new_get_timestamp(int number_block, int num_data){
+    QJsonObject root = doc.object();
+    QJsonArray tlmtArray = root.value("Blockchain").toArray();
+    QJsonObject obj = tlmtArray[number_block-1].toObject();
+    QJsonArray gps_array = obj.value("Block Data").toArray();
+    QJsonObject gps_obj = gps_array[num_data-1].toObject();
+    QJsonValue value2 = gps_array.at(num_data-1);
+    QString timestamp = value2["TimeStamp"].toString();
+    return timestamp;
+}
+
+
+int JSON:: new_get_CoinsType(int number_block, int num_data){
+    QJsonObject root = doc.object();
+    QJsonArray tlmtArray = root.value("Blockchain").toArray();
+    QJsonObject obj = tlmtArray[number_block-1].toObject();
+    QJsonArray gps_array = obj.value("Block Data").toArray();
+    QJsonObject gps_obj = gps_array[num_data-1].toObject();
+    QJsonValue value2 = gps_array.at(num_data-1);
+    int coins_type = value2["Coins Type"].toInt();
+    return coins_type ;
+}
+
+void JSON:: new_print(){
+    QJsonObject root = doc.object();
+    //QJsonArray tlmtArray = root.value("A").toArray();
+    QJsonArray tlmtArray = root.value("Blockchain").toArray();
+
+    for(int i = 0; i < tlmtArray.size(); ++i)
+    {
+        QJsonObject obj = tlmtArray[i].toObject();
+        QJsonArray gps_array = obj.value("Block Data").toArray();
+        QJsonArray gps_array2 = obj.value("Balaces").toArray();
+
+        QString Hash = obj.value("Hash").toString();
+        int Id = obj.value("Id").toInt();
+        QString prev_hash =obj.value("Previous Hash").toString();
+        qDebug() <<"Hash:" << Hash  ;
+        qDebug() <<"Previous Hash:" << prev_hash  ;
+        qDebug() <<"Id:" << Id  ;
+         qDebug() <<"Blockchain array size:" << tlmtArray.size()  ;
+         qDebug() <<"Balances array size:" << gps_array2.size()  ;
+         qDebug() <<"Block Data array size:" << gps_array.size()  ;
+
+        std::cout << "----\n";
+        for(int j = 0; j < gps_array.size(); ++j)
+        {
+
+            QJsonObject gps_obj = gps_array[j].toObject();
+            QJsonValue value2 = gps_array.at(j);
+            //QString address_recipient = value2["address_recipient"].toString();
+            qDebug() <<"Amount:" << value2["Amount"].toDouble();
+            qDebug() <<"Coins Type:"  << value2["Coins Type"].toInt();
+            qDebug() <<"Fee:"  << value2["Fee"].toDouble();
+            qDebug() <<"Priority:"  << value2["Priority"].toInt();
+            qDebug() <<"Reciever:"  << value2["Reciever"].toString();
+            qDebug() <<"Sender:"  << value2["Sender"].toString();
+            qDebug() <<"TimeStamp:"  << value2["TimeStamp"].toString();
+            std::cout << "\n";
+        }
+        std::cout << "--\n";
+        for(int j = 0; j < gps_array2.size(); ++j)
+        {
+
+            QJsonObject gps_obj = gps_array2[j].toObject();
+            QJsonValue value2 = gps_array2.at(j);
+            //QString address_recipient = value2["address_recipient"].toString();
+            qDebug() <<"Address:" << value2["Address"].toString();
+            qDebug() <<"Balance BWC:"  << value2["Balance BWC"].toDouble();
+            qDebug() <<"Balance BWC-N:"  << value2["Balance BWC-N"].toDouble();
+            qDebug() <<"Balance BWC-Q:"  << value2["Balance BWC-Q"].toDouble();
+
+            std::cout << "\n";
+        }
+        std::cout << "-------------------------------------------------------------\n\n";
+    }
+}
+
+int JSON:: new_get_array_size_blockchain(){
+    QJsonObject json = doc.object();
+    QJsonArray jsonArray = json["Blockchain"].toArray();
+    return jsonArray.size();
+}
+
+int JSON:: new_get_array_size_balances(int number_block){
+    QJsonObject json = doc.object();
+    QJsonArray jsonArray = json["Blockchain"].toArray();
+    QJsonObject obj = jsonArray[number_block-1].toObject();
+    QJsonArray gps_array = obj.value("Balaces").toArray();
+    return gps_array.size();
+}
+
+int JSON:: new_get_array_size_block_data(int number_block){
+    QJsonObject json = doc.object();
+    QJsonArray jsonArray = json["Blockchain"].toArray();
+    QJsonObject obj = jsonArray[number_block-1].toObject();
+    QJsonArray gps_array = obj.value("Block Data").toArray();
+    return gps_array.size();
+}
+
+
+
+
+
 void JSON:: saveJson_append(int index){
 
     QFile json_file(filename);
@@ -319,6 +547,13 @@ QVector<QString> getUsersInfo(getInfo what_u_need)
             valid_information.append(subtree.value("address").toString());
         }
         break;
+    case ADMIN:
+        for(int index = 0; index < json_array.size(); index++)
+        {
+            QJsonObject subtree = json_array.at(index).toObject();
+            valid_information.append(QString::number(subtree.value("admin").toInt()));
+        }
+        break;
     default:
         break;
     }
@@ -349,6 +584,7 @@ void registerNewUsers(QString wallet_address, QString wallet_key)
 
     new_user["address"] = wallet_address;
     new_user["walletKey"] = QString::fromStdString(use_algoritm.Hash(wallet_key.toStdString()));
+    new_user["admin"] = 0;
 
     QJsonDocument json_document(QJsonDocument::fromJson(json_file.readAll()));
     json_file.close();

@@ -42,6 +42,28 @@ public:
     void append_users_transactions();
     void append_users_2(QString address, QString walletKey);
 
+    QString new_get_hash(int number_block);
+    QString new_get_prev_hash(int number_block);
+    int new_get_id(int number_block);
+
+    QString new_get_sender(int number_block, int num_data);
+    QString new_get_reciever(int number_block, int num_data);
+    QString new_get_timestamp(int number_block, int num_data);
+    double new_get_amount(int number_block, int num_data);
+    double new_get_fee(int number_block, int num_data);
+    int new_get_CoinsType(int number_block, int num_data);
+    int new_get_priority(int number_block, int num_data);
+
+    QString new_get_address(int number_block, int num_balance);
+    double new_get_BWC_balance(int number_block, int num_balance);
+    double new_get_BWC_N_balance(int number_block, int num_balance);
+    double new_get_BWC_Q_balance(int number_block, int num_balance);
+
+    void new_print();
+    int new_get_array_size_blockchain();
+    int new_get_array_size_balances(int number_block);
+    int new_get_array_size_block_data(int number_block);
+
 private:
     //QJsonObject json;
 
@@ -54,7 +76,8 @@ private:
 enum getInfo
 {
     ADDRESS,
-    KEY
+    KEY,
+    ADMIN
 };
 
 void fileExists(const QString &file_path);

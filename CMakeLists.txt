@@ -16,40 +16,43 @@ find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Core Widgets Gui REQUIRED)
 
 set(PROJECT_SOURCES
         main.cpp
+        # Gui files
         client/gui/mainwindow.cpp
         client/gui/mainwindow.h
         client/gui/mainwindow.ui
         client/gui/auth_form.h
         client/gui/auth_form.cpp
         client/gui/auth_form.ui
-        client/scripts/json_func.h
-        client/scripts/json_func.cpp
-        client/scripts/new_wallet.h
-        client/scripts/new_wallet.cpp
-        client/tests/program_exception.h
-        client/tests/program_exception.cpp
         client/gui/settings_form.h
         client/gui/settings_form.cpp
         client/gui/settings_form.ui
         client/gui/about_program_form.h
         client/gui/about_program_form.cpp
         client/gui/about_program_form.ui
-        includes/effolkronium/random.hpp
-        client/gui/encrypt_wallet_form.h
-        client/gui/encrypt_wallet_form.cpp
-        client/gui/encrypt_wallet_form.ui
         client/gui/change_passphrase_form.h
         client/gui/change_passphrase_form.cpp
         client/gui/change_passphrase_form.ui
-        client/scripts/program_algorithms.h
-        client/scripts/program_algorithms.cpp
-        client/scripts/csv_func.h
-        client/scripts/csv_func.cpp
-        client/blockchain/blockchain.h
-        client/blockchain/blockchain.cpp
         client/gui/transactionscardview.h
         client/gui/transactionscardview.cpp
         client/gui/transactionscardview.ui
+        # Scripts files
+        client/scripts/json_func.h
+        client/scripts/json_func.cpp
+        client/scripts/csv_func.h
+        client/scripts/csv_func.cpp
+        # Script files
+        client/scripts/new_wallet.h
+        client/scripts/new_wallet.cpp
+        client/tests/program_exception.h
+        client/tests/program_exception.cpp
+        client/scripts/program_algorithms.h
+        client/scripts/program_algorithms.cpp
+        # Other libraries
+        includes/effolkronium/random.hpp
+        # Blockchain files
+        client/blockchain/blockchain.h
+        client/blockchain/blockchain.cpp
+
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
