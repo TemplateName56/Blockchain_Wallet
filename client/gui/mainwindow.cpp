@@ -748,7 +748,7 @@ void MainWindow::on_recomValueButton_clicked()
 {
     recomActivated = true;
     ui->priorityComboBox->setEnabled(false);
-    fee = amount * 0.05;
+    fee = round(amount * 0.05 * 100)/100;
     priority = 3;
     ui->recomValueLE->setText(QString::number(fee));
 }

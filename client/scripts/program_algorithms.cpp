@@ -65,59 +65,61 @@ int algoritms::ConvertIntoLetter(int rezult)
 
 string algoritms::Encryption(string str, int key)
 {
-    int code=key;
-        code *= 3;
-        code += 1;
-        code += 6;
-        for (int i = 0; i < str.size(); i++)
-        {
-            str[i] = str[i] + (key+code+i);
-        }
-        return str;
+    int code = key;
+    code *= 3;
+    code += 1;
+    code += 6;
+    for (int i = 0; i < str.size(); i++)
+    {
+        str[i] = str[i] + (key+code+i);
+    }
+    return str;
 }
 
 string algoritms::Decryption(string str, int key)
 {
     int code = key;
-        code *= 3;
-        code += 1;
-        code += 6;
-        for (int i = 0; i < str.size(); i++)
-        {
-            str[i] = str[i] - (key + code + i);
-        }
-        return str;
+    code *= 3;
+    code += 1;
+    code += 6;
+    for (int i = 0; i < str.size(); i++)
+    {
+        str[i] = str[i] - (key + code + i);
+    }
+    return str;
 }
+
 string algoritms::GenerateLink(string link)
 {
     for (int i = 0; i < link.size(); i++)
-        {
-            link[i] = link[i] + 4;
-        }
-        string prevlink = "https://";
-        string nextlink = ".ua";
-        prevlink += link;
-        prevlink += nextlink;
-        return prevlink;
+    {
+        link[i] = link[i] + 4;
+    }
+    string prevlink = "https://";
+    string nextlink = ".ua";
+    prevlink += link;
+    prevlink += nextlink;
+    return prevlink;
 }
+
 string algoritms::DecryptionLink(string link)
 {
     string result;
-       string tmp;
-       for (size_t i = 8; i < link.length(); i++)
-       {
-           tmp += link[i];
-       }
-       for (int i = 0; i < tmp.length()-3; i++)
-       {
-           result += tmp[i];
-       }
+    string tmp;
+    for (size_t i = 8; i < link.length(); i++)
+    {
+        tmp += link[i];
+    }
+    for (int i = 0; i < tmp.length()-3; i++)
+    {
+        result += tmp[i];
+    }
 
-       for (int i = 0; i < result.size(); i++)
-       {
-           result[i] = result[i] - 4;
-       }
-       return result;
+    for (int i = 0; i < result.size(); i++)
+    {
+        result[i] = result[i] - 4;
+    }
+    return result;
 }
 
 
