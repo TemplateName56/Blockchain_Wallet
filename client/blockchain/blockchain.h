@@ -111,6 +111,7 @@ public:
 
     QVector<Block> getChain();
 
+    Block getBlock(int index);
     Block getLastBlock();
     int getChainLenght();
 
@@ -140,8 +141,8 @@ private:
 public:
     explicit Validator(QObject *parent = nullptr);
 
-    Blockchain getChain();
-    void setChain(Blockchain temp);
+    Blockchain getBlockChain();
+    void setBlockChain(Blockchain temp);
     int getAuthority();
 
     void setAuthority(int authority);

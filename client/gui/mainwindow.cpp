@@ -18,7 +18,7 @@ MainWindow::MainWindow(QWidget *parent)
     val_2.setAuthority(75);
     val_3.setAuthority(1);
 
-    val_1.getChain().show();
+    val_1.getBlockChain().show();
 
     qRegisterMetaType<TransactionData>("TransactionData");
 
@@ -44,6 +44,9 @@ MainWindow::MainWindow(QWidget *parent)
     connect(&val_1, SIGNAL(sendTransaction(QString,TransactionData)), this, SLOT(newTransaction(QString,TransactionData)));
     connect(&val_2, SIGNAL(sendTransaction(QString,TransactionData)), this, SLOT(newTransaction(QString,TransactionData)));
     connect(&val_3, SIGNAL(sendTransaction(QString,TransactionData)), this, SLOT(newTransaction(QString,TransactionData)));
+
+    connect(this, SIGNAL(allBlocksView_next_clicked()), this, SLOT(blocksNext()));
+    connect(this, SIGNAL(allBlocksView_prev_clicked()), this, SLOT(blocksPrev()));
 
     ui->stackedWidget->setCurrentIndex(0);
     setWindowLanguage();
@@ -74,7 +77,7 @@ void MainWindow::authorizeUser()
             QVector<QString> user_address = getUsersInfo(ADDRESS);
             wallet_address = user_address[index];
 
-            Balance current_user = val_1.getChain().getLastBlock().getUserBalance(wallet_address);
+            Balance current_user = val_1.getBlockChain().getLastBlock().getUserBalance(wallet_address);
 
             QVector<QString> users_admin = getUsersInfo(ADMIN);
             QString admin_check = users_admin[index];
@@ -120,7 +123,7 @@ void MainWindow::registerUser()
         ui_Auth.close();
         Sleep(250);
 
-        Balance current_user = val_1.getChain().getLastBlock().getUserBalance(wallet_address);
+        Balance current_user = val_1.getBlockChain().getLastBlock().getUserBalance(wallet_address);
 
         ui->bwcBalance->setText(QString::number(current_user.getBalance(BWC)));
         ui->bwcNBalance->setText(QString::number(current_user.getBalance(BWC_N)));
@@ -327,42 +330,34 @@ void MainWindow::addTransactionCard(QString label, QString timeStamp, double amo
 
 void MainWindow::newTransaction(QString wallet_address, TransactionData data)
 {
-    qDebug() << val_1.getChain().getChainLenght();
-    qDebug() << val_2.getChain().getChainLenght();
-    qDebug() << val_3.getChain().getChainLenght();
-
-    if(val_1.getChain().getChainLenght() > val_2.getChain().getChainLenght())
+    if(val_1.getBlockChain().getChainLenght() > val_2.getBlockChain().getChainLenght())
     {
-        val_2.setChain(val_1.getChain());
+        val_2.setBlockChain(val_1.getBlockChain());
     }
-    if(val_2.getChain().getChainLenght() > val_1.getChain().getChainLenght())
+    if(val_2.getBlockChain().getChainLenght() > val_1.getBlockChain().getChainLenght())
     {
-        val_1.setChain(val_2.getChain());
+        val_1.setBlockChain(val_2.getBlockChain());
     }
-    if(val_1.getChain().getChainLenght() > val_3.getChain().getChainLenght())
+    if(val_1.getBlockChain().getChainLenght() > val_3.getBlockChain().getChainLenght())
     {
-        val_3.setChain(val_1.getChain());
+        val_3.setBlockChain(val_1.getBlockChain());
     }
-    if(val_3.getChain().getChainLenght() > val_1.getChain().getChainLenght())
+    if(val_3.getBlockChain().getChainLenght() > val_1.getBlockChain().getChainLenght())
     {
-        val_1.setChain(val_3.getChain());
+        val_1.setBlockChain(val_3.getBlockChain());
     }
-    if(val_3.getChain().getChainLenght() > val_2.getChain().getChainLenght())
+    if(val_3.getBlockChain().getChainLenght() > val_2.getBlockChain().getChainLenght())
     {
-        val_2.setChain(val_3.getChain());
+        val_2.setBlockChain(val_3.getBlockChain());
     }
-    if(val_2.getChain().getChainLenght() > val_3.getChain().getChainLenght())
+    if(val_2.getBlockChain().getChainLenght() > val_3.getBlockChain().getChainLenght())
     {
-        val_3.setChain(val_2.getChain());
+        val_3.setBlockChain(val_2.getBlockChain());
     }
-
-    qDebug() << val_1.getChain().getChainLenght();
-    qDebug() << val_2.getChain().getChainLenght();
-    qDebug() << val_3.getChain().getChainLenght();
 
     if(wallet_address == this->wallet_address)
     {
-        Balance current_user = val_1.getChain().getLastBlock().getUserBalance(wallet_address);
+        Balance current_user = val_1.getBlockChain().getLastBlock().getUserBalance(wallet_address);
 
         ui->bwcBalance->setText(QString::number(current_user.getBalance(BWC)));
         ui->bwcNBalance->setText(QString::number(current_user.getBalance(BWC_N)));
@@ -466,7 +461,7 @@ void MainWindow::requestsHistory()
 
 bool MainWindow::isAmountCorrect(double amount, CoinsType coins_type)
 {
-    Balance this_user = val_1.getChain().getLastBlock().getUserBalance(wallet_address);
+    Balance this_user = val_1.getBlockChain().getLastBlock().getUserBalance(wallet_address);
     switch (coins_type) {
     case BWC:
         if(this_user.getBalance(BWC) >= amount)
@@ -606,13 +601,9 @@ void MainWindow::on_sendCoinsButton_clicked()
         }
         QDateTime timeStamp = QDateTime::currentDateTime();
 
-        int max_authority = std::max(val_1.getAuthority(), val_2.getAuthority());
-        qDebug() << max_authority;
-        max_authority = std::max(max_authority, val_3.getAuthority());
-        qDebug() << max_authority;
+        int max_authority = std::max(std::max(val_1.getAuthority(), val_2.getAuthority()), val_3.getAuthority());
 
-        int min_authority = std::min(val_1.getAuthority(), val_2.getAuthority());
-        min_authority = std::min(min_authority, val_3.getAuthority());
+        int min_authority = std::min(std::min(val_1.getAuthority(), val_2.getAuthority()), val_3.getAuthority());
 
         switch (priority) {
         case 1:
@@ -663,7 +654,7 @@ void MainWindow::on_sendCoinsButton_clicked()
 
         emit addTransactionCard(transaction_label, timeStamp.toString(), amount, coins_type, 0);
 
-        Balance current_user = val_1.getChain().getLastBlock().getUserBalance(wallet_address);
+        Balance current_user = val_1.getBlockChain().getLastBlock().getUserBalance(wallet_address);
 
         ui->bwcBalance->setText(QString::number(current_user.getBalance(BWC)));
         ui->bwcNBalance->setText(QString::number(current_user.getBalance(BWC_N)));
@@ -797,5 +788,45 @@ void MainWindow::on_clearSendButton_clicked()
     ui->payToAddress->clear();
     ui->sendTransactionLabel->clear();
     ui->amountSpinBox->clear();
+}
+
+QString coinsTypeToString(CoinsType coins_type)
+{
+    switch (coins_type) {
+    case BWC:
+        return "BWC";
+        break;
+    case BWC_N:
+        return "BWC-N";
+        break;
+    case BWC_Q:
+        return "BWC-Q";
+        break;
+    default:
+        return "BWC";
+        break;
+    }
+}
+
+
+void MainWindow::on_prevBlockBTN_clicked()
+{
+    emit allBlocksView_prev_clicked();
+}
+
+
+void MainWindow::on_nextBlockBTN_clicked()
+{
+    emit allBlocksView_next_clicked();
+}
+
+void MainWindow::blocksPrev()
+{
+
+}
+
+void MainWindow::blocksNext()
+{
+
 }
 

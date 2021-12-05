@@ -283,6 +283,14 @@ QVector<Block> Blockchain::getChain()
     return this->chain;
 }
 
+Block Blockchain::getBlock(int index)
+{
+    if(index >= 0 && index < chain.length())
+    {
+        return chain[index];
+    }
+}
+
 Block Blockchain::getLastBlock()
 {
     return this->chain.last();
@@ -522,7 +530,7 @@ Validator::Validator(QObject *parent) : QObject(parent)
 
 void Validator::addTransaction(TransactionData new_transaction)
 {
-    chain.addBlock(chain.getLastBlock().getIndex(), new_transaction, chain.getLastBlock().getBlockHash());
+    chain.addBlock(chain.getLastBlock().getIndex() + 1, new_transaction, chain.getLastBlock().getBlockHash());
 
     chain.writeChain();
     authority += 1;
@@ -530,11 +538,11 @@ void Validator::addTransaction(TransactionData new_transaction)
     emit sendTransaction(chain.getLastBlock().getBlockData().getReciever(), chain.getLastBlock().getBlockData());
 }
 
-Blockchain Validator::getChain()
+Blockchain Validator::getBlockChain()
 {
     return this->chain;
 }
-void Validator::setChain(Blockchain temp)
+void Validator::setBlockChain(Blockchain temp)
 {
     this->chain = temp;
 }

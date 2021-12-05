@@ -55,6 +55,9 @@ signals:
     void sendButton_clicked_val_3(TransactionData new_data);
     void newTrasaction_clicked();
 
+    void allBlocksView_next_clicked();
+    void allBlocksView_prev_clicked();
+
     void sendTransaction(TransactionData new_transaction);
 
 protected:
@@ -66,6 +69,8 @@ private:
     Validator val_1;
     Validator val_2;
     Validator val_3;
+
+    int block_index = 0;
 
     settings_Form ui_Settings;
     auth_Form ui_Auth;
@@ -151,5 +156,11 @@ private slots:
 
     void on_priorityComboBox_currentIndexChanged(int index);
     void on_coinsBox_currentIndexChanged(int index);
+
+    void on_prevBlockBTN_clicked();
+    void on_nextBlockBTN_clicked();
+
+    void blocksPrev();
+    void blocksNext();
 };
 #endif // MAINWINDOW_H
