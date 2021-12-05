@@ -8,6 +8,7 @@ settings_Form::settings_Form(QWidget *parent) :
 {
     ui->setupUi(this);
     ui->tabWidget->setCurrentIndex(0);
+    this->setWindowIcon(QIcon("icons/programIcon.png"));
 
     readSettings();
     ui->languagesBox->setCurrentIndex(languageIndex);

@@ -6,6 +6,7 @@ about_program_Form::about_program_Form(QWidget *parent) :
     ui(new Ui::about_program_Form)
 {
     ui->setupUi(this);
+    this->setWindowIcon(QIcon("icons/programIcon.png"));
 }
 
 about_program_Form::~about_program_Form()

@@ -6,6 +6,7 @@ change_passphrase_Form::change_passphrase_Form(QWidget *parent) :
     ui(new Ui::change_passphrase_Form)
 {
     ui->setupUi(this);
+    this->setWindowIcon(QIcon("icons/programIcon.png"));
 }
 
 void change_passphrase_Form::changePassphraseShow()
