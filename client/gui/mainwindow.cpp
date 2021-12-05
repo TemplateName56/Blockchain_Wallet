@@ -130,6 +130,7 @@ void MainWindow::registerUser()
         ui->bwcQBalance->setText(QString::number(current_user.getBalance(BWC_Q)));
 
         this->show();
+        throw ProgramException(SAVE_PASSPHRASE, wallet_key);
     }  catch (ProgramException &error) {
         error.getError();
     }
@@ -839,7 +840,7 @@ void MainWindow::blocksPrev()
 
 void MainWindow::blocksNext()
 {
-    if(block_index < val_1.getBlockChain().getChainLenght())
+    if(block_index < val_1.getBlockChain().getChainLenght() - 1)
     {
         block_index++;
         ui->idInf->setText(QString::number(val_1.getBlockChain().getBlock(block_index).getIndex()));
