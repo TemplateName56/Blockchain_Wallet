@@ -374,13 +374,13 @@ void Blockchain::readChain()
 
 void Blockchain::readChain()
 {
-    /*
+/*
     try {
         fileExists("chain.json");
     }  catch (ProgramException &error) {
         error.getError();
     }
-    */
+*/
     JSON file("chain.json");
 
 /*
@@ -388,10 +388,13 @@ void Blockchain::readChain()
     {
         throw ProgramException(FILE_READ_ERROR);
     }
-  */
-    for(int index = 1; index < file.new_get_array_size_blockchain(); index++)
+*/
+    //qDebug() << "array_size_blockchain: " << file.new_get_array_size_blockchain();
+    for(int index = 1; index < file.new_get_array_size_blockchain()+1; index++)
     {
-        for(int j = 1; j < file.new_get_array_size_block_data(index); j++){
+        //qDebug() << "index: " << index;
+        //qDebug() << "array_size_block_data: " << file.new_get_array_size_block_data(index);
+        for(int j = 0; j < file.new_get_array_size_block_data(index); j++){
             addBlock(file.new_get_id(index),
                      TransactionData(file.new_get_sender(index,j),
                                      file.new_get_reciever(index,j),
@@ -403,9 +406,8 @@ void Blockchain::readChain()
                     file.new_get_prev_hash(index),
                     file.new_get_hash(index));
         }
-
     }
-
+        //qDebug() << "\n-------------------";
 }
 
 
