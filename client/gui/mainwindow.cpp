@@ -822,11 +822,35 @@ void MainWindow::on_nextBlockBTN_clicked()
 
 void MainWindow::blocksPrev()
 {
-
+    if(block_index > 0)
+    {
+        block_index--;
+        ui->idInf->setText(QString::number(val_1.getBlockChain().getBlock(block_index).getIndex()));
+        ui->hashInf->setText(val_1.getBlockChain().getBlock(block_index).getBlockHash());
+        ui->prevHashInf->setText(val_1.getBlockChain().getBlock(block_index).getPrevBlockHash());
+        ui->senderInf->setText(val_1.getBlockChain().getBlock(block_index).getBlockData().getSender());
+        ui->recieverInf->setText(val_1.getBlockChain().getBlock(block_index).getBlockData().getReciever());
+        ui->timestampInf->setText(val_1.getBlockChain().getBlock(block_index).getBlockData().getTimeStamp());
+        ui->amountInf->setText(QString::number(val_1.getBlockChain().getBlock(block_index).getBlockData().getAmount()));
+        ui->coinsTypeInf->setText(coinsTypeToString(val_1.getBlockChain().getBlock(block_index).getBlockData().getCoinsType()));
+        ui->feeInf->setText(QString::number(val_1.getBlockChain().getBlock(block_index).getBlockData().getFee()));
+    }
 }
 
 void MainWindow::blocksNext()
 {
-
+    if(block_index < val_1.getBlockChain().getChainLenght())
+    {
+        block_index++;
+        ui->idInf->setText(QString::number(val_1.getBlockChain().getBlock(block_index).getIndex()));
+        ui->hashInf->setText(val_1.getBlockChain().getBlock(block_index).getBlockHash());
+        ui->prevHashInf->setText(val_1.getBlockChain().getBlock(block_index).getPrevBlockHash());
+        ui->senderInf->setText(val_1.getBlockChain().getBlock(block_index).getBlockData().getSender());
+        ui->recieverInf->setText(val_1.getBlockChain().getBlock(block_index).getBlockData().getReciever());
+        ui->timestampInf->setText(val_1.getBlockChain().getBlock(block_index).getBlockData().getTimeStamp());
+        ui->amountInf->setText(QString::number(val_1.getBlockChain().getBlock(block_index).getBlockData().getAmount()));
+        ui->coinsTypeInf->setText(coinsTypeToString(val_1.getBlockChain().getBlock(block_index).getBlockData().getCoinsType()));
+        ui->feeInf->setText(QString::number(val_1.getBlockChain().getBlock(block_index).getBlockData().getFee()));
+    }
 }
 
