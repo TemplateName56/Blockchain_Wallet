@@ -380,6 +380,19 @@ void MainWindow::requestsHistory()
     request_view_model->setHorizontalHeaderLabels(QStringList() << "Date" << "Label" << "Message" << "Amount");
     ui->requestsView->setModel(request_view_model);
 
+
+    QString styleSheet = "::section {"
+                         "spacing: 10px;"
+                         "background-color: lightblue;"
+                         "color: white;"
+                         "border: 1px solid black;"
+                         "margin: 1px;"
+                         "font-weight: bold;"
+                         "font-family: arial;"
+                         "font-size: 15px; }";
+
+    ui->requestsView->horizontalHeader()->setStyleSheet(styleSheet);
+
     ui->requestsView->verticalHeader()->setVisible(false);
 
     ui->requestsView->setColumnWidth(0,100);
