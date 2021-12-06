@@ -544,7 +544,7 @@ void JSON:: read_users_transactions(){
     qDebug() << address_recipient << fee;
 }
 
-void JSON:: append_users_2(QString address, QString walletKey){
+void JSON:: registerNewUser(QString address, QString walletKey){
     QFile json_file(filename);
     QJsonObject json = doc.object();
     QJsonArray jsonArray = json["users"].toArray();
@@ -552,9 +552,12 @@ void JSON:: append_users_2(QString address, QString walletKey){
     QJsonObject GBjsonObj;
     GBjsonObj = doc.object();
 
+    algoritms use_algoritm;
+
     QJsonObject jsonObj3;
     jsonObj3.insert("address", address);
-    jsonObj3.insert("walletKey", walletKey);
+    jsonObj3.insert("walletKey", QString::fromStdString(use_algoritm.Hash(walletKey.toStdString())));
+    jsonObj3.insert("admin", 0);
 
     jsonArray.append(jsonObj3);
 
@@ -732,44 +735,44 @@ QVector<QString> getUsersInfo(getInfo what_u_need)
     return valid_information;
 }
 
-void registerNewUsers(QString wallet_address, QString wallet_key)
-{
-    try {
-        fileExists("users.json");
-    }  catch (ProgramException &error) {
-        error.getError();
-    }
+//void registerNewUsers(QString wallet_address, QString wallet_key)
+//{
+//    try {
+//        fileExists("users.json");
+//    }  catch (ProgramException &error) {
+//        error.getError();
+//    }
 
-    algoritms use_algoritm;
+//    algoritms use_algoritm;
 
-    QFileInfo file_info("users.json");
-    QDir::setCurrent(file_info.path());
-    QFile json_file("users.json");
+//    QFileInfo file_info("users.json");
+//    QDir::setCurrent(file_info.path());
+//    QFile json_file("users.json");
 
-    if (!json_file.open(QIODevice::ReadOnly))
-    {
-        throw ProgramException(FILE_READ_ERROR);
-    }
+//    if (!json_file.open(QIODevice::ReadOnly))
+//    {
+//        throw ProgramException(FILE_READ_ERROR);
+//    }
 
-    QJsonObject new_user;
+//    QJsonObject new_user;
 
-    new_user["address"] = wallet_address;
-    new_user["walletKey"] = QString::fromStdString(use_algoritm.Hash(wallet_key.toStdString()));
-    new_user["admin"] = 0;
+//    new_user["address"] = wallet_address;
+//    new_user["walletKey"] = QString::fromStdString(use_algoritm.Hash(wallet_key.toStdString()));
+//    new_user["admin"] = 0;
 
-    QJsonDocument json_document(QJsonDocument::fromJson(json_file.readAll()));
-    json_file.close();
+//    QJsonDocument json_document(QJsonDocument::fromJson(json_file.readAll()));
+//    json_file.close();
 
-    QJsonObject current_json = json_document.object();
-    QJsonArray json_array = current_json["users"].toArray();
+//    QJsonObject current_json = json_document.object();
+//    QJsonArray json_array = current_json["users"].toArray();
 
-    json_array.push_back(new_user);
-    current_json["users"] = json_array;
-    if (!json_file.open(QIODevice::WriteOnly))
-    {
-        throw ProgramException(FILE_WRITE_ERROR);
-    }
+//    json_array.push_back(new_user);
+//    current_json["users"] = json_array;
+//    if (!json_file.open(QIODevice::WriteOnly))
+//    {
+//        throw ProgramException(FILE_WRITE_ERROR);
+//    }
 
-    json_file.write(QJsonDocument(current_json).toJson(QJsonDocument::Indented));
-    json_file.close();
-}
+//    json_file.write(QJsonDocument(current_json).toJson(QJsonDocument::Indented));
+//    json_file.close();
+//}

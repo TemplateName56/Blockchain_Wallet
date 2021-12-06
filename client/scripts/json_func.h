@@ -40,7 +40,7 @@ public:
     void saveJson_append_2(int index, QString hash_prev, QString hash, QString btc, int time, QString adress_s, QString adress_r, double money);
     void append_users();
     void append_users_transactions();
-    void append_users_2(QString address, QString walletKey);
+    void registerNewUser(QString address, QString walletKey);
 
     QString new_get_hash(int number_block);
     QString new_get_prev_hash(int number_block);
