@@ -6,6 +6,7 @@ transactionsCardView::transactionsCardView(QWidget *parent) :
     ui(new Ui::transactionsCardView)
 {
     ui->setupUi(this);
+    setWindowFlags(Qt::Dialog | Qt::MSWindowsFixedSizeDialogHint);
 }
 
 void transactionsCardView::setData(QString label, QString timeStamp, double amount, CoinsType coins_type, int transaction_type)

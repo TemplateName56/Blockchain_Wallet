@@ -9,6 +9,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
     try {
         fileExists("requestsList.csv");
+        setWindowFlags(Qt::Dialog | Qt::MSWindowsFixedSizeDialogHint);
     }  catch (ProgramException &error) {
         error.getError();
     }
@@ -170,17 +171,18 @@ void MainWindow::createActions()
     QPixmap recievepix("icons/recieveIcon.jpg");
     QPixmap helppix("icons/helpIcon.png");
     QPixmap transactionspix("icons/transactionsIcon.png");
+    QPixmap all_blockspix("icons/all_blocksIcon.png");
     QPixmap quitpix("icons/quitIcon.png");
 
     //QPixmap programpix("icons/programIcon.png");
+
 
     home = new QAction(homepix, "&Home", this);
     send = new QAction(sendpix, "&Send", this);
     recieve = new QAction(recievepix, "&Recieve", this);
     help = new QAction(helppix, "&Help", this);
+    all_blocks = new QAction(all_blockspix, "&Blocks", this);
     quit = new QAction(quitpix, "&Quit", this);
-
-    all_blocks = new QAction(transactionspix, "&Blocks", this);
 
     quit->setShortcut(tr("Ctrl+Q"));
 
@@ -258,6 +260,10 @@ void MainWindow::uiChanges()
 {
     ui->payToAddress->setPlaceholderText("Enter wallet-address");
     ui->sendTransactionLabel->setPlaceholderText("Enter a label for this address to add it to your address book");
+
+    ui->requestLabelLine->setPlaceholderText("263 stroka");
+    ui->messageLine->setPlaceholderText("264 stroka");
+
 }
 
 void MainWindow::iconActivated(QSystemTrayIcon::ActivationReason reason)
@@ -392,6 +398,11 @@ void MainWindow::requestsHistory()
     request_view_model->setHorizontalHeaderLabels(QStringList() << "Date" << "Label" << "Message" << "Amount");
     ui->requestsView->setModel(request_view_model);
 
+    ui->requestsView->setEditTriggers( QAbstractItemView::NoEditTriggers);
+
+    ui->requestsView->verticalHeader()->setSectionResizeMode(QHeaderView::Fixed);
+    ui->requestsView-> horizontalHeader()->setSectionResizeMode(QHeaderView::Fixed);
+
     QString styleSheet = "::section {"
                          "spacing: 10px;"
                          "background-color: lightblue;"
@@ -448,6 +459,10 @@ void MainWindow::requestsHistory()
         ui->historyView->setModel(history_view_model);
 
         ui->historyView->verticalHeader()->setVisible(false);
+
+        ui->historyView->setEditTriggers( QAbstractItemView::NoEditTriggers);
+        ui->historyView->verticalHeader()->setSectionResizeMode(QHeaderView::Fixed);
+        ui->historyView-> horizontalHeader()->setSectionResizeMode(QHeaderView::Fixed);
 
         ui->historyView->setColumnWidth(0,100);
         ui->historyView->setColumnWidth(1,225);

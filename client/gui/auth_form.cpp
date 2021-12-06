@@ -8,7 +8,9 @@ auth_Form::auth_Form(QWidget *parent) :
     ui->setupUi(this);
     ui->label->setPixmap(QIcon("icons/programIcon.png").pixmap(50,50));
     this->setWindowIcon(QIcon("icons/programIcon.png"));
+    setWindowFlags(Qt::Dialog | Qt::MSWindowsFixedSizeDialogHint);
 }
+
 
 auth_Form::~auth_Form()
 {
