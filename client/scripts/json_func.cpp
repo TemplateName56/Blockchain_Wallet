@@ -3,15 +3,24 @@
 
 JSON::JSON(QString fileName)
 {
-    filename = fileName;
-    QString val2;
-    QFile json_file(filename);
-    json_file.open(QIODevice::ReadOnly | QIODevice::Text);
-    val2 = json_file.readAll();
-    json_file.close();
+    try {
+        fileExists(fileName);
+        filename = fileName;
+        QString val2;
 
-    doc = QJsonDocument::fromJson(val2.toUtf8());
-     //qDebug() << "\n\ndoc_constructor :" << doc;
+        QFile json_file(filename);
+        if(!json_file.open(QIODevice::ReadOnly | QIODevice::Text))
+        {
+            throw ProgramException(FILE_READ_ERROR);
+        }
+        val2 = json_file.readAll();
+        json_file.close();
+
+        doc = QJsonDocument::fromJson(val2.toUtf8());
+         //qDebug() << "\n\ndoc_constructor :" << doc;
+    }  catch (ProgramException &error) {
+        error.getError();
+    }
 }
 
 QString JSON:: new_get_hash(int number_block){
@@ -34,7 +43,7 @@ int JSON:: new_get_id(int number_block){
     QJsonObject json = doc.object();
     QJsonArray jsonArray = json["Blockchain"].toArray();
     QJsonValue value = jsonArray.at(number_block-1);
-    int id = value["ID"].toInt();
+    int id = value["Id"].toInt();
     return id;
 }
 
@@ -479,56 +488,7 @@ void JSON:: saveJson_append_2(int index, QString hash_prev, QString hash, QStrin
     json_file.write(doc.toJson());
 }
 
-void JSON:: append_users(){
-    QFile json_file(filename);
-    QJsonObject json = doc.object();
-    QJsonArray jsonArray = json["users"].toArray();
 
-    QJsonObject GBjsonObj;
-    GBjsonObj = doc.object();
-
-    QJsonObject jsonObj3;
-    jsonObj3.insert("address", "BW0000000000000000003");
-    jsonObj3.insert("walletKey", "Admin");
-
-    jsonArray.append(jsonObj3);
-    GBjsonObj["users"] = jsonArray;
-    doc.setObject(GBjsonObj);
-
-    json_file.open(QFile::WriteOnly);
-    json_file.write(doc.toJson());
-}
-
-void JSON:: append_users_transactions(){
-        int num_user = 1;
-        //int num_tr = 1;
-        QFile json_file(filename);
-        QJsonObject json = doc.object();
-        QJsonArray jsonArray = json["users"].toArray();
-        QJsonValue value = jsonArray.at(num_user-1);
-        QJsonArray jsonArray2 = value["transactions"].toArray();
-
-        QJsonObject GBjsonObj;
-        GBjsonObj = doc.object();
-
-        qDebug() << "\njsonArray2 Before: "<< jsonArray2;
-
-        QJsonObject jsonObj3;
-        jsonObj3.insert("address_recipient", "BW0000000000000000001");
-        jsonObj3.insert("address_sender", "lkj567");
-        jsonArray2.append(jsonObj3);
-        //jsonArray = jsonArray2;
-        QJsonObject GBjsonObj2;
-        GBjsonObj2["transactions"] = jsonArray2;
-
-         qDebug() << "\njsonArray2 After: "<< jsonArray2;
-         GBjsonObj["users"] = GBjsonObj2;
-         qDebug() << "\nGBjsonObj2: "<< GBjsonObj;
-         doc.setObject(GBjsonObj);
-
-         json_file.open(QFile::WriteOnly);
-         json_file.write(doc.toJson());
-}
 
 void JSON:: read_users_transactions(){
     int num_user = 1;
@@ -544,7 +504,7 @@ void JSON:: read_users_transactions(){
     qDebug() << address_recipient << fee;
 }
 
-void JSON:: append_users_2(QString address, QString walletKey){
+void JSON:: registerNewUser(QString address, QString walletKey){
     QFile json_file(filename);
     QJsonObject json = doc.object();
     QJsonArray jsonArray = json["users"].toArray();
@@ -552,9 +512,12 @@ void JSON:: append_users_2(QString address, QString walletKey){
     QJsonObject GBjsonObj;
     GBjsonObj = doc.object();
 
+    algoritms use_algoritm;
+
     QJsonObject jsonObj3;
     jsonObj3.insert("address", address);
-    jsonObj3.insert("walletKey", walletKey);
+    jsonObj3.insert("walletKey", QString::fromStdString(use_algoritm.Hash(walletKey.toStdString())));
+    jsonObj3.insert("admin", 0);
 
     jsonArray.append(jsonObj3);
 
@@ -564,6 +527,41 @@ void JSON:: append_users_2(QString address, QString walletKey){
     json_file.open(QFile::WriteOnly);
     json_file.write(doc.toJson());
 
+}
+
+QVector<QString> JSON:: get_users_info(getInfo what_u_need){
+    QFile json_file(filename);
+    QJsonObject json = doc.object();
+    QJsonArray jsonArray = json["users"].toArray();
+    QVector <QString> valid_information;
+
+    switch (what_u_need)
+    {
+    case KEY:
+        for(int index = 0; index < jsonArray.size(); index++)
+        {
+            QJsonObject subtree = jsonArray.at(index).toObject();
+            valid_information.append(subtree.value("walletKey").toString());
+        }
+        break;
+    case ADDRESS:
+        for(int index = 0; index < jsonArray.size(); index++)
+        {
+            QJsonObject subtree = jsonArray.at(index).toObject();
+            valid_information.append(subtree.value("address").toString());
+        }
+        break;
+    case ADMIN:
+        for(int index = 0; index < jsonArray.size(); index++)
+        {
+            QJsonObject subtree = jsonArray.at(index).toObject();
+            valid_information.append(QString::number(subtree.value("admin").toInt()));
+        }
+        break;
+    default:
+        break;
+    }
+    return valid_information;
 }
 
 QString JSON :: get_hash(int number_block){
@@ -672,6 +670,7 @@ QString JSON ::  get_walletKey_users(int num){
 
 void fileExists(const QString &file_path)
 {
+    // ProgramExceptions Path
     QFileInfo check_file(file_path);
     if(!check_file.exists() && !check_file.isFile())
     {
@@ -732,44 +731,44 @@ QVector<QString> getUsersInfo(getInfo what_u_need)
     return valid_information;
 }
 
-void registerNewUsers(QString wallet_address, QString wallet_key)
-{
-    try {
-        fileExists("users.json");
-    }  catch (ProgramException &error) {
-        error.getError();
-    }
+//void registerNewUsers(QString wallet_address, QString wallet_key)
+//{
+//    try {
+//        fileExists("users.json");
+//    }  catch (ProgramException &error) {
+//        error.getError();
+//    }
 
-    algoritms use_algoritm;
+//    algoritms use_algoritm;
 
-    QFileInfo file_info("users.json");
-    QDir::setCurrent(file_info.path());
-    QFile json_file("users.json");
+//    QFileInfo file_info("users.json");
+//    QDir::setCurrent(file_info.path());
+//    QFile json_file("users.json");
 
-    if (!json_file.open(QIODevice::ReadOnly))
-    {
-        throw ProgramException(FILE_READ_ERROR);
-    }
+//    if (!json_file.open(QIODevice::ReadOnly))
+//    {
+//        throw ProgramException(FILE_READ_ERROR);
+//    }
 
-    QJsonObject new_user;
+//    QJsonObject new_user;
 
-    new_user["address"] = wallet_address;
-    new_user["walletKey"] = QString::fromStdString(use_algoritm.Hash(wallet_key.toStdString()));
-    new_user["admin"] = 0;
+//    new_user["address"] = wallet_address;
+//    new_user["walletKey"] = QString::fromStdString(use_algoritm.Hash(wallet_key.toStdString()));
+//    new_user["admin"] = 0;
 
-    QJsonDocument json_document(QJsonDocument::fromJson(json_file.readAll()));
-    json_file.close();
+//    QJsonDocument json_document(QJsonDocument::fromJson(json_file.readAll()));
+//    json_file.close();
 
-    QJsonObject current_json = json_document.object();
-    QJsonArray json_array = current_json["users"].toArray();
+//    QJsonObject current_json = json_document.object();
+//    QJsonArray json_array = current_json["users"].toArray();
 
-    json_array.push_back(new_user);
-    current_json["users"] = json_array;
-    if (!json_file.open(QIODevice::WriteOnly))
-    {
-        throw ProgramException(FILE_WRITE_ERROR);
-    }
+//    json_array.push_back(new_user);
+//    current_json["users"] = json_array;
+//    if (!json_file.open(QIODevice::WriteOnly))
+//    {
+//        throw ProgramException(FILE_WRITE_ERROR);
+//    }
 
-    json_file.write(QJsonDocument(current_json).toJson(QJsonDocument::Indented));
-    json_file.close();
-}
+//    json_file.write(QJsonDocument(current_json).toJson(QJsonDocument::Indented));
+//    json_file.close();
+//}

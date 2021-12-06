@@ -23,9 +23,7 @@
    </size>
   </property>
   <property name="font">
-   <font>
-    <family>Verdana</family>
-   </font>
+   <font/>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
@@ -67,8 +65,6 @@
       </property>
       <property name="font">
        <font>
-        <family>Arial</family>
-        <weight>75</weight>
         <bold>true</bold>
        </font>
       </property>
@@ -186,8 +182,6 @@
         <widget class="QLabel" name="transactionsOverviewLabel">
          <property name="font">
           <font>
-           <family>Verdana</family>
-           <weight>75</weight>
            <bold>true</bold>
           </font>
          </property>
@@ -218,8 +212,8 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>98</width>
-            <height>28</height>
+            <width>417</width>
+            <height>316</height>
            </rect>
           </property>
           <layout class="QVBoxLayout" name="cardsLayout"/>
@@ -287,8 +281,6 @@
          </property>
          <property name="font">
           <font>
-           <family>Arial</family>
-           <weight>75</weight>
            <bold>true</bold>
           </font>
          </property>
@@ -323,8 +315,6 @@
          </property>
          <property name="font">
           <font>
-           <family>Arial</family>
-           <weight>75</weight>
            <bold>true</bold>
           </font>
          </property>
@@ -359,8 +349,6 @@
          </property>
          <property name="font">
           <font>
-           <family>Arial</family>
-           <weight>75</weight>
            <bold>true</bold>
           </font>
          </property>
@@ -388,12 +376,12 @@
        <height>600</height>
       </size>
      </property>
-     <widget class="QWidget" name="layoutWidget">
+     <widget class="QWidget" name="">
       <property name="geometry">
        <rect>
-        <x>10</x>
-        <y>12</y>
-        <width>778</width>
+        <x>11</x>
+        <y>13</y>
+        <width>782</width>
         <height>319</height>
        </rect>
       </property>
@@ -408,7 +396,7 @@
          </property>
          <property name="minimumSize">
           <size>
-           <width>760</width>
+           <width>780</width>
            <height>130</height>
           </size>
          </property>
@@ -426,37 +414,30 @@
            <rect>
             <x>10</x>
             <y>11</y>
-            <width>741</width>
-            <height>104</height>
+            <width>541</width>
+            <height>107</height>
            </rect>
           </property>
           <layout class="QGridLayout" name="gridLayout">
-           <item row="1" column="1">
-            <widget class="QLineEdit" name="sendTransactionLabel">
-             <property name="inputMask">
-              <string/>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="0">
-            <widget class="QLabel" name="addToAddressBookLabel">
+           <item row="0" column="0">
+            <widget class="QLabel" name="payToLabel">
              <property name="text">
-              <string>Label:</string>
+              <string>Pay To:</string>
              </property>
             </widget>
            </item>
-           <item row="0" column="1">
-            <widget class="QLineEdit" name="payToAddress">
-             <property name="alignment">
-              <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+           <item row="2" column="0">
+            <widget class="QLabel" name="amountLabel">
+             <property name="text">
+              <string>Amount:</string>
              </property>
             </widget>
            </item>
            <item row="2" column="1">
             <layout class="QHBoxLayout" name="horizontalLayout_7">
+             <property name="rightMargin">
+              <number>0</number>
+             </property>
              <item>
               <widget class="QDoubleSpinBox" name="amountSpinBox">
                <property name="minimumSize">
@@ -511,44 +492,53 @@
               </widget>
              </item>
              <item>
-              <spacer name="horizontalSpacer_4">
-               <property name="orientation">
-                <enum>Qt::Horizontal</enum>
+              <widget class="QCheckBox" name="feeCheckBox">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
                </property>
-               <property name="sizeHint" stdset="0">
+               <property name="minimumSize">
                 <size>
-                 <width>40</width>
+                 <width>190</width>
                  <height>20</height>
                 </size>
                </property>
-              </spacer>
+               <property name="maximumSize">
+                <size>
+                 <width>200</width>
+                 <height>16777215</height>
+                </size>
+               </property>
+               <property name="text">
+                <string>Subsctract fee from amount</string>
+               </property>
+              </widget>
              </item>
             </layout>
            </item>
-           <item row="0" column="0">
-            <widget class="QLabel" name="payToLabel">
-             <property name="text">
-              <string>Pay To:</string>
+           <item row="1" column="1">
+            <widget class="QLineEdit" name="sendTransactionLabel">
+             <property name="inputMask">
+              <string/>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
              </property>
             </widget>
            </item>
-           <item row="2" column="0">
-            <widget class="QLabel" name="amountLabel">
+           <item row="1" column="0">
+            <widget class="QLabel" name="addToAddressBookLabel">
              <property name="text">
-              <string>Amount:</string>
+              <string>Label:</string>
              </property>
             </widget>
            </item>
-           <item row="3" column="0">
-            <widget class="QCheckBox" name="feeCheckBox">
-             <property name="minimumSize">
-              <size>
-               <width>190</width>
-               <height>20</height>
-              </size>
-             </property>
-             <property name="text">
-              <string>Subsctract fee from amount</string>
+           <item row="0" column="1">
+            <widget class="QLineEdit" name="payToAddress">
+             <property name="alignment">
+              <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
              </property>
             </widget>
            </item>
@@ -584,8 +574,6 @@
           </property>
           <property name="font">
            <font>
-            <family>Verdana</family>
-            <weight>75</weight>
             <bold>true</bold>
            </font>
           </property>
@@ -601,8 +589,8 @@
            <rect>
             <x>10</x>
             <y>40</y>
-            <width>454</width>
-            <height>50</height>
+            <width>456</width>
+            <height>51</height>
            </rect>
           </property>
           <layout class="QGridLayout" name="gridLayout_4">
@@ -706,54 +694,75 @@
            </item>
           </layout>
          </widget>
+         <widget class="QWidget" name="gridLayoutWidget">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>110</y>
+            <width>209</width>
+            <height>31</height>
+           </rect>
+          </property>
+          <layout class="QGridLayout" name="gridLayout_6">
+           <item row="0" column="0">
+            <widget class="QLabel" name="balanceTextLabel">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="minimumSize">
+              <size>
+               <width>60</width>
+               <height>20</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>60</width>
+               <height>20</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>Balance:</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="1">
+            <widget class="QLabel" name="balanceCoins">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="minimumSize">
+              <size>
+               <width>140</width>
+               <height>20</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>120</width>
+               <height>20</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>some BWC</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
         </widget>
        </item>
        <item>
         <layout class="QGridLayout" name="gridLayout_3">
-         <item row="0" column="3">
-          <widget class="QLabel" name="balanceTextLabel">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="minimumSize">
-            <size>
-             <width>60</width>
-             <height>20</height>
-            </size>
-           </property>
-           <property name="maximumSize">
-            <size>
-             <width>60</width>
-             <height>20</height>
-            </size>
-           </property>
-           <property name="text">
-            <string>Balance:</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="1">
-          <widget class="QPushButton" name="clearSendButton">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="minimumSize">
-            <size>
-             <width>100</width>
-             <height>23</height>
-            </size>
-           </property>
-           <property name="text">
-            <string>Clear</string>
-           </property>
-          </widget>
-         </item>
          <item row="0" column="0">
           <widget class="QPushButton" name="sendCoinsButton">
            <property name="sizePolicy">
@@ -779,24 +788,8 @@
            </property>
           </widget>
          </item>
-         <item row="0" column="2">
-          <spacer name="horizontalSpacer_3">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-           <property name="sizeType">
-            <enum>QSizePolicy::Fixed</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>300</width>
-             <height>20</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
-         <item row="0" column="4">
-          <widget class="QLabel" name="balanceCoins">
+         <item row="0" column="1">
+          <widget class="QPushButton" name="clearSendButton">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
              <horstretch>0</horstretch>
@@ -805,23 +798,30 @@
            </property>
            <property name="minimumSize">
             <size>
-             <width>140</width>
-             <height>20</height>
-            </size>
-           </property>
-           <property name="maximumSize">
-            <size>
-             <width>120</width>
-             <height>20</height>
+             <width>100</width>
+             <height>23</height>
             </size>
            </property>
            <property name="text">
-            <string>some BWC</string>
-           </property>
-           <property name="alignment">
-            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+            <string>Clear</string>
            </property>
           </widget>
+         </item>
+         <item row="0" column="2">
+          <spacer name="horizontalSpacer_3">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeType">
+            <enum>QSizePolicy::MinimumExpanding</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>300</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
          </item>
         </layout>
        </item>
@@ -1092,8 +1092,6 @@
            </property>
            <property name="font">
             <font>
-             <family>Verdana</family>
-             <weight>75</weight>
              <bold>true</bold>
             </font>
            </property>
@@ -1133,7 +1131,7 @@
         <x>20</x>
         <y>20</y>
         <width>762</width>
-        <height>488</height>
+        <height>489</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_8">
@@ -1147,8 +1145,6 @@
          </property>
          <property name="font">
           <font>
-           <family>Verdana</family>
-           <weight>75</weight>
            <bold>true</bold>
           </font>
          </property>
@@ -1443,7 +1439,7 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>20</height>
+     <height>21</height>
     </rect>
    </property>
   </widget>

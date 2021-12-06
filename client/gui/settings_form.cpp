@@ -10,6 +10,8 @@ settings_Form::settings_Form(QWidget *parent) :
     ui->tabWidget->setCurrentIndex(0);
     this->setWindowIcon(QIcon("icons/programIcon.png"));
 
+    setWindowFlags(Qt::Dialog | Qt::MSWindowsFixedSizeDialogHint);
+
     readSettings();
     ui->languagesBox->setCurrentIndex(languageIndex);
     setWindowLanguage();

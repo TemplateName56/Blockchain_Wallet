@@ -7,6 +7,7 @@ change_passphrase_Form::change_passphrase_Form(QWidget *parent) :
 {
     ui->setupUi(this);
     this->setWindowIcon(QIcon("icons/programIcon.png"));
+    setWindowFlags(Qt::Dialog | Qt::MSWindowsFixedSizeDialogHint);
 }
 
 void change_passphrase_Form::changePassphraseShow()

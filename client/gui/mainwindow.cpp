@@ -9,6 +9,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
     try {
         fileExists("requestsList.csv");
+        setWindowFlags(Qt::Dialog | Qt::MSWindowsFixedSizeDialogHint);
     }  catch (ProgramException &error) {
         error.getError();
     }
@@ -68,7 +69,10 @@ void MainWindow::authorizeUser()
 
         wallet_key = ui_Auth.getInputKey();
 
-        QVector<QString> valid_keys = getUsersInfo(KEY);
+        JSON file("users.json");
+        QVector<QString> valid_keys = file.get_users_info(JSON::KEY);
+
+        //QVector<QString> valid_keys = getUsersInfo(KEY);
 
         int index = valid_keys.indexOf(QString::fromStdString(use_algoritm.Hash(wallet_key.toStdString() + "SALT")));
 
@@ -76,12 +80,14 @@ void MainWindow::authorizeUser()
         {
             ui_Auth.close();
             Sleep(250);
-            QVector<QString> user_address = getUsersInfo(ADDRESS);
+            QVector<QString> user_address = file.get_users_info(JSON::ADDRESS);
+            //QVector<QString> user_address = getUsersInfo(ADDRESS);
             wallet_address = user_address[index];
 
             Balance current_user = val_1.getBlockChain().getLastBlock().getUserBalance(wallet_address);
 
-            QVector<QString> users_admin = getUsersInfo(ADMIN);
+            QVector<QString> users_admin = file.get_users_info(JSON::ADMIN);
+            //QVector<QString> users_admin = getUsersInfo(ADMIN);
             QString admin_check = users_admin[index];
 
             if(admin_check == "0")
@@ -108,13 +114,18 @@ void MainWindow::authorizeUser()
     }
 }
 
+
 void MainWindow::registerUser()
 {
     try {
         wallet_address = randomWalletAdress();
         wallet_key = randomWalletKey();
 
-        registerNewUsers(wallet_address, wallet_key + "SALT");
+        JSON file("users.json");
+        file.registerNewUser(wallet_address, wallet_key + "SALT");
+
+
+        //registerNewUsers(wallet_address, wallet_key + "SALT");
 
         ui->walletAddressLabel->setText(wallet_address);
         ui->walletKeyLabel->setText(wallet_key);
@@ -137,6 +148,7 @@ void MainWindow::registerUser()
         error.getError();
     }
 }
+
 
 void MainWindow::homeTR()
 {
@@ -170,17 +182,18 @@ void MainWindow::createActions()
     QPixmap recievepix("icons/recieveIcon.jpg");
     QPixmap helppix("icons/helpIcon.png");
     QPixmap transactionspix("icons/transactionsIcon.png");
+    QPixmap all_blockspix("icons/all_blocksIcon.png");
     QPixmap quitpix("icons/quitIcon.png");
 
     //QPixmap programpix("icons/programIcon.png");
+
 
     home = new QAction(homepix, "&Home", this);
     send = new QAction(sendpix, "&Send", this);
     recieve = new QAction(recievepix, "&Recieve", this);
     help = new QAction(helppix, "&Help", this);
+    all_blocks = new QAction(all_blockspix, "&Blocks", this);
     quit = new QAction(quitpix, "&Quit", this);
-
-    all_blocks = new QAction(transactionspix, "&Blocks", this);
 
     quit->setShortcut(tr("Ctrl+Q"));
 
@@ -258,6 +271,10 @@ void MainWindow::uiChanges()
 {
     ui->payToAddress->setPlaceholderText("Enter wallet-address");
     ui->sendTransactionLabel->setPlaceholderText("Enter a label for this address to add it to your address book");
+
+    ui->requestLabelLine->setPlaceholderText("263 stroka");
+    ui->messageLine->setPlaceholderText("264 stroka");
+
 }
 
 void MainWindow::iconActivated(QSystemTrayIcon::ActivationReason reason)
@@ -392,7 +409,12 @@ void MainWindow::requestsHistory()
     request_view_model->setHorizontalHeaderLabels(QStringList() << "Date" << "Label" << "Message" << "Amount");
     ui->requestsView->setModel(request_view_model);
 
-    QString styleSheet = "::section {"
+    ui->requestsView->setEditTriggers( QAbstractItemView::NoEditTriggers);
+
+    ui->requestsView->verticalHeader()->setSectionResizeMode(QHeaderView::Fixed);
+    ui->requestsView-> horizontalHeader()->setSectionResizeMode(QHeaderView::Fixed);
+
+    QString styleSheet_1 = "::section {"
                          "spacing: 10px;"
                          "background-color: lightblue;"
                          "color: black;"
@@ -402,7 +424,7 @@ void MainWindow::requestsHistory()
                          "font-family: arial;"
                          "font-size: 15px; }";
 
-    ui->requestsView->horizontalHeader()->setStyleSheet(styleSheet);
+    ui->requestsView->horizontalHeader()->setStyleSheet(styleSheet_1);
 
     ui->requestsView->verticalHeader()->setVisible(false);
 
@@ -447,7 +469,23 @@ void MainWindow::requestsHistory()
         history_view_model->setHorizontalHeaderLabels(QStringList() << "№" << "From" << "To" << "Money" << "Currency");
         ui->historyView->setModel(history_view_model);
 
+        QString styleSheet_2 = "::section {"
+                             "spacing: 10px;"
+                             "background-color: lightblue;"
+                             "color: black;"
+                             "border: 1px solid black;"
+                             "margin: 1px;"
+                             "font-weight: bold;"
+                             "font-family: arial;"
+                             "font-size: 15px; }";
+
+        ui->historyView->horizontalHeader()->setStyleSheet(styleSheet_2);
+
         ui->historyView->verticalHeader()->setVisible(false);
+
+        ui->historyView->setEditTriggers( QAbstractItemView::NoEditTriggers);
+        ui->historyView->verticalHeader()->setSectionResizeMode(QHeaderView::Fixed);
+        ui->historyView-> horizontalHeader()->setSectionResizeMode(QHeaderView::Fixed);
 
         ui->historyView->setColumnWidth(0,100);
         ui->historyView->setColumnWidth(1,225);

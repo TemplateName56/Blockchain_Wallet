@@ -7,6 +7,8 @@ about_program_Form::about_program_Form(QWidget *parent) :
 {
     ui->setupUi(this);
     this->setWindowIcon(QIcon("icons/programIcon.png"));
+    setWindowFlags(Qt::Dialog | Qt::MSWindowsFixedSizeDialogHint);
+
 }
 
 about_program_Form::~about_program_Form()
