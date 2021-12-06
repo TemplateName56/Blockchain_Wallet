@@ -3,15 +3,24 @@
 
 JSON::JSON(QString fileName)
 {
-    filename = fileName;
-    QString val2;
-    QFile json_file(filename);
-    json_file.open(QIODevice::ReadOnly | QIODevice::Text);
-    val2 = json_file.readAll();
-    json_file.close();
+    try {
+        fileExists(fileName);
+        filename = fileName;
+        QString val2;
 
-    doc = QJsonDocument::fromJson(val2.toUtf8());
-     //qDebug() << "\n\ndoc_constructor :" << doc;
+        QFile json_file(filename);
+        if(!json_file.open(QIODevice::ReadOnly | QIODevice::Text))
+        {
+            throw ProgramException(FILE_READ_ERROR);
+        }
+        val2 = json_file.readAll();
+        json_file.close();
+
+        doc = QJsonDocument::fromJson(val2.toUtf8());
+         //qDebug() << "\n\ndoc_constructor :" << doc;
+    }  catch (ProgramException &error) {
+        error.getError();
+    }
 }
 
 QString JSON:: new_get_hash(int number_block){
@@ -661,6 +670,7 @@ QString JSON ::  get_walletKey_users(int num){
 
 void fileExists(const QString &file_path)
 {
+    // ProgramExceptions Path
     QFileInfo check_file(file_path);
     if(!check_file.exists() && !check_file.isFile())
     {
