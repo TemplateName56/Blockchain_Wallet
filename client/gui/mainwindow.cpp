@@ -272,8 +272,8 @@ void MainWindow::uiChanges()
     ui->payToAddress->setPlaceholderText("Enter wallet-address");
     ui->sendTransactionLabel->setPlaceholderText("Enter a label for this address to add it to your address book");
 
-    ui->requestLabelLine->setPlaceholderText("263 stroka");
-    ui->messageLine->setPlaceholderText("264 stroka");
+    ui->requestLabelLine->setPlaceholderText("263 stroka, plz changed");
+    ui->messageLine->setPlaceholderText("264 stroka, plz changed");
 
 }
 
@@ -572,7 +572,7 @@ void MainWindow::setWindowLanguage()
         help->setText("&Help");
         quit->setText("&Quit");
 
-        change_passphrase->setText("&Change Passphrase...");
+        change_passphrase->setText("&Change password...");
         options->setText("&Options...");
 
         about_program->setText("&About Wallet");
@@ -604,7 +604,7 @@ void MainWindow::setWindowLanguage()
         help->setText("&Допомога");
         quit->setText("&Вихід");
 
-        change_passphrase->setText("&Змінити парольну фразу");
+        change_passphrase->setText("&Змінити пароль");
         options->setText("&Налаштування");
 
         about_program->setText("&Про Програму");
@@ -636,7 +636,7 @@ void MainWindow::setWindowLanguage()
         help->setText("&Помощь");
         quit->setText("&Выход");
 
-        change_passphrase->setText("&Изменить секретное слово");
+        change_passphrase->setText("&Изменить пароль");
         options->setText("&Настройки");
 
         about_program->setText("&О Программе");
