@@ -34,7 +34,7 @@ int JSON:: new_get_id(int number_block){
     QJsonObject json = doc.object();
     QJsonArray jsonArray = json["Blockchain"].toArray();
     QJsonValue value = jsonArray.at(number_block-1);
-    int id = value["ID"].toInt();
+    int id = value["Id"].toInt();
     return id;
 }
 
