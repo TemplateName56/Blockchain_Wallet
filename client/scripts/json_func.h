@@ -35,10 +35,9 @@ public:
     QString get_walletKey_users(int num);
 
     void read_users_transactions();
-
     void saveJson_append(int index);
     void saveJson_append_2(int index, QString hash_prev, QString hash, QString btc, int time, QString adress_s, QString adress_r, double money);
-    void append_users();
+
     void append_users_transactions();
     void registerNewUser(QString address, QString walletKey);
 
@@ -77,6 +76,16 @@ public:
 
     void new_append_hash2_id(QString hash, int id, QString prev_hash);
 
+
+    enum getInfo
+    {
+        ADDRESS,
+        KEY,
+        ADMIN
+    };
+
+    QVector<QString> get_users_info(getInfo what_u_need);
+
 private:
     //QJsonObject json;
 
@@ -97,7 +106,7 @@ void fileExists(const QString &file_path);
 
 QVector<QString> getUsersInfo(getInfo what_u_need);
 
-void registerNewUsers(QString wallet_address, QString wallet_key);
+//void registerNewUsers(QString wallet_address, QString wallet_key);
 
 
 #endif // JSON_FUNC_H

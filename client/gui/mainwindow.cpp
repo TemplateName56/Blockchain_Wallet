@@ -69,7 +69,10 @@ void MainWindow::authorizeUser()
 
         wallet_key = ui_Auth.getInputKey();
 
-        QVector<QString> valid_keys = getUsersInfo(KEY);
+        JSON file("users.json");
+        QVector<QString> valid_keys = file.get_users_info(JSON::KEY);
+
+        //QVector<QString> valid_keys = getUsersInfo(KEY);
 
         int index = valid_keys.indexOf(QString::fromStdString(use_algoritm.Hash(wallet_key.toStdString() + "SALT")));
 
@@ -77,12 +80,14 @@ void MainWindow::authorizeUser()
         {
             ui_Auth.close();
             Sleep(250);
-            QVector<QString> user_address = getUsersInfo(ADDRESS);
+            QVector<QString> user_address = file.get_users_info(JSON::ADDRESS);
+            //QVector<QString> user_address = getUsersInfo(ADDRESS);
             wallet_address = user_address[index];
 
             Balance current_user = val_1.getBlockChain().getLastBlock().getUserBalance(wallet_address);
 
-            QVector<QString> users_admin = getUsersInfo(ADMIN);
+            QVector<QString> users_admin = file.get_users_info(JSON::ADMIN);
+            //QVector<QString> users_admin = getUsersInfo(ADMIN);
             QString admin_check = users_admin[index];
 
             if(admin_check == "0")
