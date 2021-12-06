@@ -409,7 +409,7 @@ void MainWindow::requestsHistory()
     ui->requestsView->verticalHeader()->setSectionResizeMode(QHeaderView::Fixed);
     ui->requestsView-> horizontalHeader()->setSectionResizeMode(QHeaderView::Fixed);
 
-    QString styleSheet = "::section {"
+    QString styleSheet_1 = "::section {"
                          "spacing: 10px;"
                          "background-color: lightblue;"
                          "color: black;"
@@ -419,7 +419,7 @@ void MainWindow::requestsHistory()
                          "font-family: arial;"
                          "font-size: 15px; }";
 
-    ui->requestsView->horizontalHeader()->setStyleSheet(styleSheet);
+    ui->requestsView->horizontalHeader()->setStyleSheet(styleSheet_1);
 
     ui->requestsView->verticalHeader()->setVisible(false);
 
@@ -463,6 +463,18 @@ void MainWindow::requestsHistory()
         history_view_model->setColumnCount(5);
         history_view_model->setHorizontalHeaderLabels(QStringList() << "№" << "From" << "To" << "Money" << "Currency");
         ui->historyView->setModel(history_view_model);
+
+        QString styleSheet_2 = "::section {"
+                             "spacing: 10px;"
+                             "background-color: lightblue;"
+                             "color: black;"
+                             "border: 1px solid black;"
+                             "margin: 1px;"
+                             "font-weight: bold;"
+                             "font-family: arial;"
+                             "font-size: 15px; }";
+
+        ui->historyView->horizontalHeader()->setStyleSheet(styleSheet_2);
 
         ui->historyView->verticalHeader()->setVisible(false);
 

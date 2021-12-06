@@ -47,7 +47,7 @@
      </size>
     </property>
     <property name="currentIndex">
-     <number>2</number>
+     <number>1</number>
     </property>
     <widget class="QWidget" name="mainWidget">
      <property name="minimumSize">
@@ -393,8 +393,8 @@
        <rect>
         <x>10</x>
         <y>12</y>
-        <width>1178</width>
-        <height>326</height>
+        <width>1285</width>
+        <height>348</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_5">
@@ -426,32 +426,22 @@
            <rect>
             <x>10</x>
             <y>11</y>
-            <width>741</width>
+            <width>536</width>
             <height>107</height>
            </rect>
           </property>
           <layout class="QGridLayout" name="gridLayout">
-           <item row="1" column="1">
-            <widget class="QLineEdit" name="sendTransactionLabel">
-             <property name="inputMask">
-              <string/>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="0">
-            <widget class="QLabel" name="addToAddressBookLabel">
+           <item row="0" column="0">
+            <widget class="QLabel" name="payToLabel">
              <property name="text">
-              <string>Label:</string>
+              <string>Pay To:</string>
              </property>
             </widget>
            </item>
-           <item row="0" column="1">
-            <widget class="QLineEdit" name="payToAddress">
-             <property name="alignment">
-              <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+           <item row="2" column="0">
+            <widget class="QLabel" name="amountLabel">
+             <property name="text">
+              <string>Amount:</string>
              </property>
             </widget>
            </item>
@@ -523,32 +513,54 @@
                </property>
               </spacer>
              </item>
+             <item>
+              <widget class="QCheckBox" name="feeCheckBox">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="minimumSize">
+                <size>
+                 <width>190</width>
+                 <height>20</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>200</width>
+                 <height>16777215</height>
+                </size>
+               </property>
+               <property name="text">
+                <string>Subsctract fee from amount</string>
+               </property>
+              </widget>
+             </item>
             </layout>
            </item>
-           <item row="0" column="0">
-            <widget class="QLabel" name="payToLabel">
-             <property name="text">
-              <string>Pay To:</string>
+           <item row="1" column="1">
+            <widget class="QLineEdit" name="sendTransactionLabel">
+             <property name="inputMask">
+              <string/>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
              </property>
             </widget>
            </item>
-           <item row="2" column="0">
-            <widget class="QLabel" name="amountLabel">
+           <item row="1" column="0">
+            <widget class="QLabel" name="addToAddressBookLabel">
              <property name="text">
-              <string>Amount:</string>
+              <string>Label:</string>
              </property>
             </widget>
            </item>
-           <item row="3" column="0">
-            <widget class="QCheckBox" name="feeCheckBox">
-             <property name="minimumSize">
-              <size>
-               <width>190</width>
-               <height>20</height>
-              </size>
-             </property>
-             <property name="text">
-              <string>Subsctract fee from amount</string>
+           <item row="0" column="1">
+            <widget class="QLineEdit" name="payToAddress">
+             <property name="alignment">
+              <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
              </property>
             </widget>
            </item>
@@ -800,22 +812,6 @@
            </property>
           </widget>
          </item>
-         <item row="0" column="2">
-          <spacer name="horizontalSpacer_3">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-           <property name="sizeType">
-            <enum>QSizePolicy::MinimumExpanding</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>300</width>
-             <height>20</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
          <item row="0" column="1">
           <widget class="QPushButton" name="clearSendButton">
            <property name="sizePolicy">
@@ -834,6 +830,22 @@
             <string>Clear</string>
            </property>
           </widget>
+         </item>
+         <item row="0" column="2">
+          <spacer name="horizontalSpacer_3">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeType">
+            <enum>QSizePolicy::MinimumExpanding</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>300</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
          </item>
         </layout>
        </item>
