@@ -186,9 +186,10 @@ QString Block::generateHash()
 {
     algoritms hash_block;
 
-    QString to_hash = (block_data.getSender() + block_data.getReciever() +
-                       QString::number(block_data.getAmount()) + QString::number(block_data.getFee()) +
-                       QString::number(block_data.getPriority()) + block_data.getTimeStamp() + "SALT");
+    QString to_hash = (block_data.getSender() +
+                       block_data.getReciever() +
+                       QString::number(block_data.getFee()) +
+                       block_data.getTimeStamp() + "SALT");
 
     QString result = QString::fromStdString(hash_block.Hash(to_hash.toStdString()));
 
@@ -382,45 +383,29 @@ void Blockchain::readChain()
 
 //void Blockchain::readChain()
 //{
-///*
-//    try {
-//        fileExists("chain.json");
-//    }  catch (ProgramException &error) {
-//        error.getError();
-//    }
-//*/
 //    JSON file("chain.json");
 //    bool genesis = true;
-///*
-//    if (!json_file.open(QIODevice::ReadOnly))
+
+//    for(int index = 0; index < file.new_get_array_size_blockchain(); index++)
 //    {
-//        throw ProgramException(FILE_READ_ERROR);
-//    }
-//*/
-//    //qDebug() << "array_size_blockchain: " << file.new_get_array_size_blockchain();
-//    for(int index = 1; index < file.new_get_array_size_blockchain()+1; index++)
-//    {
-//        //qDebug() << "index: " << index;
-//        //qDebug() << "array_size_block_data: " << file.new_get_array_size_block_data(index);
-//        for(int j = 0; j < file.new_get_array_size_block_data(index); j++){
+
 //            if(index > 0)
 //            {
 //                genesis = false;
 //            }
 //            addBlock(file.new_get_id(index),
-//                     TransactionData(file.new_get_sender(index,j),
-//                                     file.new_get_reciever(index,j),
-//                                     file.new_get_amount(index,j),
-//                                     toCoinsType(file.new_get_CoinsType(index, j)),
-//                                     file.new_get_fee(index,j),
-//                                     file.new_get_priority(index,j),
-//                                     file.new_get_timestamp(index,j)),
-//                    file.new_get_prev_hash(index),
-//                    file.new_get_hash(index),
+//                     TransactionData(file.new_get_sender(index+1,0),
+//                                     file.new_get_reciever(index+1,0),
+//                                     file.new_get_amount(index+1,0),
+//                                     toCoinsType(file.new_get_CoinsType(index+1, 0)),
+//                                     file.new_get_fee(index+1,0),
+//                                     file.new_get_priority(index+1,0),
+//                                     file.new_get_timestamp(index+1,0)),
+//                    file.new_get_prev_hash(index+1),
+//                    file.new_get_hash(index+1),
 //                     genesis);
-//        }
+
 //    }
-//        //qDebug() << "\n-------------------";
 //}
 
 
@@ -490,6 +475,31 @@ void Blockchain::writeChain()
     json_file.write(QJsonDocument(new_chain).toJson(QJsonDocument::Indented));
     json_file.close();
 }
+
+//void Blockchain::writeChain(){
+
+//    JSON file_write("chain_write.json");
+//    file_write.new_append_hash2_id(chain.last().getBlockHash(),
+//            chain.last().getIndex(), chain.last().getPrevBlockHash());
+
+//    file_write.new_write_block_data(chain.last().getIndex(),chain.last().getBlockData().getSender(),
+//                                    chain.last().getBlockData().getReciever(),
+//                                    chain.last().getBlockData().getAmount(),
+//                                    chain.last().getBlockData().getCoinsType(),
+//                                    chain.last().getBlockData().getFee(),
+//                                    chain.last().getBlockData().getPriority(),
+//                                    chain.last().getBlockData().getTimeStamp()
+//                                    );
+//    for(int j = 0; j < chain.last().users_balance.length(); j++){
+//        file_write.new_append_balances(chain.last().getIndex(),
+//                    chain.last().users_balance[j].getAddress(),
+//                    chain.last().users_balance[j].getBalance(BWC),
+//                    chain.last().users_balance[j].getBalance(BWC_N),
+//                    chain.last().users_balance[j].getBalance(BWC_Q));
+//    }
+//}
+
+
 
 void Blockchain::addBlock(int index, TransactionData data, QString prev_hash)
 {

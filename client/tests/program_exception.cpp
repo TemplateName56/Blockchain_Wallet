@@ -55,6 +55,12 @@ void ProgramException::getError()
         error_messageBox.exec();
         QTimer::singleShot(0, qApp, &QCoreApplication::quit);
         break;
+    case INVALID_ADDRESS:
+            error_messageBox.setText("Address can consist only 17 symbols");
+            error_messageBox.setIcon(QMessageBox::Critical);
+
+            error_messageBox.exec();
+            break;
     case ADDRESS_NOT_EXISTS:
         error_messageBox.setText("This address not available");
         error_messageBox.setIcon(QMessageBox::Critical);

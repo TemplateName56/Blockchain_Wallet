@@ -35,6 +35,8 @@ MainWindow::MainWindow(QWidget *parent)
     connect(&ui_Settings, SIGNAL(languageChanged()), this, SLOT(setWindowLanguage()));
     connect(&ui_Settings, SIGNAL(trayCheckBoxToggled()), this, SLOT(trayEnabled()));
 
+    connect(&ui_Settings, SIGNAL(coinsTypeChanged(int)), this, SLOT(on_coinsBox_currentIndexChanged(int)));
+
     connect(tray_icon, SIGNAL(activated(QSystemTrayIcon::ActivationReason)), this, SLOT(iconActivated(QSystemTrayIcon::ActivationReason)));
 
     connect(this, SIGNAL(sendButton_clicked_val_1(TransactionData)), &val_1, SLOT(addTransaction(TransactionData)), Qt::QueuedConnection);
@@ -317,7 +319,7 @@ void MainWindow::addTransactionCard(QString label, QString timeStamp, double amo
 {
     transactionsCardView *new_card = new transactionsCardView;
 
-    new_card->setData(label, timeStamp, amount, coins_type, 0);
+    new_card->setData(label, timeStamp, amount, coins_type, transaction_type);
     if(counter == 3)
     {
         QLayoutItem *item = ui->cardsLayout->takeAt(2);
@@ -365,6 +367,16 @@ void MainWindow::newTransaction(QString wallet_address, TransactionData data)
         ui->bwcBalance->setText(QString::number(current_user.getBalance(BWC)));
         ui->bwcNBalance->setText(QString::number(current_user.getBalance(BWC_N)));
         ui->bwcQBalance->setText(QString::number(current_user.getBalance(BWC_Q)));
+
+        emit addTransactionCard(data.getSender(), data.getTimeStamp(), data.getAmount(), data.getCoinsType(), 1);
+    }
+    else
+    {
+        Balance current_user = val_1.getBlockChain().getLastBlock().getUserBalance(this->wallet_address);
+
+        ui->bwcBalance->setText(QString::number(current_user.getBalance(BWC)));
+        ui->bwcNBalance->setText(QString::number(current_user.getBalance(BWC_N)));
+        ui->bwcQBalance->setText(QString::number(current_user.getBalance(BWC_Q)));
     }
 }
 
@@ -379,6 +391,18 @@ void MainWindow::requestsHistory()
     request_view_model->setColumnCount(4);
     request_view_model->setHorizontalHeaderLabels(QStringList() << "Date" << "Label" << "Message" << "Amount");
     ui->requestsView->setModel(request_view_model);
+
+    QString styleSheet = "::section {"
+                         "spacing: 10px;"
+                         "background-color: lightblue;"
+                         "color: black;"
+                         "border: 1px solid black;"
+                         "margin: 1px;"
+                         "font-weight: bold;"
+                         "font-family: arial;"
+                         "font-size: 15px; }";
+
+    ui->requestsView->horizontalHeader()->setStyleSheet(styleSheet);
 
     ui->requestsView->verticalHeader()->setVisible(false);
 
@@ -598,6 +622,16 @@ void MainWindow::setWindowLanguage()
 void MainWindow::on_sendCoinsButton_clicked()
 {
     try {
+        if(reciever_address.length() != 17)
+        {
+            throw ProgramException(INVALID_ADDRESS);
+        }
+        QVector<QString> exists_address = getUsersInfo(ADDRESS);
+        int exist_flag = exists_address.indexOf(reciever_address);
+        if(exist_flag == -1)
+        {
+            throw ProgramException(ADDRESS_NOT_EXISTS);
+        }
         if(!isAmountCorrect(amount + fee, coins_type))
         {
             throw ProgramException(INVALID_COINS_VALUE);
@@ -656,12 +690,6 @@ void MainWindow::on_sendCoinsButton_clicked()
         }
 
         emit addTransactionCard(transaction_label, timeStamp.toString(), amount, coins_type, 0);
-
-        Balance current_user = val_1.getBlockChain().getLastBlock().getUserBalance(wallet_address);
-
-        ui->bwcBalance->setText(QString::number(current_user.getBalance(BWC)));
-        ui->bwcNBalance->setText(QString::number(current_user.getBalance(BWC_N)));
-        ui->bwcQBalance->setText(QString::number(current_user.getBalance(BWC_Q)));
     }  catch (ProgramException &error) {
         error.getError();
     }
@@ -726,7 +754,7 @@ void MainWindow::on_recomValueButton_clicked()
 {
     recomActivated = true;
     ui->priorityComboBox->setEnabled(false);
-    fee = amount * 0.05;
+    fee = round(amount * 0.05 * 100)/100;
     priority = 3;
     ui->recomValueLE->setText(QString::number(fee));
 }
@@ -734,15 +762,19 @@ void MainWindow::on_recomValueButton_clicked()
 
 void MainWindow::on_coinsBox_currentIndexChanged(int index)
 {
+    ui->coinsBox->setCurrentIndex(index);
     switch (index) {
     case 0:
         this->coins_type = BWC;
+        ui->balanceCoins->setText(ui->bwcBalance->text() + " BWC");
         break;
     case 1:
         this->coins_type = BWC_N;
+        ui->balanceCoins->setText(ui->bwcNBalance->text() + " BWC-N");
         break;
     case 2:
         this->coins_type = BWC_Q;
+        ui->balanceCoins->setText(ui->bwcQBalance->text() + " BWC-Q");
         break;
     default:
         break;

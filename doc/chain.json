@@ -3,7 +3,7 @@
         {
             "Balaces": [
                 {
-                    "Address": "BW0000000000000000000",
+                    "Address": "BW000000000000000",
                     "Balance BWC": 10000,
                     "Balance BWC-N": 0,
                     "Balance BWC-Q": 0
@@ -15,7 +15,7 @@
                     "Coins Type": 0,
                     "Fee": 0,
                     "Priority": 1,
-                    "Reciever": "BW0000000000000000000",
+                    "Reciever": "BW000000000000000",
                     "Sender": "genesis",
                     "TimeStamp": "Wed Dec 1 14:57:29 2021"
                 }

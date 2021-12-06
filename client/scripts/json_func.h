@@ -64,6 +64,19 @@ public:
     int new_get_array_size_balances(int number_block);
     int new_get_array_size_block_data(int number_block);
 
+    void new_append_balances(int num_user);
+    void new_write_block_data(int num_user);
+    void new_append_hash2_id();
+
+    void new_append_balances(int num_user, QString address, double balance_bwc,
+                             double balance_bwc_n, double balance_bwc_q);
+
+    void new_write_block_data(int num_user, QString sender, QString reciever,
+                              int amount, int coins_type, double fee, int priority,
+                              QString time_stamp);
+
+    void new_append_hash2_id(QString hash, int id, QString prev_hash);
+
 private:
     //QJsonObject json;
 

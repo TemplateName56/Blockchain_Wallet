@@ -120,6 +120,50 @@
       </property>
      </item>
     </widget>
+    <widget class="QLabel" name="coinsTypeLabel">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>51</y>
+       <width>160</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="text">
+      <string>Default Coins Type</string>
+     </property>
+    </widget>
+    <widget class="QComboBox" name="defaultCoinsTypeCB">
+     <property name="geometry">
+      <rect>
+       <x>220</x>
+       <y>50</y>
+       <width>200</width>
+       <height>22</height>
+      </rect>
+     </property>
+     <item>
+      <property name="text">
+       <string>BWC</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>BWC N</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>BWC Q</string>
+      </property>
+     </item>
+    </widget>
    </widget>
   </widget>
  </widget>
