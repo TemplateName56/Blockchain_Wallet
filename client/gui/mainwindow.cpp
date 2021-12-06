@@ -109,13 +109,18 @@ void MainWindow::authorizeUser()
     }
 }
 
+
 void MainWindow::registerUser()
 {
     try {
         wallet_address = randomWalletAdress();
         wallet_key = randomWalletKey();
 
-        registerNewUsers(wallet_address, wallet_key + "SALT");
+        JSON file("users.json");
+        file.registerNewUser(wallet_address, wallet_key + "SALT");
+
+
+        //registerNewUsers(wallet_address, wallet_key + "SALT");
 
         ui->walletAddressLabel->setText(wallet_address);
         ui->walletKeyLabel->setText(wallet_key);
@@ -138,6 +143,7 @@ void MainWindow::registerUser()
         error.getError();
     }
 }
+
 
 void MainWindow::homeTR()
 {
