@@ -478,7 +478,7 @@ void Blockchain::readChain()
 
 void Blockchain::writeChain()
 {
-    JSON file_write("chain_write.json");
+    JSON file_write("chain.json");
     file_write.new_append_hash2_id(chain.last().getBlockHash(),
             chain.last().getIndex(), chain.last().getPrevBlockHash());
 

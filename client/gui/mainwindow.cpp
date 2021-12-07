@@ -51,6 +51,8 @@ MainWindow::MainWindow(QWidget *parent)
     connect(this, SIGNAL(allBlocksView_next_clicked()), this, SLOT(blocksNext()));
     connect(this, SIGNAL(allBlocksView_prev_clicked()), this, SLOT(blocksPrev()));
 
+    connect(this, SIGNAL(sendWalletPass(QString)), &ui_ChangePass, SLOT(recieveOldWalletPass(QString)));
+
     ui->stackedWidget->setCurrentIndex(0);
     setWindowLanguage();
 
@@ -214,6 +216,7 @@ void MainWindow::createActions()
     connect(options, &QAction::triggered, &ui_Settings, &settings_Form::settingsShow);
     connect(about_program, &QAction::triggered, &ui_AboutProgram, &about_program_Form::aboutShow);
     connect(change_passphrase, &QAction::triggered, &ui_ChangePass, &change_passphrase_Form::changePassphraseShow);
+    connect(change_passphrase, &QAction::triggered, this, &MainWindow::sendWalletPassToChangeForm);
 }
 
 void MainWindow::createMenus()
@@ -925,5 +928,10 @@ void MainWindow::blocksNext()
         ui->coinsTypeInf->setText(coinsTypeToString(val_1.getBlockChain().getBlock(block_index).getBlockData().getCoinsType()));
         ui->feeInf->setText(QString::number(val_1.getBlockChain().getBlock(block_index).getBlockData().getFee()));
     }
+}
+
+void MainWindow::sendWalletPassToChangeForm()
+{
+    emit sendWalletPass(wallet_key);
 }
 

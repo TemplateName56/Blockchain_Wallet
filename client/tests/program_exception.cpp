@@ -82,6 +82,18 @@ void ProgramException::getError()
 
         error_messageBox.exec();
         break;
+    case SAME_PASSWORD:
+        error_messageBox.setText("New password similar to old");
+        error_messageBox.setIcon(QMessageBox::Critical);
+
+        error_messageBox.exec();
+        break;
+    case NOT_VALID_PASSWORD:
+        error_messageBox.setText("Not correct password");
+        error_messageBox.setIcon(QMessageBox::Critical);
+
+        error_messageBox.exec();
+        break;
     default:
         break;
     }

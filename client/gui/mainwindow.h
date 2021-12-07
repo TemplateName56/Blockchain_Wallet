@@ -59,6 +59,7 @@ signals:
     void allBlocksView_prev_clicked();
 
     void sendTransaction(TransactionData new_transaction);
+    void sendWalletPass(QString);
 
 protected:
     void closeEvent(QCloseEvent *event);
@@ -161,5 +162,7 @@ private slots:
 
     void blocksPrev();
     void blocksNext();
+
+    void sendWalletPassToChangeForm();
 };
 #endif // MAINWINDOW_H
