@@ -11,6 +11,7 @@
 #include <QJsonArray>
 #include "client/tests/program_exception.h"
 #include "client/scripts/program_algorithms.h"
+#include "client/blockchain/blockchain.h"
 
 #include <iostream>
 #include <QtDebug>
@@ -66,6 +67,7 @@ public:
     void new_append_balances(int num_user);
     void new_write_block_data(int num_user);
     void new_append_hash2_id();
+    void write_chain_json();
 
     void new_append_balances(int num_user, QString address, double balance_bwc,
                              double balance_bwc_n, double balance_bwc_q);

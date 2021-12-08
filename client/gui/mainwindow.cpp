@@ -438,7 +438,7 @@ void MainWindow::requestsHistory()
 
     CSV file("requestsList.csv");
 
-    for(int index = 1; index < 3; index++)
+    for(int index = 1; index < file.get_amount_row(); index++)
     {
         QList<QStandardItem *> newRequestsList;
         for(int c = 1; c <= 4; c++)

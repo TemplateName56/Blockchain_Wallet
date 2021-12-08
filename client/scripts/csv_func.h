@@ -19,9 +19,12 @@ public:
     QString get_label_csv(int row);
     QString get_date_csv(int row);
     QString get_money_csv(int row);
-    //int get_amount_row();
+    int get_amount_row();
+    QVector<QString> find_user(QString user);
+    QVector<QString> getList();
 private:
      QString filename;
+      QVector<QString> lines;
 };
 
 

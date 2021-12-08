@@ -23,6 +23,14 @@ JSON::JSON(QString fileName)
     }
 }
 
+
+void JSON:: write_chain_json(){
+    QJsonObject jsonObj3;
+    //jsonObj3.insert("Sender", chain[1].getBlockData().getSender());
+}
+
+
+
 QString JSON:: new_get_hash(int number_block){
     QJsonObject json = doc.object();
     QJsonArray jsonArray = json["Blockchain"].toArray();
