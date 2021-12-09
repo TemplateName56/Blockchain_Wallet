@@ -143,8 +143,8 @@ public:
 
     Blockchain getBlockChain();
     void setBlockChain(Blockchain temp);
-    int getAuthority();
 
+    int getAuthority();
     void setAuthority(int authority);
 signals:
     void newBlock();
