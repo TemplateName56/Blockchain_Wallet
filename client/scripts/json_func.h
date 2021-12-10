@@ -20,26 +20,6 @@ class JSON {
 public:
     JSON(QString fileName);
 
-    QJsonObject getJson();
-    QJsonObject loadJson(const QString& filepath);
-    QString get_hash(int number_block);
-    QString get_hash_previous(int number_block);
-    int get_number(int number_block);
-    QString get_currency(int number_block);
-    int get_time_of_creation(int number_block);
-    QString get_address_recipient(int number_block);
-    QString get_address_sender(int number_block);
-    double get_money(int number_block);
-    int get_array_size();
-    int get_array_size_users();
-    QString get_address_users(int num);
-    QString get_walletKey_users(int num);
-
-    void read_users_transactions();
-    void saveJson_append(int index);
-    void saveJson_append_2(int index, QString hash_prev, QString hash, QString btc, int time, QString adress_s, QString adress_r, double money);
-
-    void append_users_transactions();
     void registerNewUser(QString address, QString walletKey);
 
     QString new_get_hash(int number_block);
@@ -87,7 +67,9 @@ public:
     };
 
     QVector<QString> get_users_info(getInfo what_u_need);
-
+    void read_all_chain(Blockchain &chain);
+    void write_all_chain(QVector<Block> chain);
+    void write_all_chain(Block block);
 private:
     //QJsonObject json;
 

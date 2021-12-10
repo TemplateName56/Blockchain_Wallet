@@ -226,7 +226,7 @@ void MainWindow::createMenus()
     main_menu->addAction(home);
     main_menu->addAction(send);
     main_menu->addAction(recieve);
-    main_menu->addAction(help);   
+    main_menu->addAction(help);
     main_menu->addAction(all_blocks);
     main_menu->addSeparator();
     main_menu->addAction(quit);
@@ -496,23 +496,23 @@ void MainWindow::requestsHistory()
         ui->historyView->setColumnWidth(3,108);
         ui->historyView->setColumnWidth(4,108);
 
-        JSON json_file("block2_10.json");
+        JSON json_file("chain.json");
         //qDebug() << json_file.get_array_size();
 
-        for(int i = 1; i <= json_file.get_array_size(); i++){
+        for(int i = 1; i <= json_file.new_get_array_size_blockchain(); i++){
             QList<QStandardItem *> HistoryList;
             int count = 0;
             for(int c = 0; c < 5; c++){
                 if(c == 0){
-                    HistoryList.append(new QStandardItem(QString::number(json_file.get_number(i))));
+                    HistoryList.append(new QStandardItem(QString::number(json_file.new_get_id(i))));
                 }else if(c == 1){
-                    HistoryList.append(new QStandardItem(json_file.get_address_sender(i)));
+                    HistoryList.append(new QStandardItem(json_file.new_get_sender(i, 0)));
                 }else if(c == 2){
-                    HistoryList.append(new QStandardItem(json_file.get_address_recipient(i)));
+                    HistoryList.append(new QStandardItem(json_file.new_get_reciever(i, 0)));
                 }else if(c == 3){
-                    HistoryList.append(new QStandardItem(QString::number(json_file.get_money(i))));
+                    HistoryList.append(new QStandardItem(QString::number(json_file.new_get_amount(i, 0))));
                 }else if(c == 4){
-                    HistoryList.append(new QStandardItem(json_file.get_currency(i)));
+                    HistoryList.append(new QStandardItem(json_file.new_get_fee(i, 0)));
                 }
                     //qDebug() << json_file.get_address_recipient(c);
                     count++;

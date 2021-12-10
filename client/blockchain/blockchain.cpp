@@ -1,4 +1,5 @@
 #include "blockchain.h"
+#include "client/scripts/json_func.h"
 
 CoinsType toCoinsType(int CoinId)
 {
@@ -381,79 +382,79 @@ void Blockchain::collisionCheck()
 //}
 
 
-void Blockchain::writeChain()
-{
-    try {
-        fileExists("chain.json");
-    }  catch (ProgramException &error) {
-        error.getError();
-    }
-    QJsonObject new_chain;
-    QJsonArray chain_array;
+//void Blockchain::writeChain()
+//{
+//    try {
+//        fileExists("chain.json");
+//    }  catch (ProgramException &error) {
+//        error.getError();
+//    }
+//    QJsonObject new_chain;
+//    QJsonArray chain_array;
 
-    QJsonArray balances;
-    QJsonObject balance;
+//    QJsonArray balances;
+//    QJsonObject balance;
 
-    QJsonArray block_data_array;
-    QJsonObject new_block_data;
-    QJsonObject new_block;
+//    QJsonArray block_data_array;
+//    QJsonObject new_block_data;
+//    QJsonObject new_block;
 
-    for(int index = 0; index < chain.length(); index++)
-    {
-        new_block_data.insert("Sender", chain[index].getBlockData().getSender());
-        new_block_data.insert("Reciever", chain[index].getBlockData().getReciever());
-        new_block_data.insert("Amount", chain[index].getBlockData().getAmount());
-        new_block_data.insert("Coins Type", chain[index].getBlockData().getCoinsType());
-        new_block_data.insert("Fee", chain[index].getBlockData().getFee());
-        new_block_data.insert("Priority", chain[index].getBlockData().getPriority());
-        new_block_data.insert("TimeStamp", chain[index].getBlockData().getTimeStamp());
+//    for(int index = 0; index < chain.length(); index++)
+//    {
+//        new_block_data.insert("Sender", chain[index].getBlockData().getSender());
+//        new_block_data.insert("Reciever", chain[index].getBlockData().getReciever());
+//        new_block_data.insert("Amount", chain[index].getBlockData().getAmount());
+//        new_block_data.insert("Coins Type", chain[index].getBlockData().getCoinsType());
+//        new_block_data.insert("Fee", chain[index].getBlockData().getFee());
+//        new_block_data.insert("Priority", chain[index].getBlockData().getPriority());
+//        new_block_data.insert("TimeStamp", chain[index].getBlockData().getTimeStamp());
 
-        block_data_array.removeFirst();
-        block_data_array.push_back(new_block_data);
+//        block_data_array.removeFirst();
+//        block_data_array.push_back(new_block_data);
 
-        while(balances.count())
-        {
-            balances.pop_back();
-        }
-        for(int j = 0; j < chain[index].users_balance.length(); j++)
-        {
-            balance.insert("Address", chain[index].users_balance[j].getAddress());
-            balance.insert("Balance BWC", chain[index].users_balance[j].getBalance(BWC));
-            balance.insert("Balance BWC-N", chain[index].users_balance[j].getBalance(BWC_N));
-            balance.insert("Balance BWC-Q", chain[index].users_balance[j].getBalance(BWC_Q));
-            balances.push_back(balance);
-        }
+//        while(balances.count())
+//        {
+//            balances.pop_back();
+//        }
+//        for(int j = 0; j < chain[index].users_balance.length(); j++)
+//        {
+//            balance.insert("Address", chain[index].users_balance[j].getAddress());
+//            balance.insert("Balance BWC", chain[index].users_balance[j].getBalance(BWC));
+//            balance.insert("Balance BWC-N", chain[index].users_balance[j].getBalance(BWC_N));
+//            balance.insert("Balance BWC-Q", chain[index].users_balance[j].getBalance(BWC_Q));
+//            balances.push_back(balance);
+//        }
 
-        new_block.insert("Block Data", block_data_array);
+//        new_block.insert("Block Data", block_data_array);
 
-        new_block.insert("Id", chain[index].getIndex());
-        new_block.insert("Hash", chain[index].getBlockHash());
-        new_block.insert("Previous Hash", chain[index].getPrevBlockHash());
+//        new_block.insert("Id", chain[index].getIndex());
+//        new_block.insert("Hash", chain[index].getBlockHash());
+//        new_block.insert("Previous Hash", chain[index].getPrevBlockHash());
 
-        new_block.insert("Balaces", balances);
+//        new_block.insert("Balaces", balances);
 
-        chain_array.push_back(new_block);
-    }
-    new_chain.insert("Blockchain", chain_array);
+//        chain_array.push_back(new_block);
+//    }
+//    new_chain.insert("Blockchain", chain_array);
 
-    QFileInfo file_info("chain.json");
-    QDir::setCurrent(file_info.path());
-    QFile json_file("chain.json");
+//    QFileInfo file_info("chain.json");
+//    QDir::setCurrent(file_info.path());
+//    QFile json_file("chain.json");
 
-    if(!json_file.open(QIODevice::WriteOnly))
-    {
-        throw ProgramException(FILE_WRITE_ERROR);
-    }
-    json_file.write(QJsonDocument(new_chain).toJson(QJsonDocument::Indented));
-    json_file.close();
-}
+//    if(!json_file.open(QIODevice::WriteOnly))
+//    {
+//        throw ProgramException(FILE_WRITE_ERROR);
+//    }
+//    json_file.write(QJsonDocument(new_chain).toJson(QJsonDocument::Indented));
+//    json_file.close();
+//}
 
 
 void Blockchain::readChain()
 {
     JSON file("chain.json");
     bool genesis = true;
-
+    qDebug() << "\narray_size:" << file.new_get_array_size_blockchain();
     for(int index = 0; index < file.new_get_array_size_blockchain(); index++)
     {
 
@@ -461,16 +462,21 @@ void Blockchain::readChain()
             {
                 genesis = false;
             }
+            qDebug() << "\nreadChain:";
+            qDebug() << "Amount:" << file.new_get_amount(index,0);
+            qDebug() << "Reciever:" << file.new_get_reciever(index,0);
+            qDebug() << "Sender:" << file.new_get_sender(index,0);
+            qDebug() << "TimeStamp:" << file.new_get_timestamp(index,0);
             addBlock(file.new_get_id(index),
-                     TransactionData(file.new_get_sender(index+1,0),
-                                     file.new_get_reciever(index+1,0),
-                                     file.new_get_amount(index+1,0),
-                                     toCoinsType(file.new_get_CoinsType(index+1, 0)),
-                                     file.new_get_fee(index+1,0),
-                                     file.new_get_priority(index+1,0),
-                                     file.new_get_timestamp(index+1,0)),
-                    file.new_get_prev_hash(index+1),
-                    file.new_get_hash(index+1),
+                     TransactionData(file.new_get_sender(index,0),
+                                     file.new_get_reciever(index,0),
+                                     file.new_get_amount(index,0),
+                                     toCoinsType(file.new_get_CoinsType(index, 0)),
+                                     file.new_get_fee(index,0),
+                                     file.new_get_priority(index,0),
+                                     file.new_get_timestamp(index,0)),
+                    file.new_get_prev_hash(index),
+                    file.new_get_hash(index),
                      genesis);
 
     }
@@ -560,7 +566,11 @@ void Validator::addTransaction(TransactionData new_transaction)
 {
     chain.addBlock(chain.getLastBlock().getIndex() + 1, new_transaction, chain.getLastBlock().getBlockHash());
 
-    chain.writeChain();
+    JSON json_file("chain.json");
+
+    //json_file.write_all_chain(chain.getChain());
+    json_file.write_all_chain(chain.getLastBlock());
+    //chain.writeChain();
     authority += 1;
 
     emit sendTransaction(chain.getLastBlock().getBlockData().getReciever(), chain.getLastBlock().getBlockData());

@@ -22,6 +22,40 @@ QVector<QString> CSV::getList()
     return this->lines;
 }
 
+QString CSV::get_tr(int row, int language){
+    QString str;
+    //str = line.section(';', 2, 2);
+    str = lines.at(row).section(';', language, language);
+    return str;
+}
+
+QString CSV::get_tr(int row, languages_csv language){
+    QString str;
+    //str = line.section(';', 2, 2);
+    str = lines.at(row).section(';', language, language);
+    return str;
+}
+
+QString CSV::get_tr(QString word, int language){
+    QString str;
+    for(int i = 0; i < lines.size(); i++){
+        if(lines.at(i).section(';', 0, 0) == word){
+            str = lines.at(i).section(';', language, language);
+        }
+    }
+    return str;
+}
+
+QVector<QString> CSV::get_tr(languages_csv language){
+    QVector <QString> words;
+    qDebug() << lines.size();
+    for(int i = 0; i < lines.size(); i++){
+        words.append(lines.at(i).section(';', language, language));
+    }
+    return words;
+}
+
+
 void CSV:: append_csv_request(QString date, QString message, QString label, double amount){
 
     QFile file_out(filename);
