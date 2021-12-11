@@ -1,5 +1,6 @@
 #include "blockchain.h"
 #include "client/scripts/json_func.h"
+ #include <QCoreApplication>
 
 CoinsType toCoinsType(int CoinId)
 {
@@ -453,6 +454,23 @@ void Blockchain::collisionCheck()
 void Blockchain::readChain()
 {
     JSON file("chain.json");
+    //JSON file("C:/Users/Eugene/Desktop/Blockchain/project/kursach/build-Blockchain_Wallet-Desktop_Qt_6_2_2_MinGW_64_bit-Debug/chain.json");
+    //JSON file("C:/Users/Eugene/Desktop/Blockchain/project/kursach/Blockchain_Wallet/doc/chain.json");
+    //JSON file(QDir::currentPath() + "/" + "chain.json");
+    //qDebug() << QString( QCoreApplication::applicationDirPath());
+
+    //qDebug() << QString( QDir::currentPath() + "/" + "chain.json");
+
+    //qDebug() << QString(QCoreApplication::applicationFilePath());
+
+//    QString path = QDir::currentPath();
+//    QString str = "Blockchain_Wallet";
+//    QString str2 = "build-Blockchain_Wallet-Desktop_Qt_6_2_2_MinGW_64_bit-Debug";
+//    path.replace(path.length()-str2.length(), str2.length(), str);
+//    path+= "/doc/chain.json";
+//    qDebug() << path;
+//    JSON file(path);
+
     bool genesis = true;
     qDebug() << "\narray_size:" << file.new_get_array_size_blockchain();
     for(int index = 0; index < file.new_get_array_size_blockchain(); index++)

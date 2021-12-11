@@ -32,6 +32,7 @@ public:
     QVector<QString> getList();
 
     QVector<QString> get_tr(languages_csv language);
+    QVector<QString> get_tr(int language_index);
 
     QString get_tr(QString word, int language);
     QString get_tr(int row, int language);

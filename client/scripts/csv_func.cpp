@@ -55,6 +55,14 @@ QVector<QString> CSV::get_tr(languages_csv language){
     return words;
 }
 
+QVector<QString> CSV::get_tr(int language_index){
+    QVector <QString> words;
+    qDebug() << lines.size();
+    for(int i = 0; i < lines.size(); i++){
+        words.append(lines.at(i).section(';', language_index, language_index));
+    }
+    return words;
+}
 
 void CSV:: append_csv_request(QString date, QString message, QString label, double amount){
 
