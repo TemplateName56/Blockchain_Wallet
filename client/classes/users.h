@@ -2,6 +2,7 @@
 #define USERS_H
 
 #include <QString>
+#include <QMap>
 #include <QVector>
 
 class User
@@ -11,7 +12,7 @@ class User
     bool admin;
 public:
     User();
-    User(QString address, QString password);
+    User(QString address, QString password, bool admin);
 
     QString getAddress();
     QString getPassword();
@@ -26,6 +27,13 @@ class Users
     QVector<User> users_infomation;
 public:
     Users();
+
+    User getUser(QString password);
+
+    bool isPasswordExists(QString password);
+
+    void changePassword(QString address);
+
     ~Users();
 };
 
