@@ -4,16 +4,16 @@
 JSON::JSON(QString fileName)
 {
     try {
-
+   /*
         QString path = QDir::currentPath();
         QString str = "Blockchain_Wallet/doc/";
         QString str2 = "build-Blockchain_Wallet-Desktop_Qt_6_2_2_MinGW_64_bit-Debug";
         path.replace(path.length()-str2.length(), str2.length(), str);
         path += fileName;
         qDebug() << path;
-
-        filename = path;
-        //filename = fileName;
+    */
+        //filename = path;
+        filename = fileName;
         fileExists(filename);
         QString val2;
 
