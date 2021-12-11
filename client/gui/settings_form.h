@@ -36,7 +36,7 @@ protected:
     void closeEvent(QCloseEvent *event);
 
 signals:
-    void languageChanged();
+    void languageChanged(QVector<QString>);
     void trayCheckBoxToggled();
     void coinsTypeChanged(int);
 

@@ -9,7 +9,7 @@
 
 #include "client/scripts/program_algorithms.h"
 #include "client/tests/program_exception.h"
-#include "client/scripts/json_func.h"
+//#include "client/scripts/json_func.h"
 
 enum CoinsType
 {
@@ -103,6 +103,7 @@ public:
 
 class Blockchain
 {
+    friend class JSON;
     void createGenesisBlock();
 
     QVector<Block> chain;
@@ -126,6 +127,8 @@ public:
     void addBlock(Block new_block);
 
     void show();
+
+    //friend void JSON::read_all_chain(Blockchain &a);
 
     ~Blockchain();
 };

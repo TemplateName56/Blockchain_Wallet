@@ -17,7 +17,9 @@ enum ErrorsNames
     INVALID_COINS_VALUE,
     HASH_COLLISION,
     BLOCKCHAIN_NOT_VALID,
-    SAVE_PASSPHRASE
+    SAVE_PASSPHRASE,
+    SAME_PASSWORD,
+    NOT_VALID_PASSWORD
 };
 
 class ProgramException : public QException
