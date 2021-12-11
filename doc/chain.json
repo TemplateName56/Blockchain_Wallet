@@ -1,150 +1,26 @@
 {
-    "Blockchain": [
-        {
-            "Balances": [
-                {
-                    "Address": "BW000000000000000",
-                    "Balance BWC": 10000,
-                    "Balance BWC-N": 0,
-                    "Balance BWC-Q": 0
-                }
-            ],
-            "Block Data": {
-                "Amount": 10000,
-                "Coins Type": 0,
-                "Fee": 0,
-                "Priority": 1,
-                "Reciever": "BW000000000000000",
-                "Sender": "genesis",
-                "TimeStamp": "Wed Dec 1 14:57:29 2021"
-            },
-            "Hash": "lspeDSTfbZZSjmRO",
-            "Id": 0,
-            "Previous Hash": "0"
-        },
-        {
-            "Balances": [
-                {
-                    "Address": "BW000000000000000",
-                    "Balance BWC": 9998.95,
-                    "Balance BWC-N": 0,
-                    "Balance BWC-Q": 0
-                },
-                {
-                    "Address": "BW000000000000001",
-                    "Balance BWC": 1,
-                    "Balance BWC-N": 0,
-                    "Balance BWC-Q": 0
-                }
-            ],
-            "Block Data": {
-                "Amount": 1,
-                "Coins Type": 0,
-                "Fee": 0.05,
-                "Priority": 3,
-                "Reciever": "BW000000000000001",
-                "Sender": "BW000000000000000",
-                "TimeStamp": "Sat Dec 11 00:09:41 2021"
-            },
-            "Hash": "WymcDplwqydXhVZO",
-            "Id": 1,
-            "Previous Hash": "lspeDSTfbZZSjmRO"
-        },
-        {
-            "Balances": [
-                {
-                    "Address": "BW000000000000000",
-                    "Balance BWC": 9998.95,
-                    "Balance BWC-N": 0,
-                    "Balance BWC-Q": 0
-                },
-                {
-                    "Address": "BW000000000000001",
-                    "Balance BWC": 1,
-                    "Balance BWC-N": 0,
-                    "Balance BWC-Q": 0
-                }
-            ],
-            "Block Data": {
-                "Amount": 0,
-                "Coins Type": 0,
-                "Fee": 0,
-                "Priority": 3,
-                "Reciever": "BW000000000000001",
-                "Sender": "BW000000000000000",
-                "TimeStamp": "Sat Dec 11 00:09:48 2021"
-            },
-            "Hash": "vtcEgkqhhxSkurWf",
-            "Id": 2,
-            "Previous Hash": "WymcDplwqydXhVZO"
-        },
-        {
-            "Balances": [
-                {
-                    "Address": "BW000000000000000",
-                    "Balance BWC": 9994.75,
-                    "Balance BWC-N": 0,
-                    "Balance BWC-Q": 0
-                },
-                {
-                    "Address": "BW000000000000001",
-                    "Balance BWC": 1,
-                    "Balance BWC-N": 0,
-                    "Balance BWC-Q": 0
-                },
-                {
-                    "Address": "BWnv9gR0lkhj8cc32",
-                    "Balance BWC": 4,
-                    "Balance BWC-N": 0,
-                    "Balance BWC-Q": 0
-                }
-            ],
-            "Block Data": {
-                "Amount": 4,
-                "Coins Type": 0,
-                "Fee": 0.2,
-                "Priority": 3,
-                "Reciever": "BWnv9gR0lkhj8cc32",
-                "Sender": "BW000000000000000",
-                "TimeStamp": "Sat Dec 11 00:21:08 2021"
-            },
-            "Hash": "bdetjypqqWpypEwM",
-            "Id": 3,
-            "Previous Hash": "vtcEgkqhhxSkurWf"
-        },
-        {
-            "Balances": [
-                {
-                    "Address": "BW000000000000000",
-                    "Balance BWC": 9992.65,
-                    "Balance BWC-N": 0,
-                    "Balance BWC-Q": 0
-                },
-                {
-                    "Address": "BW000000000000001",
-                    "Balance BWC": 3,
-                    "Balance BWC-N": 0,
-                    "Balance BWC-Q": 0
-                },
-                {
-                    "Address": "BWnv9gR0lkhj8cc32",
-                    "Balance BWC": 4,
-                    "Balance BWC-N": 0,
-                    "Balance BWC-Q": 0
-                }
-            ],
-            "Block Data": {
-                "Amount": 2,
-                "Coins Type": 0,
-                "Fee": 0.1,
-                "Priority": 3,
-                "Reciever": "BW000000000000001",
-                "Sender": "BW000000000000000",
-                "TimeStamp": "Sat Dec 11 12:57:53 2021"
-            },
-            "Hash": "dfehYpmyqydXdlsw",
-            "Id": 4,
-            "Previous Hash": "bdetjypqqWpypEwM"
-        }
-    ]
+   "Blockchain":[
+      {
+         "Balances":[
+            {
+               "Address":"BW000000000000000",
+               "Balance BWC":10000,
+               "Balance BWC-N":0,
+               "Balance BWC-Q":0
+            }
+         ],
+         "Block Data":{
+            "Amount":10000,
+            "Coins Type":0,
+            "Fee":0,
+            "Priority":1,
+            "Reciever":"BW000000000000000",
+            "Sender":"genesis",
+            "TimeStamp":"Wed Dec 1 14:57:29 2021"
+         },
+         "Hash":"lspeDSTfbZZSjmRO",
+         "Id":0,
+         "Previous Hash":"0"
+      }
+   ]
 }
