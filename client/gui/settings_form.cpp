@@ -106,8 +106,6 @@ void settings_Form::setWindowLanguage()
      ui->trayCheckBox->setText("&При натисканні кнопки \"Закрити\" згортати вікно в трей");
      ui->languageLabel->setText("Мова інтерфейсу");
 
-
-
 //    switch (languageIndex) {
 //    case ENGLISH:
 

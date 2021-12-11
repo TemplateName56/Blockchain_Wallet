@@ -129,6 +129,15 @@ void MainWindow::registerUser()
 
         //registerNewUsers(wallet_address, wallet_key + "SALT");
 
+        /*QPalette palette;
+        QColor color;
+
+        color = ui->walletKeyLabel->parentWidget()->palette().color(QPalette);
+        palette.setColor(QPalette::Base,color);
+        ui->walletKeyLabel->setPalette(palette);*/
+
+        ui->walletKeyLabel->setStyleSheet("* { background-color: rgba(0, 0, 0, 0); }");
+
         ui->walletAddressLabel->setText(wallet_address);
         ui->walletKeyLabel->setText(wallet_key);
 
@@ -240,6 +249,12 @@ void MainWindow::createMenus()
     help_menu = menuBar()->addMenu("&Help");
 
     help_menu->addAction(about_program);
+    //help_menu->addAction(about_autors)
+
+//    QMenu* menu = new QMenu("about_program"); //помощь
+//        menu->addAction(about_program);
+//        menu->addAction(home); //about autors
+//        help_menu->addMenu(menu);
 
     toolbar = addToolBar("main menu");
 
