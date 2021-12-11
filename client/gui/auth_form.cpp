@@ -12,7 +12,6 @@ auth_Form::auth_Form(QWidget *parent) :
     setWindowFlags(Qt::Dialog | Qt::MSWindowsFixedSizeDialogHint);
 }
 
-
 auth_Form::~auth_Form()
 {
     delete ui;
@@ -42,8 +41,6 @@ QString auth_Form::getInputKey()
 
 void auth_Form::setWindowLanguage(QVector<QString> language_vector)
 {
-    CSV file_tr("translation.csv");
-
     this->setWindowTitle(language_vector.at(8));
 
     //QVector<QString> str = file_tr.get_tr(0);    

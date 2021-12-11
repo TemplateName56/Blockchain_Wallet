@@ -34,7 +34,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(&ui_Auth, SIGNAL(destroyed()), this, SLOT(show()));
 
     connect(&ui_Settings, SIGNAL(languageChanged(QVector<QString>)), this, SLOT(setWindowLanguage(QVector<QString>)));
-    connect(this, SIGNAL(languageChanged(QVector<QString>)), &ui_Auth, SLOT(setWindowLaguage(QVector<QString>)));
+    connect(this, SIGNAL(languageChanged(QVector<QString>)), &ui_Auth, SLOT(setWindowLanguage(QVector<QString>)));
 
     connect(&ui_Settings, SIGNAL(trayCheckBoxToggled()), this, SLOT(trayEnabled()));
 
@@ -59,6 +59,7 @@ MainWindow::MainWindow(QWidget *parent)
     //setWindowLanguage();
 
     statusBar()->showMessage("Connected...");
+    ui_Settings.setWindowLanguage();
 }
 
 void MainWindow::display()
@@ -641,6 +642,7 @@ void MainWindow::setWindowLanguage(QVector<QString> language_vector)
            ui->priorityComboBox->setItemText(1, language_vector.at(55));
            ui->priorityComboBox->setItemText(2, language_vector.at(56));
 
+           emit languageChanged(language_vector);
     // need rework
 //    switch (ui_Settings.languageIndex) {
 //    case ENGLISH:

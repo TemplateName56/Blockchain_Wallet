@@ -16,9 +16,6 @@ settings_Form::settings_Form(QWidget *parent) :
     readSettings();
     ui->languagesBox->setCurrentIndex(languageIndex);
     setWindowLanguage();
-
-
-    connect(this, SIGNAL(languageChanged()), this, SLOT(setWindowLanguage()));
 }
 
 settings_Form::~settings_Form()
@@ -89,6 +86,7 @@ void settings_Form::closeEvent(QCloseEvent *event)
 {
     writeSettings();
 }
+
 void settings_Form::setWindowLanguage()
 {
     CSV file_tr("translation.csv");
