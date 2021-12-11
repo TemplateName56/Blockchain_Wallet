@@ -2,6 +2,7 @@
 #include "ui_settings_form.h"
 #include "client/tests/program_exception.h"
 #include "client/scripts/csv_func.h"
+#include "client/scripts/json_func.h"
 
 settings_Form::settings_Form(QWidget *parent) :
     QWidget(parent),
@@ -46,45 +47,52 @@ void settings_Form::on_trayCheckBox_toggled(bool checked)
 
 void settings_Form::readSettings()
 {
-    QFileInfo file_info("settings.json");
-    QDir::setCurrent(file_info.path());
-    QFile json_file("settings.json");
+//    QFileInfo file_info("settings.json");
+//    QDir::setCurrent(file_info.path());
+//    QFile json_file("settings.json");
 
-    if (!json_file.open(QIODevice::ReadOnly))
-    {
-        //throw ProgramException(FILE_READ_ERROR); i think this dont need
-    }
+//    if (!json_file.open(QIODevice::ReadOnly))
+//    {+
+//        //throw ProgramException(FILE_READ_ERROR); i think this dont need
+//    }
 
-    QJsonDocument json_document(QJsonDocument::fromJson(json_file.readAll()));
-    json_file.close();
+//    QJsonDocument json_document(QJsonDocument::fromJson(json_file.readAll()));
+//    json_file.close();
 
-    QJsonObject current_json = json_document.object();
+//    QJsonObject current_json = json_document.object();
 
-    settings_Form::languageIndex = current_json.value("Language").toInt();
+    JSON file("users.json");
+    //file.get_language_user("BW000000000000000");
+    settings_Form::languageIndex = file.get_language_user("BW000000000000000");
+    qDebug() << "languageIndex: " << settings_Form::languageIndex ;
+    //settings_Form::languageIndex = current_json.value("Language").toInt();
 }
 
-void settings_Form::writeSettings()
-{
-    QFileInfo file_info("settings.json");
-    QDir::setCurrent(file_info.path());
-    QFile json_file("settings.json");
+//void settings_Form::writeSettings()
+//{
+//    QFileInfo file_info("settings.json");
+//    QDir::setCurrent(file_info.path());
+//    QFile json_file("settings.json");
 
-    if (!json_file.open(QIODevice::WriteOnly))
-    {
-        throw ProgramException(FILE_WRITE_ERROR);
-    }
+//    if (!json_file.open(QIODevice::WriteOnly))
+//    {
+//        throw ProgramException(FILE_WRITE_ERROR);
+//    }
 
-    QJsonObject current_json;
+//    QJsonObject current_json;
 
-    current_json.insert("Language",settings_Form::languageIndex);
+//    current_json.insert("Language",settings_Form::languageIndex);
 
-    json_file.write(QJsonDocument(current_json).toJson(QJsonDocument::Indented));
-    json_file.close();
-}
+//    json_file.write(QJsonDocument(current_json).toJson(QJsonDocument::Indented));
+//    json_file.close();
+//}
 
 void settings_Form::closeEvent(QCloseEvent *event)
 {
-    writeSettings();
+    JSON file("users.json");
+    qDebug() << settings_Form::languageIndex;
+    file.set_language_user("BW000000000000000",settings_Form::languageIndex);
+    //writeSettings();
 }
 
 void settings_Form::setWindowLanguage()

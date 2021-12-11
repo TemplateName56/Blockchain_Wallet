@@ -1,5 +1,6 @@
 #include "change_passphrase_form.h"
 #include "ui_change_passphrase_form.h"
+#include "client/scripts/json_func.h"
 
 change_passphrase_Form::change_passphrase_Form(QWidget *parent) :
     QWidget(parent),
@@ -32,6 +33,9 @@ void change_passphrase_Form::on_newPassLE_textChanged(const QString &arg1)
 
 void change_passphrase_Form::on_changePassBTN_clicked()
 {
+    JSON file_users("users.json");
+    //file_users.changed_passphrase_oldkey(old_password, new_password);
+    //file_users.changed_passphrase_address();
     try {
         if(old_password == new_password)
         {

@@ -20,8 +20,6 @@ class JSON {
 public:
     JSON(QString fileName);
 
-    void registerNewUser(QString address, QString walletKey);
-
     QString new_get_hash(int number_block);
     QString new_get_prev_hash(int number_block);
     int new_get_id(int number_block);
@@ -66,10 +64,18 @@ public:
         ADMIN
     };
 
+    void registerNewUser(QString address, QString walletKey);
     QVector<QString> get_users_info(getInfo what_u_need);
+    int get_array_size_users();
+    void changed_passphrase_oldkey(QString old_walletKey, QString new_walletKey);
+    void changed_passphrase_address(QString address, QString new_walletKey);
+
     void read_all_chain(Blockchain &chain);
     void write_all_chain(QVector<Block> chain);
     void write_all_chain(Block block);
+
+    int get_language_user(QString address);
+    void set_language_user(QString address, int language);
 private:
     //QJsonObject json;
 

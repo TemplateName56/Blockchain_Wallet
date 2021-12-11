@@ -64,6 +64,138 @@ JSON::JSON(QString fileName)
 //    }
 //}
 
+void JSON::set_language_user(QString address, int language){
+    QFile json_file(filename);
+    QJsonObject json = doc.object();
+    QJsonArray jsonArray = json["users"].toArray();
+
+    QJsonObject GBjsonObj;
+    GBjsonObj = doc.object();
+
+    for(int i = 0; i <  jsonArray.size(); i++){
+        QJsonObject subtree = jsonArray.at(i).toObject();
+        QString str = subtree.value("address").toString();
+        if(str == address){
+            QJsonObject subtree = jsonArray.at(i).toObject();
+            QString address_file = subtree.value("address").toString();
+            int admin = subtree.value("admin").toInt();
+            QString walletKey = subtree.value("walletKey").toString();
+            //int language_file = subtree.value("language").toInt();
+
+            QJsonObject jsonObj3;
+            jsonObj3.insert("address", address_file);
+            jsonObj3.insert("admin", admin);
+            jsonObj3.insert("walletKey", walletKey);
+            jsonObj3.insert("language", language );
+
+            //qDebug() << "i: "<< i;
+            jsonArray.replace(i, jsonObj3);
+            qDebug() << "=-=-=-=-Set_language-=-=-="<< jsonArray;
+            qDebug() << "address from file: "<< str;
+            qDebug() << "address from function: "<< address;
+        }
+    }
+    GBjsonObj["users"] = jsonArray;
+    doc.setObject(GBjsonObj);
+
+    json_file.open(QFile::WriteOnly);
+    json_file.write(doc.toJson());
+}
+
+int JSON::get_language_user(QString address){
+    QFile json_file(filename);
+    QJsonObject json = doc.object();
+    QJsonArray jsonArray = json["users"].toArray();
+    for(int i = 0; i <  jsonArray.size(); i++){
+        QJsonObject subtree = jsonArray.at(i).toObject();
+        QString str = subtree.value("address").toString();
+        if(str == address){
+            int language_file = subtree.value("language").toInt();
+            qDebug() << "-=-=-=-Get_language-=-=-=" <<jsonArray;
+            return language_file ;
+        }
+    }
+
+
+}
+
+int JSON::get_array_size_users(){
+    QJsonObject json = doc.object();
+    QJsonArray jsonArray = json["users"].toArray();
+    return jsonArray.size();
+}
+
+void JSON::changed_passphrase_oldkey(QString old_walletKey, QString new_walletKey){
+    QFile json_file(filename);
+    QJsonObject json = doc.object();
+    QJsonArray jsonArray = json["users"].toArray();
+
+    QJsonObject GBjsonObj;
+    GBjsonObj = doc.object();
+    algoritms use_algoritm;
+
+    for(int i = 0; i <  jsonArray.size(); i++){
+        QJsonObject subtree = jsonArray.at(i).toObject();
+        QString str = subtree.value("walletKey").toString();
+        QString str_old = QString::fromStdString(use_algoritm.Hash(old_walletKey.toStdString()));
+        if(str == str_old){
+            QJsonObject subtree = jsonArray.at(i).toObject();
+            QString address = subtree.value("address").toString();
+            int admin = subtree.value("admin").toInt();
+
+            QJsonObject jsonObj3;
+            jsonObj3.insert("address", address);
+            jsonObj3.insert("admin", admin);
+            jsonObj3.insert("walletKey", QString::fromStdString(use_algoritm.Hash(new_walletKey.toStdString())));
+
+            jsonArray.replace(i, jsonObj3);
+            qDebug() << jsonArray;
+        }
+    }
+
+    GBjsonObj["users"] = jsonArray;
+    doc.setObject(GBjsonObj);
+
+    json_file.open(QFile::WriteOnly);
+    json_file.write(doc.toJson());
+}
+
+void JSON::changed_passphrase_address(QString address, QString new_walletKey){
+    QFile json_file(filename);
+    QJsonObject json = doc.object();
+    QJsonArray jsonArray = json["users"].toArray();
+
+    QJsonObject GBjsonObj;
+    GBjsonObj = doc.object();
+    algoritms use_algoritm;
+
+    for(int i = 0; i <  jsonArray.size(); i++){
+        QJsonObject subtree = jsonArray.at(i).toObject();
+        QString str = subtree.value("address").toString();
+        //QString address = QString::fromStdString(use_algoritm.Hash(address.toStdString()));
+        if(str == address){
+            QJsonObject subtree = jsonArray.at(i).toObject();
+            QString address_file = subtree.value("address").toString();
+            int admin = subtree.value("admin").toInt();
+            int language_file = subtree.value("language").toInt();
+
+            QJsonObject jsonObj3;
+            jsonObj3.insert("address", address_file);
+            jsonObj3.insert("admin", admin);
+            jsonObj3.insert("walletKey", QString::fromStdString(use_algoritm.Hash(new_walletKey.toStdString())));
+            jsonObj3.insert("language", language_file);
+
+            jsonArray.replace(i, jsonObj3);
+            qDebug() << jsonArray;
+        }
+    }
+
+    GBjsonObj["users"] = jsonArray;
+    doc.setObject(GBjsonObj);
+
+    json_file.open(QFile::WriteOnly);
+    json_file.write(doc.toJson());
+}
 
 void JSON::write_all_chain(QVector<Block> chain)
 {
@@ -627,6 +759,7 @@ void JSON:: registerNewUser(QString address, QString walletKey){
     jsonObj3.insert("address", address);
     jsonObj3.insert("walletKey", QString::fromStdString(use_algoritm.Hash(walletKey.toStdString())));
     jsonObj3.insert("admin", 0);
+    jsonObj3.insert("language", 0);
 
     jsonArray.append(jsonObj3);
 
