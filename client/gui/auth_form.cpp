@@ -39,38 +39,38 @@ QString auth_Form::getInputKey()
     return this->user_key;
 }
 
-void auth_Form::setWindowLanguage(int Language)
+void auth_Form::setWindowLanguage(QVector<QString> language_vector)
 {
-    switch (Language) {
-    case 0:
-        this->setWindowTitle("Authorization");
+//    switch (Language) {
+//    case 0:
+//        this->setWindowTitle("Authorization");
 
-        ui->welcomeLabel->setText("Welcome");
-        ui->walletKeyInput->setPlaceholderText("Enter your private key...");
-        ui->walletKeyInput->setToolTip("");
-        ui->loginButton->setText("&Login");
-        ui->registerButton->setText("&Register");
-        break;
-    case 1:
-        this->setWindowTitle("Авторізація");
+//        ui->welcomeLabel->setText("Welcome");
+//        ui->walletKeyInput->setPlaceholderText("Enter your private key...");
+//        ui->walletKeyInput->setToolTip("");
+//        ui->loginButton->setText("&Login");
+//        ui->registerButton->setText("&Register");
+//        break;
+//    case 1:
+//        this->setWindowTitle("Авторізація");
 
-        ui->welcomeLabel->setText("Ласкаво просимо!");
-        ui->walletKeyInput->setPlaceholderText("Введіть ваш приватний ключ...");
-        ui->walletKeyInput->setToolTip("");
-        ui->loginButton->setText("&Вхід");
-        ui->registerButton->setText("&Реєстрація");
-        break;
-    case 2:
-        this->setWindowTitle("Авторизация");
+//        ui->welcomeLabel->setText("Ласкаво просимо!");
+//        ui->walletKeyInput->setPlaceholderText("Введіть ваш приватний ключ...");
+//        ui->walletKeyInput->setToolTip("");
+//        ui->loginButton->setText("&Вхід");
+//        ui->registerButton->setText("&Реєстрація");
+//        break;
+//    case 2:
+//        this->setWindowTitle("Авторизация");
 
-        ui->welcomeLabel->setText("Добро пожаловать!");
-        ui->walletKeyInput->setPlaceholderText("Введите ваш приватный ключ...");
-        ui->walletKeyInput->setToolTip("");
-        ui->loginButton->setText("&Войти");
-        ui->registerButton->setText("&Регистрация");
-        break;
-    default:
-        break;
-    }
+//        ui->welcomeLabel->setText("Добро пожаловать!");
+//        ui->walletKeyInput->setPlaceholderText("Введите ваш приватный ключ...");
+//        ui->walletKeyInput->setToolTip("");
+//        ui->loginButton->setText("&Войти");
+//        ui->registerButton->setText("&Регистрация");
+//        break;
+//    default:
+//        break;
+//    }
 }
 

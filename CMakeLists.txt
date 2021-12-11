@@ -52,7 +52,9 @@ set(PROJECT_SOURCES
         # Blockchain files
         client/blockchain/blockchain.h
         client/blockchain/blockchain.cpp
-
+        # Classes
+        client/classes/users.h
+        client/classes/users.cpp
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)

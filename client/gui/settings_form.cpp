@@ -34,7 +34,7 @@ void settings_Form::settingsShow()
 void settings_Form::on_languagesBox_currentIndexChanged(int index)
 {
     settings_Form::languageIndex = index;
-    emit languageChanged();
+    emit setWindowLanguage();
 }
 
 bool settings_Form::minimizeInTray()
@@ -105,6 +105,8 @@ void settings_Form::setWindowLanguage()
      ui->tabWidget->setTabText(3,str.at(4));
      ui->trayCheckBox->setText("&При натисканні кнопки \"Закрити\" згортати вікно в трей");
      ui->languageLabel->setText("Мова інтерфейсу");
+
+     emit languageChanged(str);
 
 //    switch (languageIndex) {
 //    case ENGLISH:

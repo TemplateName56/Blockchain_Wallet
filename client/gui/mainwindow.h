@@ -61,6 +61,8 @@ signals:
     void sendTransaction(TransactionData new_transaction);
     void sendWalletPass(QString);
 
+    void languageChanged(QVector<QString>);
+
 protected:
     void closeEvent(QCloseEvent *event);
 
@@ -135,7 +137,7 @@ private slots:
     void transactionsTR();
     void blocksTR();
 
-    void setWindowLanguage();
+    void setWindowLanguage(QVector<QString> language_vector);
     void iconActivated(QSystemTrayIcon::ActivationReason reason);
     void trayEnabled();
 
