@@ -1,5 +1,6 @@
 #include "auth_form.h"
 #include "ui_auth_form.h"
+#include "client/scripts/csv_func.h"
 
 auth_Form::auth_Form(QWidget *parent) :
     QWidget(parent),
@@ -41,6 +42,24 @@ QString auth_Form::getInputKey()
 
 void auth_Form::setWindowLanguage(QVector<QString> language_vector)
 {
+    CSV file_tr("translation.csv");
+
+    this->setWindowTitle(language_vector.at(8));
+
+    //QVector<QString> str = file_tr.get_tr(0);    
+    //ui->walletKeyInput->setPlaceholderText(language_vector.at(10));
+
+
+    ui->walletKeyInput->setPlaceholderText("12354");
+
+    //qDebug()<<str.at(10);
+
+    ui->welcomeLabel->setText(language_vector.at(9));
+    ui->walletKeyInput->setToolTip("");
+    ui->loginButton->setText(language_vector.at(11));
+    ui->registerButton->setText(language_vector.at(12));
+
+
 //    switch (Language) {
 //    case 0:
 //        this->setWindowTitle("Authorization");

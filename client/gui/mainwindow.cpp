@@ -574,7 +574,73 @@ bool MainWindow::isAmountCorrect(double amount, CoinsType coins_type)
 
 void MainWindow::setWindowLanguage(QVector<QString> language_vector)
 {
-    this->setWindowTitle(language_vector.at(0));
+    this->setWindowTitle(language_vector.at(57));
+
+           main_menu->setTitle(language_vector.at(1));
+           settings_menu->setTitle(language_vector.at(0));
+           help_menu->setTitle(language_vector.at(41));
+
+           home->setText(language_vector.at(42));
+           send->setText(language_vector.at(43));
+           recieve->setText(language_vector.at(44));
+           transactions->setText(language_vector.at(45));
+
+           help->setText(language_vector.at(46));
+           quit->setText(language_vector.at(47));
+
+           change_passphrase->setText(language_vector.at(48));
+           options->setText(language_vector.at(0));
+
+           about_program->setText(language_vector.at(49));
+           view_window->setText(language_vector.at(50));
+
+           ui->sendCoinsButton->setText(language_vector.at(43));
+           ui->addToAddressBookLabel->setText(language_vector.at(25));
+           ui->payToLabel->setText(language_vector.at(22));
+           ui->amountLabel->setText(language_vector.at(36));
+           ui->balanceLabel->setText(language_vector.at(18));
+           ui->commissionLabel->setText(language_vector.at(38));
+           ui->feeCheckBox->setText(language_vector.at(51));
+
+           ui->transactionsOverviewLabel->setText(language_vector.at(21));
+           ui->addresslabel->setText(language_vector.at(19));
+           ui->keylabel->setText(language_vector.at(20));
+
+           ui->recomValueButton->setText(language_vector.at(52));
+           ui->customValueButton->setText(language_vector.at(53));
+
+           ui->balanceTextLabel->setText(language_vector.at(18));
+           ui->sendCoinsButton->setText(language_vector.at(43));
+           ui->clearSendButton->setText(language_vector.at(17));
+
+           ui->requestLabel->setText(language_vector.at(23));
+           ui->amountToRecieveLabel->setText(language_vector.at(24));
+           ui->messageLabel->setText(language_vector.at(25));
+
+           ui->requestButton->setText(language_vector.at(26));
+           ui->clearRequestButton->setText(language_vector.at(27));
+
+           ui->historyLabel->setText(language_vector.at(28));
+
+           ui->transactionsLabel->setText(language_vector.at(29));
+
+           ui->idLabel->setText(language_vector.at(30));
+           ui->hashLabel->setText(language_vector.at(31));
+           ui->prevHashLabel->setText(language_vector.at(32));
+           ui->senderLabel->setText(language_vector.at(33));
+           ui->recieverLabel->setText(language_vector.at(34));
+           ui->timestampLabel->setText(language_vector.at(35));
+           ui->amountLabel_2->setText(language_vector.at(36));
+           ui->coinstypeLabel->setText(language_vector.at(37));
+           ui->feeLabel->setText(language_vector.at(38));
+
+           ui->prevBlockBTN->setText(language_vector.at(39));
+           ui->nextBlockBTN->setText(language_vector.at(40));
+
+           ui->priorityComboBox->setItemText(0, language_vector.at(54));
+           ui->priorityComboBox->setItemText(1, language_vector.at(55));
+           ui->priorityComboBox->setItemText(2, language_vector.at(56));
+
     // need rework
 //    switch (ui_Settings.languageIndex) {
 //    case ENGLISH:

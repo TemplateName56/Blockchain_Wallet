@@ -92,19 +92,24 @@ void settings_Form::closeEvent(QCloseEvent *event)
 void settings_Form::setWindowLanguage()
 {
     CSV file_tr("translation.csv");
-    QVector<QString> str_en = file_tr.get_tr(CSV::English);
-    QVector<QString> str_ua = file_tr.get_tr(CSV::Ukrainian);
-    QVector<QString> str_ru = file_tr.get_tr(CSV::Russian);
+
+    //QVector<QString> str_en = file_tr.get_tr(CSV::English);
+    //QVector<QString> str_ua = file_tr.get_tr(CSV::Ukrainian);
+    //QVector<QString> str_ru = file_tr.get_tr(CSV::Russian);
 
 
      QVector<QString> str = file_tr.get_tr(languageIndex);
+
      this->setWindowTitle(str.at(0));
+
      ui->tabWidget->setTabText(0,str.at(1));
      ui->tabWidget->setTabText(1,str.at(2));
      ui->tabWidget->setTabText(2,str.at(3));
-     ui->tabWidget->setTabText(3,str.at(4));
-     ui->trayCheckBox->setText("&При натисканні кнопки \"Закрити\" згортати вікно в трей");
-     ui->languageLabel->setText("Мова інтерфейсу");
+
+     ui->label->setText(str.at(4));
+     ui->trayCheckBox->setText(str.at(5));
+     ui->languageLabel->setText(str.at(6));
+     ui->coinsTypeLabel->setText(str.at(7));
 
      emit languageChanged(str);
 
