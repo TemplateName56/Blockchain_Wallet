@@ -1,5 +1,6 @@
 #include "auth_form.h"
 #include "ui_auth_form.h"
+#include "client/scripts/csv_func.h"
 
 auth_Form::auth_Form(QWidget *parent) :
     QWidget(parent),
@@ -10,7 +11,6 @@ auth_Form::auth_Form(QWidget *parent) :
     this->setWindowIcon(QIcon("icons/programIcon.png"));
     setWindowFlags(Qt::Dialog | Qt::MSWindowsFixedSizeDialogHint);
 }
-
 
 auth_Form::~auth_Form()
 {
@@ -41,36 +41,14 @@ QString auth_Form::getInputKey()
 
 void auth_Form::setWindowLanguage(QVector<QString> language_vector)
 {
-//    switch (Language) {
-//    case 0:
-//        this->setWindowTitle("Authorization");
+    this->setWindowTitle(language_vector.at(8));
 
-//        ui->welcomeLabel->setText("Welcome");
-//        ui->walletKeyInput->setPlaceholderText("Enter your private key...");
-//        ui->walletKeyInput->setToolTip("");
-//        ui->loginButton->setText("&Login");
-//        ui->registerButton->setText("&Register");
-//        break;
-//    case 1:
-//        this->setWindowTitle("Авторізація");
+    ui->walletKeyInput->setPlaceholderText(language_vector.at(10));
 
-//        ui->welcomeLabel->setText("Ласкаво просимо!");
-//        ui->walletKeyInput->setPlaceholderText("Введіть ваш приватний ключ...");
-//        ui->walletKeyInput->setToolTip("");
-//        ui->loginButton->setText("&Вхід");
-//        ui->registerButton->setText("&Реєстрація");
-//        break;
-//    case 2:
-//        this->setWindowTitle("Авторизация");
+    ui->welcomeLabel->setText(language_vector.at(9));
+    ui->walletKeyInput->setToolTip("");
+    ui->loginButton->setText(language_vector.at(11));
+    ui->registerButton->setText(language_vector.at(12));
 
-//        ui->welcomeLabel->setText("Добро пожаловать!");
-//        ui->walletKeyInput->setPlaceholderText("Введите ваш приватный ключ...");
-//        ui->walletKeyInput->setToolTip("");
-//        ui->loginButton->setText("&Войти");
-//        ui->registerButton->setText("&Регистрация");
-//        break;
-//    default:
-//        break;
-//    }
 }
 

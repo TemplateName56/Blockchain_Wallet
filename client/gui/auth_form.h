@@ -15,7 +15,6 @@ public:
     explicit auth_Form(QWidget *parent = nullptr);
     ~auth_Form();
     QString getInputKey();
-    void setWindowLanguage(QVector<QString> language_vector);
 
 signals:
     void login_button_clicked();
@@ -25,6 +24,7 @@ private slots:
     void on_walletKeyInput_textEdited(const QString &arg1);
     void on_loginButton_clicked();
     void on_registerButton_clicked();
+    void setWindowLanguage(QVector<QString> language_vector);
 
 private:
     Ui::auth_Form *ui;

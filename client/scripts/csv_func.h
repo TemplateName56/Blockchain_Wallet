@@ -1,5 +1,8 @@
 #ifndef CSV_FUNC_H
 #define CSV_FUNC_H
+
+#include "client/tests/program_exception.h"
+
 #include <QCoreApplication>
 #include <iostream>
 #include <QFile>
@@ -31,12 +34,12 @@ public:
     QVector<QString> find_user(QString user);
     QVector<QString> getList();
 
-    QVector<QString> get_tr(languages_csv language);
+    //QVector<QString> get_tr(languages_csv language);
     QVector<QString> get_tr(int language_index);
 
-    QString get_tr(QString word, int language);
-    QString get_tr(int row, int language);
-    QString get_tr(int row, languages_csv language);
+    //QString get_tr(QString word, int language);
+    //QString get_tr(int row, int language);
+    //QString get_tr(int row, languages_csv language);
 private:
      QString filename;
       QVector<QString> lines;

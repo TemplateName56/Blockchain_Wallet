@@ -26,11 +26,11 @@ class ProgramException : public QException
 {
     ErrorsNames error_name;
     QMessageBox error_messageBox;
-    QString wallet_key;
+    QString exception_source;
 public:
     ProgramException();
     ProgramException(ErrorsNames error_name);
-    ProgramException(ErrorsNames error_name, QString wallet_key);
+    ProgramException(ErrorsNames error_name, QString exception_source);
 
     void getError();
 

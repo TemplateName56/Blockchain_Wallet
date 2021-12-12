@@ -7,12 +7,6 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    try {
-        fileExists("requestsList.csv");
-        setWindowFlags(Qt::Dialog | Qt::MSWindowsFixedSizeDialogHint);
-    }  catch (ProgramException &error) {
-        error.getError();
-    }
     ui->priorityComboBox->setEnabled(false);
 
     val_1.setAuthority(100);
@@ -34,7 +28,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(&ui_Auth, SIGNAL(destroyed()), this, SLOT(show()));
 
     connect(&ui_Settings, SIGNAL(languageChanged(QVector<QString>)), this, SLOT(setWindowLanguage(QVector<QString>)));
-    connect(this, SIGNAL(languageChanged(QVector<QString>)), &ui_Auth, SLOT(setWindowLaguage(QVector<QString>)));
+    connect(this, SIGNAL(languageChanged(QVector<QString>)), &ui_Auth, SLOT(setWindowLanguage(QVector<QString>)));
 
     connect(&ui_Settings, SIGNAL(trayCheckBoxToggled()), this, SLOT(trayEnabled()));
 
@@ -58,7 +52,39 @@ MainWindow::MainWindow(QWidget *parent)
     ui->stackedWidget->setCurrentIndex(0);
     //setWindowLanguage();
 
-    statusBar()->showMessage("Connected...");
+    //statusBar()->showMessage("Connected...");
+    ui_Settings.setWindowLanguage();
+}
+
+MainWindow::~MainWindow()
+{
+    delete ui;
+
+    delete request_view_model;
+
+    delete home;
+    delete send;
+    delete recieve;
+    delete transactions;
+
+    delete all_blocks;
+
+    delete help;
+    delete quit;
+
+    delete change_passphrase;
+    delete options;
+
+    delete about_program;
+    delete view_window;
+
+    delete main_menu;
+    delete settings_menu;
+    delete help_menu;
+    delete tray_menu;
+
+    delete toolbar;
+    delete tray_icon;
 }
 
 void MainWindow::display()
@@ -99,7 +125,6 @@ void MainWindow::authorizeUser()
                 main_menu->removeAction(all_blocks);
                 toolbar->removeAction(all_blocks);
             }
-
             ui->bwcBalance->setText(QString::number(current_user.getBalance(BWC)));
             ui->bwcNBalance->setText(QString::number(current_user.getBalance(BWC_N)));
             ui->bwcQBalance->setText(QString::number(current_user.getBalance(BWC_Q)));
@@ -251,6 +276,7 @@ void MainWindow::createMenus()
     help_menu = menuBar()->addMenu("&Help");
 
     help_menu->addAction(about_program);
+
     //help_menu->addAction(about_autors)
 
 //    QMenu* menu = new QMenu("about_program"); //помощь
@@ -289,11 +315,11 @@ void MainWindow::createTrayMenu()
 
 void MainWindow::uiChanges()
 {
-    ui->payToAddress->setPlaceholderText("Enter wallet-address");
-    ui->sendTransactionLabel->setPlaceholderText("Enter a label for this address to add it to your address book");
+//    ui->payToAddress->setPlaceholderText("Enter wallet-address");
+//    ui->sendTransactionLabel->setPlaceholderText("Enter a label for this address to add it to your address book");
 
-    ui->requestLabelLine->setPlaceholderText("263 stroka, plz changed");
-    ui->messageLine->setPlaceholderText("264 stroka, plz changed");
+//    ui->requestLabelLine->setPlaceholderText("263 stroka, plz changed");
+//    ui->messageLine->setPlaceholderText("264 stroka, plz changed");
 
 }
 
@@ -574,108 +600,82 @@ bool MainWindow::isAmountCorrect(double amount, CoinsType coins_type)
 
 void MainWindow::setWindowLanguage(QVector<QString> language_vector)
 {
-    this->setWindowTitle(language_vector.at(0));
-    // need rework
-//    switch (ui_Settings.languageIndex) {
-//    case ENGLISH:
-//        ui_Auth.setWindowLanguage(ui_Settings.languageIndex);
-//        this->setWindowTitle("My Wallet");
+    this->setWindowTitle(language_vector.at(57));
 
-//        main_menu->setTitle("&Main");
-//        settings_menu->setTitle("&Settings");
-//        help_menu->setTitle("&Help");
+           main_menu->setTitle(language_vector.at(1));
+           settings_menu->setTitle(language_vector.at(0));
+           help_menu->setTitle(language_vector.at(41));
 
-//        home->setText("&Home");
-//        send->setText("&Send");
-//        recieve->setText("&Recieve");
-//        transactions->setText("&Transactions");
+           home->setText(language_vector.at(42));
+           send->setText(language_vector.at(43));
+           recieve->setText(language_vector.at(44));
+           transactions->setText(language_vector.at(45));
 
-//        help->setText("&Help");
-//        quit->setText("&Quit");
+           help->setText(language_vector.at(46));
+           quit->setText(language_vector.at(47));
 
-//        change_passphrase->setText("&Change password...");
-//        options->setText("&Options...");
+           change_passphrase->setText(language_vector.at(48));
+           options->setText(language_vector.at(0));
 
-//        about_program->setText("&About Wallet");
-//        view_window->setText("&Show Window");
+           about_program->setText(language_vector.at(49));
+           view_window->setText(language_vector.at(50));
 
-//        ui->sendCoinsButton->setText("&Send");
-//        ui->payToLabel->setText("Pay To:");
-//        ui->addToAddressBookLabel->setText("User Label:");
-//        ui->amountLabel->setText("Amount:");
-//        ui->balanceLabel->setText("Balance:");
-//        ui->commissionLabel->setText("Commission");
-//        ui->feeCheckBox->setText("&Subsctract fee from amount");
+           ui->sendCoinsButton->setText(language_vector.at(43));
+           ui->addToAddressBookLabel->setText(language_vector.at(25));
+           ui->payToLabel->setText(language_vector.at(22));
+           ui->amountLabel->setText(language_vector.at(36));
+           ui->balanceLabel->setText(language_vector.at(18));
+           ui->commissionLabel->setText(language_vector.at(38));
+           ui->feeCheckBox->setText(language_vector.at(51));
 
-//        ui->transactionsOverviewLabel->setText("Transactions");
-//        break;
-//    case UKRANIAN:
-//        ui_Auth.setWindowLanguage(ui_Settings.languageIndex);
-//        this->setWindowTitle("Мій Гаманець");
+           ui->transactionsOverviewLabel->setText(language_vector.at(21));
+           ui->addresslabel->setText(language_vector.at(19));
+           ui->keylabel->setText(language_vector.at(20));
 
-//        main_menu->setTitle("&Головна");
-//        settings_menu->setTitle("&Налаштування");
-//        help_menu->setTitle("&Допомога");
+           ui->recomValueButton->setText(language_vector.at(52));
+           ui->customValueButton->setText(language_vector.at(53));
 
-//        home->setText("&Огляд");
-//        send->setText("&Надіслати");
-//        recieve->setText("&Отримати");
-//        transactions->setText("&Транзакції");
+           ui->balanceTextLabel->setText(language_vector.at(18));
+           ui->sendCoinsButton->setText(language_vector.at(43));
+           ui->clearSendButton->setText(language_vector.at(17));
 
-//        help->setText("&Допомога");
-//        quit->setText("&Вихід");
+           ui->requestLabel->setText(language_vector.at(23));
+           ui->amountToRecieveLabel->setText(language_vector.at(24));
+           ui->messageLabel->setText(language_vector.at(25));
 
-//        change_passphrase->setText("&Змінити пароль");
-//        options->setText("&Налаштування");
+           ui->requestButton->setText(language_vector.at(26));
+           ui->clearRequestButton->setText(language_vector.at(27));
 
-//        about_program->setText("&Про Програму");
-//        view_window->setText("&Показати вікно");
+           ui->historyLabel->setText(language_vector.at(28));
 
-//        ui->sendCoinsButton->setText("&Надіслати");
-//        ui->addToAddressBookLabel->setText("Ярлик:");
-//        ui->payToLabel->setText("Адреса:");
-//        ui->amountLabel->setText("Сума:");
-//        ui->balanceLabel->setText("Баланс:");
-//        ui->commissionLabel->setText("Комісія");
-//        ui->feeCheckBox->setText("&Відніміть від суми комісію");
+           ui->transactionsLabel->setText(language_vector.at(29));
 
-//        ui->transactionsOverviewLabel->setText("Транзакції");
-//        break;
-//    case RUSSIAN:
-//        ui_Auth.setWindowLanguage(ui_Settings.languageIndex);
-//        setWindowTitle("Мой кошелёк");
+           ui->idLabel->setText(language_vector.at(30));
+           ui->hashLabel->setText(language_vector.at(31));
+           ui->prevHashLabel->setText(language_vector.at(32));
+           ui->senderLabel->setText(language_vector.at(33));
+           ui->recieverLabel->setText(language_vector.at(34));
+           ui->timestampLabel->setText(language_vector.at(35));
+           ui->amountLabel_2->setText(language_vector.at(36));
+           ui->coinstypeLabel->setText(language_vector.at(37));
+           ui->feeLabel->setText(language_vector.at(38));
 
-//        main_menu->setTitle("&Главное");
-//        settings_menu->setTitle("&Настройки");
-//        help_menu->setTitle("&Помощь");
+           ui->prevBlockBTN->setText(language_vector.at(39));
+           ui->nextBlockBTN->setText(language_vector.at(40));
 
-//        home->setText("&Обзор");
-//        send->setText("&Отправить");
-//        recieve->setText("&Получить");
-//        transactions->setText("&Транзакции");
+           ui->priorityComboBox->setItemText(0, language_vector.at(54));
+           ui->priorityComboBox->setItemText(1, language_vector.at(55));
+           ui->priorityComboBox->setItemText(2, language_vector.at(56));
 
-//        help->setText("&Помощь");
-//        quit->setText("&Выход");
+           ui->payToAddress->setPlaceholderText(language_vector.at(61));
+           ui->sendTransactionLabel->setPlaceholderText(language_vector.at(62));
 
-//        change_passphrase->setText("&Изменить пароль");
-//        options->setText("&Настройки");
+           ui->requestLabelLine->setPlaceholderText(language_vector.at(63));
+           ui->messageLine->setPlaceholderText(language_vector.at(64));
 
-//        about_program->setText("&О Программе");
-//        view_window->setText("&Показать окно");
+           statusBar()->showMessage(language_vector.at(58));
 
-//        ui->sendCoinsButton->setText("&Отправить");
-//        ui->addToAddressBookLabel->setText("Метка:");
-//        ui->payToLabel->setText("Адресс:");
-//        ui->amountLabel->setText("Сумма:");
-//        ui->balanceLabel->setText("Баланс:");
-//        ui->commissionLabel->setText("Комиссия");
-//        ui->feeCheckBox->setText("&Вычесть комиссию из суммы");
-
-//        ui->transactionsOverviewLabel->setText("Транзакции");
-//        break;
-//    default:
-//        break;
-//    }
+           emit languageChanged(language_vector);
 }
 
 void MainWindow::on_sendCoinsButton_clicked()
@@ -844,38 +844,6 @@ void MainWindow::on_sendTransactionLabel_textChanged(const QString &arg1)
 {
     this->transaction_label = arg1;
 }
-
-MainWindow::~MainWindow()
-{
-    delete ui;
-
-    delete request_view_model;
-
-    delete home;
-    delete send;
-    delete recieve;
-    delete transactions;
-
-    delete all_blocks;
-
-    delete help;
-    delete quit;
-
-    delete change_passphrase;
-    delete options;
-
-    delete about_program;
-    delete view_window;
-
-    delete main_menu;
-    delete settings_menu;
-    delete help_menu;
-    delete tray_menu;
-
-    delete toolbar;
-    delete tray_icon;
-}
-
 
 void MainWindow::on_clearSendButton_clicked()
 {

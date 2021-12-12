@@ -472,7 +472,7 @@ void Blockchain::readChain()
 //    JSON file(path);
 
     bool genesis = true;
-    qDebug() << "\narray_size:" << file.new_get_array_size_blockchain();
+//    qDebug() << "\narray_size:" << file.new_get_array_size_blockchain();
     for(int index = 0; index < file.new_get_array_size_blockchain(); index++)
     {
 
@@ -480,11 +480,11 @@ void Blockchain::readChain()
             {
                 genesis = false;
             }
-            qDebug() << "\nreadChain:";
-            qDebug() << "Amount:" << file.new_get_amount(index,0);
-            qDebug() << "Reciever:" << file.new_get_reciever(index,0);
-            qDebug() << "Sender:" << file.new_get_sender(index,0);
-            qDebug() << "TimeStamp:" << file.new_get_timestamp(index,0);
+//            qDebug() << "\nreadChain:";
+//            qDebug() << "Amount:" << file.new_get_amount(index,0);
+//            qDebug() << "Reciever:" << file.new_get_reciever(index,0);
+//            qDebug() << "Sender:" << file.new_get_sender(index,0);
+//            qDebug() << "TimeStamp:" << file.new_get_timestamp(index,0);
             addBlock(file.new_get_id(index),
                      TransactionData(file.new_get_sender(index,0),
                                      file.new_get_reciever(index,0),

@@ -4,7 +4,10 @@ CSV::CSV(QString fileName)
 {
     filename = fileName;
     QFile file(filename);
-     file.open(QFile::ReadOnly | QFile::Text);
+    if(!file.open(QFile::ReadOnly | QFile::Text))
+    {
+        throw ProgramException(FILE_READ_ERROR);
+    }
     //QTextStream in(&file);
     int counter = 0;
     while (!file.atEnd())
@@ -22,42 +25,42 @@ QVector<QString> CSV::getList()
     return this->lines;
 }
 
-QString CSV::get_tr(int row, int language){
-    QString str;
-    //str = line.section(';', 2, 2);
-    str = lines.at(row).section(';', language, language);
-    return str;
-}
+//QString CSV::get_tr(int row, int language){
+//    QString str;
+//    //str = line.section(';', 2, 2);
+//    str = lines.at(row).section(';', language, language);
+//    return str;
+//}
 
-QString CSV::get_tr(int row, languages_csv language){
-    QString str;
-    //str = line.section(';', 2, 2);
-    str = lines.at(row).section(';', language, language);
-    return str;
-}
+//QString CSV::get_tr(int row, languages_csv language){
+//    QString str;
+//    //str = line.section(';', 2, 2);
+//    str = lines.at(row).section(';', language, language);
+//    return str;
+//}
 
-QString CSV::get_tr(QString word, int language){
-    QString str;
-    for(int i = 0; i < lines.size(); i++){
-        if(lines.at(i).section(';', 0, 0) == word){
-            str = lines.at(i).section(';', language, language);
-        }
-    }
-    return str;
-}
+//QString CSV::get_tr(QString word, int language){
+//    QString str;
+//    for(int i = 0; i < lines.size(); i++){
+//        if(lines.at(i).section(';', 0, 0) == word){
+//            str = lines.at(i).section(';', language, language);
+//        }
+//    }
+//    return str;
+//}
 
-QVector<QString> CSV::get_tr(languages_csv language){
-    QVector <QString> words;
-    qDebug() << lines.size();
-    for(int i = 0; i < lines.size(); i++){
-        words.append(lines.at(i).section(';', language, language));
-    }
-    return words;
-}
+//QVector<QString> CSV::get_tr(languages_csv language){
+//    QVector <QString> words;
+//    qDebug() << lines.size();
+//    for(int i = 0; i < lines.size(); i++){
+//        words.append(lines.at(i).section(';', language, language));
+//    }
+//    return words;
+//}
 
 QVector<QString> CSV::get_tr(int language_index){
     QVector <QString> words;
-    qDebug() << lines.size();
+    //qDebug() << lines.size();
     for(int i = 0; i < lines.size(); i++){
         words.append(lines.at(i).section(';', language_index, language_index));
     }
@@ -67,10 +70,11 @@ QVector<QString> CSV::get_tr(int language_index){
 void CSV:: append_csv_request(QString date, QString message, QString label, double amount){
 
     QFile file_out(filename);
-    if ( !file_out.open(QFile::Append) ) {
-        cout << "File not exists\n";
+    if (!file_out.open(QFile::Append) )
+    {
+        throw ProgramException(FILE_READ_ERROR);
     } else {
-         cout << "File exists\n";
+         //cout << "File exists\n";
         QTextStream out(&file_out);
         for(int i = 0; i < 1; i++){
             out << date << ";" << message << ";" << label << ";" << amount << ";" << "\n";
@@ -83,7 +87,10 @@ void CSV:: append_csv_request(QString date, QString message, QString label, doub
 
 int CSV:: get_amount_row(){
     QFile file(filename);
-     file.open(QFile::ReadOnly | QFile::Text);
+    if(!file.open(QFile::ReadOnly | QFile::Text))
+    {
+        throw ProgramException(FILE_READ_ERROR);
+    }
     //QTextStream in(&file);
     int counter = 0;
     while (!file.atEnd())
@@ -99,7 +106,7 @@ int CSV:: get_amount_row(){
 QVector<QString> CSV:: find_user(QString str_user){
     //QString str1;
     QVector <QString> user;
-    qDebug() << lines.size();
+    //qDebug() << lines.size();
     for(int i = 0; i < lines.size(); i++){
         for(int j = 0; j < 4; j++){
             if(lines.at(i).section(';', j, j) == str_user){

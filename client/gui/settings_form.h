@@ -48,11 +48,11 @@ private:
 
 public slots:
     void settingsShow();
+    void setWindowLanguage();
 
 private slots:
     void on_languagesBox_currentIndexChanged(int index);
     void on_trayCheckBox_toggled(bool checked);
-    void setWindowLanguage();
     void on_defaultCoinsTypeCB_currentIndexChanged(int index);
 };
 
