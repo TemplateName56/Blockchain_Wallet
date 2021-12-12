@@ -43,8 +43,7 @@ void transactionsCardView::setData(QString label, QString timeStamp, double amou
 void transactionsCardView::paintEvent(QPaintEvent *event)
 {
     QPainter paintIt(this);
-    paintIt.drawRect(0,0,width()-1, height()-1);
-
+    paintIt.drawRect(0,0, width() - 1, height() - 1);
 }
 
 transactionsCardView::~transactionsCardView()

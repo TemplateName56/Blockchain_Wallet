@@ -3,34 +3,30 @@
 
 JSON::JSON(QString fileName)
 {
-    try {
-   /*
-        QString path = QDir::currentPath();
-        QString str = "Blockchain_Wallet/doc/";
-        QString str2 = "build-Blockchain_Wallet-Desktop_Qt_6_2_2_MinGW_64_bit-Debug";
-        path.replace(path.length()-str2.length(), str2.length(), str);
-        path += fileName;
-        qDebug() << path;
-    */
-        //filename = path;
-        filename = fileName;
-        fileExists(filename);
-        QString val2;
+    /*
+         QString path = QDir::currentPath();
+         QString str = "Blockchain_Wallet/doc/";
+         QString str2 = "build-Blockchain_Wallet-Desktop_Qt_6_2_2_MinGW_64_bit-Debug";
+         path.replace(path.length()-str2.length(), str2.length(), str);
+         path += fileName;
+         qDebug() << path;
+     */
+         //filename = path;
+         filename = fileName;
+         fileExists(filename);
+         QString val2;
 
-        QFile json_file(filename);
+         QFile json_file(filename);
 
-        if(!json_file.open(QIODevice::ReadOnly | QIODevice::Text))
-        {
-            throw ProgramException(FILE_READ_ERROR);
-        }
-        val2 = json_file.readAll();
-        json_file.close();
+         if(!json_file.open(QIODevice::ReadOnly | QIODevice::Text))
+         {
+             throw ProgramException(FILE_READ_ERROR);
+         }
+         val2 = json_file.readAll();
+         json_file.close();
 
-        doc = QJsonDocument::fromJson(val2.toUtf8());
-         //qDebug() << "\n\ndoc_constructor :" << doc;
-    }  catch (ProgramException &error) {
-        error.getError();
-    }
+         doc = QJsonDocument::fromJson(val2.toUtf8());
+        //qDebug() << "\n\ndoc_constructor :" << doc;
 }
 
 //void JSON::read_all_chain(Blockchain &chain){
@@ -90,15 +86,18 @@ void JSON::set_language_user(QString address, int language){
 
             //qDebug() << "i: "<< i;
             jsonArray.replace(i, jsonObj3);
-            qDebug() << "=-=-=-=-Set_language-=-=-="<< jsonArray;
-            qDebug() << "address from file: "<< str;
-            qDebug() << "address from function: "<< address;
+            //qDebug() << "=-=-=-=-Set_language-=-=-="<< jsonArray;
+            //qDebug() << "address from file: "<< str;
+            //qDebug() << "address from function: "<< address;
         }
     }
     GBjsonObj["users"] = jsonArray;
     doc.setObject(GBjsonObj);
 
-    json_file.open(QFile::WriteOnly);
+    if(!json_file.open(QFile::WriteOnly))
+    {
+        throw ProgramException(FILE_WRITE_ERROR);
+    }
     json_file.write(doc.toJson());
 }
 
@@ -111,7 +110,7 @@ int JSON::get_language_user(QString address){
         QString str = subtree.value("address").toString();
         if(str == address){
             int language_file = subtree.value("language").toInt();
-            qDebug() << "-=-=-=-Get_language-=-=-=" <<jsonArray;
+            //qDebug() << "-=-=-=-Get_language-=-=-=" <<jsonArray;
             return language_file ;
         }
     }
@@ -149,14 +148,17 @@ void JSON::changed_passphrase_oldkey(QString old_walletKey, QString new_walletKe
             jsonObj3.insert("walletKey", QString::fromStdString(use_algoritm.Hash(new_walletKey.toStdString())));
 
             jsonArray.replace(i, jsonObj3);
-            qDebug() << jsonArray;
+            //qDebug() << jsonArray;
         }
     }
 
     GBjsonObj["users"] = jsonArray;
     doc.setObject(GBjsonObj);
 
-    json_file.open(QFile::WriteOnly);
+    if(!json_file.open(QFile::WriteOnly))
+    {
+        throw ProgramException(FILE_WRITE_ERROR);
+    }
     json_file.write(doc.toJson());
 }
 
@@ -186,14 +188,17 @@ void JSON::changed_passphrase_address(QString address, QString new_walletKey){
             jsonObj3.insert("language", language_file);
 
             jsonArray.replace(i, jsonObj3);
-            qDebug() << jsonArray;
+            //qDebug() << jsonArray;
         }
     }
 
     GBjsonObj["users"] = jsonArray;
     doc.setObject(GBjsonObj);
 
-    json_file.open(QFile::WriteOnly);
+    if(!json_file.open(QFile::WriteOnly))
+    {
+        throw ProgramException(FILE_WRITE_ERROR);
+    }
     json_file.write(doc.toJson());
 }
 
@@ -237,24 +242,27 @@ void JSON::write_all_chain(QVector<Block> chain)
 //    chain.getLastBlock().getIndex();
      jsonObj1.insert("Blockchain",jsonArray2);
     //qDebug() << jsonObj1;
-    qDebug() << "\nBlock Data:";
-    qDebug() << "Amount:" << chain[0].getBlockData().getAmount();
-    qDebug() << "Reciever:" << chain[0].getBlockData().getReciever();
-    qDebug() << "Sender:" << chain[0].getBlockData().getSender();
-    qDebug() << "TimeStamp:" << chain[0].getBlockData().getTimeStamp();
+//    qDebug() << "\nBlock Data:";
+//    qDebug() << "Amount:" << chain[0].getBlockData().getAmount();
+//    qDebug() << "Reciever:" << chain[0].getBlockData().getReciever();
+//    qDebug() << "Sender:" << chain[0].getBlockData().getSender();
+//    qDebug() << "TimeStamp:" << chain[0].getBlockData().getTimeStamp();
 
-    qDebug() << "\nBlock Data:";
-    qDebug() << "Amount:" << chain[1].getBlockData().getAmount();
-    qDebug() << "Reciever:" << chain[1].getBlockData().getReciever();
-    qDebug() << "Sender:" << chain[1].getBlockData().getSender();
-    qDebug() << "TimeStamp:" << chain[1].getBlockData().getTimeStamp();
+//    qDebug() << "\nBlock Data:";
+//    qDebug() << "Amount:" << chain[1].getBlockData().getAmount();
+//    qDebug() << "Reciever:" << chain[1].getBlockData().getReciever();
+//    qDebug() << "Sender:" << chain[1].getBlockData().getSender();
+//    qDebug() << "TimeStamp:" << chain[1].getBlockData().getTimeStamp();
 
      jsonArray.append(jsonObj1);
      //qDebug() << "\ndoc_before_set :" << doc;
      GBjsonObj["Blockchain"] = jsonArray;
      document.setObject(GBjsonObj);
      //qDebug() << "\ndoc_after_set :" << doc;
-     json_file.open(QFile::WriteOnly);
+     if(!json_file.open(QFile::WriteOnly))
+     {
+         throw ProgramException(FILE_WRITE_ERROR);
+     }
      json_file.write(document.toJson());
 }
 
@@ -300,11 +308,11 @@ void JSON::write_all_chain(Block chain){
 //    chain.getLastBlock().getIndex();
      jsonObj1.insert("Block Data",jsonObj3);
     //qDebug() << jsonObj1;
-    qDebug() << "\nBlock Data:";
-    qDebug() << "Amount:" << chain.getBlockData().getAmount();
-    qDebug() << "Reciever:" << chain.getBlockData().getReciever();
-    qDebug() << "Sender:" << chain.getBlockData().getSender();
-    qDebug() << "TimeStamp:" << chain.getBlockData().getTimeStamp();
+    //qDebug() << "\nBlock Data:";
+    //qDebug() << "Amount:" << chain.getBlockData().getAmount();
+    //qDebug() << "Reciever:" << chain.getBlockData().getReciever();
+    //qDebug() << "Sender:" << chain.getBlockData().getSender();
+    //qDebug() << "TimeStamp:" << chain.getBlockData().getTimeStamp();
 
 
      jsonArray.append(jsonObj1);
@@ -312,7 +320,10 @@ void JSON::write_all_chain(Block chain){
      GBjsonObj["Blockchain"] = jsonArray;
      document.setObject(GBjsonObj);
      //qDebug() << "\ndoc_after_set :" << doc;
-     json_file.open(QFile::WriteOnly);
+     if(!json_file.open(QFile::WriteOnly))
+     {
+         throw ProgramException(FILE_WRITE_ERROR);
+     }
      json_file.write(document.toJson());
 }
 
@@ -519,44 +530,44 @@ void JSON:: new_print(){
         QString Hash = obj.value("Hash").toString();
         int Id = obj.value("Id").toInt();
         QString prev_hash =obj.value("Previous Hash").toString();
-        qDebug() <<"Hash:" << Hash  ;
-        qDebug() <<"Previous Hash:" << prev_hash  ;
-        qDebug() <<"Id:" << Id  ;
-         qDebug() <<"Blockchain array size:" << tlmtArray.size()  ;
-         qDebug() <<"Balances array size:" << gps_array2.size()  ;
-         qDebug() <<"Block Data array size:" << gps_array.size()  ;
+//        qDebug() <<"Hash:" << Hash  ;
+//        qDebug() <<"Previous Hash:" << prev_hash  ;
+//        qDebug() <<"Id:" << Id  ;
+//         qDebug() <<"Blockchain array size:" << tlmtArray.size()  ;
+//         qDebug() <<"Balances array size:" << gps_array2.size()  ;
+//         qDebug() <<"Block Data array size:" << gps_array.size()  ;
 
-        std::cout << "----\n";
+//        std::cout << "----\n";
         for(int j = 0; j < gps_array.size(); ++j)
         {
 
             QJsonObject gps_obj = gps_array[j].toObject();
             QJsonValue value2 = gps_array.at(j);
             //QString address_recipient = value2["address_recipient"].toString();
-            qDebug() <<"Amount:" << value2["Amount"].toDouble();
-            qDebug() <<"Coins Type:"  << value2["Coins Type"].toInt();
-            qDebug() <<"Fee:"  << value2["Fee"].toDouble();
-            qDebug() <<"Priority:"  << value2["Priority"].toInt();
-            qDebug() <<"Reciever:"  << value2["Reciever"].toString();
-            qDebug() <<"Sender:"  << value2["Sender"].toString();
-            qDebug() <<"TimeStamp:"  << value2["TimeStamp"].toString();
-            std::cout << "\n";
+//            qDebug() <<"Amount:" << value2["Amount"].toDouble();
+//            qDebug() <<"Coins Type:"  << value2["Coins Type"].toInt();
+//            qDebug() <<"Fee:"  << value2["Fee"].toDouble();
+//            qDebug() <<"Priority:"  << value2["Priority"].toInt();
+//            qDebug() <<"Reciever:"  << value2["Reciever"].toString();
+//            qDebug() <<"Sender:"  << value2["Sender"].toString();
+//            qDebug() <<"TimeStamp:"  << value2["TimeStamp"].toString();
+//            std::cout << "\n";
         }
-        std::cout << "--\n";
+//        std::cout << "--\n";
         for(int j = 0; j < gps_array2.size(); ++j)
         {
 
             QJsonObject gps_obj = gps_array2[j].toObject();
             QJsonValue value2 = gps_array2.at(j);
             //QString address_recipient = value2["address_recipient"].toString();
-            qDebug() <<"Address:" << value2["Address"].toString();
-            qDebug() <<"Balance BWC:"  << value2["Balance BWC"].toDouble();
-            qDebug() <<"Balance BWC-N:"  << value2["Balance BWC-N"].toDouble();
-            qDebug() <<"Balance BWC-Q:"  << value2["Balance BWC-Q"].toDouble();
+//            qDebug() <<"Address:" << value2["Address"].toString();
+//            qDebug() <<"Balance BWC:"  << value2["Balance BWC"].toDouble();
+//            qDebug() <<"Balance BWC-N:"  << value2["Balance BWC-N"].toDouble();
+//            qDebug() <<"Balance BWC-Q:"  << value2["Balance BWC-Q"].toDouble();
 
-            std::cout << "\n";
+//            std::cout << "\n";
         }
-        std::cout << "-------------------------------------------------------------\n\n";
+//        std::cout << "-------------------------------------------------------------\n\n";
     }
 }
 
@@ -605,7 +616,10 @@ void JSON:: new_append_balances(int num_user){
     json.insert("Blockchain", jsonArray);
     GBjsonObj = json;
     doc.setObject(GBjsonObj);
-    json_file.open(QFile::WriteOnly);
+    if(!json_file.open(QFile::WriteOnly))
+    {
+        throw ProgramException(FILE_WRITE_ERROR);
+    }
     json_file.write(doc.toJson());
 }
 
@@ -657,7 +671,10 @@ void JSON:: new_append_hash2_id(){
     GBjsonObj["Blockchain"] = jsonArray;
     doc.setObject(GBjsonObj);
 
-    json_file.open(QFile::WriteOnly);
+    if(!json_file.open(QFile::WriteOnly))
+    {
+        throw ProgramException(FILE_WRITE_ERROR);
+    }
     json_file.write(doc.toJson());
 }
 
@@ -678,7 +695,10 @@ void JSON::  new_append_hash2_id(QString hash, int id, QString prev_hash){
     GBjsonObj["Blockchain"] = jsonArray;
     doc.setObject(GBjsonObj);
 
-    json_file.open(QFile::WriteOnly);
+    if(!json_file.open(QFile::WriteOnly))
+    {
+        throw ProgramException(FILE_WRITE_ERROR);
+    }
     json_file.write(doc.toJson());
 }
 
@@ -712,7 +732,10 @@ void JSON:: new_write_block_data(int num_user, QString sender, QString reciever,
     json.insert("Blockchain", jsonArray);
     GBjsonObj = json;
     doc.setObject(GBjsonObj);
-    json_file.open(QFile::WriteOnly);
+    if(!json_file.open(QFile::WriteOnly))
+    {
+        throw ProgramException(FILE_WRITE_ERROR);
+    }
     json_file.write(doc.toJson());
 }
 
@@ -740,7 +763,10 @@ void JSON:: new_append_balances(int num_user, QString address, double balance_bw
     json.insert("Blockchain", jsonArray);
     GBjsonObj = json;
     doc.setObject(GBjsonObj);
-    json_file.open(QFile::WriteOnly);
+    if(!json_file.open(QFile::WriteOnly))
+    {
+        throw ProgramException(FILE_WRITE_ERROR);
+    }
     json_file.write(doc.toJson());
 
 }
@@ -766,7 +792,10 @@ void JSON:: registerNewUser(QString address, QString walletKey){
     GBjsonObj["users"] = jsonArray;
     doc.setObject(GBjsonObj);
 
-    json_file.open(QFile::WriteOnly);
+    if(!json_file.open(QFile::WriteOnly))
+    {
+        throw ProgramException(FILE_WRITE_ERROR);
+    }
     json_file.write(doc.toJson());
 
 }

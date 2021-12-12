@@ -7,12 +7,6 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    try {
-        fileExists("requestsList.csv");
-        setWindowFlags(Qt::Dialog | Qt::MSWindowsFixedSizeDialogHint);
-    }  catch (ProgramException &error) {
-        error.getError();
-    }
     ui->priorityComboBox->setEnabled(false);
 
     val_1.setAuthority(100);
@@ -131,7 +125,6 @@ void MainWindow::authorizeUser()
                 main_menu->removeAction(all_blocks);
                 toolbar->removeAction(all_blocks);
             }
-
             ui->bwcBalance->setText(QString::number(current_user.getBalance(BWC)));
             ui->bwcNBalance->setText(QString::number(current_user.getBalance(BWC_N)));
             ui->bwcQBalance->setText(QString::number(current_user.getBalance(BWC_Q)));
