@@ -60,4 +60,3 @@ void change_passphrase_Form::recieveOldWalletPass(QString current_wallet_pass)
 {
     this->current_wallet_pass = current_wallet_pass;
 }
-
