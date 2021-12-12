@@ -62,6 +62,37 @@ MainWindow::MainWindow(QWidget *parent)
     ui_Settings.setWindowLanguage();
 }
 
+MainWindow::~MainWindow()
+{
+    delete ui;
+
+    delete request_view_model;
+
+    delete home;
+    delete send;
+    delete recieve;
+    delete transactions;
+
+    delete all_blocks;
+
+    delete help;
+    delete quit;
+
+    delete change_passphrase;
+    delete options;
+
+    delete about_program;
+    delete view_window;
+
+    delete main_menu;
+    delete settings_menu;
+    delete help_menu;
+    delete tray_menu;
+
+    delete toolbar;
+    delete tray_icon;
+}
+
 void MainWindow::display()
 {
     ui_Auth.show();
@@ -912,38 +943,6 @@ void MainWindow::on_sendTransactionLabel_textChanged(const QString &arg1)
 {
     this->transaction_label = arg1;
 }
-
-MainWindow::~MainWindow()
-{
-    delete ui;
-
-    delete request_view_model;
-
-    delete home;
-    delete send;
-    delete recieve;
-    delete transactions;
-
-    delete all_blocks;
-
-    delete help;
-    delete quit;
-
-    delete change_passphrase;
-    delete options;
-
-    delete about_program;
-    delete view_window;
-
-    delete main_menu;
-    delete settings_menu;
-    delete help_menu;
-    delete tray_menu;
-
-    delete toolbar;
-    delete tray_icon;
-}
-
 
 void MainWindow::on_clearSendButton_clicked()
 {

@@ -35,6 +35,9 @@ set(PROJECT_SOURCES
         client/gui/transactionscardview.h
         client/gui/transactionscardview.cpp
         client/gui/transactionscardview.ui
+        client/gui/send_by_request_form.h
+        client/gui/send_by_request_form.cpp
+        client/gui/send_by_request_form.ui
         # Scripts files
         client/scripts/json_func.h
         client/scripts/json_func.cpp

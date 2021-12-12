@@ -9,6 +9,15 @@ User::User(QString address, QString password, bool admin)
 {
     this->address = address;
     this->password = password;
+    this->admin = admin;
+}
+
+User::User(QString address, QString password, languages user_language, bool admin)
+{
+    this->address = address;
+    this->password = password;
+    this->user_language = user_language;
+    this->admin = admin;
 }
 
 QString User::getAddress()
@@ -19,6 +28,11 @@ QString User::getAddress()
 QString User::getPassword()
 {
     return this->password;
+}
+
+languages User::getUserLanguage()
+{
+    return this->user_language;
 }
 
 bool User::isAdmin()
@@ -36,7 +50,7 @@ Users::Users()
 
 }
 
-User Users::getUser(QString password)
+User Users::getUser(QString address)
 {
 
 }
