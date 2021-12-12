@@ -99,11 +99,6 @@ void settings_Form::setWindowLanguage()
 {
     CSV file_tr("translation.csv");
 
-    //QVector<QString> str_en = file_tr.get_tr(CSV::English);
-    //QVector<QString> str_ua = file_tr.get_tr(CSV::Ukrainian);
-    //QVector<QString> str_ru = file_tr.get_tr(CSV::Russian);
-
-
      QVector<QString> str = file_tr.get_tr(languageIndex);
 
      this->setWindowTitle(str.at(0));
@@ -118,65 +113,6 @@ void settings_Form::setWindowLanguage()
      ui->coinsTypeLabel->setText(str.at(7));
 
      emit languageChanged(str);
-
-//    switch (languageIndex) {
-//    case ENGLISH:
-
-//        //this->setWindowTitle("Settings");
-//        //this->setWindowTitle(file_tr.get_tr(0, 0));
-//        this->setWindowTitle(str_en.at(0));
-
-//        //ui->tabWidget->setTabText(0,"&Main");
-//        ui->tabWidget->setTabText(0,str_en.at(1));
-//        //ui->tabWidget->setTabText(1,"&Wallet");
-//        ui->tabWidget->setTabText(1,str_en.at(2));
-//        //ui->tabWidget->setTabText(2,"&Window");
-//         ui->tabWidget->setTabText(2,str_en.at(3));
-//        //ui->tabWidget->setTabText(3,"&Display");
-//        ui->tabWidget->setTabText(3,str_en.at(4));
-
-//        ui->trayCheckBox->setText("&При натисканні кнопки \"Закрити\" згортати вікно в трей");
-//        ui->languageLabel->setText("Мова інтерфейсу");
-
-//        break;
-//    case UKRANIAN:
-
-//        //this->setWindowTitle("Налаштування");
-//        //this->setWindowTitle(file_tr.get_tr(0, 1));
-//        this->setWindowTitle(str_ua.at(0));
-
-//        //ui->tabWidget->setTabText(0,"&Головне");
-//        ui->tabWidget->setTabText(0,str_ua.at(1));
-//        //ui->tabWidget->setTabText(1,"&Гаманець");
-//        ui->tabWidget->setTabText(1,str_ua.at(2));
-//        //ui->tabWidget->setTabText(2,"&Вікно");
-//        ui->tabWidget->setTabText(2,str_ua.at(3));
-//        //ui->tabWidget->setTabText(3,"&Відображення");
-//        ui->tabWidget->setTabText(3,str_ua.at(4));
-
-//        ui->trayCheckBox->setText("&При натисканні кнопки \"Закрити\" згортати вікно в трей");
-//        ui->languageLabel->setText("Мова інтерфейсу");
-
-//        break;
-//    case RUSSIAN:
-//        //this->setWindowTitle("Настройки");
-//        //this->setWindowTitle(file_tr.get_tr(0, 2));
-//        this->setWindowTitle(str_ru.at(0));
-
-//        //ui->tabWidget->setTabText(0,"&Главное");
-//        ui->tabWidget->setTabText(0,str_ru.at(1));
-//        //ui->tabWidget->setTabText(1,"&Кошелёк");
-//        ui->tabWidget->setTabText(1,str_ru.at(2));
-//        //ui->tabWidget->setTabText(2,"&Окно");
-//        ui->tabWidget->setTabText(2,str_ru.at(3));
-//        //ui->tabWidget->setTabText(3,"&Отображение");
-//        ui->tabWidget->setTabText(3,str_ru.at(4));
-
-//        ui->trayCheckBox->setText("&При нажатии кнопки \"Закрыть\" сворачивать окно в трей");
-//        ui->languageLabel->setText("Язык интерфейса");
-
-//        break;
-//    }
 }
 
 

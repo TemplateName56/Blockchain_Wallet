@@ -34,7 +34,7 @@
     </rect>
    </property>
    <property name="currentIndex">
-    <number>2</number>
+    <number>1</number>
    </property>
    <widget class="QWidget" name="mainSettings">
     <attribute name="title">
@@ -45,7 +45,7 @@
       <rect>
        <x>20</x>
        <y>20</y>
-       <width>60</width>
+       <width>281</width>
        <height>20</height>
       </rect>
      </property>
@@ -81,7 +81,7 @@
       <rect>
        <x>20</x>
        <y>20</y>
-       <width>160</width>
+       <width>231</width>
        <height>20</height>
       </rect>
      </property>
@@ -98,8 +98,8 @@
     <widget class="QComboBox" name="languagesBox">
      <property name="geometry">
       <rect>
-       <x>220</x>
-       <y>19</y>
+       <x>260</x>
+       <y>20</y>
        <width>200</width>
        <height>22</height>
       </rect>
@@ -125,7 +125,7 @@
       <rect>
        <x>20</x>
        <y>51</y>
-       <width>160</width>
+       <width>231</width>
        <height>20</height>
       </rect>
      </property>
@@ -142,7 +142,7 @@
     <widget class="QComboBox" name="defaultCoinsTypeCB">
      <property name="geometry">
       <rect>
-       <x>220</x>
+       <x>260</x>
        <y>50</y>
        <width>200</width>
        <height>22</height>

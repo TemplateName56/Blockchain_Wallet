@@ -45,7 +45,7 @@
      </size>
     </property>
     <property name="currentIndex">
-     <number>1</number>
+     <number>0</number>
     </property>
     <widget class="QWidget" name="mainWidget">
      <property name="minimumSize">
@@ -59,12 +59,13 @@
        <rect>
         <x>40</x>
         <y>40</y>
-        <width>60</width>
+        <width>91</width>
         <height>20</height>
        </rect>
       </property>
       <property name="font">
        <font>
+        <pointsize>9</pointsize>
         <weight>75</weight>
         <bold>true</bold>
        </font>
@@ -174,6 +175,7 @@
         <widget class="QLabel" name="transactionsOverviewLabel">
          <property name="font">
           <font>
+           <pointsize>9</pointsize>
            <weight>75</weight>
            <bold>true</bold>
           </font>
@@ -205,8 +207,8 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>98</width>
-            <height>28</height>
+            <width>417</width>
+            <height>312</height>
            </rect>
           </property>
           <layout class="QVBoxLayout" name="cardsLayout"/>
@@ -586,7 +588,7 @@
            <rect>
             <x>10</x>
             <y>40</y>
-            <width>476</width>
+            <width>491</width>
             <height>51</height>
            </rect>
           </property>
@@ -601,7 +603,7 @@
              </property>
              <property name="minimumSize">
               <size>
-               <width>170</width>
+               <width>175</width>
                <height>20</height>
               </size>
              </property>
@@ -721,6 +723,11 @@
                <height>20</height>
               </size>
              </property>
+             <property name="font">
+              <font>
+               <pointsize>9</pointsize>
+              </font>
+             </property>
              <property name="text">
               <string>Balance:</string>
              </property>
@@ -745,6 +752,11 @@
                <width>120</width>
                <height>20</height>
               </size>
+             </property>
+             <property name="font">
+              <font>
+               <pointsize>9</pointsize>
+              </font>
              </property>
              <property name="text">
               <string>some BWC</string>
@@ -1089,6 +1101,7 @@
            </property>
            <property name="font">
             <font>
+             <pointsize>9</pointsize>
              <weight>75</weight>
              <bold>true</bold>
             </font>
@@ -1143,6 +1156,7 @@
          </property>
          <property name="font">
           <font>
+           <pointsize>10</pointsize>
            <weight>75</weight>
            <bold>true</bold>
           </font>
