@@ -45,7 +45,7 @@
      </size>
     </property>
     <property name="currentIndex">
-     <number>0</number>
+     <number>2</number>
     </property>
     <widget class="QWidget" name="mainWidget">
      <property name="minimumSize">
@@ -440,7 +440,7 @@
               <widget class="QDoubleSpinBox" name="amountSpinBox">
                <property name="minimumSize">
                 <size>
-                 <width>200</width>
+                 <width>180</width>
                  <height>22</height>
                 </size>
                </property>
@@ -588,7 +588,7 @@
            <rect>
             <x>10</x>
             <y>40</y>
-            <width>491</width>
+            <width>511</width>
             <height>51</height>
            </rect>
           </property>
@@ -670,7 +670,7 @@
             <widget class="QComboBox" name="priorityComboBox">
              <property name="minimumSize">
               <size>
-               <width>120</width>
+               <width>150</width>
                <height>22</height>
               </size>
              </property>
@@ -904,7 +904,7 @@
             </property>
             <property name="minimumSize">
              <size>
-              <width>300</width>
+              <width>600</width>
               <height>20</height>
              </size>
             </property>

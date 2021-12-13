@@ -247,6 +247,7 @@ void MainWindow::createActions()
     options = new QAction("&Options...", this);
 
     about_program = new QAction("&About Wallet", this);
+    about_of_authors = new QAction("&About Authors", this);
 
     connect(quit, &QAction::triggered, qApp, &QApplication::quit);
     connect(home, &QAction::triggered, this, &MainWindow::homeTR);
@@ -258,6 +259,7 @@ void MainWindow::createActions()
 
     connect(options, &QAction::triggered, &ui_Settings, &settings_Form::settingsShow);
     connect(about_program, &QAction::triggered, &ui_AboutProgram, &about_program_Form::aboutShow);
+    connect(about_of_authors, &QAction::triggered, &ui_AboutAuthors, &about_of_authors::aboutAuth);
     connect(change_passphrase, &QAction::triggered, &ui_ChangePass, &change_passphrase_Form::changePassphraseShow);
     connect(change_passphrase, &QAction::triggered, this, &MainWindow::sendWalletPassToChangeForm);
 }
@@ -283,8 +285,8 @@ void MainWindow::createMenus()
     help_menu = menuBar()->addMenu("&Help");
 
     help_menu->addAction(about_program);
-
-    //help_menu->addAction(about_autors)
+    help_menu->addSeparator();
+    help_menu->addAction(about_of_authors);
 
 //    QMenu* menu = new QMenu("about_program"); //помощь
 //        menu->addAction(about_program);
@@ -625,6 +627,7 @@ void MainWindow::setWindowLanguage(QVector<QString> language_vector)
            options->setText(language_vector.at(0));
 
            about_program->setText(language_vector.at(49));
+           about_of_authors->setText(language_vector.at(65));
            view_window->setText(language_vector.at(50));
 
            ui->sendCoinsButton->setText(language_vector.at(43));
@@ -679,6 +682,11 @@ void MainWindow::setWindowLanguage(QVector<QString> language_vector)
 
            ui->requestLabelLine->setPlaceholderText(language_vector.at(63));
            ui->messageLine->setPlaceholderText(language_vector.at(64));
+
+
+
+           //view_window = new QAction("&Show Window", this);
+
 
            statusBar()->showMessage(language_vector.at(58));
 

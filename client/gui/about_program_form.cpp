@@ -1,5 +1,6 @@
 #include "about_program_form.h"
 #include "ui_about_program_form.h"
+#include "client/scripts/csv_func.h"
 
 about_program_Form::about_program_Form(QWidget *parent) :
     QWidget(parent),

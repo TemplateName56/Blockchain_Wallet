@@ -24,6 +24,7 @@
 #include "auth_form.h"
 #include "settings_form.h"
 #include "about_program_form.h"
+#include "about_of_authors.h"
 #include "change_passphrase_form.h"
 #include "transactionscardview.h"
 #include "client/tests/program_exception.h"
@@ -79,6 +80,7 @@ private:
     auth_Form ui_Auth;
     about_program_Form ui_AboutProgram;
     change_passphrase_Form ui_ChangePass;
+    about_of_authors ui_AboutAuthors;
 
     QString wallet_key;
     QString wallet_address;
@@ -109,6 +111,7 @@ private:
     QAction *options;
 
     QAction *about_program;
+    QAction *about_of_authors;
     QAction *view_window;
 
     QMenu *main_menu;

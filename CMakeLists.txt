@@ -29,6 +29,9 @@ set(PROJECT_SOURCES
         client/gui/about_program_form.h
         client/gui/about_program_form.cpp
         client/gui/about_program_form.ui
+        about_of_authors.h
+        about_of_authors.cpp
+        about_of_authors.ui
         client/gui/change_passphrase_form.h
         client/gui/change_passphrase_form.cpp
         client/gui/change_passphrase_form.ui
