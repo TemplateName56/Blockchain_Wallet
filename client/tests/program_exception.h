@@ -35,6 +35,7 @@ public:
     ProgramException(ErrorsNames error_name, QString exception_source);
 
     void getError();
+    void setWindowLanguage();
 
     ~ProgramException();
 };
