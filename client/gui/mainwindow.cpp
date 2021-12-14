@@ -27,8 +27,10 @@ MainWindow::MainWindow(QWidget *parent)
     connect(&ui_Auth, SIGNAL(register_button_clicked()), this, SLOT(registerUser()));
     connect(&ui_Auth, SIGNAL(destroyed()), this, SLOT(show()));
 
-    connect(&ui_Settings, SIGNAL(languageChanged(QVector<QString>)), this, SLOT(setWindowLanguage(QVector<QString>)));
+    connect(&ui_Settings, SIGNAL(languageChanged(QVector<QString>, int)), this, SLOT(setWindowLanguage(QVector<QString>, int)));
     connect(this, SIGNAL(languageChanged(QVector<QString>)), &ui_Auth, SLOT(setWindowLanguage(QVector<QString>)));
+    connect(this, SIGNAL(languageChanged(int)), &ui_AboutProgram, SLOT(setWindowLanguage(int)));
+    connect(this, SIGNAL(languageChanged(int)), &ui_AboutAuthors, SLOT(setWindowLanguage(int)));
 
     connect(&ui_Settings, SIGNAL(trayCheckBoxToggled()), this, SLOT(trayEnabled()));
 
@@ -576,7 +578,7 @@ bool MainWindow::isAmountCorrect(double amount, CoinsType coins_type)
     return false;
 }
 
-void MainWindow::setWindowLanguage(QVector<QString> language_vector)
+void MainWindow::setWindowLanguage(QVector<QString> language_vector, int language_index)
 {
     this->setWindowTitle(language_vector.at(57));
 
@@ -655,6 +657,7 @@ void MainWindow::setWindowLanguage(QVector<QString> language_vector)
            statusBar()->showMessage(language_vector.at(58));
 
            emit languageChanged(language_vector);
+           emit languageChanged(2);
 }
 
 void MainWindow::on_sendCoinsButton_clicked()
@@ -746,12 +749,6 @@ void MainWindow::on_amountSpinBox_valueChanged(double arg1)
     {
         emit on_priorityComboBox_currentIndexChanged(0);
     }
-}
-
-
-void MainWindow::on_feeCheckBox_stateChanged(int arg1)
-{
-
 }
 
 

@@ -90,10 +90,16 @@ void ProgramException::getError()
         error_messageBox.exec();
         break;
     case NOT_VALID_PASSWORD:
-        error_messageBox.setText("Not correct password");
+        error_messageBox.setText("Not correct password, they must consist over 8 symbols");
         error_messageBox.setIcon(QMessageBox::Critical);
 
         error_messageBox.exec();
+        break;
+    case OUT_OF_RANGE:
+        qDebug() << "Out of range in: " << exception_source;
+        break;
+    case USER_NOT_EXIST:
+        qDebug() << "User not exist";
         break;
     default:
         break;

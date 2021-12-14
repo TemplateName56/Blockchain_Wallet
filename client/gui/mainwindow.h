@@ -63,6 +63,7 @@ signals:
     void sendWalletPass(QString);
 
     void languageChanged(QVector<QString>);
+    void languageChanged(int);
 
     void requestButton_clicked();
 
@@ -146,7 +147,7 @@ private slots:
     void transactionsTR();
     void blocksTR();
 
-    void setWindowLanguage(QVector<QString> language_vector);
+    void setWindowLanguage(QVector<QString> language_vector, int language_index);
     void iconActivated(QSystemTrayIcon::ActivationReason reason);
     void trayEnabled();
 
@@ -169,8 +170,6 @@ private slots:
 
     void on_amountSpinBox_valueChanged(double arg1);
     void on_amountToRequestSpinBox_valueChanged(double arg1);
-
-    void on_feeCheckBox_stateChanged(int arg1);
 
     void on_priorityComboBox_currentIndexChanged(int index);
     void on_coinsBox_currentIndexChanged(int index);

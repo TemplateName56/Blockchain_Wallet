@@ -19,7 +19,9 @@ enum ErrorsNames
     BLOCKCHAIN_NOT_VALID,
     SAVE_PASSPHRASE,
     SAME_PASSWORD,
-    NOT_VALID_PASSWORD
+    NOT_VALID_PASSWORD,
+    OUT_OF_RANGE,
+    USER_NOT_EXIST
 };
 
 class ProgramException : public QException

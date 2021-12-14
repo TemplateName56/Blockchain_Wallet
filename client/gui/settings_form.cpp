@@ -112,7 +112,7 @@ void settings_Form::setWindowLanguage()
      ui->languageLabel->setText(str.at(6));
      ui->coinsTypeLabel->setText(str.at(7));
 
-     emit languageChanged(str);
+     emit languageChanged(str, languageIndex);
 }
 
 
