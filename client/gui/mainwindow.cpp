@@ -465,7 +465,7 @@ void MainWindow::requestsHistory()
     ui->requestsView->setColumnWidth(4,150);
 
 
-    CSV file("requestsList2.csv");
+    CSV file("requestsList.csv");
     //CSV file("requestsList.csv");
     //CSV file("request2.csv");
     QVector<QString> str_request = file.find_user("BW000000000000000"); //вместо BW000000000000001 нужен адрес текущего пользователя

@@ -63,7 +63,7 @@ void settings_Form::readSettings()
 
     JSON file("users.json");
     //file.get_language_user("BW000000000000000");
-    settings_Form::languageIndex = file.get_language_user("BW000000000000000");
+    settings_Form::languageIndex = file.get_language_user("BW000000000000000"); //вместо BW000000000000001 нужен адрес текущего пользователя
     //qDebug() << "languageIndex: " << settings_Form::languageIndex ;
     //settings_Form::languageIndex = current_json.value("Language").toInt();
 }
@@ -91,7 +91,7 @@ void settings_Form::closeEvent(QCloseEvent *event)
 {
     JSON file("users.json");
     //qDebug() << settings_Form::languageIndex;
-    file.set_language_user("BW000000000000000",settings_Form::languageIndex);
+    file.set_language_user("BW000000000000000",settings_Form::languageIndex);  //вместо BW000000000000001 нужен адрес текущего пользователя
     //writeSettings();
 }
 

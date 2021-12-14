@@ -35,7 +35,7 @@ void change_passphrase_Form::on_changePassBTN_clicked()
 {
     JSON file_users("users.json");
     //file_users.changed_passphrase_oldkey(old_password, new_password);
-    //file_users.changed_passphrase_address();
+    //file_users.changed_passphrase_address();   //тут нужен адрес текущего пользователя
     try {
         if(old_password == new_password)
         {
