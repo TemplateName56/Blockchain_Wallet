@@ -26,6 +26,7 @@ signals:
 
 public slots:
     void changePassphraseShow();
+    void on_languagesBox_currentIndexChanged(int index);
 
 private slots:
     void on_currentPassLE_textChanged(const QString &arg1);

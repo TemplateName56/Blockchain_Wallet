@@ -66,3 +66,19 @@ Enter your message, which will be displayed upon receipt;Введіть Ваше
 About authors;Про авторів;О авторах;
 BlockChain Wallet was created by a group of four students who are currently studying at the National University "Zaporizhzhya Polytechnic". The ideological inspirer was Nikita Khalizev, the work on the software functionality was done by Daniil Potapov, the interaction between the files and the program was organized by Evgeny Latyshev, and the visual component was responsible for Azmanov Ilya. The goal of BlockChain Wallet is to popularize the use of electronic wallets among NUZP students.;BlockChain Wallet був створений групою з чотирьох студентів, які на даний момент навчаються в Національному університеті "Запорізька політехніка". Ідейним натхненником виступав Микита Хализев, роботою над функціоналом ПЗ займався Данило Потапов, взаємодії між файлами і програмою організовував Євген Латишев, за візуальну складову відповідав Азманов Ілля. Мета BlockChain Wallet полягає в тому, популяризувати використання електронних гаманців серед студентів НУЗП.;BlockChain Wallet был создан группой из четверых студентов, которые на данный момент учатся в Национальном университете "Запорожская Политехника". Идейным вдохновителем выступал Никита Хализев, работой над функционалом ПО занимался Даниил Потапов, взаимодействия между файлами и программой организовывал Евгений Латышев, за визуальную составляющую отвечал Азманов Илья. Цель BlockChain Wallet состоит в том, популяризировать использование электронных кошельков среди студентов НУЗП.;
 &Show Window; Показати вікно;&Показать окно;
+&Error;&Помилка;&Ошибка;
+This key not exists;Цей ключ не існує;Данный ключ не существует;
+File: ;Файл: ;Файл: ;
+Not Exist;Не iснує;Не существует;
+Read Error;Помилка при зчитуванні;Ошибка при чтении;
+Write Error;Помилка запису;Ошибка при записи;
+Address can consist only 17 symbols!;Адреса може складатися тільки з 17 символів!;Адрес может состоять только из 17 символов!;
+This address not available!;Ця адреса недоступна!;Данный адрес недоступен!;
+You don't have enough money!;У Вас недостатньо грошей!;У Вас недостаточно денег;
+Important information!;Важлива інформація!;Важная информация!;
+Not correct password;Невірний пароль;Неправильный пароль;
+New password similar to old!;Новий пароль схожий на старий!;Новый пароль похож на старый!;
+Your password: ;Ваш пароль: ;Ваш пароль: ;
+If u lose them, you should cant restore them.;Якщо Ви його втратите, то не зможете більше відновити.;Если вы его потеряете, то не сможете больше восстановить.;
+
+
