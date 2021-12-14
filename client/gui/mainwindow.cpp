@@ -435,8 +435,8 @@ void MainWindow::on_payToAddress_textChanged(const QString &arg1)
 void MainWindow::requestsHistory()
 {
     request_view_model = new QStandardItemModel(this);
-    request_view_model->setColumnCount(4);
-    request_view_model->setHorizontalHeaderLabels(QStringList() << "Date" << "Label" << "Message" << "Amount");
+    request_view_model->setColumnCount(5);
+    request_view_model->setHorizontalHeaderLabels(QStringList() << "Link" << "Message" << "Amount" << "Type amount"<<"Receiver");
     ui->requestsView->setModel(request_view_model);
 
     ui->requestsView->setEditTriggers( QAbstractItemView::NoEditTriggers);
@@ -458,30 +458,39 @@ void MainWindow::requestsHistory()
 
     ui->requestsView->verticalHeader()->setVisible(false);
 
-    ui->requestsView->setColumnWidth(0,100);
-    ui->requestsView->setColumnWidth(1,200);
-    ui->requestsView->setColumnWidth(2,350);
-    ui->requestsView->setColumnWidth(3,108);
+    ui->requestsView->setColumnWidth(0,300);
+    ui->requestsView->setColumnWidth(1,100);
+    ui->requestsView->setColumnWidth(2,80);
+    ui->requestsView->setColumnWidth(3,100);
+    ui->requestsView->setColumnWidth(4,150);
 
-    CSV file("requestsList.csv");
 
-    for(int index = 1; index < file.get_amount_row(); index++)
+    CSV file("requestsList2.csv");
+    //CSV file("requestsList.csv");
+    //CSV file("request2.csv");
+    QVector<QString> str_request = file.find_user("BW000000000000000"); //вместо BW000000000000001 нужен адрес текущего пользователя
+    qDebug() << str_request;
+
+    for(int index = 0; index < str_request.size(); index++)
     {
         QList<QStandardItem *> newRequestsList;
-        for(int c = 1; c <= 4; c++)
+        for(int c = 1; c <= 6; c++)
         {
             switch(c){
             case 1:
-                newRequestsList.append(new QStandardItem(file.get_date_csv(index)));
+                newRequestsList.append(new QStandardItem(str_request.at(index).section(',', 0, 0)));
                 break;
             case 2:
-                newRequestsList.append(new QStandardItem(file.get_label_csv(index)));
+                newRequestsList.append(new QStandardItem(str_request.at(index).section(',', 1, 1)));
                 break;
             case 3:
-                newRequestsList.append(new QStandardItem(file.get_message_csv(index)));
+                newRequestsList.append(new QStandardItem(str_request.at(index).section(',', 2, 2)));
                 break;
             case 4:
-                newRequestsList.append(new QStandardItem(file.get_money_csv(index)));
+                newRequestsList.append(new QStandardItem(str_request.at(index).section(',', 3, 3)));
+                break;
+            case 5:
+                newRequestsList.append(new QStandardItem(str_request.at(index).section(',', 4, 4)));
                 break;
             default:
                 break;

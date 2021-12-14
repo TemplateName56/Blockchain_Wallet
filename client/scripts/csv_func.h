@@ -25,7 +25,7 @@ public:
     };
 
     CSV(QString fileName);
-    void append_csv_request(QString date, QString message, QString label, double amount);
+    void append_csv_request(QString link, QString message, QString amount,QString type_amount, QString reciever);
     QString get_message_csv(int row);
     QString get_label_csv(int row);
     QString get_date_csv(int row);
