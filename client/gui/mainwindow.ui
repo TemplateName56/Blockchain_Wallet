@@ -22,6 +22,12 @@
     <height>600</height>
    </size>
   </property>
+  <property name="maximumSize">
+   <size>
+    <width>800</width>
+    <height>600</height>
+   </size>
+  </property>
   <property name="font">
    <font/>
   </property>
@@ -66,7 +72,6 @@
       <property name="font">
        <font>
         <pointsize>9</pointsize>
-        <weight>75</weight>
         <bold>true</bold>
        </font>
       </property>
@@ -176,7 +181,6 @@
          <property name="font">
           <font>
            <pointsize>9</pointsize>
-           <weight>75</weight>
            <bold>true</bold>
           </font>
          </property>
@@ -208,7 +212,7 @@
             <x>0</x>
             <y>0</y>
             <width>417</width>
-            <height>312</height>
+            <height>315</height>
            </rect>
           </property>
           <layout class="QVBoxLayout" name="cardsLayout"/>
@@ -276,7 +280,6 @@
          </property>
          <property name="font">
           <font>
-           <weight>75</weight>
            <bold>true</bold>
           </font>
          </property>
@@ -311,7 +314,6 @@
          </property>
          <property name="font">
           <font>
-           <weight>75</weight>
            <bold>true</bold>
           </font>
          </property>
@@ -346,7 +348,6 @@
          </property>
          <property name="font">
           <font>
-           <weight>75</weight>
            <bold>true</bold>
           </font>
          </property>
@@ -440,7 +441,7 @@
               <widget class="QDoubleSpinBox" name="amountSpinBox">
                <property name="minimumSize">
                 <size>
-                 <width>200</width>
+                 <width>180</width>
                  <height>22</height>
                 </size>
                </property>
@@ -490,29 +491,17 @@
               </widget>
              </item>
              <item>
-              <widget class="QCheckBox" name="feeCheckBox">
-               <property name="sizePolicy">
-                <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
+              <spacer name="horizontalSpacer_4">
+               <property name="orientation">
+                <enum>Qt::Horizontal</enum>
                </property>
-               <property name="minimumSize">
+               <property name="sizeHint" stdset="0">
                 <size>
-                 <width>190</width>
+                 <width>40</width>
                  <height>20</height>
                 </size>
                </property>
-               <property name="maximumSize">
-                <size>
-                 <width>200</width>
-                 <height>16777215</height>
-                </size>
-               </property>
-               <property name="text">
-                <string>Subsctract fee from amount</string>
-               </property>
-              </widget>
+              </spacer>
              </item>
             </layout>
            </item>
@@ -572,7 +561,6 @@
           </property>
           <property name="font">
            <font>
-            <weight>75</weight>
             <bold>true</bold>
            </font>
           </property>
@@ -588,7 +576,7 @@
            <rect>
             <x>10</x>
             <y>40</y>
-            <width>491</width>
+            <width>511</width>
             <height>51</height>
            </rect>
           </property>
@@ -670,7 +658,7 @@
             <widget class="QComboBox" name="priorityComboBox">
              <property name="minimumSize">
               <size>
-               <width>120</width>
+               <width>150</width>
                <height>22</height>
               </size>
              </property>
@@ -890,7 +878,7 @@
              </size>
             </property>
             <property name="text">
-             <string>Label:</string>
+             <string>Ssilka</string>
             </property>
            </widget>
           </item>
@@ -904,9 +892,12 @@
             </property>
             <property name="minimumSize">
              <size>
-              <width>300</width>
+              <width>600</width>
               <height>20</height>
              </size>
+            </property>
+            <property name="readOnly">
+             <bool>true</bool>
             </property>
            </widget>
           </item>
@@ -1102,7 +1093,6 @@
            <property name="font">
             <font>
              <pointsize>9</pointsize>
-             <weight>75</weight>
              <bold>true</bold>
             </font>
            </property>
@@ -1157,7 +1147,6 @@
          <property name="font">
           <font>
            <pointsize>10</pointsize>
-           <weight>75</weight>
            <bold>true</bold>
           </font>
          </property>
@@ -1452,7 +1441,7 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>26</height>
+     <height>22</height>
     </rect>
    </property>
   </widget>

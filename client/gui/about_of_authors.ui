@@ -1,25 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>about_program_Form</class>
- <widget class="QWidget" name="about_program_Form">
+ <class>about_of_authors</class>
+ <widget class="QWidget" name="about_of_authors">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>588</width>
-    <height>429</height>
+    <width>771</width>
+    <height>300</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>About Program</string>
+   <string>Form</string>
   </property>
-  <widget class="QTextEdit" name="textEdit_abot_program">
+  <widget class="QTextEdit" name="textEdit_about_of_authors">
    <property name="geometry">
     <rect>
      <x>10</x>
      <y>10</y>
-     <width>571</width>
-     <height>411</height>
+     <width>751</width>
+     <height>281</height>
     </rect>
    </property>
    <property name="frameShape">

@@ -26,13 +26,17 @@ signals:
 
 public slots:
     void changePassphraseShow();
+    void on_languagesBox_currentIndexChanged(int index);
 
 private slots:
     void on_currentPassLE_textChanged(const QString &arg1);
     void on_newPassLE_textChanged(const QString &arg1);
+
     void on_changePassBTN_clicked();
     void on_clearPassEnterBTN_clicked();
+
     void recieveOldWalletPass(QString current_wallet_pass);
+    void setWindowLanguage(QVector<QString> language_vector);
 
 private:
     Ui::change_passphrase_Form *ui;

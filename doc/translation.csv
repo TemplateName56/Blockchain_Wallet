@@ -1,65 +1,82 @@
-Settings;Налаштування;Настройки;
-&Main;&Головне;&Главное;
-&Window;&Вікно;&Окно;
-&Display;&Відображення;&Отображение;
-Default;За замовчуванням;По умолчанию;
-Minimize application to tray;Згорнути додаток в трей;Свернуть приложение в трей;
-User interface language:;Мова інтерфейсу користувача:;Язык пользовательского интерфейса:;
-Default Coins Type;Тип монет за замовчуванням;Тип монет по умолчанию;
-Authorization;Авторизація;Авторизация;
-Welcome;Ласкаво просимо;Добро пожаловать;
-Enter your private key...;Введіть свій особистий ключ...;Введите свой личный ключ...;
-&Login;&Увійти;&Войти;
-&Registration;&Реєстрація;&Регистрация;
-&<html><head/><body><p><span style=" font-size:8pt;">Enter a </span><span style=" font-size:8pt; font-weight:600;">new password</span><span style=" font-size:8pt;"> for your wallet.</span></p><p><span style=" font-size:8pt;">Please use a password of </span><span style=" font-size:8pt; font-weight:600;">ten </span><span style=" font-size:8pt;">random characters!<br/></span></p></body></html>;;
-&<html><head/><body><p><span style=" font-size:8pt;">Введіть </span><span style=" font-size:8pt; font-weight:600;">новий пароль</span><span style=" font-size:8pt;"> для свого гаманця.</span></p><p><span style=" font-size:8pt;">Будь ласка, використовуйте пароль з </span><span style=" font-size:8pt; font-weight:600;">десяти </span><span style=" font-size:8pt;">випадкових символів!<br/></span></p></body></html>;;
-&<html><head/><body><p><span style=" font-size:8pt;">Введите </span><span style=" font-size:8pt; font-weight:600;">новый пароль</span><span style=" font-size:8pt;"> для вашего кошелька.</span></p><p><span style=" font-size:8pt;">Пожалуйста, используйте пароль из </span><span style=" font-size:8pt; font-weight:600;">десяти </span><span style=" font-size:8pt;">случайных символов!<br/></span></p></body></html>;;
-&Change;&Змінити;&Изменить;
-Clear;Очистити;Очистить;
-Balance;Баланс;Баланс;
-Address:;Адрес:;Адреса:;
-Password:;Пароль:;Пароль:;
-Last transactions;Останні транзакції;Последние транзакции;
-Pay To:;Переказати на:;Перевести на:;
-Link:;Посилання:;Ссылка:;
-Amount:;Сума:;Сумма:;
-Message:;Повідомлення:;Сообщение:;
-Request;Звернутися;Запросить;
-Clear;очистити;Очистить;
-History of payment requests;Історія платіжних запитів;История заявок на оплату;
-All transactions history;Історія всіх транзакцій;История всех транзакций;
-ID:;ID:;ID:;
-Hash:;Хеш:;Хэш:;
-Previous Hash:;Попередній хеш:;Предыдущий хэш:;
-Sender:;Відправник:;Отправитель:;
-Reciever:;Приймач:;Получатель:;
-TimeStamp:;Час:;Временная метка:;
-Amount:;Сума:;Сумма:;
-Coins Type:Тип монет:;Тип монет:;
-Commission::;Комісія:;Комиссия:;
-&Prev;&Попередній;&Предыдущий;
-&Next;&Наступний;&Следующий;
-&Help;&Допомога;&Помощь;
-&Review;&Огляд;&Обзор;
-&Send;&Відправити;&Отправить;
-&Get;&Одержати;&Получить;
-&Transactions;&Транзакції;&Транзакции;
-&Help;&Допомога;&Помощь;
-&Exit;&Вихід;&Выход;
-&Change password;&Змінити пароль;&Изменить пароль;
-&About the Program;&Про програму;&О Программе;
-&Show window;&Показати вікно;&Показать окно;
-Remove the commission from the amount;Прибрати комісію з суми;Убрать комиссию из суммы;
-Recommended value:;Рекомендоване значення:;Рекомендуемое значение:;
-Custom value:;Користувацьке значення:;Пользовательское значение:;
-High priority;Високий пріоритет;Высокий приоритет;
-Medium priority;Середній пріоритет;Средний приоритет;
-Low priority;Низький пріоритет;Низкий приоритет;
-My Wallet;Мій гаманець;Мой кошелёк
-Connected...;З'єднання;Соединение;
-Put your Reference;Розмістіть своє посилання;Разместите свою ссылку;
-Your Reference;Ваше посилання;Ваша ссылка;
-Enter wallet-address;Введіть адресу гаманця;Введите адрес кошелька;
-Enter a label for this address to add it to your address book;Введіть ім'я для цієї адреси, щоб додати її до своєї адресної книги;Введите имя ярлыка для этого адреса, чтобы добавить его в адресную книгу;
-63 stroka; 63 строка; 63 строка;
-64 stroka; 64 строка; 64 строка;
+Settings,Налаштування,Настройки,
+&Main,&Головне,&Главное,
+&Window,&Вікно,&Окно,
+&Display,&Відображення,&Отображение,
+Default,За замовчуванням,По умолчанию,
+Minimize application to tray,Згорнути додаток в трей,Свернуть приложение в трей,
+User interface language:,Мова інтерфейсу користувача:,Язык пользовательского интерфейса:,
+Default Coins Type,Тип монет за замовчуванням,Тип монет по умолчанию,
+Authorization,Авторизація,Авторизация,
+Welcome!,Ласкаво просимо!,Добро пожаловать!,
+Enter your private key...,Введіть Ваш особистий ключ...,Введите Ваш личный ключ...,
+&Login,&Увійти,&Войти,
+&Registration,&Реєстрація,&Регистрация,
+&<html><head/><body><p><span style=" font-size:8pt,">Enter a </span><span style=" font-size:8pt, font-weight:600,
+&<html><head/><body><p><span style=" font-size:8pt,">Введіть </span><span style=" font-size:8pt, font-weight:600,
+&<html><head/><body><p><span style=" font-size:8pt,">Введите </span><span style=" font-size:8pt, font-weight:600,
+&Change,&Змінити,&Изменить,
+Clear,Очистити,Очистить,
+Balance,Баланс,Баланс,
+Address:,Адрес:,Адреса:,
+Password:,Пароль:,Пароль:,
+Last transactions,Останні транзакції,Последние транзакции,
+Pay To:,Переказати на:,Перевести на:,
+Link:,Посилання:,Ссылка:,
+Amount:,Сума:,Сумма:,
+Message:,Повідомлення:,Сообщение:,
+Request,Звернутися,Запросить,
+Clear,очистити,Очистить,
+History of payment requests,Історія платіжних запитів,История заявок на оплату,
+All transactions history,Історія всіх транзакцій,История всех транзакций,
+ID:,ID:,ID:,
+Hash:,Хеш:,Хэш:,
+Previous Hash:,Попередній хеш:,Предыдущий хэш:,
+Sender:,Відправник:,Отправитель:,
+Reciever:,Приймач:,Получатель:,
+TimeStamp:,Час:,Временная метка:,
+Amount:,Сума:,Сумма:,
+Coins Type:Тип монет:,Тип монет:,
+Commission::,Комісія:,Комиссия:,
+&Prev,&Попередній,&Предыдущий,
+&Next,&Наступний,&Следующий,
+&Help,&Допомога,&Помощь,
+&Review,&Огляд,&Обзор,
+&Send,&Відправити,&Отправить,
+&Get,&Одержати,&Получить,
+&Transactions,&Транзакції,&Транзакции,
+&Help,&Допомога,&Помощь,
+&Exit,&Вихід,&Выход,
+&Change password,&Змінити пароль,&Изменить пароль,
+&About the Program,&Про програму,&О Программе,
+&Show window,&Показати вікно,&Показать окно,
+Remove the commission from the amount,Прибрати комісію з суми,Убрать комиссию из суммы,
+Recommended value:,Рекомендоване значення:,Рекомендуемое значение:,
+Custom value:,Користувацьке значення:,Пользовательское значение:,
+High priority,Високий пріоритет,Высокий приоритет,
+Medium priority,Середній пріоритет,Средний приоритет,
+Low priority,Низький пріоритет,Низкий приоритет,
+My Wallet,Мій гаманець,Мой кошелёк,
+Connected...,З'єднання,Соединение,
+Put your Reference,Розмістіть своє посилання,Разместите свою ссылку,
+Your Reference,Ваше посилання,Ваша ссылка,
+Enter wallet-address,Введіть адресу гаманця,Введите адрес кошелька,
+Enter a label for this address to add it to your address book,Введіть ім'я для цієї адреси щоб додати її до своєї адресної книги,Введите имя ярлыка для этого адреса чтобы добавить его в адресную книгу,
+A link will be displayed here when you make a request,Тут буде відображено посилання коли ви зробите запит,Здесь будет отображена ссылка когда Вы сделаете запрос,
+Enter your message, which will be displayed upon receipt,Введіть Ваше повідомлення яке буде висвітлюватися при отриманні,Введите Ваше сообщение которое будет высвечиваться при получении,
+About authors,Про авторів,О авторах,
+BlockChain Wallet was created by a group of four students who are currently studying at the National University "Zaporizhzhya Polytechnic". The ideological inspirer was Nikita Khalizev. The work on the software functionality was done by Daniil Potapov. The interaction between the files and the program was organized by Evgeny Latyshev and the visual component was responsible for Azmanov Ilya. The goal of BlockChain Wallet is to popularize the use of electronic wallets among NUZP students.,BlockChain Wallet був створений групою з чотирьох студентів які на даний момент навчаються в Національному університеті "Запорізька політехніка". Ідейним натхненником виступав Микита Хализев. Роботою над функціоналом ПО займався Данило Потапов. Взаємодії між файлами і програмою організовував Євген Латишев. За візуальну складову відповідав Азманов Ілля. Мета BlockChain Wallet полягає в тому щоб популяризувати використання електронних гаманців серед студентів НУЗП.,BlockChain Wallet был создан группой из четверых студентов которые на данный момент учатся в Национальном университете "Запорожская Политехника". Идейным вдохновителем выступал Никита Хализев. Работой над функционалом ПО занимался Даниил Потапов. Взаимодействия между файлами и программой организовывал Евгений Латышев. За визуальную составляющую отвечал Азманов Илья. Цель BlockChain Wallet состоит в том чтобы популяризировать использование электронных кошельков среди студентов НУЗП.,
+&Show Window, Показати вікно,&Показать окно,
+&Error,&Помилка,&Ошибка,
+This key not exists,Цей ключ не існує,Данный ключ не существует,
+File: ,Файл: ,Файл: ,
+Not Exist,Не iснує,Не существует,
+Read Error,Помилка при зчитуванні,Ошибка при чтении,
+Write Error,Помилка запису,Ошибка при записи,
+Address can consist only 17 symbols!,Адреса може складатися тільки з 17 символів!,Адрес может состоять только из 17 символов!,
+This address not available!,Ця адреса недоступна!,Данный адрес недоступен!,
+You don't have enough money!,У Вас недостатньо грошей!,У Вас недостаточно денег,
+Important information!,Важлива інформація!,Важная информация!,
+Not correct password,Невірний пароль,Неправильный пароль,
+New password similar to old!,Новий пароль схожий на старий!,Новый пароль похож на старый!,
+Your password: ,Ваш пароль: ,Ваш пароль: ,
+If u lose them, you should cant restore them.,Якщо Ви його втратите, то не зможете більше відновити.,Если вы его потеряете, то не сможете больше восстановить.,

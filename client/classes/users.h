@@ -4,6 +4,8 @@
 #include <QString>
 #include <QMap>
 #include <QVector>
+
+#include "client/tests/program_exception.h"
 #include "client/gui/settings_form.h"
 
 class User
@@ -19,10 +21,12 @@ public:
     User(QString address, QString password, bool admin);
     User(QString address, QString password, languages user_language, bool admin);
 
-    QString getAddress();
-    QString getPassword();
+    const QString& getAddress() const&;
 
-    languages getUserLanguage();
+    const QString& getPassword() const&;
+    void setPassword(QString password);
+
+    const languages &getUserLanguage() const&;
 
     bool isAdmin();
 
@@ -31,15 +35,20 @@ public:
 
 class Users
 {
-    QMap<QString, User> users_infomation;
+    QVector<User> users_infomation;
 public:
     Users();
 
-    User getUser(QString address);
+    const QVector<User>& getUsersInformation() const&;
+
+    const User& getUser(int index) const&;
+    const User& getUser(QString address) const&;
+
+
+    void addUser(User new_user);
 
     bool isPasswordExists(QString password);
-
-    void changePassword(QString address);
+    bool isAddressExists(QString address);
 
     ~Users();
 };

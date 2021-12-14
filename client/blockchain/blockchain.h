@@ -128,8 +128,6 @@ public:
 
     void show();
 
-    //friend void JSON::read_all_chain(Blockchain &a);
-
     ~Blockchain();
 };
 
