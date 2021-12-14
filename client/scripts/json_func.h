@@ -24,13 +24,13 @@ public:
     QString new_get_prev_hash(int number_block);
     int new_get_id(int number_block);
 
-    QString new_get_sender(int number_block, int num_data);
-    QString new_get_reciever(int number_block, int num_data);
-    QString new_get_timestamp(int number_block, int num_data);
-    double new_get_amount(int number_block, int num_data);
-    double new_get_fee(int number_block, int num_data);
-    int new_get_CoinsType(int number_block, int num_data);
-    int new_get_priority(int number_block, int num_data);
+    QString new_get_sender(int number_block);
+    QString new_get_reciever(int number_block);
+    QString new_get_timestamp(int number_block);
+    double new_get_amount(int number_block);
+    double new_get_fee(int number_block);
+    int new_get_CoinsType(int number_block);
+    int new_get_priority(int number_block);
 
     QString new_get_address(int number_block, int num_balance);
     double new_get_BWC_balance(int number_block, int num_balance);

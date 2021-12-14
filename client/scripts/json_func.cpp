@@ -402,7 +402,7 @@ double JSON:: new_get_BWC_Q_balance(int number_block, int num_balance){
     return BWC_Q_balance;
 }
 
-double JSON:: new_get_amount(int number_block, int num_data){
+double JSON:: new_get_amount(int number_block){
     QJsonObject root = doc.object();
     QJsonArray tlmtArray = root.value("Blockchain").toArray();
     QJsonObject obj = tlmtArray[number_block].toObject();
@@ -418,7 +418,7 @@ double JSON:: new_get_amount(int number_block, int num_data){
     return amount;
 }
 
-double JSON:: new_get_fee(int number_block, int num_data){
+double JSON:: new_get_fee(int number_block){
     QJsonObject root = doc.object();
     QJsonArray tlmtArray = root.value("Blockchain").toArray();
     QJsonObject obj = tlmtArray[number_block].toObject();
@@ -434,7 +434,7 @@ double JSON:: new_get_fee(int number_block, int num_data){
     return fee;
 }
 
-int JSON:: new_get_priority(int number_block, int num_data){
+int JSON:: new_get_priority(int number_block){
     QJsonObject root = doc.object();
     QJsonArray tlmtArray = root.value("Blockchain").toArray();
     QJsonObject obj = tlmtArray[number_block].toObject();
@@ -450,7 +450,7 @@ int JSON:: new_get_priority(int number_block, int num_data){
     return priority;
 }
 
-QString JSON:: new_get_reciever(int number_block, int num_data){
+QString JSON:: new_get_reciever(int number_block){
     QJsonObject root = doc.object();
     QJsonArray tlmtArray = root.value("Blockchain").toArray();
     QJsonObject obj = tlmtArray[number_block].toObject();
@@ -466,7 +466,7 @@ QString JSON:: new_get_reciever(int number_block, int num_data){
     return reciever;
 }
 
-QString JSON:: new_get_sender(int number_block, int num_data){
+QString JSON:: new_get_sender(int number_block){
     QJsonObject root = doc.object();
     QJsonArray tlmtArray = root.value("Blockchain").toArray();
     QJsonObject obj = tlmtArray[number_block].toObject();
@@ -482,7 +482,7 @@ QString JSON:: new_get_sender(int number_block, int num_data){
     return sender;
 }
 
-QString JSON:: new_get_timestamp(int number_block, int num_data){
+QString JSON:: new_get_timestamp(int number_block){
     QJsonObject root = doc.object();
     QJsonArray tlmtArray = root.value("Blockchain").toArray();
     QJsonObject obj = tlmtArray[number_block].toObject();
@@ -499,7 +499,7 @@ QString JSON:: new_get_timestamp(int number_block, int num_data){
 }
 
 
-int JSON:: new_get_CoinsType(int number_block, int num_data){
+int JSON:: new_get_CoinsType(int number_block){
     QJsonObject root = doc.object();
     QJsonArray tlmtArray = root.value("Blockchain").toArray();
     QJsonObject obj = tlmtArray[number_block].toObject();
