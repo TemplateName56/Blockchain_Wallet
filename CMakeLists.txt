@@ -29,18 +29,15 @@ set(PROJECT_SOURCES
         client/gui/about_program_form.h
         client/gui/about_program_form.cpp
         client/gui/about_program_form.ui
-        about_of_authors.h
-        about_of_authors.cpp
-        about_of_authors.ui
         client/gui/change_passphrase_form.h
         client/gui/change_passphrase_form.cpp
         client/gui/change_passphrase_form.ui
         client/gui/transactionscardview.h
         client/gui/transactionscardview.cpp
         client/gui/transactionscardview.ui
-        client/gui/send_by_request_form.h
-        client/gui/send_by_request_form.cpp
-        client/gui/send_by_request_form.ui
+        client/gui/about_of_authors.h
+        client/gui/about_of_authors.cpp
+        client/gui/about_of_authors.ui
         # Scripts files
         client/scripts/json_func.h
         client/scripts/json_func.cpp
