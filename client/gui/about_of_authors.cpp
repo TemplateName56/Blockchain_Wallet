@@ -27,7 +27,7 @@ void about_of_authors::aboutAuth()
     //ничего не меняется, нужно фон прозрачный
 }
 
-void about_of_authors::on_languagesBox_currentIndexChanged(int index)
+void about_of_authors::setWindowLanguage(int index)
 {
     switch (index) {
 

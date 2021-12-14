@@ -657,7 +657,7 @@ void MainWindow::setWindowLanguage(QVector<QString> language_vector, int languag
            statusBar()->showMessage(language_vector.at(58));
 
            emit languageChanged(language_vector);
-           emit languageChanged(2);
+           emit languageChanged(language_index);
 }
 
 void MainWindow::on_sendCoinsButton_clicked()

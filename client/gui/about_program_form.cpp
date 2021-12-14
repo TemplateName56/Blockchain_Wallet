@@ -31,7 +31,7 @@ void about_program_Form::aboutShow()
 
 }
 
-void about_program_Form::on_languagesBox_currentIndexChanged(int index)
+void about_program_Form::setWindowLanguage(int index)
 {
     switch (index) {
 
