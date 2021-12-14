@@ -64,6 +64,8 @@ signals:
 
     void languageChanged(QVector<QString>);
 
+    void requestButton_clicked();
+
 protected:
     void closeEvent(QCloseEvent *event);
 
@@ -94,6 +96,10 @@ private:
     CoinsType coins_type = BWC;
     double fee;
     short priority = 3;
+
+    QString request_message;
+    QString request_amount;
+    CoinsType request_coins_type;
 
     QStandardItemModel *request_view_model;
 
@@ -150,6 +156,7 @@ private slots:
 
     void on_payToAddress_textChanged(const QString &arg1);
     void on_sendTransactionLabel_textChanged(const QString &arg1);
+    void on_messageLine_textChanged(const QString &arg1);
 
     void on_sendCoinsButton_clicked();
     void on_customValueButton_clicked();
@@ -157,17 +164,23 @@ private slots:
     void on_clearSendButton_clicked();
     void on_prevBlockBTN_clicked();
     void on_nextBlockBTN_clicked();
+    void on_requestButton_clicked();
+    void on_clearRequestButton_clicked();
 
     void on_amountSpinBox_valueChanged(double arg1);
+    void on_amountToRequestSpinBox_valueChanged(double arg1);
 
     void on_feeCheckBox_stateChanged(int arg1);
 
     void on_priorityComboBox_currentIndexChanged(int index);
     void on_coinsBox_currentIndexChanged(int index);
+    void on_coinsBox_2_currentIndexChanged(int index);
 
     void blocksPrev();
     void blocksNext();
 
     void sendWalletPassToChangeForm();
+
+    void createLink();
 };
 #endif // MAINWINDOW_H

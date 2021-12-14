@@ -20,6 +20,7 @@ public:
     User(QString address, QString password, languages user_language, bool admin);
 
     QString getAddress();
+    void setAddress();
     QString getPassword();
 
     languages getUserLanguage();

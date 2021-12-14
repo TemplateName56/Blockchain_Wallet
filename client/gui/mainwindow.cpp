@@ -49,6 +49,8 @@ MainWindow::MainWindow(QWidget *parent)
 
     connect(this, SIGNAL(sendWalletPass(QString)), &ui_ChangePass, SLOT(recieveOldWalletPass(QString)));
 
+    connect(this, SIGNAL(requestButton_clicked()), this, SLOT(createLink()));
+
     ui->stackedWidget->setCurrentIndex(0);
     //setWindowLanguage();
 
@@ -102,8 +104,6 @@ void MainWindow::authorizeUser()
         JSON file("users.json");
         QVector<QString> valid_keys = file.get_users_info(JSON::KEY);
 
-        //QVector<QString> valid_keys = getUsersInfo(KEY);
-
         int index = valid_keys.indexOf(QString::fromStdString(use_algoritm.Hash(wallet_key.toStdString() + "SALT")));
 
         if(index != -1)
@@ -111,13 +111,11 @@ void MainWindow::authorizeUser()
             ui_Auth.close();
             Sleep(250);
             QVector<QString> user_address = file.get_users_info(JSON::ADDRESS);
-            //QVector<QString> user_address = getUsersInfo(ADDRESS);
             wallet_address = user_address[index];
 
             Balance current_user = val_1.getBlockChain().getLastBlock().getUserBalance(wallet_address);
 
             QVector<QString> users_admin = file.get_users_info(JSON::ADMIN);
-            //QVector<QString> users_admin = getUsersInfo(ADMIN);
             QString admin_check = users_admin[index];
 
             if(admin_check == "0")
@@ -152,16 +150,6 @@ void MainWindow::registerUser()
 
         JSON file("users.json");
         file.registerNewUser(wallet_address, wallet_key + "SALT");
-
-
-        //registerNewUsers(wallet_address, wallet_key + "SALT");
-
-        /*QPalette palette;
-        QColor color;
-
-        color = ui->walletKeyLabel->parentWidget()->palette().color(QPalette);
-        palette.setColor(QPalette::Base,color);
-        ui->walletKeyLabel->setPalette(palette);*/
 
         ui->walletKeyLabel->setStyleSheet("* { background-color: rgba(0, 0, 0, 0); }");
 
@@ -223,9 +211,6 @@ void MainWindow::createActions()
     QPixmap all_blockspix("icons/all_blocksIcon.png");
     QPixmap quitpix("icons/quitIcon.png");
 
-    //QPixmap programpix("icons/programIcon.png");
-
-
     home = new QAction(homepix, "&Home", this);
     send = new QAction(sendpix, "&Send", this);
     recieve = new QAction(recievepix, "&Recieve", this);
@@ -280,11 +265,6 @@ void MainWindow::createMenus()
     help_menu->addAction(about_program);
     help_menu->addSeparator();
     help_menu->addAction(about_of_authors);
-
-//    QMenu* menu = new QMenu("about_program"); //помощь
-//        menu->addAction(about_program);
-//        menu->addAction(home); //about autors
-//        help_menu->addMenu(menu);
 
     toolbar = addToolBar("main menu");
 
@@ -542,7 +522,6 @@ void MainWindow::requestsHistory()
         ui->historyView->setColumnWidth(4,108);
 
         JSON json_file("chain.json");
-        //qDebug() << json_file.get_array_size();
 
         for(int i = 1; i <= json_file.new_get_array_size_blockchain(); i++){
             QList<QStandardItem *> HistoryList;
@@ -559,16 +538,13 @@ void MainWindow::requestsHistory()
                 }else if(c == 4){
                     HistoryList.append(new QStandardItem(json_file.new_get_fee(i, 0)));
                 }
-                    //qDebug() << json_file.get_address_recipient(c);
                     count++;
-                    //qDebug() << count;
                 }
             for(int i = 0; i < count; i++)
             {
                 HistoryList[i]->setTextAlignment(Qt::AlignCenter);
             }
             history_view_model->insertRow(history_view_model->rowCount(), HistoryList);
-        //HistoryList.close();
         }
 }
 
@@ -629,7 +605,7 @@ void MainWindow::setWindowLanguage(QVector<QString> language_vector)
            ui->amountLabel->setText(language_vector.at(36));
            ui->balanceLabel->setText(language_vector.at(18));
            ui->commissionLabel->setText(language_vector.at(38));
-           ui->feeCheckBox->setText(language_vector.at(51));
+           //ui->feeCheckBox->setText(language_vector.at(51));
 
            ui->transactionsOverviewLabel->setText(language_vector.at(21));
            ui->addresslabel->setText(language_vector.at(19));
@@ -675,11 +651,6 @@ void MainWindow::setWindowLanguage(QVector<QString> language_vector)
 
            ui->requestLabelLine->setPlaceholderText(language_vector.at(63));
            ui->messageLine->setPlaceholderText(language_vector.at(64));
-
-
-
-           //view_window = new QAction("&Show Window", this);
-
 
            statusBar()->showMessage(language_vector.at(58));
 
@@ -927,5 +898,59 @@ void MainWindow::blocksNext()
 void MainWindow::sendWalletPassToChangeForm()
 {
     emit sendWalletPass(wallet_key);
+}
+
+
+void MainWindow::on_requestButton_clicked()
+{
+    emit requestButton_clicked();
+}
+
+
+void MainWindow::on_clearRequestButton_clicked()
+{
+    ui->amountToRequestSpinBox->clear();
+}
+
+
+void MainWindow::on_coinsBox_2_currentIndexChanged(int index)
+{
+    ui->coinsBox_2->setCurrentIndex(index);
+    switch (index) {
+    case 0:
+        this->request_coins_type = BWC;
+        break;
+    case 1:
+        this->request_coins_type = BWC_N;
+        break;
+    case 2:
+        this->request_coins_type = BWC_Q;
+        break;
+    default:
+        break;
+    }
+}
+
+
+void MainWindow::on_amountToRequestSpinBox_valueChanged(double arg1)
+{
+    request_amount = QString::number(arg1);
+}
+
+
+void MainWindow::on_messageLine_textChanged(const QString &arg1)
+{
+    request_message = arg1;
+}
+
+void MainWindow::createLink()
+{
+    algoritms algo;
+    QString link = QString::fromStdString(algo.GenerateLink(request_message.toStdString() +
+                                                            request_amount.toStdString() +
+                                                            coinsTypeToString(request_coins_type).toStdString() +
+                                                            wallet_address.toStdString()));
+    ui->requestLabelLine->setText(link);
+    qDebug() << QString::fromStdString(algo.DecryptionLink(link.toStdString()));
 }
 
