@@ -21,6 +21,7 @@ private:
     friend class mainwindow;
 public slots:
     void aboutShow();
+    void setWindowLanguage(int index);
 };
 
 #endif // ABOUT_PROGRAM_FORM_H

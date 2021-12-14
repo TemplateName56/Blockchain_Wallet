@@ -21,6 +21,7 @@ private:
     friend class mainwindow;
 public slots:
     void aboutAuth();
+    void setWindowLanguage(int index);
 };
 
 #endif // ABOUT_OF_AUTHORS_H

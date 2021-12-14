@@ -45,7 +45,7 @@
      </size>
     </property>
     <property name="currentIndex">
-     <number>2</number>
+     <number>0</number>
     </property>
     <widget class="QWidget" name="mainWidget">
      <property name="minimumSize">
@@ -66,6 +66,7 @@
       <property name="font">
        <font>
         <pointsize>9</pointsize>
+        <weight>75</weight>
         <bold>true</bold>
        </font>
       </property>
@@ -175,6 +176,7 @@
          <property name="font">
           <font>
            <pointsize>9</pointsize>
+           <weight>75</weight>
            <bold>true</bold>
           </font>
          </property>
@@ -206,7 +208,7 @@
             <x>0</x>
             <y>0</y>
             <width>417</width>
-            <height>315</height>
+            <height>312</height>
            </rect>
           </property>
           <layout class="QVBoxLayout" name="cardsLayout"/>
@@ -274,6 +276,7 @@
          </property>
          <property name="font">
           <font>
+           <weight>75</weight>
            <bold>true</bold>
           </font>
          </property>
@@ -308,6 +311,7 @@
          </property>
          <property name="font">
           <font>
+           <weight>75</weight>
            <bold>true</bold>
           </font>
          </property>
@@ -342,6 +346,7 @@
          </property>
          <property name="font">
           <font>
+           <weight>75</weight>
            <bold>true</bold>
           </font>
          </property>
@@ -555,6 +560,7 @@
           </property>
           <property name="font">
            <font>
+            <weight>75</weight>
             <bold>true</bold>
            </font>
           </property>
@@ -1087,6 +1093,7 @@
            <property name="font">
             <font>
              <pointsize>9</pointsize>
+             <weight>75</weight>
              <bold>true</bold>
             </font>
            </property>
@@ -1141,6 +1148,7 @@
          <property name="font">
           <font>
            <pointsize>10</pointsize>
+           <weight>75</weight>
            <bold>true</bold>
           </font>
          </property>
@@ -1435,7 +1443,7 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>22</height>
+     <height>26</height>
     </rect>
    </property>
   </widget>

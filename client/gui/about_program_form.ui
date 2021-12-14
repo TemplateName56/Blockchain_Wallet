@@ -6,13 +6,29 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>500</width>
-    <height>250</height>
+    <width>588</width>
+    <height>429</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>About Program</string>
   </property>
+  <widget class="QTextEdit" name="textEdit_abot_program">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>10</y>
+     <width>571</width>
+     <height>411</height>
+    </rect>
+   </property>
+   <property name="frameShape">
+    <enum>QFrame::StyledPanel</enum>
+   </property>
+   <property name="readOnly">
+    <bool>true</bool>
+   </property>
+  </widget>
  </widget>
  <resources/>
  <connections/>
