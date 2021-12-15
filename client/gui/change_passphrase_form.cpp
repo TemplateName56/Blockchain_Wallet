@@ -66,7 +66,7 @@ void change_passphrase_Form::setWindowLanguage(QVector<QString> language_vector)
 
 }
 
-void change_passphrase_Form::on_languagesBox_currentIndexChanged(int index){
+void change_passphrase_Form::setWindowLanguage(int index){
 
 switch (index) {
 

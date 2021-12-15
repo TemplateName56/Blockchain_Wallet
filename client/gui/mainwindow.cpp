@@ -31,6 +31,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(this, SIGNAL(languageChanged(QVector<QString>)), &ui_Auth, SLOT(setWindowLanguage(QVector<QString>)));
     connect(this, SIGNAL(languageChanged(int)), &ui_AboutProgram, SLOT(setWindowLanguage(int)));
     connect(this, SIGNAL(languageChanged(int)), &ui_AboutAuthors, SLOT(setWindowLanguage(int)));
+    connect(this, SIGNAL(languageChanged(int)), &ui_ChangePass, SLOT(setWindowLanguage(int)));
 
     connect(&ui_Settings, SIGNAL(trayCheckBoxToggled()), this, SLOT(trayEnabled()));
 
@@ -434,81 +435,18 @@ void MainWindow::on_payToAddress_textChanged(const QString &arg1)
 
 void MainWindow::requestsHistory()
 {
-    request_view_model = new QStandardItemModel(this);
-    request_view_model->setColumnCount(5);
-    request_view_model->setHorizontalHeaderLabels(QStringList() << "Link" << "Message" << "Amount" << "Type amount"<<"Receiver");
-    ui->requestsView->setModel(request_view_model);
+    try {
+        request_view_model = new QStandardItemModel(this);
+        request_view_model->setColumnCount(5);
+        request_view_model->setHorizontalHeaderLabels(QStringList() << "Link" << "Message" << "Amount" << "Type amount"<<"Receiver");
+        ui->requestsView->setModel(request_view_model);
 
-    ui->requestsView->setEditTriggers( QAbstractItemView::NoEditTriggers);
+        ui->requestsView->setEditTriggers( QAbstractItemView::NoEditTriggers);
 
-    ui->requestsView->verticalHeader()->setSectionResizeMode(QHeaderView::Fixed);
-    ui->requestsView-> horizontalHeader()->setSectionResizeMode(QHeaderView::Fixed);
+        ui->requestsView->verticalHeader()->setSectionResizeMode(QHeaderView::Fixed);
+        ui->requestsView-> horizontalHeader()->setSectionResizeMode(QHeaderView::Fixed);
 
-    QString styleSheet_1 = "::section {"
-                         "spacing: 10px;"
-                         "background-color: lightblue;"
-                         "color: black;"
-                         "border: 1px solid black;"
-                         "margin: 1px;"
-                         "font-weight: bold;"
-                         "font-family: arial;"
-                         "font-size: 15px; }";
-
-    ui->requestsView->horizontalHeader()->setStyleSheet(styleSheet_1);
-
-    ui->requestsView->verticalHeader()->setVisible(false);
-
-    ui->requestsView->setColumnWidth(0,300);
-    ui->requestsView->setColumnWidth(1,100);
-    ui->requestsView->setColumnWidth(2,80);
-    ui->requestsView->setColumnWidth(3,100);
-    ui->requestsView->setColumnWidth(4,150);
-
-
-    CSV file("requestsList.csv");
-    //CSV file("requestsList.csv");
-    //CSV file("request2.csv");
-    QVector<QString> str_request = file.find_user("BW000000000000000"); //вместо BW000000000000001 нужен адрес текущего пользователя
-    qDebug() << str_request;
-
-    for(int index = 0; index < str_request.size(); index++)
-    {
-        QList<QStandardItem *> newRequestsList;
-        for(int c = 1; c <= 6; c++)
-        {
-            switch(c){
-            case 1:
-                newRequestsList.append(new QStandardItem(str_request.at(index).section(',', 0, 0)));
-                break;
-            case 2:
-                newRequestsList.append(new QStandardItem(str_request.at(index).section(',', 1, 1)));
-                break;
-            case 3:
-                newRequestsList.append(new QStandardItem(str_request.at(index).section(',', 2, 2)));
-                break;
-            case 4:
-                newRequestsList.append(new QStandardItem(str_request.at(index).section(',', 3, 3)));
-                break;
-            case 5:
-                newRequestsList.append(new QStandardItem(str_request.at(index).section(',', 4, 4)));
-                break;
-            default:
-                break;
-            }
-        }
-        for(int i = 0; i < newRequestsList.length(); i++)
-        {
-            newRequestsList[i]->setTextAlignment(Qt::AlignCenter);
-        }
-        request_view_model->insertRow(request_view_model->rowCount(), newRequestsList);
-    }
-
-    QStandardItemModel *history_view_model = new QStandardItemModel(this);
-        history_view_model->setColumnCount(5);
-        history_view_model->setHorizontalHeaderLabels(QStringList() << "№" << "From" << "To" << "Money" << "Currency");
-        ui->historyView->setModel(history_view_model);
-
-        QString styleSheet_2 = "::section {"
+        QString styleSheet_1 = "::section {"
                              "spacing: 10px;"
                              "background-color: lightblue;"
                              "color: black;"
@@ -517,6 +455,71 @@ void MainWindow::requestsHistory()
                              "font-weight: bold;"
                              "font-family: arial;"
                              "font-size: 15px; }";
+
+        ui->requestsView->horizontalHeader()->setStyleSheet(styleSheet_1);
+
+        ui->requestsView->verticalHeader()->setVisible(false);
+
+        ui->requestsView->setColumnWidth(0,300);
+        ui->requestsView->setColumnWidth(1,100);
+        ui->requestsView->setColumnWidth(2,80);
+        ui->requestsView->setColumnWidth(3,100);
+        ui->requestsView->setColumnWidth(4,150);
+
+
+        CSV file("requestsList.csv");
+        //CSV file("requestsList.csv");
+        //CSV file("request2.csv");
+        QVector<QString> str_request = file.find_user("BW000000000000000"); //вместо BW000000000000001 нужен адрес текущего пользователя
+        //qDebug() << str_request;
+
+        for(int index = 0; index < str_request.size(); index++)
+        {
+            QList<QStandardItem *> newRequestsList;
+            for(int c = 1; c <= 6; c++)
+            {
+                switch(c){
+                case 1:
+                    newRequestsList.append(new QStandardItem(str_request.at(index).section(',', 0, 0)));
+                    break;
+                case 2:
+                    newRequestsList.append(new QStandardItem(str_request.at(index).section(',', 1, 1)));
+                    break;
+                case 3:
+                    newRequestsList.append(new QStandardItem(str_request.at(index).section(',', 2, 2)));
+                    break;
+                case 4:
+                    newRequestsList.append(new QStandardItem(str_request.at(index).section(',', 3, 3)));
+                    break;
+                case 5:
+                    newRequestsList.append(new QStandardItem(str_request.at(index).section(',', 4, 4)));
+                    break;
+                default:
+                    break;
+                }
+            }
+            for(int i = 0; i < newRequestsList.length(); i++)
+            {
+                newRequestsList[i]->setTextAlignment(Qt::AlignCenter);
+            }
+            request_view_model->insertRow(request_view_model->rowCount(), newRequestsList);
+        }
+
+        QStandardItemModel *history_view_model = new QStandardItemModel(this);
+        history_view_model->setColumnCount(5);
+        history_view_model->setHorizontalHeaderLabels(QStringList() << "№" << "From" << "To" << "Money" << "Currency");
+
+        ui->historyView->setModel(history_view_model);
+
+        QString styleSheet_2 = "::section {"
+                               "spacing: 10px;"
+                               "background-color: lightblue;"
+                               "color: black;"
+                               "border: 1px solid black;"
+                               "margin: 1px;"
+                               "font-weight: bold;"
+                               "font-family: arial;"
+                               "font-size: 15px; }";
 
         ui->historyView->horizontalHeader()->setStyleSheet(styleSheet_2);
 
@@ -534,7 +537,8 @@ void MainWindow::requestsHistory()
 
         JSON json_file("chain.json");
 
-        for(int i = 1; i <= json_file.new_get_array_size_blockchain(); i++){
+        for(int i = 1; i <= json_file.new_get_array_size_blockchain(); i++)
+        {
             QList<QStandardItem *> HistoryList;
             int count = 0;
             for(int c = 0; c < 5; c++){
@@ -549,14 +553,18 @@ void MainWindow::requestsHistory()
                 }else if(c == 4){
                     HistoryList.append(new QStandardItem(json_file.new_get_fee(i, 0)));
                 }
-                    count++;
-                }
-            for(int i = 0; i < count; i++)
-            {
-                HistoryList[i]->setTextAlignment(Qt::AlignCenter);
-            }
-            history_view_model->insertRow(history_view_model->rowCount(), HistoryList);
+            count++;
         }
+        for(int i = 0; i < count; i++)
+        {
+            HistoryList[i]->setTextAlignment(Qt::AlignCenter);
+        }
+        history_view_model->insertRow(history_view_model->rowCount(), HistoryList);
+    }
+}  catch (ProgramException &error) {
+    error.getError();
+}
+
 }
 
 bool MainWindow::isAmountCorrect(double amount, CoinsType coins_type)
