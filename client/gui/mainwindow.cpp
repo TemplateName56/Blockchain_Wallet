@@ -545,13 +545,13 @@ void MainWindow::requestsHistory()
                 if(c == 0){
                     HistoryList.append(new QStandardItem(QString::number(json_file.new_get_id(i))));
                 }else if(c == 1){
-                    HistoryList.append(new QStandardItem(json_file.new_get_sender(i, 0)));
+                    HistoryList.append(new QStandardItem(json_file.new_get_sender(i)));
                 }else if(c == 2){
-                    HistoryList.append(new QStandardItem(json_file.new_get_reciever(i, 0)));
+                    HistoryList.append(new QStandardItem(json_file.new_get_reciever(i)));
                 }else if(c == 3){
-                    HistoryList.append(new QStandardItem(QString::number(json_file.new_get_amount(i, 0))));
+                    HistoryList.append(new QStandardItem(QString::number(json_file.new_get_amount(i))));
                 }else if(c == 4){
-                    HistoryList.append(new QStandardItem(json_file.new_get_fee(i, 0)));
+                    HistoryList.append(new QStandardItem(json_file.new_get_fee(i)));
                 }
             count++;
         }
@@ -966,5 +966,9 @@ void MainWindow::createLink()
                                                             wallet_address.toStdString()));
     ui->requestLabelLine->setText(link);
     qDebug() << QString::fromStdString(algo.DecryptionLink(link.toStdString()));
+    CSV file("requestsList.csv");
+    file.append_csv_request(link, request_message,
+                            request_amount, coinsTypeToString(request_coins_type),
+                            wallet_address);
 }
 

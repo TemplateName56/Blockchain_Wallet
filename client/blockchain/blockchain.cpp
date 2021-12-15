@@ -348,13 +348,13 @@ void Blockchain::readChain()
                 genesis = false;
             }
             addBlock(file.new_get_id(index),
-                     TransactionData(file.new_get_sender(index,0),
-                                     file.new_get_reciever(index,0),
-                                     file.new_get_amount(index,0),
-                                     toCoinsType(file.new_get_CoinsType(index, 0)),
-                                     file.new_get_fee(index,0),
-                                     file.new_get_priority(index,0),
-                                     file.new_get_timestamp(index,0)),
+                     TransactionData(file.new_get_sender(index),
+                                     file.new_get_reciever(index),
+                                     file.new_get_amount(index),
+                                     toCoinsType(file.new_get_CoinsType(index)),
+                                     file.new_get_fee(index),
+                                     file.new_get_priority(index),
+                                     file.new_get_timestamp(index)),
                      file.new_get_prev_hash(index),
                      file.new_get_hash(index),
                      genesis);
