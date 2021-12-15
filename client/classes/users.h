@@ -7,9 +7,11 @@
 
 #include "client/tests/program_exception.h"
 #include "client/gui/settings_form.h"
+#include "client/scripts/json_func.h"
 
 class User
 {
+
     QString address;
     QString password;
 
@@ -35,6 +37,7 @@ public:
 
 class Users
 {
+     //friend class JSON;
     QVector<User> users_infomation;
 public:
     Users();
@@ -49,6 +52,8 @@ public:
 
     bool isPasswordExists(QString password);
     bool isAddressExists(QString address);
+
+    void read_file();
 
     ~Users();
 };

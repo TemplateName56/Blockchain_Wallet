@@ -12,11 +12,13 @@
 #include "client/tests/program_exception.h"
 #include "client/scripts/program_algorithms.h"
 #include "client/blockchain/blockchain.h"
+//#include "client/classes/users.h"
 
 #include <iostream>
 #include <QtDebug>
 
-class JSON {
+class JSON{
+
 public:
     JSON(QString fileName);
 
@@ -70,12 +72,20 @@ public:
     void changed_passphrase_oldkey(QString old_walletKey, QString new_walletKey);
     void changed_passphrase_address(QString address, QString new_walletKey);
 
-    void read_all_chain(Blockchain &chain);
+    void read_all_chain();
     void write_all_chain(QVector<Block> chain);
     void write_all_chain(Block block);
 
     int get_language_user(QString address);
     void set_language_user(QString address, int language);
+
+    QString get_address_user(int num);
+    QString get_wallet_key_user(int num);
+    bool get_admin_user(int num);
+    int get_language_user(int num);
+
+    //void read_users_file(Users &a);
+
 private:
     //QJsonObject json;
 

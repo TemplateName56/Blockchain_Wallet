@@ -1,5 +1,23 @@
 #include "users.h"
 
+languages tolanguages(int language)
+{
+    switch (language) {
+    case 0:
+        return ENGLISH;
+        break;
+    case 1:
+        return UKRANIAN;
+        break;
+    case 2:
+        return RUSSIAN;
+    default:
+        return UKRANIAN; //тут по идее должно быть что-то типа languageTypeERROR как в функции toCoinsType
+        break;
+    }
+}
+
+
 User::User()
 {
 
@@ -56,6 +74,7 @@ User::~User()
 
 Users::Users()
 {
+    read_file();
     // file read func
 }
 
@@ -117,7 +136,19 @@ bool Users::isAddressExists(QString address)
     return false;
 }
 
+void Users:: read_file(){
+    JSON file_user("users.json");
+    for(int index = 0; index < file_user.get_array_size_users(); index++){
+        users_infomation.push_back(User(file_user.get_address_user(index),
+                                        file_user.get_wallet_key_user(index),
+                                        tolanguages(file_user.get_language_user(index)),
+                                        file_user.get_admin_user(index)));
+    }
+}
+
+
 Users::~Users()
 {
     // file save func
+    //getUser(1).getAddress();
 }

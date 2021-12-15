@@ -73,6 +73,7 @@ public:
 
 class Block
 {
+     friend class JSON;
     int id;
 
     QString hash;

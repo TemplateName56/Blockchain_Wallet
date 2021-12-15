@@ -1,4 +1,7 @@
 #include "json_func.h"
+#include "client/blockchain/blockchain.h"
+//#include "client/classes/users.cpp"
+//#include "client/blockchain/blockchain.cpp"
 
 
 JSON::JSON(QString fileName)
@@ -29,7 +32,7 @@ JSON::JSON(QString fileName)
         //qDebug() << "\n\ndoc_constructor :" << doc;
 }
 
-//void JSON::read_all_chain(Blockchain &chain){
+//void JSON::read_all_chain(){
 //    JSON file(filename);
 //    bool genesis = true;
 //    qDebug() << "\narray_size:" << file.new_get_array_size_blockchain();
@@ -41,21 +44,22 @@ JSON::JSON(QString fileName)
 //                genesis = false;
 //            }
 //            qDebug() << "\nreadChain:";
-//            qDebug() << "Amount:" << file.new_get_amount(index,0);
-//            qDebug() << "Reciever:" << file.new_get_reciever(index,0);
-//            qDebug() << "Sender:" << file.new_get_sender(index,0);
-//            qDebug() << "TimeStamp:" << file.new_get_timestamp(index,0);
-//            chain.addBlock(file.new_get_id(index),
-//                     TransactionData(file.new_get_sender(index,0),
-//                                     file.new_get_reciever(index,0),
-//                                     file.new_get_amount(index,0),
-//                                     toCoinsType(file.new_get_CoinsType(index, 0)),
-//                                     file.new_get_fee(index,0),
-//                                     file.new_get_priority(index,0),
-//                                     file.new_get_timestamp(index,0)),
+//            qDebug() << "Amount:" << file.new_get_amount(index);
+//            qDebug() << "Reciever:" << file.new_get_reciever(index);
+//            qDebug() << "Sender:" << file.new_get_sender(index);
+//            qDebug() << "TimeStamp:" << file.new_get_timestamp(index);
+//            addBlock(file.new_get_id(index),
+//                     TransactionData(file.new_get_sender(index),
+//                                     file.new_get_reciever(index),
+//                                     file.new_get_amount(index),
+//                                     toCoinsType(file.new_get_CoinsType(index)),
+//                                     file.new_get_fee(index),
+//                                     file.new_get_priority(index),
+//                                     file.new_get_timestamp(index)),
 //                    file.new_get_prev_hash(index),
 //                    file.new_get_hash(index),
 //                     genesis);
+
 
 //    }
 //}
@@ -785,7 +789,7 @@ void JSON:: registerNewUser(QString address, QString walletKey){
     jsonObj3.insert("address", address);
     jsonObj3.insert("walletKey", QString::fromStdString(use_algoritm.Hash(walletKey.toStdString())));
     jsonObj3.insert("admin", 0);
-    jsonObj3.insert("language", 0);
+    jsonObj3.insert("language", 1);
 
     jsonArray.append(jsonObj3);
 
@@ -800,6 +804,74 @@ void JSON:: registerNewUser(QString address, QString walletKey){
 
 }
 
+QString JSON::get_address_user(int num){
+    QFile json_file(filename);
+    QJsonObject json = doc.object();
+    QJsonArray jsonArray = json["users"].toArray();
+    QString address_file;
+    QJsonObject subtree = jsonArray.at(num).toObject();
+    address_file = subtree.value("address").toString();
+    return address_file;
+
+
+}
+
+QString JSON::get_wallet_key_user(int num){
+    QFile json_file(filename);
+    QJsonObject json = doc.object();
+    QJsonArray jsonArray = json["users"].toArray();
+    QString wallet_key;
+    QJsonObject subtree = jsonArray.at(num).toObject();
+     wallet_key = subtree.value("walletKey").toString();
+    return wallet_key;
+
+
+}
+
+bool JSON::get_admin_user(int num){
+    QFile json_file(filename);
+    QJsonObject json = doc.object();
+    QJsonArray jsonArray = json["users"].toArray();
+    bool admin;
+    QJsonObject subtree = jsonArray.at(num).toObject();
+    admin = subtree.value("admin").toInt();
+    return admin;
+}
+
+int JSON::get_language_user(int num){
+    QFile json_file(filename);
+    QJsonObject json = doc.object();
+    QJsonArray jsonArray = json["users"].toArray();
+    int language;
+    QJsonObject subtree = jsonArray.at(num).toObject();
+    language = subtree.value("language").toInt();
+    return language;
+}
+/*
+void JSON::read_users_file(Users &a) //Идеальный метод класса для Табунщик но я хз куда его вставлять в коде
+    {
+    QFile json_file(filename);
+    QJsonObject json = doc.object();
+    QJsonArray jsonArray = json["users"].toArray();
+
+    QString address_file;
+    QString wallet_key;
+    bool admin;
+    int language;
+
+    for(int index = 0; index < jsonArray.size(); index++){
+        QJsonObject subtree = jsonArray.at(index).toObject();
+        address_file = subtree.value("address").toString();
+        wallet_key = subtree.value("walletKey").toString();
+        admin = subtree.value("admin").toInt();
+        language = subtree.value("language").toInt();
+    a.users_infomation.push_back(User(address_file,
+                                    wallet_key,
+                                    tolanguages(language),
+                                    admin));
+    }
+}
+*/
 QVector<QString> JSON:: get_users_info(getInfo what_u_need){
     QFile json_file(filename);
     QJsonObject json = doc.object();

@@ -282,6 +282,7 @@ void Blockchain::createGenesisBlock()
 
 QVector<Block> Blockchain::getChain()
 {
+
     readChain();
     return this->chain;
 }
