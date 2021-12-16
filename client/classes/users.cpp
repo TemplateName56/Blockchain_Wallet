@@ -62,7 +62,7 @@ const languages& User::getUserLanguage() const&
     return this->user_language;
 }
 
-bool User::isAdmin()
+bool User::isAdmin() //a.getUser(i).isAdmin() - вот такая штука не работает а по идее должна
 {
     return this->admin;
 }
@@ -74,7 +74,7 @@ User::~User()
 
 Users::Users()
 {
-    read_file();
+    //read_file();
     // file read func
 }
 
@@ -135,7 +135,7 @@ bool Users::isAddressExists(QString address)
     }
     return false;
 }
-
+/*
 void Users:: read_file(){
     JSON file_user("users.json");
     for(int index = 0; index < file_user.get_array_size_users(); index++){
@@ -145,7 +145,7 @@ void Users:: read_file(){
                                         file_user.get_admin_user(index)));
     }
 }
-
+*/
 
 Users::~Users()
 {

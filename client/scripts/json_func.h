@@ -12,10 +12,12 @@
 #include "client/tests/program_exception.h"
 #include "client/scripts/program_algorithms.h"
 #include "client/blockchain/blockchain.h"
-//#include "client/classes/users.h"
+#include "client/classes/users.h"
 
 #include <iostream>
 #include <QtDebug>
+
+
 
 class JSON{
 
@@ -84,8 +86,8 @@ public:
     bool get_admin_user(int num);
     int get_language_user(int num);
 
-    //void read_users_file(Users &a);
-
+    void read_users_file(Users &a);
+    void write_users_file(Users &a);
 private:
     //QJsonObject json;
 

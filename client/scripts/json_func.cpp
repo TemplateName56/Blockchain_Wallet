@@ -2,7 +2,24 @@
 #include "client/blockchain/blockchain.h"
 //#include "client/classes/users.cpp"
 //#include "client/blockchain/blockchain.cpp"
+#include "client/classes/users.h"
 
+languages tolanguages1(int language)
+{
+    switch (language) {
+    case 0:
+        return ENGLISH;
+        break;
+    case 1:
+        return UKRANIAN;
+        break;
+    case 2:
+        return RUSSIAN;
+    default:
+        return UKRANIAN; //тут по идее должно быть что-то типа languageTypeERROR как в функции toCoinsType
+        break;
+    }
+}
 
 JSON::JSON(QString fileName)
 {
@@ -847,7 +864,7 @@ int JSON::get_language_user(int num){
     language = subtree.value("language").toInt();
     return language;
 }
-/*
+
 void JSON::read_users_file(Users &a) //Идеальный метод класса для Табунщик но я хз куда его вставлять в коде
     {
     QFile json_file(filename);
@@ -856,22 +873,40 @@ void JSON::read_users_file(Users &a) //Идеальный метод класс�
 
     QString address_file;
     QString wallet_key;
+    QString wallet_key_decode;
     bool admin;
     int language;
+    algoritms use_algoritm;
 
     for(int index = 0; index < jsonArray.size(); index++){
         QJsonObject subtree = jsonArray.at(index).toObject();
         address_file = subtree.value("address").toString();
         wallet_key = subtree.value("walletKey").toString();
+        //wallet_key_decode = QString::fromStdString(use_algoritm.Hash(wallet_key.toStdString()+ "SALT"));
         admin = subtree.value("admin").toInt();
         language = subtree.value("language").toInt();
     a.users_infomation.push_back(User(address_file,
                                     wallet_key,
-                                    tolanguages(language),
+                                    tolanguages1(language),
                                     admin));
     }
 }
-*/
+
+void JSON::write_users_file(Users &a) //Идеальный метод класса для Табунщик но я хз куда его вставлять в коде
+{
+    QFile json_file(filename);
+    QJsonObject json = doc.object();
+    QJsonArray jsonArray = json["users"].toArray();
+
+    for(int i = 0; i < a.getUsersInformation().length();i++){
+       qDebug() << a.getUser(i).getAddress();
+       qDebug() << a.getUser(i).getPassword();
+       qDebug() <<a.getUser(i).getUserLanguage();
+        //a.getUser(i).isAdmin();
+
+    }
+}
+
 QVector<QString> JSON:: get_users_info(getInfo what_u_need){
     QFile json_file(filename);
     QJsonObject json = doc.object();

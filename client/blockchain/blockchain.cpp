@@ -431,7 +431,6 @@ void Validator::addTransaction(TransactionData new_transaction)
     json_file.write_all_chain(chain.getLastBlock());
     //chain.writeChain();
     authority += 1;
-
     emit sendTransaction(chain.getLastBlock().getBlockData().getReciever(), chain.getLastBlock().getBlockData());
 }
 

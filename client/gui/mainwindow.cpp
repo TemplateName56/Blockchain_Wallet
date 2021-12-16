@@ -970,5 +970,12 @@ void MainWindow::createLink()
     file.append_csv_request(link, request_message,
                             request_amount, coinsTypeToString(request_coins_type),
                             wallet_address);
+
+    //===== Чтение и запись Users =====//
+    Users object_users;
+    JSON file_json("users.json");
+    file_json.read_users_file(object_users);// Никит, закинь этот метод куда надо в коде
+    file_json.write_users_file(object_users);//сама запись пока не работает тут просто выводятся пользователи в консоль
+    //===== Чтение и запись Users =====//
 }
 

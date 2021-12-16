@@ -7,7 +7,9 @@
 
 #include "client/tests/program_exception.h"
 #include "client/gui/settings_form.h"
-#include "client/scripts/json_func.h"
+//#include "client/scripts/json_func.h"
+
+
 
 class User
 {
@@ -30,14 +32,14 @@ public:
 
     const languages &getUserLanguage() const&;
 
-    bool isAdmin();
+    bool isAdmin(); //a.getUser(i).isAdmin() - вот такая штука не работает а по идее должна
 
     ~User();
 };
 
 class Users
 {
-     //friend class JSON;
+     friend class JSON;
     QVector<User> users_infomation;
 public:
     Users();
@@ -46,7 +48,6 @@ public:
 
     const User& getUser(int index) const&;
     const User& getUser(QString address) const&;
-
 
     void addUser(User new_user);
 
