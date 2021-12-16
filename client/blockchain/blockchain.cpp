@@ -396,6 +396,7 @@ void Blockchain::addBlock(Block new_block)
 void Blockchain::show()
 {
     // temp show func
+    qDebug() << chain.length();
     for(int index = 0; index < chain.length(); index++)
     {
         qDebug() << "------------------------------------------";

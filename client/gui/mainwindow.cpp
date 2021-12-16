@@ -971,13 +971,46 @@ void MainWindow::createLink()
                             request_amount, coinsTypeToString(request_coins_type),
                             wallet_address);
 
+
+
+
+    /*
     //===== Чтение и запись Users =====//
     Users object_users;
     JSON file_json("users.json");
     file_json.read_users_file(object_users);// Никит, закинь этот метод куда надо в коде
 
     JSON file_json2("users_object_users.json");
-    file_json2.write_users_file(object_users);//записываю в другой файл т.к. isAdmin не работает и запись по сути идёт без данных об админе
+    //file_json2.write_users_file(object_users);//записываю в другой файл т.к. isAdmin не работает и запись по сути идёт без данных об админе
     //===== Чтение и запись Users =====//
+    */
+
+
+
+    /*
+ //===== Чтение по Blockchain =====//
+    Blockchain object;//Так как в конструкторе Blockchain уже есть функция чтения то после этого метода блоки просто прибавляются к цепи
+    JSON blockchain_json("chain.json");
+    object.show();
+    blockchain_json.read_all_chain(object); //если в конструкторе у Blockchain не будет readchain то будет нормально считывать
+    qDebug() << "After read_all_chain";
+    object.show();
+//===== Чтение по Blockchain =====//
+    */
+
+
+
+    /*
+//===== Чтение по Validator =====//
+    Validator object_validator;
+    JSON validator_json("chain.json");
+    validator_json.read_all_chain(object_validator);
+    qDebug() << "\nAfter read_all_chain\n";
+    object_validator.getBlockChain().show();
+//===== Чтение по Validator =====//
+    */
+
+
+
 }
 
