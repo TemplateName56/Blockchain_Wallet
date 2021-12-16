@@ -975,7 +975,9 @@ void MainWindow::createLink()
     Users object_users;
     JSON file_json("users.json");
     file_json.read_users_file(object_users);// Никит, закинь этот метод куда надо в коде
-    file_json.write_users_file(object_users);//сама запись пока не работает тут просто выводятся пользователи в консоль
+
+    JSON file_json2("users_object_users.json");
+    file_json2.write_users_file(object_users);//записываю в другой файл т.к. isAdmin не работает и запись по сути идёт без данных об админе
     //===== Чтение и запись Users =====//
 }
 

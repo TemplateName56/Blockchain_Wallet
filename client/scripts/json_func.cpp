@@ -897,14 +897,34 @@ void JSON::write_users_file(Users &a) //Идеальный метод класс
     QFile json_file(filename);
     QJsonObject json = doc.object();
     QJsonArray jsonArray = json["users"].toArray();
+    QJsonObject GBjsonObj;
+    GBjsonObj = doc.object();
+    QJsonArray jsonArray2;
 
     for(int i = 0; i < a.getUsersInformation().length();i++){
-       qDebug() << a.getUser(i).getAddress();
-       qDebug() << a.getUser(i).getPassword();
-       qDebug() <<a.getUser(i).getUserLanguage();
-        //a.getUser(i).isAdmin();
 
+        QJsonObject jsonObj3;
+        jsonObj3.insert("address", a.getUser(i).getAddress());
+        //jsonObj3.insert("admin", a.getUser(i).isAdmin());
+        jsonObj3.insert("walletKey", a.getUser(i).getPassword());
+        jsonObj3.insert("language", a.getUser(i).getUserLanguage());
+
+        jsonArray2.append(jsonObj3);
+       //qDebug() << a.getUser(i).getAddress();
+       //qDebug() << a.getUser(i).getPassword();
+       //qDebug() << a.getUser(i).getUserLanguage();
+        //a.getUser(i).isAdmin();
     }
+    qDebug() << jsonArray2;
+
+    GBjsonObj["users"] = jsonArray2;
+    doc.setObject(GBjsonObj);
+
+    if(!json_file.open(QFile::WriteOnly))
+    {
+        throw ProgramException(FILE_WRITE_ERROR);
+    }
+    json_file.write(doc.toJson());
 }
 
 QVector<QString> JSON:: get_users_info(getInfo what_u_need){
