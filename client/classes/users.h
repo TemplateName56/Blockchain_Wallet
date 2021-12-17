@@ -20,11 +20,13 @@ class User
 
     languages user_language;
 
+    int coins_type_index;
+
     bool admin;
 public:
     User();
-    User(QString address, QString password, bool admin);
-    User(QString address, QString password, languages user_language, bool admin);
+    User(QString address, QString password, bool hash_password = true);
+    User(QString address, QString password, languages user_language = UKRANIAN, bool admin = 0, int coins_type_index = 0);
 
     const QString& getAddress() const;
 
@@ -34,6 +36,7 @@ public:
     bool isPasswordCorrect(QString password) const;
 
     const languages &getUserLanguage() const;
+    const int &getUserPreferCoinsType() const;
 
     bool isAdmin() const;
 

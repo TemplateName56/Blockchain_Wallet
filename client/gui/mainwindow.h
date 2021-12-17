@@ -186,5 +186,6 @@ private slots:
     void sendWalletPassToChangeForm();
 
     void createLink();
+    void on_linkCB_stateChanged(int arg1);
 };
 #endif // MAINWINDOW_H

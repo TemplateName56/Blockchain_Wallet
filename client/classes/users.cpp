@@ -22,18 +22,29 @@ User::User()
 
 }
 
-User::User(QString address, QString password, bool admin)
+User::User(QString address, QString password, bool hash_password)
 {
     this->address = address;
+
+    if(hash_password)
+    {
+        algoritms use_algoritm;
+        password = QString::fromStdString(use_algoritm.Hash(password.toStdString() + "SALT"));
+    }
+
     this->password = password;
-    this->admin = admin;
+
+    this->user_language = UKRANIAN;
+    this->coins_type_index = 0;
+    this->admin = false;
 }
 
-User::User(QString address, QString password, languages user_language, bool admin)
+User::User(QString address, QString password, languages user_language, bool admin, int coins_type_index)
 {
     this->address = address;
     this->password = password;
     this->user_language = user_language;
+    this->coins_type_index = coins_type_index;
     this->admin = admin;
 }
 
@@ -79,6 +90,11 @@ bool User::isPasswordCorrect(QString password) const
 const languages& User::getUserLanguage() const
 {
     return this->user_language;
+}
+
+const int& User::getUserPreferCoinsType() const
+{
+    return this->coins_type_index;
 }
 
 bool User::isAdmin() const

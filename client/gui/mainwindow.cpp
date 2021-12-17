@@ -125,6 +125,8 @@ void MainWindow::authorizeUser()
             ui->bwcNBalance->setText(QString::number(current_user_balance.getBalance(BWC_N)));
             ui->bwcQBalance->setText(QString::number(current_user_balance.getBalance(BWC_Q)));
 
+            emit on_coinsBox_currentIndexChanged(current_user.getUserPreferCoinsType());
+
             this->show();
 
             ui->walletAddressLabel->setText(current_user.getAddress());
@@ -146,8 +148,12 @@ void MainWindow::registerUser()
         wallet_address = randomWalletAdress();
         wallet_key = randomWalletKey();
 
-        JSON file("users.json");
-        file.registerNewUser(wallet_address, wallet_key + "SALT");
+        //JSON file("users.json");
+        //file.registerNewUser(wallet_address, wallet_key + "SALT");
+
+        users_information.addUser(User(wallet_address, wallet_key, true));
+
+        current_user = users_information.getUser(wallet_key);
 
         ui->walletKeyLabel->setStyleSheet("* { background-color: rgba(0, 0, 0, 0); }");
 
@@ -165,6 +171,8 @@ void MainWindow::registerUser()
         ui->bwcBalance->setText(QString::number(current_user_balance.getBalance(BWC)));
         ui->bwcNBalance->setText(QString::number(current_user_balance.getBalance(BWC_N)));
         ui->bwcQBalance->setText(QString::number(current_user_balance.getBalance(BWC_Q)));
+
+        emit on_coinsBox_currentIndexChanged(0);
 
         this->show();
         throw ProgramException(SAVE_PASSPHRASE, wallet_key);
@@ -426,6 +434,7 @@ void MainWindow::newTransaction(QString wallet_address, TransactionData data)
 void MainWindow::on_payToAddress_textChanged(const QString &arg1)
 {
     this->reciever_address = arg1;
+    qDebug() << arg1;
 }
 
 void MainWindow::requestsHistory()
@@ -1024,5 +1033,39 @@ void MainWindow::currentUserPassChange()
     qDebug() << current_user.getPassword();
 
     users_information.setUserPassword(current_user.getAddress(), current_user.getPassword());
+}
+
+
+void MainWindow::on_linkCB_stateChanged(int arg1)
+{
+    switch(arg1)
+    {
+    case 0:
+        emit on_clearSendButton_clicked();
+
+        ui->putLinkLE->setDisabled(true);
+
+        ui->payToAddress->setDisabled(false);
+        ui->sendTransactionLabel->setDisabled(false);
+
+        ui->amountSpinBox->setDisabled(true);
+
+        ui->coinsBox->setDisabled(false);
+        break;
+    case 2:
+        emit on_clearSendButton_clicked();
+
+        ui->putLinkLE->setDisabled(false);
+
+        ui->payToAddress->setDisabled(true);
+        ui->sendTransactionLabel->setDisabled(true);
+
+        ui->amountSpinBox->setDisabled(true);
+
+        ui->coinsBox->setDisabled(true);
+        break;
+    default:
+        break;
+    }
 }
 
