@@ -29,7 +29,9 @@ public:
     const QString& getAddress() const;
 
     const QString& getPassword() const;
-    void setPassword(QString password);
+    void setPassword(QString password, bool hash_pass = true);
+
+    bool isPasswordCorrect(QString password) const;
 
     const languages &getUserLanguage() const;
 
@@ -41,7 +43,7 @@ public:
 class Users
 {
     friend class JSON;
-    QVector<User> users_infomation;
+    QVector<User> users_information;
 public:
     Users();
 
@@ -52,6 +54,8 @@ public:
 
     const User& getUser(QString password) const&;
     User getUser( QString password) &&;
+
+    void setUserPassword(QString address, QString password);
 
 
     void addUser(User new_user);

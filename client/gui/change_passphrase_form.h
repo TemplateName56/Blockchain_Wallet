@@ -2,7 +2,9 @@
 #define CHANGE_PASSPHRASE_FORM_H
 
 #include <QWidget>
+
 #include "client/tests/program_exception.h"
+#include "client/classes/users.h"
 
 namespace Ui {
 class change_passphrase_Form;
@@ -16,6 +18,7 @@ public:
     explicit change_passphrase_Form(QWidget *parent = nullptr);
     ~change_passphrase_Form();
 
+    User *current_user;
     QString current_wallet_pass;
     QString old_password;
     QString new_password;
@@ -23,6 +26,7 @@ public:
 signals:
     void changePassBTN_clicked();
     void clearPassEnterBTN_clicked();
+    void passwordChanged();
 
 public slots:
     void changePassphraseShow();
@@ -35,7 +39,7 @@ private slots:
     void on_changePassBTN_clicked();
     void on_clearPassEnterBTN_clicked();
 
-    void recieveOldWalletPass(QString current_wallet_pass);
+    void currentUserPassChange(User &current_user);
     void setWindowLanguage(QVector<QString> language_vector);
 
 private:

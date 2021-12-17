@@ -888,7 +888,7 @@ void JSON::read_users_file(Users &a)
         //wallet_key_decode = QString::fromStdString(use_algoritm.Hash(wallet_key.toStdString()+ "SALT"));
         admin = subtree.value("admin").toInt();
         language = subtree.value("language").toInt();
-    a.users_infomation.push_back(User(address_file,
+    a.users_information.push_back(User(address_file,
                                     wallet_key,
                                     tolanguages1(language),
                                     admin));

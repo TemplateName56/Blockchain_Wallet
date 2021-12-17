@@ -51,7 +51,8 @@ MainWindow::MainWindow(QWidget *parent)
     connect(this, SIGNAL(allBlocksView_next_clicked()), this, SLOT(blocksNext()));
     connect(this, SIGNAL(allBlocksView_prev_clicked()), this, SLOT(blocksPrev()));
 
-    connect(this, SIGNAL(sendWalletPass(QString)), &ui_ChangePass, SLOT(recieveOldWalletPass(QString)));
+    connect(this, SIGNAL(sendUserInformation(User&)), &ui_ChangePass, SLOT(currentUserPassChange(User&)));
+    connect(&ui_ChangePass, SIGNAL(passwordChanged()), this, SLOT(currentUserPassChange()));
 
     connect(this, SIGNAL(requestButton_clicked()), this, SLOT(createLink()));
 
@@ -104,7 +105,6 @@ void MainWindow::authorizeUser()
 
         wallet_key = ui_Auth.getInputKey();
 
-        Users users_information;
         JSON file_json("users.json");
         file_json.read_users_file(users_information);
 
@@ -115,7 +115,6 @@ void MainWindow::authorizeUser()
             current_user = users_information.getUser(wallet_key);
 
             Balance current_user_balance = val_1.getBlockChain().getLastBlock().getUserBalance(current_user.getAddress());
-
 
             if(!current_user.isAdmin())
             {
@@ -907,7 +906,7 @@ void MainWindow::blocksNext()
 
 void MainWindow::sendWalletPassToChangeForm()
 {
-    emit sendWalletPass(wallet_key);
+    emit sendUserInformation(current_user);
 }
 
 
@@ -1017,5 +1016,13 @@ void MainWindow::createLink()
 
 
 
+}
+
+void MainWindow::currentUserPassChange()
+{
+    qDebug() << current_user.getAddress();
+    qDebug() << current_user.getPassword();
+
+    users_information.setUserPassword(current_user.getAddress(), current_user.getPassword());
 }
 

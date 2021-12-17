@@ -60,7 +60,7 @@ signals:
     void allBlocksView_prev_clicked();
 
     void sendTransaction(TransactionData new_transaction);
-    void sendWalletPass(QString);
+    void sendUserInformation(User&);
 
     void languageChanged(QVector<QString>);
     void languageChanged(int);
@@ -73,6 +73,7 @@ protected:
 private:
     Ui::MainWindow *ui;
 
+    Users users_information;
     User current_user;
 
     Validator val_1;
@@ -142,6 +143,8 @@ private:
 private slots:
     void authorizeUser();
     void registerUser();
+
+    void currentUserPassChange();
 
     void homeTR();
     void sendTR();
