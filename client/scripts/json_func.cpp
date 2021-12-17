@@ -21,6 +21,25 @@ languages tolanguages1(int language)
     }
 }
 
+CoinsType toCoinsType1(int CoinId)
+{
+    switch (CoinId) {
+    case 0:
+        return BWC;
+        break;
+    case 1:
+        return BWC_N;
+        break;
+    case 2:
+        return BWC_Q;
+        break;
+    default:
+        return CoinsTypeERROR;
+        break;
+    }
+}
+
+
 JSON::JSON(QString fileName)
 {
     /*
@@ -49,37 +68,75 @@ JSON::JSON(QString fileName)
         //qDebug() << "\n\ndoc_constructor :" << doc;
 }
 
-//void JSON::read_all_chain(){
-//    JSON file(filename);
-//    bool genesis = true;
-//    qDebug() << "\narray_size:" << file.new_get_array_size_blockchain();
-//    for(int index = 0; index < file.new_get_array_size_blockchain(); index++)
-//    {
+void JSON::read_all_chain(Blockchain &a){
+    JSON file(filename);
 
-//            if(index > 0)
-//            {
-//                genesis = false;
-//            }
-//            qDebug() << "\nreadChain:";
-//            qDebug() << "Amount:" << file.new_get_amount(index);
-//            qDebug() << "Reciever:" << file.new_get_reciever(index);
-//            qDebug() << "Sender:" << file.new_get_sender(index);
-//            qDebug() << "TimeStamp:" << file.new_get_timestamp(index);
-//            addBlock(file.new_get_id(index),
-//                     TransactionData(file.new_get_sender(index),
-//                                     file.new_get_reciever(index),
-//                                     file.new_get_amount(index),
-//                                     toCoinsType(file.new_get_CoinsType(index)),
-//                                     file.new_get_fee(index),
-//                                     file.new_get_priority(index),
-//                                     file.new_get_timestamp(index)),
-//                    file.new_get_prev_hash(index),
-//                    file.new_get_hash(index),
-//                     genesis);
+    bool genesis = true;
+    qDebug() << "\narray_size:" << file.new_get_array_size_blockchain();
+    for(int index = 0; index < file.new_get_array_size_blockchain(); index++)
+    {
+
+            if(index > 0)
+            {
+                genesis = false;
+            }
+            qDebug() << "Index: " << index;
+            qDebug() << "\nreadChain:";
+            qDebug() << "Amount:" << file.new_get_amount(index);
+            qDebug() << "Reciever:" << file.new_get_reciever(index);
+            qDebug() << "Sender:" << file.new_get_sender(index);
+            qDebug() << "TimeStamp:" << file.new_get_timestamp(index);
+            a.addBlock(file.new_get_id(index),
+                     TransactionData(file.new_get_sender(index),
+                                     file.new_get_reciever(index),
+                                     file.new_get_amount(index),
+                                     toCoinsType1(file.new_get_CoinsType(index)),
+                                     file.new_get_fee(index),
+                                     file.new_get_priority(index),
+                                     file.new_get_timestamp(index)),
+                    file.new_get_prev_hash(index),
+                    file.new_get_hash(index),
+                     genesis);
 
 
-//    }
-//}
+    }
+}
+
+void JSON::read_all_chain(Validator &a){
+    JSON file(filename);
+
+    bool genesis = true;
+    qDebug() << "\narray_size:" << file.new_get_array_size_blockchain();
+    for(int index = 0; index < file.new_get_array_size_blockchain(); index++)
+    {
+
+            if(index > 0)
+            {
+                genesis = false;
+            }
+            qDebug() << "Index: " << index;
+            qDebug() << "\nreadChain:";
+            qDebug() << "Amount:" << file.new_get_amount(index);
+            qDebug() << "Reciever:" << file.new_get_reciever(index);
+            qDebug() << "Sender:" << file.new_get_sender(index);
+            qDebug() << "TimeStamp:" << file.new_get_timestamp(index);
+
+            a.getBlockChain().addBlock(file.new_get_id(index),
+                     TransactionData(file.new_get_sender(index),
+                                     file.new_get_reciever(index),
+                                     file.new_get_amount(index),
+                                     toCoinsType1(file.new_get_CoinsType(index)),
+                                     file.new_get_fee(index),
+                                     file.new_get_priority(index),
+                                     file.new_get_timestamp(index)),
+                    file.new_get_prev_hash(index),
+                    file.new_get_hash(index),
+                     genesis);
+
+
+    }
+}
+
 
 void JSON::set_language_user(QString address, int language){
     QFile json_file(filename);
@@ -222,7 +279,7 @@ void JSON::changed_passphrase_address(QString address, QString new_walletKey){
     }
     json_file.write(doc.toJson());
 }
-
+/*
 void JSON::write_all_chain(QVector<Block> chain)
 {
     QFile json_file(filename);
@@ -286,7 +343,7 @@ void JSON::write_all_chain(QVector<Block> chain)
      }
      json_file.write(document.toJson());
 }
-
+*/
 
 void JSON::write_all_chain(Block chain){
     chain.getBlockData().getAmount();
@@ -348,12 +405,6 @@ void JSON::write_all_chain(Block chain){
      json_file.write(document.toJson());
 }
 
-void JSON:: write_chain_json(){
-    QJsonObject jsonObj3;
-    //jsonObj3.insert("Sender", chain[1].getBlockData().getSender());
-}
-
-
 
 QString JSON:: new_get_hash(int number_block){
     QJsonObject json = doc.object();
@@ -379,6 +430,7 @@ int JSON:: new_get_id(int number_block){
     return id;
 }
 
+/*
 QString JSON:: new_get_address(int number_block, int num_balance){
     QJsonObject root = doc.object();
     QJsonArray tlmtArray = root.value("Blockchain").toArray();
@@ -422,6 +474,7 @@ double JSON:: new_get_BWC_Q_balance(int number_block, int num_balance){
     double BWC_Q_balance = value2["Balance BWC-Q"].toDouble();
     return BWC_Q_balance;
 }
+*/
 
 double JSON:: new_get_amount(int number_block){
     QJsonObject root = doc.object();
@@ -536,62 +589,6 @@ int JSON:: new_get_CoinsType(int number_block){
     return coins_type ;
 }
 
-
-void JSON:: new_print(){
-    QJsonObject root = doc.object();
-    //QJsonArray tlmtArray = root.value("A").toArray();
-    QJsonArray tlmtArray = root.value("Blockchain").toArray();
-
-    for(int i = 0; i < tlmtArray.size(); ++i)
-    {
-        QJsonObject obj = tlmtArray[i].toObject();
-        QJsonArray gps_array = obj.value("Block Data").toArray();
-        QJsonArray gps_array2 = obj.value("Balances").toArray();
-
-        QString Hash = obj.value("Hash").toString();
-        int Id = obj.value("Id").toInt();
-        QString prev_hash =obj.value("Previous Hash").toString();
-//        qDebug() <<"Hash:" << Hash  ;
-//        qDebug() <<"Previous Hash:" << prev_hash  ;
-//        qDebug() <<"Id:" << Id  ;
-//         qDebug() <<"Blockchain array size:" << tlmtArray.size()  ;
-//         qDebug() <<"Balances array size:" << gps_array2.size()  ;
-//         qDebug() <<"Block Data array size:" << gps_array.size()  ;
-
-//        std::cout << "----\n";
-        for(int j = 0; j < gps_array.size(); ++j)
-        {
-
-            QJsonObject gps_obj = gps_array[j].toObject();
-            QJsonValue value2 = gps_array.at(j);
-            //QString address_recipient = value2["address_recipient"].toString();
-//            qDebug() <<"Amount:" << value2["Amount"].toDouble();
-//            qDebug() <<"Coins Type:"  << value2["Coins Type"].toInt();
-//            qDebug() <<"Fee:"  << value2["Fee"].toDouble();
-//            qDebug() <<"Priority:"  << value2["Priority"].toInt();
-//            qDebug() <<"Reciever:"  << value2["Reciever"].toString();
-//            qDebug() <<"Sender:"  << value2["Sender"].toString();
-//            qDebug() <<"TimeStamp:"  << value2["TimeStamp"].toString();
-//            std::cout << "\n";
-        }
-//        std::cout << "--\n";
-        for(int j = 0; j < gps_array2.size(); ++j)
-        {
-
-            QJsonObject gps_obj = gps_array2[j].toObject();
-            QJsonValue value2 = gps_array2.at(j);
-            //QString address_recipient = value2["address_recipient"].toString();
-//            qDebug() <<"Address:" << value2["Address"].toString();
-//            qDebug() <<"Balance BWC:"  << value2["Balance BWC"].toDouble();
-//            qDebug() <<"Balance BWC-N:"  << value2["Balance BWC-N"].toDouble();
-//            qDebug() <<"Balance BWC-Q:"  << value2["Balance BWC-Q"].toDouble();
-
-//            std::cout << "\n";
-        }
-//        std::cout << "-------------------------------------------------------------\n\n";
-    }
-}
-
 int JSON:: new_get_array_size_blockchain(){
     QJsonObject json = doc.object();
     QJsonArray jsonArray = json["Blockchain"].toArray();
@@ -606,14 +603,7 @@ int JSON:: new_get_array_size_balances(int number_block){
     return gps_array.size();
 }
 
-int JSON:: new_get_array_size_block_data(int number_block){
-    QJsonObject json = doc.object();
-    QJsonArray jsonArray = json["Blockchain"].toArray();
-    QJsonObject obj = jsonArray[number_block-1].toObject();
-    QJsonArray gps_array = obj.value("Block Data").toArray();
-    return gps_array.size();
-}
-
+/*
 void JSON:: new_append_balances(int num_user){
     QFile json_file(filename);
     QJsonObject json = doc.object();
@@ -643,7 +633,9 @@ void JSON:: new_append_balances(int num_user){
     }
     json_file.write(doc.toJson());
 }
+*/
 
+/*
 void JSON::  new_write_block_data(int num_user){
     QFile json_file(filename);
     QJsonObject json = doc.object();
@@ -674,7 +666,9 @@ void JSON::  new_write_block_data(int num_user){
     json_file.open(QFile::WriteOnly);
     json_file.write(doc.toJson());
 }
+*/
 
+/*
 void JSON:: new_append_hash2_id(){
     QFile json_file(filename);
     QJsonObject json = doc.object();
@@ -698,7 +692,9 @@ void JSON:: new_append_hash2_id(){
     }
     json_file.write(doc.toJson());
 }
+*/
 
+/*
 void JSON::  new_append_hash2_id(QString hash, int id, QString prev_hash){
     QFile json_file(filename);
     QJsonObject json = doc.object();
@@ -722,7 +718,10 @@ void JSON::  new_append_hash2_id(QString hash, int id, QString prev_hash){
     }
     json_file.write(doc.toJson());
 }
+*/
 
+
+/*
 void JSON:: new_write_block_data(int num_user, QString sender, QString reciever,
                           int amount, int coins_type, double fee,
                           int priority, QString time_stamp){
@@ -759,7 +758,10 @@ void JSON:: new_write_block_data(int num_user, QString sender, QString reciever,
     }
     json_file.write(doc.toJson());
 }
+*/
 
+
+/*
 void JSON:: new_append_balances(int num_user, QString address, double balance_bwc,
                          double balance_bwc_n, double balance_bwc_q){
     QFile json_file(filename);
@@ -791,6 +793,7 @@ void JSON:: new_append_balances(int num_user, QString address, double balance_bw
     json_file.write(doc.toJson());
 
 }
+*/
 
 void JSON:: registerNewUser(QString address, QString walletKey){
     QFile json_file(filename);
@@ -865,7 +868,7 @@ int JSON::get_language_user(int num){
     return language;
 }
 
-void JSON::read_users_file(Users &a) //Идеальный метод класса для Табунщик но я хз куда его вставлять в коде
+void JSON::read_users_file(Users &a)
     {
     QFile json_file(filename);
     QJsonObject json = doc.object();
