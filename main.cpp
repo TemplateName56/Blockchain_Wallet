@@ -15,10 +15,5 @@ int main(int argc, char *argv[])
     window.setWindowIcon(QIcon("icons/programIcon.png"));
     window.display();
 
-    // Delete after tests
-    Users users;
-    users.addUser(User("123", "321", UKRANIAN, false));
-    qDebug() << users.getUser("123").getAddress();
-
     return BlockchainWallet.exec();
 }

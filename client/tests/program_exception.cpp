@@ -102,6 +102,8 @@ void ProgramException::getError()
     case USER_NOT_EXIST:
         qDebug() << "User not exist";
         break;
+    case LANGUAGE_LOAD_ERROR:
+        break;
     default:
         break;
     }

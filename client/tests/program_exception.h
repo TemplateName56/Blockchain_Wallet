@@ -21,7 +21,8 @@ enum ErrorsNames
     SAME_PASSWORD,
     NOT_VALID_PASSWORD,
     OUT_OF_RANGE,
-    USER_NOT_EXIST
+    USER_NOT_EXIST,
+    LANGUAGE_LOAD_ERROR
 };
 
 class ProgramException : public QException

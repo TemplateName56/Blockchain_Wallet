@@ -282,17 +282,25 @@ void Blockchain::createGenesisBlock()
 
 QVector<Block> Blockchain::getChain()
 {
+
     readChain();
     return this->chain;
 }
 
 Block Blockchain::getBlock(int index)
 {
-    if(index >= 0 && index < chain.length())
-    {
-        return chain[index];
+    try {
+        if(index >= 0 && index < chain.length())
+        {
+            return chain[index];
+        }
+        else
+        {
+            throw ProgramException(OUT_OF_RANGE, "Blockchauin::getBlock()");
+        }
+    }  catch (ProgramException &error) {
+        error.getError();
     }
-    throw ProgramException(OUT_OF_RANGE, "Blockchauin::getBlock()");
 }
 
 Block Blockchain::getLastBlock()
@@ -348,13 +356,13 @@ void Blockchain::readChain()
                 genesis = false;
             }
             addBlock(file.new_get_id(index),
-                     TransactionData(file.new_get_sender(index,0),
-                                     file.new_get_reciever(index,0),
-                                     file.new_get_amount(index,0),
-                                     toCoinsType(file.new_get_CoinsType(index, 0)),
-                                     file.new_get_fee(index,0),
-                                     file.new_get_priority(index,0),
-                                     file.new_get_timestamp(index,0)),
+                     TransactionData(file.new_get_sender(index),
+                                     file.new_get_reciever(index),
+                                     file.new_get_amount(index),
+                                     toCoinsType(file.new_get_CoinsType(index)),
+                                     file.new_get_fee(index),
+                                     file.new_get_priority(index),
+                                     file.new_get_timestamp(index)),
                      file.new_get_prev_hash(index),
                      file.new_get_hash(index),
                      genesis);
@@ -395,6 +403,7 @@ void Blockchain::addBlock(Block new_block)
 void Blockchain::show()
 {
     // temp show func
+    qDebug() << chain.length();
     for(int index = 0; index < chain.length(); index++)
     {
         qDebug() << "------------------------------------------";
@@ -424,14 +433,17 @@ void Validator::addTransaction(TransactionData new_transaction)
 {
     chain.addBlock(chain.getLastBlock().getIndex() + 1, new_transaction, chain.getLastBlock().getBlockHash());
 
-    JSON json_file("chain.json");
+    try {
+        JSON json_file("chain.json");
 
-    //json_file.write_all_chain(chain.getChain());
-    json_file.write_all_chain(chain.getLastBlock());
-    //chain.writeChain();
-    authority += 1;
-
-    emit sendTransaction(chain.getLastBlock().getBlockData().getReciever(), chain.getLastBlock().getBlockData());
+        //json_file.write_all_chain(chain.getChain());
+        json_file.write_all_chain(chain.getLastBlock());
+        //chain.writeChain();
+        authority += 1;
+        emit sendTransaction(chain.getLastBlock().getBlockData().getReciever(), chain.getLastBlock().getBlockData());
+    }  catch (ProgramException &error) {
+        error.getError();
+    }
 }
 
 Blockchain Validator::getBlockChain()

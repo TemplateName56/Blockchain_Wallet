@@ -1,6 +1,7 @@
 #include "change_passphrase_form.h"
 #include "ui_change_passphrase_form.h"
 #include "client/scripts/json_func.h"
+#include "settings_form.h"
 
 change_passphrase_Form::change_passphrase_Form(QWidget *parent) :
     QWidget(parent),
@@ -33,10 +34,10 @@ void change_passphrase_Form::on_newPassLE_textChanged(const QString &arg1)
 
 void change_passphrase_Form::on_changePassBTN_clicked()
 {
-    JSON file_users("users.json");
-    //file_users.changed_passphrase_oldkey(old_password, new_password);
-    //file_users.changed_passphrase_address();   //тут нужен адрес текущего пользователя
     try {
+        JSON file_users("users.json");
+        //file_users.changed_passphrase_oldkey(old_password, new_password);
+        //file_users.changed_passphrase_address();   //тут нужен адрес текущего пользователя
         if(old_password == new_password)
         {
             throw ProgramException(SAME_PASSWORD);
@@ -66,26 +67,29 @@ void change_passphrase_Form::setWindowLanguage(QVector<QString> language_vector)
 
 }
 
-void change_passphrase_Form::on_languagesBox_currentIndexChanged(int index){
+void change_passphrase_Form::setWindowLanguage(int index){
 
 switch (index) {
 
-   //case ENGLISH:
+case ENGLISH:
 
-        //ui->textEdit_change_pass->setText("<html><head/><body><p><span style=\" font-size:8pt;\">Enter a </span><span style=\" font-size:8pt; font-weight:600;\">new password</span><span style=\" font-size:8pt;\"> for your wallet.</span></p><p><span style=\" font-size:8pt;\">Please use a password of </span><span style=\" font-size:8pt; font-weight:600;\">ten </span><span style=\" font-size:8pt;\">random characters!<br/></span></p></body></html>");
+    ui->textEdit_change_pass->setText("<html><head/><body><p><span style=\" font-size:8pt;\">Enter a </span><span style=\" font-size:8pt; font-weight:600;\">new password</span><span style=\" font-size:8pt;\"> for your wallet.</span></p><p><span style=\" font-size:8pt;\">Please use a password of </span><span style=\" font-size:8pt; font-weight:600;\">ten </span><span style=\" font-size:8pt;\">random characters!<br/></span></p></body></html>");
+    this->setWindowTitle("Change the password");
 
-       // break;
+    break;
 
-//    case UKRANIAN:
+case UKRANIAN:
 
-//ui->textEdit_change_pass->setText("<html><head/><body><p>Введіть <span style=\" font-weight:600;\">новий пароль</span> для свого гаманця.</p><p>Будь ласка, використовуйте пароль з <span style=\" font-weight:600;\">десяти</span> випадкових символів!</p></body></html>");
+    ui->textEdit_change_pass->setText("<html><head/><body><p>Введіть <span style=\" font-weight:600;\">новий пароль</span> для свого гаманця.</p><p>Будь ласка, використовуйте пароль з <span style=\" font-weight:600;\">десяти</span> випадкових символів!</p></body></html>");
+    this->setWindowTitle("Змініти пароль");
 
-         //        break;
+    break;
 
-//    case RUSSIAN:
-//
-        //ui->textEdit_change_pass->setText("<html><head/><body><p>Введите <span style=\" font-weight:600;\">новый пароль</span> для вашего кошелька.</p><p>Пожалуйста, используйте пароль из <span style=\" font-weight:600;\">десяти</span> случайных символов!</p></body></html>");
+case RUSSIAN:
 
-//        break;
+    ui->textEdit_change_pass->setText("<html><head/><body><p>Введите <span style=\" font-weight:600;\">новый пароль</span> для вашего кошелька.</p><p>Пожалуйста, используйте пароль из <span style=\" font-weight:600;\">десяти</span> случайных символов!</p></body></html>");
+    this->setWindowTitle("Изменить пароль");
+
+    break;
     }
 }
