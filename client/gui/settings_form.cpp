@@ -61,11 +61,18 @@ void settings_Form::readSettings()
 
 //    QJsonObject current_json = json_document.object();
 
-    JSON file("users.json");
+
     //file.get_language_user("BW000000000000000");
-    settings_Form::languageIndex = file.get_language_user("BW000000000000000"); //вместо BW000000000000001 нужен адрес текущего пользователя
+     //вместо BW000000000000001 нужен адрес текущего пользователя
     //qDebug() << "languageIndex: " << settings_Form::languageIndex ;
     //settings_Form::languageIndex = current_json.value("Language").toInt();
+    try {
+        JSON file("users.json");
+        settings_Form::languageIndex = file.get_language_user("BW000000000000000");
+    }  catch (ProgramException &error) {
+        error.getError();
+    }
+
 }
 
 //void settings_Form::writeSettings()
@@ -89,30 +96,39 @@ void settings_Form::readSettings()
 
 void settings_Form::closeEvent(QCloseEvent *event)
 {
-    JSON file("users.json");
-    //qDebug() << settings_Form::languageIndex;
-    file.set_language_user("BW000000000000000",settings_Form::languageIndex);  //вместо BW000000000000001 нужен адрес текущего пользователя
-    //writeSettings();
+    try {
+        JSON file("users.json");
+        //qDebug() << settings_Form::languageIndex;
+        file.set_language_user("BW000000000000000",settings_Form::languageIndex);  //вместо BW000000000000001 нужен адрес текущего пользователя
+        //writeSettings();
+    }  catch (ProgramException &error) {
+        error.getError();
+    }
+
 }
 
 void settings_Form::setWindowLanguage()
 {
-    CSV file_tr("translation.csv");
+    try {
+        CSV file_tr("translation.csv");
 
-     QVector<QString> str = file_tr.get_tr(languageIndex);
+        QVector<QString> str = file_tr.get_tr(languageIndex);
 
-     this->setWindowTitle(str.at(0));
+        this->setWindowTitle(str.at(0));
 
-     ui->tabWidget->setTabText(0,str.at(1));
-     ui->tabWidget->setTabText(1,str.at(2));
-     ui->tabWidget->setTabText(2,str.at(3));
+        ui->tabWidget->setTabText(0,str.at(1));
+        ui->tabWidget->setTabText(1,str.at(2));
+        ui->tabWidget->setTabText(2,str.at(3));
 
-     ui->label->setText(str.at(4));
-     ui->trayCheckBox->setText(str.at(5));
-     ui->languageLabel->setText(str.at(6));
-     ui->coinsTypeLabel->setText(str.at(7));
+        ui->label->setText(str.at(4));
+        ui->trayCheckBox->setText(str.at(5));
+        ui->languageLabel->setText(str.at(6));
+        ui->coinsTypeLabel->setText(str.at(7));
 
-     emit languageChanged(str, languageIndex);
+        emit languageChanged(str, languageIndex);
+    }  catch (ProgramException &error) {
+        error.getError();
+    }
 }
 
 

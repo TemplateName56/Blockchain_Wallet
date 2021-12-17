@@ -289,11 +289,18 @@ QVector<Block> Blockchain::getChain()
 
 Block Blockchain::getBlock(int index)
 {
-    if(index >= 0 && index < chain.length())
-    {
-        return chain[index];
+    try {
+        if(index >= 0 && index < chain.length())
+        {
+            return chain[index];
+        }
+        else
+        {
+            throw ProgramException(OUT_OF_RANGE, "Blockchauin::getBlock()");
+        }
+    }  catch (ProgramException &error) {
+        error.getError();
     }
-    throw ProgramException(OUT_OF_RANGE, "Blockchauin::getBlock()");
 }
 
 Block Blockchain::getLastBlock()
@@ -425,13 +432,17 @@ void Validator::addTransaction(TransactionData new_transaction)
 {
     chain.addBlock(chain.getLastBlock().getIndex() + 1, new_transaction, chain.getLastBlock().getBlockHash());
 
-    JSON json_file("chain.json");
+    try {
+        JSON json_file("chain.json");
 
-    //json_file.write_all_chain(chain.getChain());
-    json_file.write_all_chain(chain.getLastBlock());
-    //chain.writeChain();
-    authority += 1;
-    emit sendTransaction(chain.getLastBlock().getBlockData().getReciever(), chain.getLastBlock().getBlockData());
+        //json_file.write_all_chain(chain.getChain());
+        json_file.write_all_chain(chain.getLastBlock());
+        //chain.writeChain();
+        authority += 1;
+        emit sendTransaction(chain.getLastBlock().getBlockData().getReciever(), chain.getLastBlock().getBlockData());
+    }  catch (ProgramException &error) {
+        error.getError();
+    }
 }
 
 Blockchain Validator::getBlockChain()

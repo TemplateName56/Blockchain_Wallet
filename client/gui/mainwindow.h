@@ -73,6 +73,8 @@ protected:
 private:
     Ui::MainWindow *ui;
 
+    User current_user;
+
     Validator val_1;
     Validator val_2;
     Validator val_3;

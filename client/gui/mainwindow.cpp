@@ -28,6 +28,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(&ui_Auth, SIGNAL(destroyed()), this, SLOT(show()));
 
     connect(&ui_Settings, SIGNAL(languageChanged(QVector<QString>, int)), this, SLOT(setWindowLanguage(QVector<QString>, int)));
+
     connect(this, SIGNAL(languageChanged(QVector<QString>)), &ui_Auth, SLOT(setWindowLanguage(QVector<QString>)));
     connect(this, SIGNAL(languageChanged(int)), &ui_AboutProgram, SLOT(setWindowLanguage(int)));
     connect(this, SIGNAL(languageChanged(int)), &ui_AboutAuthors, SLOT(setWindowLanguage(int)));
@@ -55,7 +56,6 @@ MainWindow::MainWindow(QWidget *parent)
     connect(this, SIGNAL(requestButton_clicked()), this, SLOT(createLink()));
 
     ui->stackedWidget->setCurrentIndex(0);
-    //setWindowLanguage();
 
     //statusBar()->showMessage("Connected...");
     ui_Settings.setWindowLanguage();
@@ -104,35 +104,31 @@ void MainWindow::authorizeUser()
 
         wallet_key = ui_Auth.getInputKey();
 
-        JSON file("users.json");
-        QVector<QString> valid_keys = file.get_users_info(JSON::KEY);
+        Users users_information;
+        JSON file_json("users.json");
+        file_json.read_users_file(users_information);
 
-        int index = valid_keys.indexOf(QString::fromStdString(use_algoritm.Hash(wallet_key.toStdString() + "SALT")));
-
-        if(index != -1)
+        if(users_information.isPasswordExists(wallet_key))
         {
             ui_Auth.close();
             Sleep(250);
-            QVector<QString> user_address = file.get_users_info(JSON::ADDRESS);
-            wallet_address = user_address[index];
+            current_user = users_information.getUser(wallet_key);
 
-            Balance current_user = val_1.getBlockChain().getLastBlock().getUserBalance(wallet_address);
+            Balance current_user_balance = val_1.getBlockChain().getLastBlock().getUserBalance(current_user.getAddress());
 
-            QVector<QString> users_admin = file.get_users_info(JSON::ADMIN);
-            QString admin_check = users_admin[index];
 
-            if(admin_check == "0")
+            if(!current_user.isAdmin())
             {
                 main_menu->removeAction(all_blocks);
                 toolbar->removeAction(all_blocks);
             }
-            ui->bwcBalance->setText(QString::number(current_user.getBalance(BWC)));
-            ui->bwcNBalance->setText(QString::number(current_user.getBalance(BWC_N)));
-            ui->bwcQBalance->setText(QString::number(current_user.getBalance(BWC_Q)));
+            ui->bwcBalance->setText(QString::number(current_user_balance.getBalance(BWC)));
+            ui->bwcNBalance->setText(QString::number(current_user_balance.getBalance(BWC_N)));
+            ui->bwcQBalance->setText(QString::number(current_user_balance.getBalance(BWC_Q)));
 
             this->show();
 
-            ui->walletAddressLabel->setText(wallet_address);
+            ui->walletAddressLabel->setText(current_user.getAddress());
             ui->walletKeyLabel->setText(wallet_key);
         }
         else
@@ -165,11 +161,11 @@ void MainWindow::registerUser()
         ui_Auth.close();
         Sleep(250);
 
-        Balance current_user = val_1.getBlockChain().getLastBlock().getUserBalance(wallet_address);
+        Balance current_user_balance = val_1.getBlockChain().getLastBlock().getUserBalance(wallet_address);
 
-        ui->bwcBalance->setText(QString::number(current_user.getBalance(BWC)));
-        ui->bwcNBalance->setText(QString::number(current_user.getBalance(BWC_N)));
-        ui->bwcQBalance->setText(QString::number(current_user.getBalance(BWC_Q)));
+        ui->bwcBalance->setText(QString::number(current_user_balance.getBalance(BWC)));
+        ui->bwcNBalance->setText(QString::number(current_user_balance.getBalance(BWC_N)));
+        ui->bwcQBalance->setText(QString::number(current_user_balance.getBalance(BWC_Q)));
 
         this->show();
         throw ProgramException(SAVE_PASSPHRASE, wallet_key);
@@ -408,23 +404,23 @@ void MainWindow::newTransaction(QString wallet_address, TransactionData data)
         val_3.setBlockChain(val_2.getBlockChain());
     }
 
-    if(wallet_address == this->wallet_address)
+    if(wallet_address == current_user.getAddress())
     {
-        Balance current_user = val_1.getBlockChain().getLastBlock().getUserBalance(wallet_address);
+        Balance current_user_balance = val_1.getBlockChain().getLastBlock().getUserBalance(current_user.getAddress());
 
-        ui->bwcBalance->setText(QString::number(current_user.getBalance(BWC)));
-        ui->bwcNBalance->setText(QString::number(current_user.getBalance(BWC_N)));
-        ui->bwcQBalance->setText(QString::number(current_user.getBalance(BWC_Q)));
+        ui->bwcBalance->setText(QString::number(current_user_balance.getBalance(BWC)));
+        ui->bwcNBalance->setText(QString::number(current_user_balance.getBalance(BWC_N)));
+        ui->bwcQBalance->setText(QString::number(current_user_balance.getBalance(BWC_Q)));
 
         emit addTransactionCard(data.getSender(), data.getTimeStamp(), data.getAmount(), data.getCoinsType(), 1);
     }
     else
     {
-        Balance current_user = val_1.getBlockChain().getLastBlock().getUserBalance(this->wallet_address);
+        Balance current_user_balance = val_1.getBlockChain().getLastBlock().getUserBalance(current_user.getAddress());
 
-        ui->bwcBalance->setText(QString::number(current_user.getBalance(BWC)));
-        ui->bwcNBalance->setText(QString::number(current_user.getBalance(BWC_N)));
-        ui->bwcQBalance->setText(QString::number(current_user.getBalance(BWC_Q)));
+        ui->bwcBalance->setText(QString::number(current_user_balance.getBalance(BWC)));
+        ui->bwcNBalance->setText(QString::number(current_user_balance.getBalance(BWC_N)));
+        ui->bwcQBalance->setText(QString::number(current_user_balance.getBalance(BWC_Q)));
     }
 }
 
@@ -554,22 +550,22 @@ void MainWindow::requestsHistory()
                     HistoryList.append(new QStandardItem(json_file.new_get_fee(i)));
                 }
             count++;
+            }
+            for(int i = 0; i < count; i++)
+            {
+                HistoryList[i]->setTextAlignment(Qt::AlignCenter);
+            }
+            history_view_model->insertRow(history_view_model->rowCount(), HistoryList);
         }
-        for(int i = 0; i < count; i++)
-        {
-            HistoryList[i]->setTextAlignment(Qt::AlignCenter);
-        }
-        history_view_model->insertRow(history_view_model->rowCount(), HistoryList);
+    }  catch (ProgramException &error) {
+        error.getError();
     }
-}  catch (ProgramException &error) {
-    error.getError();
-}
 
 }
 
 bool MainWindow::isAmountCorrect(double amount, CoinsType coins_type)
 {
-    Balance this_user = val_1.getBlockChain().getLastBlock().getUserBalance(wallet_address);
+    Balance this_user = val_1.getBlockChain().getLastBlock().getUserBalance(current_user.getAddress());
     switch (coins_type) {
     case BWC:
         if(this_user.getBalance(BWC) >= amount)
@@ -704,43 +700,43 @@ void MainWindow::on_sendCoinsButton_clicked()
         case 1:
             if(val_1.getAuthority() == max_authority)
             {
-                emit sendButton_clicked_val_1(TransactionData(wallet_address, reciever_address, amount, coins_type, fee, priority));
+                emit sendButton_clicked_val_1(TransactionData(current_user.getAddress(), reciever_address, amount, coins_type, fee, priority));
             }
             else if(val_2.getAuthority() == max_authority)
             {
-                emit sendButton_clicked_val_2(TransactionData(wallet_address, reciever_address, amount, coins_type, fee, priority));
+                emit sendButton_clicked_val_2(TransactionData(current_user.getAddress(), reciever_address, amount, coins_type, fee, priority));
             }
             else if(val_3.getAuthority() == max_authority)
             {
-                emit sendButton_clicked_val_3(TransactionData(wallet_address, reciever_address, amount, coins_type, fee, priority));
+                emit sendButton_clicked_val_3(TransactionData(current_user.getAddress(), reciever_address, amount, coins_type, fee, priority));
             }
             break;
         case 2:
             if(val_1.getAuthority() < max_authority && val_1.getAuthority() > min_authority)
             {
-                emit sendButton_clicked_val_1(TransactionData(wallet_address, reciever_address, amount, coins_type, fee, priority));
+                emit sendButton_clicked_val_1(TransactionData(current_user.getAddress(), reciever_address, amount, coins_type, fee, priority));
             }
             else if(val_2.getAuthority() < max_authority && val_2.getAuthority() > min_authority)
             {
-                emit sendButton_clicked_val_2(TransactionData(wallet_address, reciever_address, amount, coins_type, fee, priority));
+                emit sendButton_clicked_val_2(TransactionData(current_user.getAddress(), reciever_address, amount, coins_type, fee, priority));
             }
             else if(val_3.getAuthority() < max_authority && val_3.getAuthority() > min_authority)
             {
-                emit sendButton_clicked_val_3(TransactionData(wallet_address, reciever_address, amount, coins_type, fee, priority));
+                emit sendButton_clicked_val_3(TransactionData(current_user.getAddress(), reciever_address, amount, coins_type, fee, priority));
             }
             break;
         case 3:
             if(val_1.getAuthority() == min_authority)
             {
-                emit sendButton_clicked_val_1(TransactionData(wallet_address, reciever_address, amount, coins_type, fee, priority));
+                emit sendButton_clicked_val_1(TransactionData(current_user.getAddress(), reciever_address, amount, coins_type, fee, priority));
             }
             else if(val_2.getAuthority() == min_authority)
             {
-                emit sendButton_clicked_val_2(TransactionData(wallet_address, reciever_address, amount, coins_type, fee, priority));
+                emit sendButton_clicked_val_2(TransactionData(current_user.getAddress(), reciever_address, amount, coins_type, fee, priority));
             }
             else if(val_3.getAuthority() == min_authority)
             {
-                emit sendButton_clicked_val_3(TransactionData(wallet_address, reciever_address, amount, coins_type, fee, priority));
+                emit sendButton_clicked_val_3(TransactionData(current_user.getAddress(), reciever_address, amount, coins_type, fee, priority));
             }
             break;
         default:
@@ -963,21 +959,16 @@ void MainWindow::createLink()
     QString link = QString::fromStdString(algo.GenerateLink(request_message.toStdString() +
                                                             request_amount.toStdString() +
                                                             coinsTypeToString(request_coins_type).toStdString() +
-                                                            wallet_address.toStdString()));
+                                                            current_user.getAddress().toStdString()));
     ui->requestLabelLine->setText(link);
-    qDebug() << QString::fromStdString(algo.DecryptionLink(link.toStdString()));
-    CSV file("requestsList.csv");
-    file.append_csv_request(link, request_message,
-                            request_amount, coinsTypeToString(request_coins_type),
-                            wallet_address);
-
-    //===== Чтение и запись Users =====//
-    Users object_users;
-    JSON file_json("users.json");
-    file_json.read_users_file(object_users);// Никит, закинь этот метод куда надо в коде
-
-    JSON file_json2("users_object_users.json");
-    file_json2.write_users_file(object_users);//записываю в другой файл т.к. isAdmin не работает и запись по сути идёт без данных об админе
-    //===== Чтение и запись Users =====//
+    //qDebug() << QString::fromStdString(algo.DecryptionLink(link.toStdString()));
+    try {
+        CSV file("requestsList.csv");
+        file.append_csv_request(link, request_message,
+                                request_amount, coinsTypeToString(request_coins_type),
+                                current_user.getAddress());
+    }  catch (ProgramException &error) {
+        error.getError();
+    }
 }
 
