@@ -7,7 +7,9 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+
     ui->priorityComboBox->setEnabled(false);
+    ui->putLinkLE->setDisabled(true);
 
     val_1.setAuthority(100);
     val_2.setAuthority(75);
@@ -51,7 +53,8 @@ MainWindow::MainWindow(QWidget *parent)
     connect(this, SIGNAL(allBlocksView_next_clicked()), this, SLOT(blocksNext()));
     connect(this, SIGNAL(allBlocksView_prev_clicked()), this, SLOT(blocksPrev()));
 
-    connect(this, SIGNAL(sendWalletPass(QString)), &ui_ChangePass, SLOT(recieveOldWalletPass(QString)));
+    connect(this, SIGNAL(sendUserInformation(User&)), &ui_ChangePass, SLOT(currentUserPassChange(User&)));
+    connect(&ui_ChangePass, SIGNAL(passwordChanged()), this, SLOT(currentUserPassChange()));
 
     connect(this, SIGNAL(requestButton_clicked()), this, SLOT(createLink()));
 
@@ -104,7 +107,6 @@ void MainWindow::authorizeUser()
 
         wallet_key = ui_Auth.getInputKey();
 
-        Users users_information;
         JSON file_json("users.json");
         file_json.read_users_file(users_information);
 
@@ -116,7 +118,6 @@ void MainWindow::authorizeUser()
 
             Balance current_user_balance = val_1.getBlockChain().getLastBlock().getUserBalance(current_user.getAddress());
 
-
             if(!current_user.isAdmin())
             {
                 main_menu->removeAction(all_blocks);
@@ -125,6 +126,8 @@ void MainWindow::authorizeUser()
             ui->bwcBalance->setText(QString::number(current_user_balance.getBalance(BWC)));
             ui->bwcNBalance->setText(QString::number(current_user_balance.getBalance(BWC_N)));
             ui->bwcQBalance->setText(QString::number(current_user_balance.getBalance(BWC_Q)));
+
+            emit on_coinsBox_currentIndexChanged(current_user.getUserPreferCoinsType());
 
             this->show();
 
@@ -147,8 +150,12 @@ void MainWindow::registerUser()
         wallet_address = randomWalletAdress();
         wallet_key = randomWalletKey();
 
-        JSON file("users.json");
-        file.registerNewUser(wallet_address, wallet_key + "SALT");
+        //JSON file("users.json");
+        //file.registerNewUser(wallet_address, wallet_key + "SALT");
+
+        users_information.addUser(User(wallet_address, wallet_key, true));
+
+        current_user = users_information.getUser(wallet_key);
 
         ui->walletKeyLabel->setStyleSheet("* { background-color: rgba(0, 0, 0, 0); }");
 
@@ -166,6 +173,8 @@ void MainWindow::registerUser()
         ui->bwcBalance->setText(QString::number(current_user_balance.getBalance(BWC)));
         ui->bwcNBalance->setText(QString::number(current_user_balance.getBalance(BWC_N)));
         ui->bwcQBalance->setText(QString::number(current_user_balance.getBalance(BWC_Q)));
+
+        emit on_coinsBox_currentIndexChanged(0);
 
         this->show();
         throw ProgramException(SAVE_PASSPHRASE, wallet_key);
@@ -427,6 +436,7 @@ void MainWindow::newTransaction(QString wallet_address, TransactionData data)
 void MainWindow::on_payToAddress_textChanged(const QString &arg1)
 {
     this->reciever_address = arg1;
+    //qDebug() << arg1;
 }
 
 void MainWindow::requestsHistory()
@@ -466,7 +476,7 @@ void MainWindow::requestsHistory()
         CSV file("requestsList.csv");
         //CSV file("requestsList.csv");
         //CSV file("request2.csv");
-        QVector<QString> str_request = file.find_user("BW000000000000000"); //вместо BW000000000000001 нужен адрес текущего пользователя
+        QVector<QString> str_request = file.find_user(current_user.getAddress()); //вместо BW000000000000001 нужен адрес текущего пользователя
         //qDebug() << str_request;
 
         for(int index = 0; index < str_request.size(); index++)
@@ -859,6 +869,13 @@ QString coinsTypeToString(CoinsType coins_type)
     }
 }
 
+int coinsTypeStringToInt(QString coins_type)
+{
+    if(coins_type == "BWC") return 0;
+    if(coins_type == "BWC-N") return 1;
+    if(coins_type == "BWC-Q") return 2;
+}
+
 
 void MainWindow::on_prevBlockBTN_clicked()
 {
@@ -907,7 +924,7 @@ void MainWindow::blocksNext()
 
 void MainWindow::sendWalletPassToChangeForm()
 {
-    emit sendWalletPass(wallet_key);
+    emit sendUserInformation(current_user);
 }
 
 
@@ -956,9 +973,9 @@ void MainWindow::on_messageLine_textChanged(const QString &arg1)
 void MainWindow::createLink()
 {
     algoritms algo;
-    QString link = QString::fromStdString(algo.GenerateLink(request_message.toStdString() +
-                                                            request_amount.toStdString() +
-                                                            coinsTypeToString(request_coins_type).toStdString() +
+    QString link = QString::fromStdString(algo.GenerateLink(request_message.toStdString() + ";" +
+                                                            request_amount.toStdString() + ";" +
+                                                            coinsTypeToString(request_coins_type).toStdString() + ";" +
                                                             current_user.getAddress().toStdString()));
     ui->requestLabelLine->setText(link);
     //qDebug() << QString::fromStdString(algo.DecryptionLink(link.toStdString()));
@@ -1017,5 +1034,69 @@ void MainWindow::createLink()
 
 
 
+}
+
+void MainWindow::currentUserPassChange()
+{
+    qDebug() << current_user.getAddress();
+    qDebug() << current_user.getPassword();
+
+    users_information.setUserPassword(current_user.getAddress(), current_user.getPassword());
+
+    JSON file_json("users.json");
+    file_json.write_users_file(users_information);
+}
+
+
+void MainWindow::on_linkCB_stateChanged(int arg1)
+{
+    switch(arg1)
+    {
+    case 0:
+        emit on_clearSendButton_clicked();
+
+        ui->putLinkLE->setDisabled(true);
+
+        ui->payToAddress->setDisabled(false);
+        ui->sendTransactionLabel->setDisabled(false);
+
+        ui->amountSpinBox->setDisabled(false);
+
+        ui->coinsBox->setDisabled(false);
+        break;
+    case 2:
+        emit on_clearSendButton_clicked();
+
+        ui->putLinkLE->setDisabled(false);
+
+        ui->payToAddress->setDisabled(true);
+        ui->sendTransactionLabel->setDisabled(true);
+
+        ui->amountSpinBox->setDisabled(true);
+
+        ui->coinsBox->setDisabled(true);
+        break;
+    default:
+        break;
+    }
+}
+
+
+void MainWindow::on_putLinkLE_textChanged(const QString &arg1)
+{
+    algoritms algo;
+    link = arg1;
+
+    if(link.length() >= 36 && -1 != link.indexOf("https://"))
+    {
+        link = QString::fromStdString(algo.DecryptionLink(link.toStdString()));
+        QStringList encrypted_link = link.split(";");
+
+
+        ui->sendTransactionLabel->setText(encrypted_link.at(0));
+        ui->amountSpinBox->setValue(encrypted_link.at(1).toDouble());
+        ui->coinsBox->setCurrentIndex(coinsTypeStringToInt(encrypted_link.at(2)));
+        ui->payToAddress->setText(encrypted_link.at(3));
+    }
 }
 

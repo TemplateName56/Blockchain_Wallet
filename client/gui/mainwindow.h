@@ -60,7 +60,7 @@ signals:
     void allBlocksView_prev_clicked();
 
     void sendTransaction(TransactionData new_transaction);
-    void sendWalletPass(QString);
+    void sendUserInformation(User&);
 
     void languageChanged(QVector<QString>);
     void languageChanged(int);
@@ -73,6 +73,7 @@ protected:
 private:
     Ui::MainWindow *ui;
 
+    Users users_information;
     User current_user;
 
     Validator val_1;
@@ -103,6 +104,8 @@ private:
     QString request_message;
     QString request_amount;
     CoinsType request_coins_type;
+
+    QString link;
 
     QStandardItemModel *request_view_model;
 
@@ -142,6 +145,8 @@ private:
 private slots:
     void authorizeUser();
     void registerUser();
+
+    void currentUserPassChange();
 
     void homeTR();
     void sendTR();
@@ -183,5 +188,7 @@ private slots:
     void sendWalletPassToChangeForm();
 
     void createLink();
+    void on_linkCB_stateChanged(int arg1);
+    void on_putLinkLE_textChanged(const QString &arg1);
 };
 #endif // MAINWINDOW_H

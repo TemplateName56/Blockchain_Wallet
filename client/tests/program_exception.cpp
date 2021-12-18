@@ -96,6 +96,18 @@ void ProgramException::getError()
 
         error_messageBox.exec();
         break;
+    case PASSWORD_NOT_CORRECT:
+        error_messageBox.setText("Old password not correct");
+        error_messageBox.setIcon(QMessageBox::Critical);
+
+        error_messageBox.exec();
+        break;
+    case PASSWORD_HASH_COLLISION:
+        error_messageBox.setText("Not correct password");
+        error_messageBox.setIcon(QMessageBox::Critical);
+
+        error_messageBox.exec();
+        break;
     case OUT_OF_RANGE:
         qDebug() << "Out of range in: " << exception_source;
         break;
