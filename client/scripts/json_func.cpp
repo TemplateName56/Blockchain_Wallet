@@ -908,7 +908,7 @@ void JSON::write_users_file(Users &a) //Идеальный метод класс
 
         QJsonObject jsonObj3;
         jsonObj3.insert("address", a.getUser(i).getAddress());
-        //jsonObj3.insert("admin", a.getUser(i).isAdmin());
+        jsonObj3.insert("admin", a.getUser(i).isAdmin());
         jsonObj3.insert("walletKey", a.getUser(i).getPassword());
         jsonObj3.insert("language", a.getUser(i).getUserLanguage());
 

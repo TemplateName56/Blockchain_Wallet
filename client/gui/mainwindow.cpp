@@ -7,7 +7,9 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+
     ui->priorityComboBox->setEnabled(false);
+    ui->putLinkLE->setDisabled(true);
 
     val_1.setAuthority(100);
     val_2.setAuthority(75);
@@ -434,7 +436,7 @@ void MainWindow::newTransaction(QString wallet_address, TransactionData data)
 void MainWindow::on_payToAddress_textChanged(const QString &arg1)
 {
     this->reciever_address = arg1;
-    qDebug() << arg1;
+    //qDebug() << arg1;
 }
 
 void MainWindow::requestsHistory()
@@ -474,7 +476,7 @@ void MainWindow::requestsHistory()
         CSV file("requestsList.csv");
         //CSV file("requestsList.csv");
         //CSV file("request2.csv");
-        QVector<QString> str_request = file.find_user("BW000000000000000"); //вместо BW000000000000001 нужен адрес текущего пользователя
+        QVector<QString> str_request = file.find_user(current_user.getAddress()); //вместо BW000000000000001 нужен адрес текущего пользователя
         //qDebug() << str_request;
 
         for(int index = 0; index < str_request.size(); index++)
@@ -867,6 +869,13 @@ QString coinsTypeToString(CoinsType coins_type)
     }
 }
 
+int coinsTypeStringToInt(QString coins_type)
+{
+    if(coins_type == "BWC") return 0;
+    if(coins_type == "BWC-N") return 1;
+    if(coins_type == "BWC-Q") return 2;
+}
+
 
 void MainWindow::on_prevBlockBTN_clicked()
 {
@@ -964,9 +973,9 @@ void MainWindow::on_messageLine_textChanged(const QString &arg1)
 void MainWindow::createLink()
 {
     algoritms algo;
-    QString link = QString::fromStdString(algo.GenerateLink(request_message.toStdString() +
-                                                            request_amount.toStdString() +
-                                                            coinsTypeToString(request_coins_type).toStdString() +
+    QString link = QString::fromStdString(algo.GenerateLink(request_message.toStdString() + ";" +
+                                                            request_amount.toStdString() + ";" +
+                                                            coinsTypeToString(request_coins_type).toStdString() + ";" +
                                                             current_user.getAddress().toStdString()));
     ui->requestLabelLine->setText(link);
     //qDebug() << QString::fromStdString(algo.DecryptionLink(link.toStdString()));
@@ -1033,6 +1042,9 @@ void MainWindow::currentUserPassChange()
     qDebug() << current_user.getPassword();
 
     users_information.setUserPassword(current_user.getAddress(), current_user.getPassword());
+
+    JSON file_json("users.json");
+    file_json.write_users_file(users_information);
 }
 
 
@@ -1048,7 +1060,7 @@ void MainWindow::on_linkCB_stateChanged(int arg1)
         ui->payToAddress->setDisabled(false);
         ui->sendTransactionLabel->setDisabled(false);
 
-        ui->amountSpinBox->setDisabled(true);
+        ui->amountSpinBox->setDisabled(false);
 
         ui->coinsBox->setDisabled(false);
         break;
@@ -1066,6 +1078,25 @@ void MainWindow::on_linkCB_stateChanged(int arg1)
         break;
     default:
         break;
+    }
+}
+
+
+void MainWindow::on_putLinkLE_textChanged(const QString &arg1)
+{
+    algoritms algo;
+    link = arg1;
+
+    if(link.length() >= 36 && -1 != link.indexOf("https://"))
+    {
+        link = QString::fromStdString(algo.DecryptionLink(link.toStdString()));
+        QStringList encrypted_link = link.split(";");
+
+
+        ui->sendTransactionLabel->setText(encrypted_link.at(0));
+        ui->amountSpinBox->setValue(encrypted_link.at(1).toDouble());
+        ui->coinsBox->setCurrentIndex(coinsTypeStringToInt(encrypted_link.at(2)));
+        ui->payToAddress->setText(encrypted_link.at(3));
     }
 }
 

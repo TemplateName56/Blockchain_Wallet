@@ -18,6 +18,8 @@ public:
     explicit change_passphrase_Form(QWidget *parent = nullptr);
     ~change_passphrase_Form();
 
+    Users *users_information;
+
     User *current_user;
     QString current_wallet_pass;
     QString old_password;

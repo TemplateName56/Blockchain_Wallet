@@ -46,6 +46,10 @@ void change_passphrase_Form::on_changePassBTN_clicked()
         {
             throw ProgramException(NOT_VALID_PASSWORD);
         }
+        if(users_information->isPasswordExists(new_password))
+        {
+            throw ProgramException(PASSWORD_HASH_COLLISION);
+        }
         if(current_user->isPasswordCorrect(old_password))
         {
             current_user->setPassword(new_password);

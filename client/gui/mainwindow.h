@@ -105,6 +105,8 @@ private:
     QString request_amount;
     CoinsType request_coins_type;
 
+    QString link;
+
     QStandardItemModel *request_view_model;
 
     QAction *home;
@@ -187,5 +189,6 @@ private slots:
 
     void createLink();
     void on_linkCB_stateChanged(int arg1);
+    void on_putLinkLE_textChanged(const QString &arg1);
 };
 #endif // MAINWINDOW_H
