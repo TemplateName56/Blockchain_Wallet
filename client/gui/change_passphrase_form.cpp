@@ -70,10 +70,11 @@ void change_passphrase_Form::on_clearPassEnterBTN_clicked()
     ui->newPassLE->clear();
 }
 
-void change_passphrase_Form::currentUserPassChange(User &current_user)
+void change_passphrase_Form::currentUserPassChange(User &current_user, Users &users_information)
 {
     //this->current_wallet_pass = current_wallet_pass;
     this->current_user = &current_user;
+    this->users_information = &users_information;
     qDebug() << current_user.getAddress();
     qDebug() << current_user.getPassword();
 }

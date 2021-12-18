@@ -41,7 +41,7 @@ private slots:
     void on_changePassBTN_clicked();
     void on_clearPassEnterBTN_clicked();
 
-    void currentUserPassChange(User &current_user);
+    void currentUserPassChange(User &current_user, Users &users_information);
     void setWindowLanguage(QVector<QString> language_vector);
 
 private:

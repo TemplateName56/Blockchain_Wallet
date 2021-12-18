@@ -60,7 +60,7 @@ signals:
     void allBlocksView_prev_clicked();
 
     void sendTransaction(TransactionData new_transaction);
-    void sendUserInformation(User&);
+    void sendUserInformation(User&, Users&);
 
     void languageChanged(QVector<QString>);
     void languageChanged(int);

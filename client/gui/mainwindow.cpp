@@ -55,7 +55,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(this, SIGNAL(allBlocksView_next_clicked()), this, SLOT(blocksNext()));
     connect(this, SIGNAL(allBlocksView_prev_clicked()), this, SLOT(blocksPrev()));
 
-    connect(this, SIGNAL(sendUserInformation(User&)), &ui_ChangePass, SLOT(currentUserPassChange(User&)));
+    connect(this, SIGNAL(sendUserInformation(User&,Users&)), &ui_ChangePass, SLOT(currentUserPassChange(User&, Users&)));
     connect(&ui_ChangePass, SIGNAL(passwordChanged()), this, SLOT(currentUserPassChange()));
 
     connect(this, SIGNAL(requestButton_clicked()), this, SLOT(createLink()));
@@ -927,7 +927,7 @@ void MainWindow::blocksNext()
 
 void MainWindow::sendWalletPassToChangeForm()
 {
-    emit sendUserInformation(current_user);
+    emit sendUserInformation(current_user, users_information);
 }
 
 
