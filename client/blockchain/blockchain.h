@@ -9,7 +9,6 @@
 
 #include "client/scripts/program_algorithms.h"
 #include "client/tests/program_exception.h"
-//#include "client/scripts/json_func.h"
 
 enum CoinsType
 {
