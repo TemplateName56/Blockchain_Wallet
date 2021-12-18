@@ -34,7 +34,7 @@ public:
     const languages &getUserLanguage() const;
     const int &getUserPreferCoinsType() const;
 
-    bool isAdmin() const;
+    int isAdmin() const;
 
     ~User();
 };

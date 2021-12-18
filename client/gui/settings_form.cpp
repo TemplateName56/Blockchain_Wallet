@@ -3,6 +3,7 @@
 #include "client/tests/program_exception.h"
 #include "client/scripts/csv_func.h"
 #include "client/scripts/json_func.h"
+#include "client/classes/users.h"
 
 settings_Form::settings_Form(QWidget *parent) :
     QWidget(parent),
@@ -74,25 +75,6 @@ void settings_Form::readSettings()
     }
 
 }
-
-//void settings_Form::writeSettings()
-//{
-//    QFileInfo file_info("settings.json");
-//    QDir::setCurrent(file_info.path());
-//    QFile json_file("settings.json");
-
-//    if (!json_file.open(QIODevice::WriteOnly))
-//    {
-//        throw ProgramException(FILE_WRITE_ERROR);
-//    }
-
-//    QJsonObject current_json;
-
-//    current_json.insert("Language",settings_Form::languageIndex);
-
-//    json_file.write(QJsonDocument(current_json).toJson(QJsonDocument::Indented));
-//    json_file.close();
-//}
 
 void settings_Form::closeEvent(QCloseEvent *event)
 {

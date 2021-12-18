@@ -97,7 +97,7 @@ const int& User::getUserPreferCoinsType() const
     return this->coins_type_index;
 }
 
-bool User::isAdmin() const
+int User::isAdmin() const
 {
     return this->admin;
 }

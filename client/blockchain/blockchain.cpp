@@ -349,22 +349,22 @@ void Blockchain::readChain()
         JSON file("chain.json");
 
         bool genesis = true;
-        for(int index = 0; index < file.new_get_array_size_blockchain(); index++)
+        for(int index = 0; index < file.get_array_size_blockchain(); index++)
         {
             if(index > 0)
             {
                 genesis = false;
             }
-            addBlock(file.new_get_id(index),
-                     TransactionData(file.new_get_sender(index),
-                                     file.new_get_reciever(index),
-                                     file.new_get_amount(index),
-                                     toCoinsType(file.new_get_CoinsType(index)),
-                                     file.new_get_fee(index),
-                                     file.new_get_priority(index),
-                                     file.new_get_timestamp(index)),
-                     file.new_get_prev_hash(index),
-                     file.new_get_hash(index),
+            addBlock(file.get_id(index),
+                     TransactionData(file.get_sender(index),
+                                     file.get_reciever(index),
+                                     file.get_amount(index),
+                                     toCoinsType(file.get_CoinsType(index)),
+                                     file.get_fee(index),
+                                     file.get_priority(index),
+                                     file.get_timestamp(index)),
+                     file.get_prev_hash(index),
+                     file.get_hash(index),
                      genesis);
         }
     }  catch (ProgramException &error) {
