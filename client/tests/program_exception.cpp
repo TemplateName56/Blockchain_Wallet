@@ -126,7 +126,7 @@ ProgramException::~ProgramException()
 
 }
 
-void ProgramException::setWindowLanguage()
+void ProgramException::setWindowLanguage(int index)
 {
 
      //CSV file_tr("translation.csv");

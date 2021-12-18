@@ -9,8 +9,6 @@
 #include "client/gui/settings_form.h"
 #include "client/scripts/program_algorithms.h"
 
-
-
 class User
 {
     QString address;

@@ -135,6 +135,7 @@ class Validator : public QObject
 {
     Q_OBJECT
 private:
+    friend class JSON;
     Blockchain chain;
     int authority = 1;
     bool blocked = false;
@@ -142,7 +143,7 @@ private:
 public:
     explicit Validator(QObject *parent = nullptr);
 
-    Blockchain getBlockChain();
+    Blockchain &getBlockChain();
     void setBlockChain(Blockchain temp);
     int getAuthority();
 

@@ -270,7 +270,7 @@ Block::~Block()
 Blockchain::Blockchain()
 {
     //createGenesisBlock();
-    readChain();
+    //readChain();
 }
 
 void Blockchain::createGenesisBlock()
@@ -336,7 +336,7 @@ void Blockchain::collisionCheck()
     {
         if(hashes.lastIndexOf(hashes[index]) != index)
         {
-            qDebug() << "We more than two, but less then four!";
+            qDebug() << "More than two, but less then four!";
             throw ProgramException(HASH_COLLISION);
         }
     }
@@ -375,10 +375,17 @@ void Blockchain::readChain()
 
 void Blockchain::addBlock(int index, TransactionData data, QString prev_hash)
 {
-    this->chain.push_back(Block(index, data, prev_hash));
-    chain.last().users_balance = chain[chain.length() - 2].users_balance;
-    chain.last().setUserBalance(chain.last().getBlockData().getSender());
-    chain.last().setUserBalance(chain.last().getBlockData().getReciever(), true);
+    try {
+        this->chain.push_back(Block(index, data, prev_hash));
+        collisionCheck();
+        chain.last().users_balance = chain[chain.length() - 2].users_balance;
+        chain.last().setUserBalance(chain.last().getBlockData().getSender());
+        chain.last().setUserBalance(chain.last().getBlockData().getReciever(), true);
+    }  catch (ProgramException &error) {
+        error.getError();
+        this->chain.pop_back();
+    }
+
 }
 
 void Blockchain::addBlock(int index, TransactionData data, QString prev_hash, QString hash, bool genesis)
@@ -426,6 +433,12 @@ Blockchain::~Blockchain()
 
 Validator::Validator(QObject *parent) : QObject(parent)
 {
+    try {
+        JSON blockchain_json("chain.json");
+        blockchain_json.read_all_chain(getBlockChain());
+    }  catch (ProgramException &error) {
+        error.getError();
+    }
 
 }
 
@@ -446,7 +459,7 @@ void Validator::addTransaction(TransactionData new_transaction)
     }
 }
 
-Blockchain Validator::getBlockChain()
+Blockchain &Validator::getBlockChain()
 {
     return this->chain;
 }

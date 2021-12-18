@@ -71,8 +71,6 @@ MainWindow::~MainWindow()
 {
     delete ui;
 
-    delete request_view_model;
-
     delete home;
     delete send;
     delete recieve;
