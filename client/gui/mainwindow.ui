@@ -72,6 +72,7 @@
       <property name="font">
        <font>
         <pointsize>9</pointsize>
+        <weight>75</weight>
         <bold>true</bold>
        </font>
       </property>
@@ -181,6 +182,7 @@
          <property name="font">
           <font>
            <pointsize>9</pointsize>
+           <weight>75</weight>
            <bold>true</bold>
           </font>
          </property>
@@ -212,7 +214,7 @@
             <x>0</x>
             <y>0</y>
             <width>417</width>
-            <height>315</height>
+            <height>312</height>
            </rect>
           </property>
           <layout class="QVBoxLayout" name="cardsLayout"/>
@@ -280,6 +282,7 @@
          </property>
          <property name="font">
           <font>
+           <weight>75</weight>
            <bold>true</bold>
           </font>
          </property>
@@ -314,6 +317,7 @@
          </property>
          <property name="font">
           <font>
+           <weight>75</weight>
            <bold>true</bold>
           </font>
          </property>
@@ -348,6 +352,7 @@
          </property>
          <property name="font">
           <font>
+           <weight>75</weight>
            <bold>true</bold>
           </font>
          </property>
@@ -381,7 +386,7 @@
         <x>10</x>
         <y>14</y>
         <width>782</width>
-        <height>334</height>
+        <height>336</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_5">
@@ -407,8 +412,8 @@
            <rect>
             <x>11</x>
             <y>13</y>
-            <width>501</width>
-            <height>112</height>
+            <width>531</width>
+            <height>115</height>
            </rect>
           </property>
           <layout class="QFormLayout" name="formLayout_2">
@@ -435,6 +440,18 @@
            </item>
            <item row="1" column="1">
             <widget class="QLineEdit" name="sendTransactionLabel">
+             <property name="minimumSize">
+              <size>
+               <width>0</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>16777215</width>
+               <height>16777215</height>
+              </size>
+             </property>
              <property name="inputMask">
               <string/>
              </property>
@@ -541,6 +558,12 @@
              </item>
              <item>
               <widget class="QCheckBox" name="linkCB">
+               <property name="minimumSize">
+                <size>
+                 <width>0</width>
+                 <height>0</height>
+                </size>
+               </property>
                <property name="text">
                 <string>Use link</string>
                </property>
@@ -580,6 +603,7 @@
           </property>
           <property name="font">
            <font>
+            <weight>75</weight>
             <bold>true</bold>
            </font>
           </property>
@@ -595,7 +619,7 @@
            <rect>
             <x>11</x>
             <y>41</y>
-            <width>509</width>
+            <width>511</width>
             <height>91</height>
            </rect>
           </property>
@@ -1100,6 +1124,7 @@
            <property name="font">
             <font>
              <pointsize>9</pointsize>
+             <weight>75</weight>
              <bold>true</bold>
             </font>
            </property>
@@ -1154,6 +1179,7 @@
          <property name="font">
           <font>
            <pointsize>10</pointsize>
+           <weight>75</weight>
            <bold>true</bold>
           </font>
          </property>
@@ -1448,7 +1474,7 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>22</height>
+     <height>26</height>
     </rect>
    </property>
   </widget>

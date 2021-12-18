@@ -687,6 +687,9 @@ void MainWindow::setWindowLanguage(QVector<QString> language_vector, int languag
            ui->requestLabelLine->setPlaceholderText(language_vector.at(63));
            ui->messageLine->setPlaceholderText(language_vector.at(64));
 
+           ui->linkLabel->setText(language_vector.at(82));
+           ui->linkCB->setText(language_vector.at(83));
+
            statusBar()->showMessage(language_vector.at(58));
 
            emit languageChanged(language_vector);
@@ -814,6 +817,7 @@ void MainWindow::on_customValueButton_clicked()
     recomActivated = false;
     ui->priorityComboBox->setEnabled(true);
     ui->priorityComboBox->setCurrentIndex(0);
+    ui->recomValueLE->setText("");
     emit on_priorityComboBox_currentIndexChanged(0);
 }
 
@@ -824,6 +828,7 @@ void MainWindow::on_recomValueButton_clicked()
     ui->priorityComboBox->setEnabled(false);
     fee = round(amount * 0.05 * 100)/100;
     priority = 3;
+    ui->customValueLE->setText("");
     ui->recomValueLE->setText(QString::number(fee));
 }
 
@@ -1069,6 +1074,8 @@ void MainWindow::on_linkCB_stateChanged(int arg1)
         ui->amountSpinBox->setDisabled(false);
 
         ui->coinsBox->setDisabled(false);
+
+        ui->putLinkLE->setText("");
         break;
     case 2:
         emit on_clearSendButton_clicked();

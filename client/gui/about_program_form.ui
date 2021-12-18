@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>588</width>
-    <height>429</height>
+    <width>586</width>
+    <height>419</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -16,10 +16,10 @@
   <widget class="QTextEdit" name="textEdit_abot_program">
    <property name="geometry">
     <rect>
-     <x>10</x>
-     <y>10</y>
-     <width>571</width>
-     <height>411</height>
+     <x>0</x>
+     <y>0</y>
+     <width>591</width>
+     <height>421</height>
     </rect>
    </property>
    <property name="frameShape">
