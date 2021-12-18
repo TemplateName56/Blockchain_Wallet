@@ -11,6 +11,9 @@ MainWindow::MainWindow(QWidget *parent)
     ui->priorityComboBox->setEnabled(false);
     ui->putLinkLE->setDisabled(true);
 
+    JSON file_json("users.json");
+    file_json.read_users_file(users_information);
+
     val_1.setAuthority(100);
     val_2.setAuthority(75);
     val_3.setAuthority(1);
@@ -23,7 +26,6 @@ MainWindow::MainWindow(QWidget *parent)
     createMenus();
     createTrayMenu();
     uiChanges();
-    requestsHistory();
 
     connect(&ui_Auth, SIGNAL(login_button_clicked()), this, SLOT(authorizeUser()));
     connect(&ui_Auth, SIGNAL(register_button_clicked()), this, SLOT(registerUser()));
@@ -107,9 +109,6 @@ void MainWindow::authorizeUser()
 
         wallet_key = ui_Auth.getInputKey();
 
-        JSON file_json("users.json");
-        file_json.read_users_file(users_information);
-
         if(users_information.isPasswordExists(wallet_key))
         {
             ui_Auth.close();
@@ -128,11 +127,12 @@ void MainWindow::authorizeUser()
             ui->bwcQBalance->setText(QString::number(current_user_balance.getBalance(BWC_Q)));
 
             emit on_coinsBox_currentIndexChanged(current_user.getUserPreferCoinsType());
-
-            this->show();
+            requestsHistory();
 
             ui->walletAddressLabel->setText(current_user.getAddress());
             ui->walletKeyLabel->setText(wallet_key);
+
+            this->show();
         }
         else
         {
@@ -146,7 +146,7 @@ void MainWindow::authorizeUser()
 
 void MainWindow::registerUser()
 {
-    try {
+    try {      
         wallet_address = randomWalletAdress();
         wallet_key = randomWalletKey();
 
@@ -154,6 +154,10 @@ void MainWindow::registerUser()
         //file.registerNewUser(wallet_address, wallet_key + "SALT");
 
         users_information.addUser(User(wallet_address, wallet_key, true));
+
+        JSON file("users.json");
+        file.write_users_file(users_information);
+        //file.registerNewUser(current_user.getAddress(), current_user.getPassword());
 
         current_user = users_information.getUser(wallet_key);
 
@@ -570,7 +574,6 @@ void MainWindow::requestsHistory()
     }  catch (ProgramException &error) {
         error.getError();
     }
-
 }
 
 bool MainWindow::isAmountCorrect(double amount, CoinsType coins_type)
@@ -978,7 +981,6 @@ void MainWindow::createLink()
                                                             coinsTypeToString(request_coins_type).toStdString() + ";" +
                                                             current_user.getAddress().toStdString()));
     ui->requestLabelLine->setText(link);
-    //qDebug() << QString::fromStdString(algo.DecryptionLink(link.toStdString()));
     try {
         CSV file("requestsList.csv");
         file.append_csv_request(link, request_message,
@@ -988,11 +990,6 @@ void MainWindow::createLink()
         error.getError();
     }
     qDebug() << QString::fromStdString(algo.DecryptionLink(link.toStdString()));
-    CSV file("requestsList.csv");
-    file.append_csv_request(link, request_message,
-                            request_amount, coinsTypeToString(request_coins_type),
-                            wallet_address);
-
 
 
 
@@ -1084,6 +1081,11 @@ void MainWindow::on_linkCB_stateChanged(int arg1)
 
 void MainWindow::on_putLinkLE_textChanged(const QString &arg1)
 {
+//    try {
+
+//    }  catch () {
+
+//    }
     algoritms algo;
     link = arg1;
 
@@ -1092,6 +1094,10 @@ void MainWindow::on_putLinkLE_textChanged(const QString &arg1)
         link = QString::fromStdString(algo.DecryptionLink(link.toStdString()));
         QStringList encrypted_link = link.split(";");
 
+        if(encrypted_link.at(3) == current_user.getAddress())
+        {
+            //throw ProgramException(CURRENT_USER_ADDRESS);
+        }
 
         ui->sendTransactionLabel->setText(encrypted_link.at(0));
         ui->amountSpinBox->setValue(encrypted_link.at(1).toDouble());

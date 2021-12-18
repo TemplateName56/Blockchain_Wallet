@@ -8,13 +8,11 @@
 #include "client/tests/program_exception.h"
 #include "client/gui/settings_form.h"
 #include "client/scripts/program_algorithms.h"
-//#include "client/scripts/json_func.h"
 
 
 
 class User
 {
-
     QString address;
     QString password;
 
