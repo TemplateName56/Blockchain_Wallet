@@ -62,32 +62,6 @@ int algoritms::ConvertIntoLetter(int rezult)
     return rezult;
 }
 
-string algoritms::Encryption(string str, int key)
-{
-    int code = key;
-    code *= 3;
-    code += 1;
-    code += 6;
-    for (int i = 0; i < str.size(); i++)
-    {
-        str[i] = str[i] + (key+code+i);
-    }
-    return str;
-}
-
-string algoritms::Decryption(string str, int key)
-{
-    int code = key;
-    code *= 3;
-    code += 1;
-    code += 6;
-    for (int i = 0; i < str.size(); i++)
-    {
-        str[i] = str[i] - (key + code + i);
-    }
-    return str;
-}
-
 string algoritms::GenerateLink(string link)
 {
     for (int i = 0; i < link.size(); i++)
