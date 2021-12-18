@@ -108,6 +108,7 @@ private:
     QString link;
 
     QStandardItemModel *request_view_model;
+    QStandardItemModel *history_view_model;
 
     QAction *home;
     QAction *send;
@@ -141,6 +142,7 @@ private:
     void createMenus();
     void createTrayMenu();
     void uiChanges();
+    void setupRequests();
 
 private slots:
     void authorizeUser();

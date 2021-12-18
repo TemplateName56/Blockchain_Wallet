@@ -26,6 +26,7 @@ MainWindow::MainWindow(QWidget *parent)
     createMenus();
     createTrayMenu();
     uiChanges();
+    setupRequests();
 
     connect(&ui_Auth, SIGNAL(login_button_clicked()), this, SLOT(authorizeUser()));
     connect(&ui_Auth, SIGNAL(register_button_clicked()), this, SLOT(registerUser()));
@@ -179,6 +180,7 @@ void MainWindow::registerUser()
         ui->bwcQBalance->setText(QString::number(current_user_balance.getBalance(BWC_Q)));
 
         emit on_coinsBox_currentIndexChanged(0);
+        requestsHistory();
 
         this->show();
         throw ProgramException(SAVE_PASSPHRASE, wallet_key);
@@ -443,9 +445,23 @@ void MainWindow::on_payToAddress_textChanged(const QString &arg1)
     //qDebug() << arg1;
 }
 
+void MainWindow::setupRequests()
+{
+
+
+
+}
+
 void MainWindow::requestsHistory()
 {
     try {
+        //request_view_model->clear();
+        CSV file("requestsList.csv");
+        //CSV file("requestsList.csv");
+        //CSV file("request2.csv");
+        QVector<QString> str_request = file.find_user(current_user.getAddress()); //вместо BW000000000000001 нужен адрес текущего пользователя
+        //qDebug() << str_request;
+
         request_view_model = new QStandardItemModel(this);
         request_view_model->setColumnCount(5);
         request_view_model->setHorizontalHeaderLabels(QStringList() << "Link" << "Message" << "Amount" << "Type amount"<<"Receiver");
@@ -476,13 +492,6 @@ void MainWindow::requestsHistory()
         ui->requestsView->setColumnWidth(3,100);
         ui->requestsView->setColumnWidth(4,150);
 
-
-        CSV file("requestsList.csv");
-        //CSV file("requestsList.csv");
-        //CSV file("request2.csv");
-        QVector<QString> str_request = file.find_user(current_user.getAddress()); //вместо BW000000000000001 нужен адрес текущего пользователя
-        //qDebug() << str_request;
-
         for(int index = 0; index < str_request.size(); index++)
         {
             QList<QStandardItem *> newRequestsList;
@@ -512,10 +521,12 @@ void MainWindow::requestsHistory()
             {
                 newRequestsList[i]->setTextAlignment(Qt::AlignCenter);
             }
-            request_view_model->insertRow(request_view_model->rowCount(), newRequestsList);
+            request_view_model->appendRow(newRequestsList);
         }
 
-        QStandardItemModel *history_view_model = new QStandardItemModel(this);
+        JSON json_file("chain.json");
+
+        history_view_model = new QStandardItemModel(this);
         history_view_model->setColumnCount(5);
         history_view_model->setHorizontalHeaderLabels(QStringList() << "№" << "From" << "To" << "Money" << "Currency");
 
@@ -535,7 +546,7 @@ void MainWindow::requestsHistory()
 
         ui->historyView->verticalHeader()->setVisible(false);
 
-        ui->historyView->setEditTriggers( QAbstractItemView::NoEditTriggers);
+        ui->historyView->setEditTriggers(QAbstractItemView::NoEditTriggers);
         ui->historyView->verticalHeader()->setSectionResizeMode(QHeaderView::Fixed);
         ui->historyView-> horizontalHeader()->setSectionResizeMode(QHeaderView::Fixed);
 
@@ -544,8 +555,6 @@ void MainWindow::requestsHistory()
         ui->historyView->setColumnWidth(2,225);
         ui->historyView->setColumnWidth(3,108);
         ui->historyView->setColumnWidth(4,108);
-
-        JSON json_file("chain.json");
 
         for(int i = 1; i <= json_file.new_get_array_size_blockchain(); i++)
         {
@@ -569,7 +578,7 @@ void MainWindow::requestsHistory()
             {
                 HistoryList[i]->setTextAlignment(Qt::AlignCenter);
             }
-            history_view_model->insertRow(history_view_model->rowCount(), HistoryList);
+            history_view_model->appendRow(HistoryList);
         }
     }  catch (ProgramException &error) {
         error.getError();
@@ -991,7 +1000,9 @@ void MainWindow::createLink()
     }
     qDebug() << QString::fromStdString(algo.DecryptionLink(link.toStdString()));
 
-
+    request_view_model->clear();
+    history_view_model->clear();
+    requestsHistory();
 
     /*
     //===== Чтение и запись Users =====//
