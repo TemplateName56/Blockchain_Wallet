@@ -65,34 +65,55 @@ int algoritms::ConvertIntoLetter(int rezult)
 string algoritms::GenerateLink(string link)
 {
     for (int i = 0; i < link.size(); i++)
-    {
-        link[i] = link[i] + 4;
-    }
-    string prevlink = "https://";
-    string nextlink = ".ua";
-    prevlink += link;
-    prevlink += nextlink;
-    return prevlink;
+       {
+           if (link[i] == 40)
+           {
+               link[i] = link[i] + 43;
+               continue;
+           }
+           if (link[i] >= 48&&link[i]<=57)
+           {
+               link[i] = link[i] + 17;
+               continue;
+           }
+
+           link[i] = link[i] + 4;
+       }
+       string prevlink = "https://";
+       string nextlink = ".ua";
+       prevlink += link;
+       prevlink += nextlink;
+       return prevlink;
 }
 
 string algoritms::DecryptionLink(string link)
 {
     string result;
-    string tmp;
-    for (size_t i = 8; i < link.length(); i++)
-    {
-        tmp += link[i];
-    }
-    for (int i = 0; i < tmp.length()-3; i++)
-    {
-        result += tmp[i];
-    }
+        string tmp;
+        for (int i = 8; i < link.length(); i++)
+        {
+            tmp += link[i];
+        }
+        for (int i = 0; i < tmp.length() - 3; i++)
+        {
+            result += tmp[i];
+        }
 
-    for (int i = 0; i < result.size(); i++)
-    {
-        result[i] = result[i] - 4;
-    }
-    return result;
+        for (int i = 0; i < result.size(); i++)
+        {
+            if (result[i] == 83)
+            {
+                result[i] = result[i] - 43;
+                continue;
+            }
+            if (result[i] >= 65 && result[i] <= 74)
+            {
+                result[i] = result[i] - 17;
+                continue;
+            }
+            result[i] = result[i] - 4;
+        }
+        return result;
 }
 
 
