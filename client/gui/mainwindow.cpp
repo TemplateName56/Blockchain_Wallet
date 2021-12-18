@@ -11,6 +11,9 @@ MainWindow::MainWindow(QWidget *parent)
     ui->priorityComboBox->setEnabled(false);
     ui->putLinkLE->setDisabled(true);
 
+    JSON file_json("users.json");
+    file_json.read_users_file(users_information);
+
     val_1.setAuthority(100);
     val_2.setAuthority(75);
     val_3.setAuthority(1);
@@ -23,7 +26,7 @@ MainWindow::MainWindow(QWidget *parent)
     createMenus();
     createTrayMenu();
     uiChanges();
-    requestsHistory();
+    setupRequests();
 
     connect(&ui_Auth, SIGNAL(login_button_clicked()), this, SLOT(authorizeUser()));
     connect(&ui_Auth, SIGNAL(register_button_clicked()), this, SLOT(registerUser()));
@@ -53,7 +56,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(this, SIGNAL(allBlocksView_next_clicked()), this, SLOT(blocksNext()));
     connect(this, SIGNAL(allBlocksView_prev_clicked()), this, SLOT(blocksPrev()));
 
-    connect(this, SIGNAL(sendUserInformation(User&)), &ui_ChangePass, SLOT(currentUserPassChange(User&)));
+    connect(this, SIGNAL(sendUserInformation(User&,Users&)), &ui_ChangePass, SLOT(currentUserPassChange(User&, Users&)));
     connect(&ui_ChangePass, SIGNAL(passwordChanged()), this, SLOT(currentUserPassChange()));
 
     connect(this, SIGNAL(requestButton_clicked()), this, SLOT(createLink()));
@@ -107,9 +110,6 @@ void MainWindow::authorizeUser()
 
         wallet_key = ui_Auth.getInputKey();
 
-        JSON file_json("users.json");
-        file_json.read_users_file(users_information);
-
         if(users_information.isPasswordExists(wallet_key))
         {
             ui_Auth.close();
@@ -128,11 +128,12 @@ void MainWindow::authorizeUser()
             ui->bwcQBalance->setText(QString::number(current_user_balance.getBalance(BWC_Q)));
 
             emit on_coinsBox_currentIndexChanged(current_user.getUserPreferCoinsType());
-
-            this->show();
+            requestsHistory();
 
             ui->walletAddressLabel->setText(current_user.getAddress());
             ui->walletKeyLabel->setText(wallet_key);
+
+            this->show();
         }
         else
         {
@@ -146,7 +147,7 @@ void MainWindow::authorizeUser()
 
 void MainWindow::registerUser()
 {
-    try {
+    try {      
         wallet_address = randomWalletAdress();
         wallet_key = randomWalletKey();
 
@@ -154,6 +155,10 @@ void MainWindow::registerUser()
         //file.registerNewUser(wallet_address, wallet_key + "SALT");
 
         users_information.addUser(User(wallet_address, wallet_key, true));
+
+        JSON file("users.json");
+        file.write_users_file(users_information);
+        //file.registerNewUser(current_user.getAddress(), current_user.getPassword());
 
         current_user = users_information.getUser(wallet_key);
 
@@ -175,6 +180,7 @@ void MainWindow::registerUser()
         ui->bwcQBalance->setText(QString::number(current_user_balance.getBalance(BWC_Q)));
 
         emit on_coinsBox_currentIndexChanged(0);
+        requestsHistory();
 
         this->show();
         throw ProgramException(SAVE_PASSPHRASE, wallet_key);
@@ -439,9 +445,23 @@ void MainWindow::on_payToAddress_textChanged(const QString &arg1)
     //qDebug() << arg1;
 }
 
+void MainWindow::setupRequests()
+{
+
+
+
+}
+
 void MainWindow::requestsHistory()
 {
     try {
+        //request_view_model->clear();
+        CSV file("requestsList.csv");
+        //CSV file("requestsList.csv");
+        //CSV file("request2.csv");
+        QVector<QString> str_request = file.find_user(current_user.getAddress()); //вместо BW000000000000001 нужен адрес текущего пользователя
+        //qDebug() << str_request;
+
         request_view_model = new QStandardItemModel(this);
         request_view_model->setColumnCount(5);
         request_view_model->setHorizontalHeaderLabels(QStringList() << "Link" << "Message" << "Amount" << "Type amount"<<"Receiver");
@@ -472,13 +492,6 @@ void MainWindow::requestsHistory()
         ui->requestsView->setColumnWidth(3,100);
         ui->requestsView->setColumnWidth(4,150);
 
-
-        CSV file("requestsList.csv");
-        //CSV file("requestsList.csv");
-        //CSV file("request2.csv");
-        QVector<QString> str_request = file.find_user(current_user.getAddress()); //вместо BW000000000000001 нужен адрес текущего пользователя
-        //qDebug() << str_request;
-
         for(int index = 0; index < str_request.size(); index++)
         {
             QList<QStandardItem *> newRequestsList;
@@ -508,10 +521,12 @@ void MainWindow::requestsHistory()
             {
                 newRequestsList[i]->setTextAlignment(Qt::AlignCenter);
             }
-            request_view_model->insertRow(request_view_model->rowCount(), newRequestsList);
+            request_view_model->appendRow(newRequestsList);
         }
 
-        QStandardItemModel *history_view_model = new QStandardItemModel(this);
+        JSON json_file("chain.json");
+
+        history_view_model = new QStandardItemModel(this);
         history_view_model->setColumnCount(5);
         history_view_model->setHorizontalHeaderLabels(QStringList() << "№" << "From" << "To" << "Money" << "Currency");
 
@@ -531,7 +546,7 @@ void MainWindow::requestsHistory()
 
         ui->historyView->verticalHeader()->setVisible(false);
 
-        ui->historyView->setEditTriggers( QAbstractItemView::NoEditTriggers);
+        ui->historyView->setEditTriggers(QAbstractItemView::NoEditTriggers);
         ui->historyView->verticalHeader()->setSectionResizeMode(QHeaderView::Fixed);
         ui->historyView-> horizontalHeader()->setSectionResizeMode(QHeaderView::Fixed);
 
@@ -540,8 +555,6 @@ void MainWindow::requestsHistory()
         ui->historyView->setColumnWidth(2,225);
         ui->historyView->setColumnWidth(3,108);
         ui->historyView->setColumnWidth(4,108);
-
-        JSON json_file("chain.json");
 
         for(int i = 1; i <= json_file.new_get_array_size_blockchain(); i++)
         {
@@ -565,12 +578,11 @@ void MainWindow::requestsHistory()
             {
                 HistoryList[i]->setTextAlignment(Qt::AlignCenter);
             }
-            history_view_model->insertRow(history_view_model->rowCount(), HistoryList);
+            history_view_model->appendRow(HistoryList);
         }
     }  catch (ProgramException &error) {
         error.getError();
     }
-
 }
 
 bool MainWindow::isAmountCorrect(double amount, CoinsType coins_type)
@@ -929,7 +941,7 @@ void MainWindow::blocksNext()
 
 void MainWindow::sendWalletPassToChangeForm()
 {
-    emit sendUserInformation(current_user);
+    emit sendUserInformation(current_user, users_information);
 }
 
 
@@ -983,7 +995,6 @@ void MainWindow::createLink()
                                                             coinsTypeToString(request_coins_type).toStdString() + ";" +
                                                             current_user.getAddress().toStdString()));
     ui->requestLabelLine->setText(link);
-    //qDebug() << QString::fromStdString(algo.DecryptionLink(link.toStdString()));
     try {
         CSV file("requestsList.csv");
         file.append_csv_request(link, request_message,
@@ -993,13 +1004,10 @@ void MainWindow::createLink()
         error.getError();
     }
     qDebug() << QString::fromStdString(algo.DecryptionLink(link.toStdString()));
-    CSV file("requestsList.csv");
-    file.append_csv_request(link, request_message,
-                            request_amount, coinsTypeToString(request_coins_type),
-                            wallet_address);
 
-
-
+    request_view_model->clear();
+    history_view_model->clear();
+    requestsHistory();
 
     /*
     //===== Чтение и запись Users =====//
@@ -1091,6 +1099,11 @@ void MainWindow::on_linkCB_stateChanged(int arg1)
 
 void MainWindow::on_putLinkLE_textChanged(const QString &arg1)
 {
+//    try {
+
+//    }  catch () {
+
+//    }
     algoritms algo;
     link = arg1;
 
@@ -1099,6 +1112,10 @@ void MainWindow::on_putLinkLE_textChanged(const QString &arg1)
         link = QString::fromStdString(algo.DecryptionLink(link.toStdString()));
         QStringList encrypted_link = link.split(";");
 
+        if(encrypted_link.at(3) == current_user.getAddress())
+        {
+            //throw ProgramException(CURRENT_USER_ADDRESS);
+        }
 
         ui->sendTransactionLabel->setText(encrypted_link.at(0));
         ui->amountSpinBox->setValue(encrypted_link.at(1).toDouble());

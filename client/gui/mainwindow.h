@@ -60,7 +60,7 @@ signals:
     void allBlocksView_prev_clicked();
 
     void sendTransaction(TransactionData new_transaction);
-    void sendUserInformation(User&);
+    void sendUserInformation(User&, Users&);
 
     void languageChanged(QVector<QString>);
     void languageChanged(int);
@@ -108,6 +108,7 @@ private:
     QString link;
 
     QStandardItemModel *request_view_model;
+    QStandardItemModel *history_view_model;
 
     QAction *home;
     QAction *send;
@@ -141,6 +142,7 @@ private:
     void createMenus();
     void createTrayMenu();
     void uiChanges();
+    void setupRequests();
 
 private slots:
     void authorizeUser();
