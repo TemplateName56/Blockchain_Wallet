@@ -71,11 +71,6 @@ string algoritms::GenerateLink(string link)
                link[i] = link[i] + 43;
                continue;
            }
-           if (link[i] >= 48&&link[i]<=57)
-           {
-               link[i] = link[i] + 17;
-               continue;
-           }
 
            link[i] = link[i] + 4;
        }
@@ -106,11 +101,7 @@ string algoritms::DecryptionLink(string link)
                 result[i] = result[i] - 43;
                 continue;
             }
-            if (result[i] >= 65 && result[i] <= 74)
-            {
-                result[i] = result[i] - 17;
-                continue;
-            }
+
             result[i] = result[i] - 4;
         }
         return result;
