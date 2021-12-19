@@ -6,8 +6,14 @@
 #include <QVector>
 
 #include "client/tests/program_exception.h"
-#include "client/gui/settings_form.h"
 #include "client/scripts/program_algorithms.h"
+
+enum languages
+{
+    ENGLISH,
+    UKRANIAN,
+    RUSSIAN
+};
 
 class User
 {

@@ -78,6 +78,8 @@ MainWindow::MainWindow(QWidget *parent)
 
     connect(this, SIGNAL(requestButton_clicked()), this, SLOT(createLink()));
 
+    connect(this, SIGNAL(loadUserSettings(User&)), &ui_Settings, SLOT(loadSettings(User&)));
+
     ui->stackedWidget->setCurrentIndex(0);
 
     //statusBar()->showMessage("Connected...");
@@ -147,6 +149,8 @@ void MainWindow::authorizeUser()
 
             ui->walletAddressLabel->setText(current_user.getAddress());
             ui->walletKeyLabel->setText(wallet_key);
+
+            emit loadUserSettings(current_user);
 
             this->show();
         }
@@ -447,6 +451,9 @@ void MainWindow::newTransaction(QString wallet_address, TransactionData data)
         ui->bwcNBalance->setText(QString::number(current_user_balance.getBalance(BWC_N)));
         ui->bwcQBalance->setText(QString::number(current_user_balance.getBalance(BWC_Q)));
     }
+    request_view_model->clear();
+    history_view_model->clear();
+    requestsHistory();
 }
 
 void MainWindow::on_payToAddress_textChanged(const QString &arg1)
@@ -457,8 +464,6 @@ void MainWindow::on_payToAddress_textChanged(const QString &arg1)
 
 void MainWindow::setupRequests()
 {
-
-
 
 }
 
@@ -716,7 +721,6 @@ void MainWindow::setWindowLanguage(QVector<QString> language_vector, int languag
 
 void MainWindow::on_sendCoinsButton_clicked()
 {
-
     try {
         if(reciever_address.length() != 17)
         {
@@ -791,9 +795,6 @@ void MainWindow::on_sendCoinsButton_clicked()
     }  catch (ProgramException &error) {
         error.getError();
     }
-    request_view_model->clear();
-    history_view_model->clear();
-    requestsHistory();
 }
 
 
@@ -1010,64 +1011,37 @@ void MainWindow::on_messageLine_textChanged(const QString &arg1)
 
 void MainWindow::createLink()
 {
-    algoritms algo;
-    QString link = QString::fromStdString(algo.GenerateLink(request_message.toStdString() + ";" +
-                                                            request_amount.toStdString() + ";" +
-                                                            coinsTypeToString(request_coins_type).toStdString() + ";" +
-                                                            current_user.getAddress().toStdString()));
-    ui->requestLabelLine->setText(link);
     try {
-        CSV file("requestsList.csv");
-        file.append_csv_request(link, request_message,
-                                request_amount, coinsTypeToString(request_coins_type),
-                                current_user.getAddress());
+        if(request_message.length() == 0)
+        {
+            throw ProgramException(REQUEST_MESSAGE_EMPTY);
+        }
+        if(request_amount.toDouble() <= 0)
+        {
+            throw ProgramException(REQUEST_AMOUNT_INVALID);
+        }
+        algoritms algo;
+        QString link = QString::fromStdString(algo.GenerateLink(request_message.toStdString() + ";" +
+                                                                request_amount.toStdString() + ";" +
+                                                                coinsTypeToString(request_coins_type).toStdString() + ";" +
+                                                                current_user.getAddress().toStdString()));
+        ui->requestLabelLine->setText(link);
+        try {
+            CSV file("requestsList.csv");
+            file.append_csv_request(link, request_message,
+                                    request_amount, coinsTypeToString(request_coins_type),
+                                    current_user.getAddress());
+        }  catch (ProgramException &error) {
+            error.getError();
+        }
+        qDebug() << QString::fromStdString(algo.DecryptionLink(link.toStdString()));
+
+        request_view_model->clear();
+        history_view_model->clear();
+        requestsHistory();
     }  catch (ProgramException &error) {
         error.getError();
     }
-    qDebug() << QString::fromStdString(algo.DecryptionLink(link.toStdString()));
-
-    request_view_model->clear();
-    history_view_model->clear();
-    requestsHistory();
-
-    /*
-    //===== Чтение и запись Users =====//
-    Users object_users;
-    JSON file_json("users.json");
-    file_json.read_users_file(object_users);// Никит, закинь этот метод куда надо в коде
-
-    JSON file_json2("users_object_users.json");
-    //file_json2.write_users_file(object_users);//записываю в другой файл т.к. isAdmin не работает и запись по сути идёт без данных об админе
-    //===== Чтение и запись Users =====//
-    */
-
-
-
-    /*
- //===== Чтение по Blockchain =====//
-    Blockchain object;//Так как в конструкторе Blockchain уже есть функция чтения то после этого метода блоки просто прибавляются к цепи
-    JSON blockchain_json("chain.json");
-    object.show();
-    blockchain_json.read_all_chain(object); //если в конструкторе у Blockchain не будет readchain то будет нормально считывать
-    qDebug() << "After read_all_chain";
-    object.show();
-//===== Чтение по Blockchain =====//
-    */
-
-
-
-    /*
-//===== Чтение по Validator =====//
-    Validator object_validator;
-    JSON validator_json("chain.json");
-    validator_json.read_all_chain(object_validator);
-    qDebug() << "\nAfter read_all_chain\n";
-    object_validator.getBlockChain().show();
-//===== Чтение по Validator =====//
-    */
-
-
-
 }
 
 void MainWindow::currentUserPassChange()
@@ -1120,28 +1094,27 @@ void MainWindow::on_linkCB_stateChanged(int arg1)
 
 void MainWindow::on_putLinkLE_textChanged(const QString &arg1)
 {
-//    try {
+    try {
+        algoritms algo;
+        link = arg1;
 
-//    }  catch () {
-
-//    }
-    algoritms algo;
-    link = arg1;
-
-    if(link.length() >= 36 && -1 != link.indexOf("https://"))
-    {
-        link = QString::fromStdString(algo.DecryptionLink(link.toStdString()));
-        QStringList encrypted_link = link.split(";");
-
-        if(encrypted_link.at(3) == current_user.getAddress())
+        if(link.length() >= 36 && -1 != link.indexOf("https://"))
         {
-            //throw ProgramException(CURRENT_USER_ADDRESS);
-        }
+            link = QString::fromStdString(algo.DecryptionLink(link.toStdString()));
+            QStringList encrypted_link = link.split(";");
 
-        ui->sendTransactionLabel->setText(encrypted_link.at(0));
-        ui->amountSpinBox->setValue(encrypted_link.at(1).toDouble());
-        ui->coinsBox->setCurrentIndex(coinsTypeStringToInt(encrypted_link.at(2)));
-        ui->payToAddress->setText(encrypted_link.at(3));
+            if(encrypted_link.at(3) == current_user.getAddress())
+            {
+                throw ProgramException(CURRENT_USER_ADDRESS);
+            }
+
+            ui->sendTransactionLabel->setText(encrypted_link.at(0));
+            ui->amountSpinBox->setValue(encrypted_link.at(1).toDouble());
+            ui->coinsBox->setCurrentIndex(coinsTypeStringToInt(encrypted_link.at(2)));
+            ui->payToAddress->setText(encrypted_link.at(3));
+        }
+    }  catch (ProgramException &error) {
+        error.getError();
     }
 }
 

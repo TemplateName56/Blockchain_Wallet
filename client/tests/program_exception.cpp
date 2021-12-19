@@ -119,6 +119,24 @@ void ProgramException::getError()
     case CHAIN_LENGTH_ERROR:
         qDebug() << "Chain is empty: " << exception_source;
         break;
+    case CURRENT_USER_ADDRESS:
+        error_messageBox.setText("You can`t use your link");
+        error_messageBox.setIcon(QMessageBox::Information);
+
+        error_messageBox.exec();
+        break;
+    case REQUEST_MESSAGE_EMPTY:
+        error_messageBox.setText("Empty message text");
+        error_messageBox.setIcon(QMessageBox::Information);
+
+        error_messageBox.exec();
+        break;
+    case REQUEST_AMOUNT_INVALID:
+        error_messageBox.setText("Incorrect amount");
+        error_messageBox.setIcon(QMessageBox::Information);
+
+        error_messageBox.exec();
+        break;
     default:
         break;
     }

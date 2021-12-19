@@ -1,9 +1,8 @@
 #include "settings_form.h"
 #include "ui_settings_form.h"
-#include "client/tests/program_exception.h"
+
 #include "client/scripts/csv_func.h"
 #include "client/scripts/json_func.h"
-#include "client/classes/users.h"
 
 settings_Form::settings_Form(QWidget *parent) :
     QWidget(parent),
@@ -69,11 +68,10 @@ void settings_Form::readSettings()
     //settings_Form::languageIndex = current_json.value("Language").toInt();
     try {
         JSON file("users.json");
-        settings_Form::languageIndex = file.get_language_user("BW000000000000000");
+        languageIndex = 1;
     }  catch (ProgramException &error) {
         error.getError();
     }
-
 }
 
 void settings_Form::closeEvent(QCloseEvent *event)
@@ -119,3 +117,13 @@ void settings_Form::on_defaultCoinsTypeCB_currentIndexChanged(int index)
     emit coinsTypeChanged(index);
 }
 
+void settings_Form::loadSettings(User &current_user)
+{
+    this->current_user = &current_user;
+    try {
+        JSON file("users.json");
+        ui->languagesBox->setCurrentIndex(file.get_language_user(this->current_user->getAddress()));
+    }  catch (ProgramException &error) {
+        error.getError();
+    }
+}

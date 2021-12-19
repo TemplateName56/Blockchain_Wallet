@@ -32,6 +32,8 @@
 #include "client/scripts/new_wallet.h"
 #include "client/scripts/csv_func.h"
 #include "client/blockchain/blockchain.h"
+#include "client/classes/users.h"
+
 
 
 QT_BEGIN_NAMESPACE
@@ -61,6 +63,7 @@ signals:
 
     void sendTransaction(TransactionData new_transaction);
     void sendUserInformation(User&, Users&);
+    void loadUserSettings(User&);
 
     void languageChanged(QVector<QString>);
     void languageChanged(int);

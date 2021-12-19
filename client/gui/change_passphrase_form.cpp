@@ -1,5 +1,6 @@
 #include "change_passphrase_form.h"
 #include "ui_change_passphrase_form.h"
+
 #include "client/scripts/json_func.h"
 #include "settings_form.h"
 
@@ -35,9 +36,6 @@ void change_passphrase_Form::on_newPassLE_textChanged(const QString &arg1)
 void change_passphrase_Form::on_changePassBTN_clicked()
 {
     try {
-        //JSON file_users("users.json");
-        //file_users.changed_passphrase_oldkey(old_password, new_password);
-        //file_users.changed_passphrase_address();   //тут нужен адрес текущего пользователя
         if(old_password == new_password)
         {
             throw ProgramException(SAME_PASSWORD);
@@ -72,11 +70,8 @@ void change_passphrase_Form::on_clearPassEnterBTN_clicked()
 
 void change_passphrase_Form::currentUserPassChange(User &current_user, Users &users_information)
 {
-    //this->current_wallet_pass = current_wallet_pass;
     this->current_user = &current_user;
     this->users_information = &users_information;
-    qDebug() << current_user.getAddress();
-    qDebug() << current_user.getPassword();
 }
 
 void change_passphrase_Form::setWindowLanguage(QVector<QString> language_vector)

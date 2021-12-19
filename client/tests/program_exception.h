@@ -25,7 +25,10 @@ enum ErrorsNames
     OUT_OF_RANGE,
     USER_NOT_EXIST,
     LANGUAGE_LOAD_ERROR,
-    CHAIN_LENGTH_ERROR
+    CHAIN_LENGTH_ERROR,
+    CURRENT_USER_ADDRESS,
+    REQUEST_MESSAGE_EMPTY,
+    REQUEST_AMOUNT_INVALID
 };
 
 class ProgramException : public QException

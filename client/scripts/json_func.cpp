@@ -177,7 +177,7 @@ int JSON::get_language_user(QString address){
             return language_file ;
         }
     }
-
+    return 0;
 
 }
 
