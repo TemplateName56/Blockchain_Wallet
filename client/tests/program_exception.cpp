@@ -116,6 +116,9 @@ void ProgramException::getError()
         break;
     case LANGUAGE_LOAD_ERROR:
         break;
+    case CHAIN_LENGTH_ERROR:
+        qDebug() << "Chain is empty: " << exception_source;
+        break;
     default:
         break;
     }

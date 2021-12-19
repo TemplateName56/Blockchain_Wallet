@@ -24,7 +24,8 @@ enum ErrorsNames
     PASSWORD_HASH_COLLISION,
     OUT_OF_RANGE,
     USER_NOT_EXIST,
-    LANGUAGE_LOAD_ERROR
+    LANGUAGE_LOAD_ERROR,
+    CHAIN_LENGTH_ERROR
 };
 
 class ProgramException : public QException

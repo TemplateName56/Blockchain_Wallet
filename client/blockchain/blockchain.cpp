@@ -282,9 +282,16 @@ void Blockchain::createGenesisBlock()
 
 QVector<Block> Blockchain::getChain()
 {
-
-    readChain();
-    return this->chain;
+    //readChain();
+    //return this->chain;
+    if(this->chain.length() != 0)
+    {
+        return this->chain;
+    }
+    else
+    {
+        throw ProgramException(CHAIN_LENGTH_ERROR, "Blockchain Class");
+    }
 }
 
 Block Blockchain::getBlock(int index)
