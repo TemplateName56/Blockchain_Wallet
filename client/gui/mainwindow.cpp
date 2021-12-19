@@ -40,6 +40,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(&ui_Settings, SIGNAL(trayCheckBoxToggled()), this, SLOT(trayEnabled()));
 
     connect(&ui_Settings, SIGNAL(coinsTypeChanged(int)), this, SLOT(on_coinsBox_currentIndexChanged(int)));
+    connect(&ui_Settings, SIGNAL(coinsTypeChanged(int)), this, SLOT(on_coinsBox_2_currentIndexChanged(int)));
 
     connect(tray_icon, SIGNAL(activated(QSystemTrayIcon::ActivationReason)), this, SLOT(iconActivated(QSystemTrayIcon::ActivationReason)));
 
@@ -131,6 +132,8 @@ void MainWindow::authorizeUser()
 
             ui->walletAddressLabel->setText(current_user.getAddress());
             ui->walletKeyLabel->setText(wallet_key);
+
+            ui->walletKeyLabel->setStyleSheet("* { background-color: rgba(0, 0, 0, 0); }");
 
             emit loadUserSettings(current_user);
 
@@ -665,7 +668,7 @@ void MainWindow::setWindowLanguage(QVector<QString> language_vector, int languag
            view_window->setText(language_vector.at(50));
 
            ui->sendCoinsButton->setText(language_vector.at(43));
-           ui->addToAddressBookLabel->setText(language_vector.at(25));
+           //ui->addToAddressBookLabel->setText(language_vector.at(25));
            ui->payToLabel->setText(language_vector.at(22));
            ui->amountLabel->setText(language_vector.at(36));
            ui->balanceLabel->setText(language_vector.at(18));
@@ -712,7 +715,7 @@ void MainWindow::setWindowLanguage(QVector<QString> language_vector, int languag
            ui->priorityComboBox->setItemText(2, language_vector.at(56));
 
            ui->payToAddress->setPlaceholderText(language_vector.at(61));
-           ui->sendTransactionLabel->setPlaceholderText(language_vector.at(62));
+           //ui->sendTransactionLabel->setPlaceholderText(language_vector.at(62));
 
            ui->requestLabelLine->setPlaceholderText(language_vector.at(63));
            ui->messageLine->setPlaceholderText(language_vector.at(64));
@@ -797,8 +800,6 @@ void MainWindow::on_sendCoinsButton_clicked()
         default:
             break;
         }
-
-        //emit addTransactionCard(transaction_label, timeStamp.toString(), amount, coins_type, 0);
     }  catch (ProgramException &error) {
         error.getError();
     }
@@ -893,7 +894,6 @@ void MainWindow::on_sendTransactionLabel_textChanged(const QString &arg1)
 void MainWindow::on_clearSendButton_clicked()
 {
     ui->payToAddress->clear();
-    ui->sendTransactionLabel->clear();
     ui->amountSpinBox->clear();
 }
 
@@ -1073,7 +1073,6 @@ void MainWindow::on_linkCB_stateChanged(int arg1)
         ui->putLinkLE->setDisabled(true);
 
         ui->payToAddress->setDisabled(false);
-        ui->sendTransactionLabel->setDisabled(false);
 
         ui->amountSpinBox->setDisabled(false);
 
@@ -1087,7 +1086,6 @@ void MainWindow::on_linkCB_stateChanged(int arg1)
         ui->putLinkLE->setDisabled(false);
 
         ui->payToAddress->setDisabled(true);
-        ui->sendTransactionLabel->setDisabled(true);
 
         ui->amountSpinBox->setDisabled(true);
 
@@ -1114,8 +1112,6 @@ void MainWindow::on_putLinkLE_textChanged(const QString &arg1)
             {
                 throw ProgramException(CURRENT_USER_ADDRESS);
             }
-
-            ui->sendTransactionLabel->setText(encrypted_link.at(0));
             ui->amountSpinBox->setValue(encrypted_link.at(1).toDouble());
             ui->coinsBox->setCurrentIndex(coinsTypeStringToInt(encrypted_link.at(2)));
             ui->payToAddress->setText(encrypted_link.at(3));

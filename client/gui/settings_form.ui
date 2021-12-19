@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>500</width>
-    <height>300</height>
+    <width>482</width>
+    <height>140</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -17,155 +17,119 @@
    </sizepolicy>
   </property>
   <property name="font">
-   <font>
-    <family>Verdana</family>
-   </font>
+   <font/>
   </property>
   <property name="windowTitle">
    <string>Settings</string>
   </property>
-  <widget class="QTabWidget" name="tabWidget">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>20</y>
-     <width>480</width>
-     <height>260</height>
-    </rect>
-   </property>
-   <property name="currentIndex">
-    <number>1</number>
-   </property>
-   <widget class="QWidget" name="mainSettings">
-    <attribute name="title">
-     <string>Main</string>
-    </attribute>
-    <widget class="QLabel" name="label">
-     <property name="geometry">
-      <rect>
-       <x>20</x>
-       <y>20</y>
-       <width>281</width>
-       <height>20</height>
-      </rect>
-     </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <widget class="QLabel" name="settingsLabel">
      <property name="text">
-      <string>Default </string>
+      <string>Settings</string>
      </property>
     </widget>
-   </widget>
-   <widget class="QWidget" name="windowSettings">
-    <attribute name="title">
-     <string>Window</string>
-    </attribute>
+   </item>
+   <item>
+    <layout class="QFormLayout" name="formLayout">
+     <item row="0" column="0">
+      <widget class="QLabel" name="languageLabel">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>300</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>User interface language:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QComboBox" name="languagesBox">
+       <property name="maximumSize">
+        <size>
+         <width>150</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <item>
+        <property name="text">
+         <string>English (Англійська)</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Ukranian (Українська)</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Russian (Російська)</string>
+        </property>
+       </item>
+      </widget>
+     </item>
+     <item row="1" column="0">
+      <widget class="QLabel" name="coinsTypeLabel">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>300</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>Default Coins Type</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1">
+      <widget class="QComboBox" name="defaultCoinsTypeCB">
+       <property name="maximumSize">
+        <size>
+         <width>150</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <item>
+        <property name="text">
+         <string>BWC</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>BWC N</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>BWC Q</string>
+        </property>
+       </item>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
     <widget class="QCheckBox" name="trayCheckBox">
-     <property name="geometry">
-      <rect>
-       <x>20</x>
-       <y>20</y>
-       <width>400</width>
-       <height>20</height>
-      </rect>
-     </property>
      <property name="text">
       <string>Minimize application to tray</string>
      </property>
     </widget>
-   </widget>
-   <widget class="QWidget" name="Display">
-    <attribute name="title">
-     <string>Display</string>
-    </attribute>
-    <widget class="QLabel" name="languageLabel">
-     <property name="geometry">
-      <rect>
-       <x>20</x>
-       <y>20</y>
-       <width>231</width>
-       <height>20</height>
-      </rect>
-     </property>
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
-     <property name="text">
-      <string>User interface language:</string>
-     </property>
-    </widget>
-    <widget class="QComboBox" name="languagesBox">
-     <property name="geometry">
-      <rect>
-       <x>260</x>
-       <y>20</y>
-       <width>200</width>
-       <height>22</height>
-      </rect>
-     </property>
-     <item>
-      <property name="text">
-       <string>English (Англійська)</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>Ukranian (Українська)</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>Russian (Російська)</string>
-      </property>
-     </item>
-    </widget>
-    <widget class="QLabel" name="coinsTypeLabel">
-     <property name="geometry">
-      <rect>
-       <x>20</x>
-       <y>51</y>
-       <width>231</width>
-       <height>20</height>
-      </rect>
-     </property>
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
-     <property name="text">
-      <string>Default Coins Type</string>
-     </property>
-    </widget>
-    <widget class="QComboBox" name="defaultCoinsTypeCB">
-     <property name="geometry">
-      <rect>
-       <x>260</x>
-       <y>50</y>
-       <width>200</width>
-       <height>22</height>
-      </rect>
-     </property>
-     <item>
-      <property name="text">
-       <string>BWC</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>BWC N</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>BWC Q</string>
-      </property>
-     </item>
-    </widget>
-   </widget>
-  </widget>
+   </item>
+  </layout>
  </widget>
  <resources/>
  <connections/>

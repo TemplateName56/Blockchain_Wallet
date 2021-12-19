@@ -51,7 +51,7 @@
      </size>
     </property>
     <property name="currentIndex">
-     <number>2</number>
+     <number>1</number>
     </property>
     <widget class="QWidget" name="mainWidget">
      <property name="minimumSize">
@@ -72,7 +72,6 @@
       <property name="font">
        <font>
         <pointsize>9</pointsize>
-        <weight>75</weight>
         <bold>true</bold>
        </font>
       </property>
@@ -182,7 +181,6 @@
          <property name="font">
           <font>
            <pointsize>9</pointsize>
-           <weight>75</weight>
            <bold>true</bold>
           </font>
          </property>
@@ -214,7 +212,7 @@
             <x>0</x>
             <y>0</y>
             <width>417</width>
-            <height>312</height>
+            <height>315</height>
            </rect>
           </property>
           <layout class="QVBoxLayout" name="cardsLayout"/>
@@ -282,7 +280,6 @@
          </property>
          <property name="font">
           <font>
-           <weight>75</weight>
            <bold>true</bold>
           </font>
          </property>
@@ -317,7 +314,6 @@
          </property>
          <property name="font">
           <font>
-           <weight>75</weight>
            <bold>true</bold>
           </font>
          </property>
@@ -352,7 +348,6 @@
          </property>
          <property name="font">
           <font>
-           <weight>75</weight>
            <bold>true</bold>
           </font>
          </property>
@@ -395,7 +390,7 @@
          <property name="minimumSize">
           <size>
            <width>780</width>
-           <height>145</height>
+           <height>130</height>
           </size>
          </property>
          <property name="maximumSize">
@@ -410,10 +405,10 @@
          <widget class="QWidget" name="layoutWidget">
           <property name="geometry">
            <rect>
-            <x>11</x>
-            <y>13</y>
+            <x>10</x>
+            <y>20</y>
             <width>531</width>
-            <height>115</height>
+            <height>91</height>
            </rect>
           </property>
           <layout class="QFormLayout" name="formLayout_2">
@@ -432,42 +427,13 @@
             </widget>
            </item>
            <item row="1" column="0">
-            <widget class="QLabel" name="addToAddressBookLabel">
-             <property name="text">
-              <string>Label:</string>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="1">
-            <widget class="QLineEdit" name="sendTransactionLabel">
-             <property name="minimumSize">
-              <size>
-               <width>0</width>
-               <height>0</height>
-              </size>
-             </property>
-             <property name="maximumSize">
-              <size>
-               <width>16777215</width>
-               <height>16777215</height>
-              </size>
-             </property>
-             <property name="inputMask">
-              <string/>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-             </property>
-            </widget>
-           </item>
-           <item row="2" column="0">
             <widget class="QLabel" name="amountLabel">
              <property name="text">
               <string>Amount:</string>
              </property>
             </widget>
            </item>
-           <item row="2" column="1">
+           <item row="1" column="1">
             <layout class="QHBoxLayout" name="horizontalLayout_7">
              <item>
               <widget class="QDoubleSpinBox" name="amountSpinBox">
@@ -537,14 +503,14 @@
              </item>
             </layout>
            </item>
-           <item row="3" column="0">
+           <item row="2" column="0">
             <widget class="QLabel" name="linkLabel">
              <property name="text">
               <string>Link:</string>
              </property>
             </widget>
            </item>
-           <item row="3" column="1">
+           <item row="2" column="1">
             <layout class="QHBoxLayout" name="horizontalLayout_8">
              <item>
               <widget class="QLineEdit" name="putLinkLE">
@@ -603,7 +569,6 @@
           </property>
           <property name="font">
            <font>
-            <weight>75</weight>
             <bold>true</bold>
            </font>
           </property>
@@ -1124,7 +1089,6 @@
            <property name="font">
             <font>
              <pointsize>9</pointsize>
-             <weight>75</weight>
              <bold>true</bold>
             </font>
            </property>
@@ -1179,7 +1143,6 @@
          <property name="font">
           <font>
            <pointsize>10</pointsize>
-           <weight>75</weight>
            <bold>true</bold>
           </font>
          </property>
@@ -1474,7 +1437,7 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>26</height>
+     <height>22</height>
     </rect>
    </property>
   </widget>
