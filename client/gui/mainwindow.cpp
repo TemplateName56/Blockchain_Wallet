@@ -1,24 +1,6 @@
 #include "mainwindow.h"
 #include "./ui_mainwindow.h"
 
-
-QString toCoinsType2(int CoinId)
-{
-    switch (CoinId) {
-    case 0:
-        return "BWC";
-        break;
-    case 1:
-        return "BWC-N";
-        break;
-    case 2:
-        return "BWC-Q";
-        break;
-    default:
-        break;
-    }
-}
-
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -43,7 +25,6 @@ MainWindow::MainWindow(QWidget *parent)
     createMenus();
     createTrayMenu();
     uiChanges();
-    setupRequests();
 
     connect(&ui_Auth, SIGNAL(login_button_clicked()), this, SLOT(authorizeUser()));
     connect(&ui_Auth, SIGNAL(register_button_clicked()), this, SLOT(registerUser()));
@@ -115,6 +96,7 @@ MainWindow::~MainWindow()
     delete tray_icon;
 }
 
+
 void MainWindow::display()
 {
     ui_Auth.show();
@@ -151,6 +133,8 @@ void MainWindow::authorizeUser()
             ui->walletKeyLabel->setText(wallet_key);
 
             emit loadUserSettings(current_user);
+
+            val_1.loadTransactions();
 
             this->show();
         }
@@ -196,6 +180,7 @@ void MainWindow::registerUser()
         emit on_coinsBox_currentIndexChanged(0);
         requestsHistory();
 
+        emit loadUserSettings(current_user);
         this->show();
         throw ProgramException(SAVE_PASSPHRASE, wallet_key);
     }  catch (ProgramException &error) {
@@ -443,6 +428,16 @@ void MainWindow::newTransaction(QString wallet_address, TransactionData data)
 
         emit addTransactionCard(data.getSender(), data.getTimeStamp(), data.getAmount(), data.getCoinsType(), 1);
     }
+    else if(data.getSender() == current_user.getAddress())
+    {
+        Balance current_user_balance = val_1.getBlockChain().getLastBlock().getUserBalance(current_user.getAddress());
+
+        ui->bwcBalance->setText(QString::number(current_user_balance.getBalance(BWC)));
+        ui->bwcNBalance->setText(QString::number(current_user_balance.getBalance(BWC_N)));
+        ui->bwcQBalance->setText(QString::number(current_user_balance.getBalance(BWC_Q)));
+
+        emit addTransactionCard(data.getReciever(), data.getTimeStamp(), data.getAmount(), data.getCoinsType(), 0);
+    }
     else
     {
         Balance current_user_balance = val_1.getBlockChain().getLastBlock().getUserBalance(current_user.getAddress());
@@ -462,9 +457,21 @@ void MainWindow::on_payToAddress_textChanged(const QString &arg1)
     //qDebug() << arg1;
 }
 
-void MainWindow::setupRequests()
+QString toCoinsType2(int CoinId)
 {
-
+    switch (CoinId) {
+    case 0:
+        return "BWC";
+        break;
+    case 1:
+        return "BWC-N";
+        break;
+    case 2:
+        return "BWC-Q";
+        break;
+    default:
+        break;
+    }
 }
 
 void MainWindow::requestsHistory()
@@ -728,8 +735,8 @@ void MainWindow::on_sendCoinsButton_clicked()
         }
         JSON file_json("users.json");
         QVector<QString> exists_address = file_json.get_users_info(JSON::ADDRESS);
-        //QVector<QString> exists_address = getUsersInfo(ADDRESS);
         int exist_flag = exists_address.indexOf(reciever_address);
+
         if(exist_flag == -1)
         {
             throw ProgramException(ADDRESS_NOT_EXISTS);
@@ -791,7 +798,7 @@ void MainWindow::on_sendCoinsButton_clicked()
             break;
         }
 
-        emit addTransactionCard(transaction_label, timeStamp.toString(), amount, coins_type, 0);
+        //emit addTransactionCard(transaction_label, timeStamp.toString(), amount, coins_type, 0);
     }  catch (ProgramException &error) {
         error.getError();
     }
@@ -1117,4 +1124,3 @@ void MainWindow::on_putLinkLE_textChanged(const QString &arg1)
         error.getError();
     }
 }
-

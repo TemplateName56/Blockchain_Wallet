@@ -30,7 +30,7 @@ void transactionsCardView::setData(QString label, QString timeStamp, double amou
         ui->amount_Label->setStyleSheet("color: red;");
         break;
     case 1:
-        ui->cardIcon->setPixmap(QIcon("icons/recieveIcon.png").pixmap(64,64));
+        ui->cardIcon->setPixmap(QIcon("icons/recieveIcon.jpg").pixmap(64,64));
         ui->amount_Label->setStyleSheet("color: green;");
         break;
     default:

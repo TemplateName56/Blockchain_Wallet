@@ -148,6 +148,7 @@ public:
     int getAuthority();
 
     void setAuthority(int authority);
+    void loadTransactions();
 signals:
     void newBlock();
     void sendTransaction(QString, TransactionData);

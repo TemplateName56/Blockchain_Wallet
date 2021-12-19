@@ -145,7 +145,6 @@ private:
     void createMenus();
     void createTrayMenu();
     void uiChanges();
-    void setupRequests();
 
 private slots:
     void authorizeUser();

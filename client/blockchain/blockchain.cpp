@@ -446,19 +446,14 @@ Validator::Validator(QObject *parent) : QObject(parent)
     }  catch (ProgramException &error) {
         error.getError();
     }
-
 }
 
 void Validator::addTransaction(TransactionData new_transaction)
 {
-    chain.addBlock(chain.getLastBlock().getIndex() + 1, new_transaction, chain.getLastBlock().getBlockHash());
-
     try {
+        chain.addBlock(chain.getLastBlock().getIndex() + 1, new_transaction, chain.getLastBlock().getBlockHash());
         JSON json_file("chain.json");
-
-        //json_file.write_all_chain(chain.getChain());
         json_file.write_all_chain(chain.getLastBlock());
-        //chain.writeChain();
         authority += 1;
         emit sendTransaction(chain.getLastBlock().getBlockData().getReciever(), chain.getLastBlock().getBlockData());
     }  catch (ProgramException &error) {
@@ -483,4 +478,12 @@ int Validator::getAuthority()
 void Validator::setAuthority(int authority)
 {
     this->authority = authority;
+}
+
+void Validator::loadTransactions()
+{
+    foreach(Block _block, getBlockChain().getChain())
+    {
+        emit sendTransaction(_block.getBlockData().getReciever(), _block.getBlockData());
+    }
 }
