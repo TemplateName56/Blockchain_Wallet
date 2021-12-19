@@ -1,16 +1,28 @@
 {
-   "users":[
-      {
-         "address":"BW000000000000000",
-         "admin":1,
-         "walletKey":"vuPFMnFxNzWPjFwL",
-         "language":0
-      },
-      {
-         "address":"BW000000000000001",
-         "admin":0,
-         "walletKey":"0F0Up0y1GYoyRtmn",
-         "language":0
-      }
-   ]
+    "users": [
+        {
+            "address": "BW000000000000000",
+            "admin": 1,
+            "language": 1,
+            "walletKey": "vuPFMnFxNzWPjFwL"
+        },
+        {
+            "address": "BW000000000000001",
+            "admin": 0,
+            "language": 2,
+            "walletKey": "0F0Up0y1GYoyRtmn"
+        },
+        {
+            "address": "BWpxpKRvW9HkHPwxl",
+            "admin": 0,
+            "language": 1,
+            "walletKey": "QMdDkfhbOGaqGyjM"
+        },
+        {
+            "address": "BWrVffaWPhmsMyHDD",
+            "admin": 0,
+            "language": 1,
+            "walletKey": "hamQFrtSiNc0vpVc"
+        }
+    ]
 }

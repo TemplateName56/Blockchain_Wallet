@@ -32,6 +32,8 @@
 #include "client/scripts/new_wallet.h"
 #include "client/scripts/csv_func.h"
 #include "client/blockchain/blockchain.h"
+#include "client/classes/users.h"
+
 
 
 QT_BEGIN_NAMESPACE
@@ -60,7 +62,8 @@ signals:
     void allBlocksView_prev_clicked();
 
     void sendTransaction(TransactionData new_transaction);
-    void sendUserInformation(User&);
+    void sendUserInformation(User&, Users&);
+    void loadUserSettings(User&);
 
     void languageChanged(QVector<QString>);
     void languageChanged(int);
@@ -108,6 +111,7 @@ private:
     QString link;
 
     QStandardItemModel *request_view_model;
+    QStandardItemModel *history_view_model;
 
     QAction *home;
     QAction *send;

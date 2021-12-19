@@ -9,7 +9,6 @@
 
 #include "client/scripts/program_algorithms.h"
 #include "client/tests/program_exception.h"
-//#include "client/scripts/json_func.h"
 
 enum CoinsType
 {
@@ -136,6 +135,7 @@ class Validator : public QObject
 {
     Q_OBJECT
 private:
+    friend class JSON;
     Blockchain chain;
     int authority = 1;
     bool blocked = false;
@@ -143,11 +143,12 @@ private:
 public:
     explicit Validator(QObject *parent = nullptr);
 
-    Blockchain getBlockChain();
+    Blockchain &getBlockChain();
     void setBlockChain(Blockchain temp);
     int getAuthority();
 
     void setAuthority(int authority);
+    void loadTransactions();
 signals:
     void newBlock();
     void sendTransaction(QString, TransactionData);

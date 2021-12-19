@@ -11,16 +11,10 @@
 #include <QJsonDocument>
 #include <QJsonArray>
 
-enum languages
-{
-    ENGLISH,
-    UKRANIAN,
-    RUSSIAN
-};
+#include "client/classes/users.h"
+#include "client/tests/program_exception.h"
 
-namespace Ui {
-class settings_Form;
-}
+namespace Ui { class settings_Form; }
 
 class settings_Form : public QWidget
 {
@@ -29,7 +23,10 @@ class settings_Form : public QWidget
 public:
     explicit settings_Form(QWidget *parent = nullptr);
     ~settings_Form();
+
     int languageIndex;
+    User *current_user;
+
     bool minimizeInTray();
 
 protected:
@@ -54,6 +51,8 @@ private slots:
     void on_languagesBox_currentIndexChanged(int index);
     void on_trayCheckBox_toggled(bool checked);
     void on_defaultCoinsTypeCB_currentIndexChanged(int index);
+
+    void loadSettings(User &current_user);
 };
 
 #endif // SETTINGS_FORM_H

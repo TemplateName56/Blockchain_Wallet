@@ -24,7 +24,11 @@ enum ErrorsNames
     PASSWORD_HASH_COLLISION,
     OUT_OF_RANGE,
     USER_NOT_EXIST,
-    LANGUAGE_LOAD_ERROR
+    LANGUAGE_LOAD_ERROR,
+    CHAIN_LENGTH_ERROR,
+    CURRENT_USER_ADDRESS,
+    REQUEST_MESSAGE_EMPTY,
+    REQUEST_AMOUNT_INVALID
 };
 
 class ProgramException : public QException
@@ -38,7 +42,7 @@ public:
     ProgramException(ErrorsNames error_name, QString exception_source);
 
     void getError();
-    void setWindowLanguage();
+    void setWindowLanguage(int index);
 
     ~ProgramException();
 };

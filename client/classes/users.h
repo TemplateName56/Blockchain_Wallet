@@ -6,15 +6,17 @@
 #include <QVector>
 
 #include "client/tests/program_exception.h"
-#include "client/gui/settings_form.h"
 #include "client/scripts/program_algorithms.h"
-//#include "client/scripts/json_func.h"
 
-
+enum languages
+{
+    ENGLISH,
+    UKRANIAN,
+    RUSSIAN
+};
 
 class User
 {
-
     QString address;
     QString password;
 
@@ -38,7 +40,7 @@ public:
     const languages &getUserLanguage() const;
     const int &getUserPreferCoinsType() const;
 
-    bool isAdmin() const;
+    int isAdmin() const;
 
     ~User();
 };

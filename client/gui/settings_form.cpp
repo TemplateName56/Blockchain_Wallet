@@ -1,6 +1,6 @@
 #include "settings_form.h"
 #include "ui_settings_form.h"
-#include "client/tests/program_exception.h"
+
 #include "client/scripts/csv_func.h"
 #include "client/scripts/json_func.h"
 
@@ -9,7 +9,6 @@ settings_Form::settings_Form(QWidget *parent) :
     ui(new Ui::settings_Form)
 {
     ui->setupUi(this);
-    ui->tabWidget->setCurrentIndex(0);
     this->setWindowIcon(QIcon("icons/programIcon.png"));
 
     setWindowFlags(Qt::Dialog | Qt::MSWindowsFixedSizeDialogHint);
@@ -68,39 +67,17 @@ void settings_Form::readSettings()
     //settings_Form::languageIndex = current_json.value("Language").toInt();
     try {
         JSON file("users.json");
-        settings_Form::languageIndex = file.get_language_user("BW000000000000000");
+        languageIndex = 1;
     }  catch (ProgramException &error) {
         error.getError();
     }
-
 }
-
-//void settings_Form::writeSettings()
-//{
-//    QFileInfo file_info("settings.json");
-//    QDir::setCurrent(file_info.path());
-//    QFile json_file("settings.json");
-
-//    if (!json_file.open(QIODevice::WriteOnly))
-//    {
-//        throw ProgramException(FILE_WRITE_ERROR);
-//    }
-
-//    QJsonObject current_json;
-
-//    current_json.insert("Language",settings_Form::languageIndex);
-
-//    json_file.write(QJsonDocument(current_json).toJson(QJsonDocument::Indented));
-//    json_file.close();
-//}
 
 void settings_Form::closeEvent(QCloseEvent *event)
 {
     try {
         JSON file("users.json");
-        //qDebug() << settings_Form::languageIndex;
-        file.set_language_user("BW000000000000000",settings_Form::languageIndex);  //вместо BW000000000000001 нужен адрес текущего пользователя
-        //writeSettings();
+        file.set_language_user(this->current_user->getAddress(), settings_Form::languageIndex);  //вместо BW000000000000001 нужен адрес текущего пользователя
     }  catch (ProgramException &error) {
         error.getError();
     }
@@ -116,11 +93,12 @@ void settings_Form::setWindowLanguage()
 
         this->setWindowTitle(str.at(0));
 
-        ui->tabWidget->setTabText(0,str.at(1));
-        ui->tabWidget->setTabText(1,str.at(2));
-        ui->tabWidget->setTabText(2,str.at(3));
+        ui->settingsLabel->setText(str.at(0));
+        //ui->tabWidget->setTabText(0,str.at(1));
+        //ui->tabWidget->setTabText(1,str.at(2));
+        //ui->tabWidget->setTabText(2,str.at(3));
 
-        ui->label->setText(str.at(4));
+        //ui->label->setText(str.at(4));
         ui->trayCheckBox->setText(str.at(5));
         ui->languageLabel->setText(str.at(6));
         ui->coinsTypeLabel->setText(str.at(7));
@@ -137,3 +115,13 @@ void settings_Form::on_defaultCoinsTypeCB_currentIndexChanged(int index)
     emit coinsTypeChanged(index);
 }
 
+void settings_Form::loadSettings(User &current_user)
+{
+    this->current_user = &current_user;
+    try {
+        JSON file("users.json");
+        ui->languagesBox->setCurrentIndex(file.get_language_user(this->current_user->getAddress()));
+    }  catch (ProgramException &error) {
+        error.getError();
+    }
+}

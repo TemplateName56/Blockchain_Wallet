@@ -270,7 +270,7 @@ Block::~Block()
 Blockchain::Blockchain()
 {
     //createGenesisBlock();
-    readChain();
+    //readChain();
 }
 
 void Blockchain::createGenesisBlock()
@@ -282,9 +282,16 @@ void Blockchain::createGenesisBlock()
 
 QVector<Block> Blockchain::getChain()
 {
-
-    readChain();
-    return this->chain;
+    //readChain();
+    //return this->chain;
+    if(this->chain.length() != 0)
+    {
+        return this->chain;
+    }
+    else
+    {
+        throw ProgramException(CHAIN_LENGTH_ERROR, "Blockchain Class");
+    }
 }
 
 Block Blockchain::getBlock(int index)
@@ -336,7 +343,7 @@ void Blockchain::collisionCheck()
     {
         if(hashes.lastIndexOf(hashes[index]) != index)
         {
-            qDebug() << "We more than two, but less then four!";
+            qDebug() << "More than two, but less then four!";
             throw ProgramException(HASH_COLLISION);
         }
     }
@@ -349,22 +356,22 @@ void Blockchain::readChain()
         JSON file("chain.json");
 
         bool genesis = true;
-        for(int index = 0; index < file.new_get_array_size_blockchain(); index++)
+        for(int index = 0; index < file.get_array_size_blockchain(); index++)
         {
             if(index > 0)
             {
                 genesis = false;
             }
-            addBlock(file.new_get_id(index),
-                     TransactionData(file.new_get_sender(index),
-                                     file.new_get_reciever(index),
-                                     file.new_get_amount(index),
-                                     toCoinsType(file.new_get_CoinsType(index)),
-                                     file.new_get_fee(index),
-                                     file.new_get_priority(index),
-                                     file.new_get_timestamp(index)),
-                     file.new_get_prev_hash(index),
-                     file.new_get_hash(index),
+            addBlock(file.get_id(index),
+                     TransactionData(file.get_sender(index),
+                                     file.get_reciever(index),
+                                     file.get_amount(index),
+                                     toCoinsType(file.get_CoinsType(index)),
+                                     file.get_fee(index),
+                                     file.get_priority(index),
+                                     file.get_timestamp(index)),
+                     file.get_prev_hash(index),
+                     file.get_hash(index),
                      genesis);
         }
     }  catch (ProgramException &error) {
@@ -375,10 +382,17 @@ void Blockchain::readChain()
 
 void Blockchain::addBlock(int index, TransactionData data, QString prev_hash)
 {
-    this->chain.push_back(Block(index, data, prev_hash));
-    chain.last().users_balance = chain[chain.length() - 2].users_balance;
-    chain.last().setUserBalance(chain.last().getBlockData().getSender());
-    chain.last().setUserBalance(chain.last().getBlockData().getReciever(), true);
+    try {
+        this->chain.push_back(Block(index, data, prev_hash));
+        collisionCheck();
+        chain.last().users_balance = chain[chain.length() - 2].users_balance;
+        chain.last().setUserBalance(chain.last().getBlockData().getSender());
+        chain.last().setUserBalance(chain.last().getBlockData().getReciever(), true);
+    }  catch (ProgramException &error) {
+        error.getError();
+        this->chain.pop_back();
+    }
+
 }
 
 void Blockchain::addBlock(int index, TransactionData data, QString prev_hash, QString hash, bool genesis)
@@ -426,19 +440,20 @@ Blockchain::~Blockchain()
 
 Validator::Validator(QObject *parent) : QObject(parent)
 {
-
+    try {
+        JSON blockchain_json("chain.json");
+        blockchain_json.read_all_chain(getBlockChain());
+    }  catch (ProgramException &error) {
+        error.getError();
+    }
 }
 
 void Validator::addTransaction(TransactionData new_transaction)
 {
-    chain.addBlock(chain.getLastBlock().getIndex() + 1, new_transaction, chain.getLastBlock().getBlockHash());
-
     try {
+        chain.addBlock(chain.getLastBlock().getIndex() + 1, new_transaction, chain.getLastBlock().getBlockHash());
         JSON json_file("chain.json");
-
-        //json_file.write_all_chain(chain.getChain());
         json_file.write_all_chain(chain.getLastBlock());
-        //chain.writeChain();
         authority += 1;
         emit sendTransaction(chain.getLastBlock().getBlockData().getReciever(), chain.getLastBlock().getBlockData());
     }  catch (ProgramException &error) {
@@ -446,7 +461,7 @@ void Validator::addTransaction(TransactionData new_transaction)
     }
 }
 
-Blockchain Validator::getBlockChain()
+Blockchain &Validator::getBlockChain()
 {
     return this->chain;
 }
@@ -463,4 +478,12 @@ int Validator::getAuthority()
 void Validator::setAuthority(int authority)
 {
     this->authority = authority;
+}
+
+void Validator::loadTransactions()
+{
+    foreach(Block _block, getBlockChain().getChain())
+    {
+        emit sendTransaction(_block.getBlockData().getReciever(), _block.getBlockData());
+    }
 }
