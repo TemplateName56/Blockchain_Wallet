@@ -489,7 +489,9 @@ void MainWindow::requestsHistory()
 
         request_view_model = new QStandardItemModel(this);
         request_view_model->setColumnCount(4);
-        request_view_model->setHorizontalHeaderLabels(QStringList() << "Link" << "Message" << "Amount" << "Currency");
+
+        //request_view_model->setHorizontalHeaderLabels(QStringList() << language_vector.at(84) << language_vector.at(85) << language_vector.at(86) << language_vector.at(87);
+
         ui->requestsView->setModel(request_view_model);
 
         ui->requestsView->setEditTriggers( QAbstractItemView::NoEditTriggers);
@@ -550,7 +552,8 @@ void MainWindow::requestsHistory()
 
         history_view_model = new QStandardItemModel(this);
         history_view_model->setColumnCount(6);
-        history_view_model->setHorizontalHeaderLabels(QStringList() << "№" << "From" << "To" << "How much" << "Commission" << "Currency" << "Time");
+
+       // history_view_model->setHorizontalHeaderLabels(QStringList() << "№" << language_vector.at(88) << language_vector.at(89) << language_vector.at(90) << language_vector.at(91) << language_vector.at(87) << language_vector.at(92);
 
         ui->historyView->setModel(history_view_model);
 
