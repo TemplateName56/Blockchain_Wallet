@@ -57,11 +57,6 @@ public:
     int get_language_user(QString address);
     void set_language_user(QString address, int language);
 
-    QString get_address_user(int num);
-    QString get_wallet_key_user(int num);
-    bool get_admin_user(int num);
-    int get_language_user(int num);
-
     void read_users_file(Users &a);
     void write_users_file(Users &a);
 private:

@@ -339,52 +339,6 @@ int JSON:: get_array_size_balances(int number_block){
     return gps_array.size();
 }
 
-
-
-QString JSON::get_address_user(int num){
-    QFile json_file(filename);
-    QJsonObject json = doc.object();
-    QJsonArray jsonArray = json["users"].toArray();
-    QString address_file;
-    QJsonObject address_obj = jsonArray.at(num).toObject();
-    address_file = address_obj.value("address").toString();
-    return address_file;
-
-
-}
-
-QString JSON::get_wallet_key_user(int num){
-    QFile json_file(filename);
-    QJsonObject json = doc.object();
-    QJsonArray jsonArray = json["users"].toArray();
-    QString wallet_key;
-    QJsonObject walletKey_obj = jsonArray.at(num).toObject();
-     wallet_key = walletKey_obj.value("walletKey").toString();
-    return wallet_key;
-
-
-}
-
-bool JSON::get_admin_user(int num){
-    QFile json_file(filename);
-    QJsonObject json = doc.object();
-    QJsonArray jsonArray = json["users"].toArray();
-    bool admin;
-    QJsonObject admin_obj = jsonArray.at(num).toObject();
-    admin = admin_obj.value("admin").toInt();
-    return admin;
-}
-
-int JSON::get_language_user(int num){
-    QFile json_file(filename);
-    QJsonObject json = doc.object();
-    QJsonArray jsonArray = json["users"].toArray();
-    int language;
-    QJsonObject language_obj = jsonArray.at(num).toObject();
-    language = language_obj.value("language").toInt();
-    return language;
-}
-
 void JSON::read_users_file(Users &a)
     {
     QFile json_file(filename);
