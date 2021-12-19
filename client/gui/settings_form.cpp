@@ -78,9 +78,7 @@ void settings_Form::closeEvent(QCloseEvent *event)
 {
     try {
         JSON file("users.json");
-        //qDebug() << settings_Form::languageIndex;
-        file.set_language_user("BW000000000000000",settings_Form::languageIndex);  //вместо BW000000000000001 нужен адрес текущего пользователя
-        //writeSettings();
+        file.set_language_user(this->current_user->getAddress(), settings_Form::languageIndex);  //вместо BW000000000000001 нужен адрес текущего пользователя
     }  catch (ProgramException &error) {
         error.getError();
     }
