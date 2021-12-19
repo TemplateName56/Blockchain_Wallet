@@ -9,7 +9,9 @@ QString random_symbols = "1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqr
 
 QString randomWalletAdress()
 {
-    QVector<QString> valid_addresses = getUsersInfo(ADDRESS);
+    JSON file_json("users.json");
+    QVector<QString> valid_addresses = file_json.get_users_info(JSON::ADDRESS);
+    //QVector<QString> valid_addresses = getUsersInfo(ADDRESS);
     QString random_address;
     QString new_address = "BW";
 
@@ -39,7 +41,9 @@ QString randomWalletAdress()
 
 QString randomWalletKey()
 {
-    QVector<QString> valid_keys = getUsersInfo(KEY);
+    JSON file_json("users.json");
+    QVector<QString> valid_keys = file_json.get_users_info(JSON::KEY);
+    //QVector<QString> valid_keys = getUsersInfo(KEY);
     QString random_key;
     QString new_key;
 

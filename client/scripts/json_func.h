@@ -22,41 +22,6 @@
 class JSON{
 
 public:
-    JSON(QString fileName);
-
-    QString new_get_hash(int number_block);
-    QString new_get_prev_hash(int number_block);
-    int new_get_id(int number_block);
-
-    QString new_get_sender(int number_block);
-    QString new_get_reciever(int number_block);
-    QString new_get_timestamp(int number_block);
-    double new_get_amount(int number_block);
-    double new_get_fee(int number_block);
-    int new_get_CoinsType(int number_block);
-    int new_get_priority(int number_block);
-
-    //QString new_get_address(int number_block, int num_balance);
-    //double new_get_BWC_balance(int number_block, int num_balance);
-    //double new_get_BWC_N_balance(int number_block, int num_balance);
-    //double new_get_BWC_Q_balance(int number_block, int num_balance);
-
-    int new_get_array_size_blockchain();
-    int new_get_array_size_balances(int number_block);
-
-    //void new_append_balances(int num_user);
-    //void new_write_block_data(int num_user);
-    //void new_append_hash2_id();
-
-    //void new_append_balances(int num_user, QString address, double balance_bwc,
-                             //double balance_bwc_n, double balance_bwc_q);
-
-    //void new_write_block_data(int num_user, QString sender, QString reciever,
-                              //int amount, int coins_type, double fee, int priority,
-                              //QString time_stamp);
-
-    //void new_append_hash2_id(QString hash, int id, QString prev_hash);
-
 
     enum getInfo
     {
@@ -65,15 +30,28 @@ public:
         ADMIN
     };
 
-    void registerNewUser(QString address, QString walletKey);
+
+    JSON(QString fileName);
+
+    QString get_hash(int number_block);
+    QString get_prev_hash(int number_block);
+    int get_id(int number_block);
+
+    QString get_sender(int number_block);
+    QString get_reciever(int number_block);
+    QString get_timestamp(int number_block);
+    double get_amount(int number_block);
+    double get_fee(int number_block);
+    int get_CoinsType(int number_block);
+    int get_priority(int number_block);
+    int get_array_size_blockchain();
+    int get_array_size_balances(int number_block);
+
     QVector<QString> get_users_info(getInfo what_u_need);
     int get_array_size_users();
-    void changed_passphrase_oldkey(QString old_walletKey, QString new_walletKey);
-    void changed_passphrase_address(QString address, QString new_walletKey);
 
     void read_all_chain(Blockchain &a);
     void read_all_chain(Validator &a);
-    //void write_all_chain(QVector<Block> chain);
     void write_all_chain(Block block);
 
     int get_language_user(QString address);
@@ -94,19 +72,6 @@ private:
 
 };
 
-
-enum getInfo
-{
-    ADDRESS,
-    KEY,
-    ADMIN
-};
-
 void fileExists(const QString &file_path);
-
-QVector<QString> getUsersInfo(getInfo what_u_need);
-
-//void registerNewUsers(QString wallet_address, QString wallet_key);
-
 
 #endif // JSON_FUNC_H

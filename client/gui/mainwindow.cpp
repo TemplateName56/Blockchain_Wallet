@@ -2,6 +2,23 @@
 #include "./ui_mainwindow.h"
 
 
+QString toCoinsType2(int CoinId)
+{
+    switch (CoinId) {
+    case 0:
+        return "BWC";
+        break;
+    case 1:
+        return "BWC-N";
+        break;
+    case 2:
+        return "BWC-Q";
+        break;
+    default:
+        break;
+    }
+}
+
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -148,15 +165,10 @@ void MainWindow::registerUser()
     try {      
         wallet_address = randomWalletAdress();
         wallet_key = randomWalletKey();
-
-        //JSON file("users.json");
-        //file.registerNewUser(wallet_address, wallet_key + "SALT");
-
         users_information.addUser(User(wallet_address, wallet_key, true));
 
         JSON file("users.json");
         file.write_users_file(users_information);
-        //file.registerNewUser(current_user.getAddress(), current_user.getPassword());
 
         current_user = users_information.getUser(wallet_key);
 
@@ -461,8 +473,8 @@ void MainWindow::requestsHistory()
         //qDebug() << str_request;
 
         request_view_model = new QStandardItemModel(this);
-        request_view_model->setColumnCount(5);
-        request_view_model->setHorizontalHeaderLabels(QStringList() << "Link" << "Message" << "Amount" << "Type amount"<<"Receiver");
+        request_view_model->setColumnCount(4);
+        request_view_model->setHorizontalHeaderLabels(QStringList() << "Link" << "Message" << "Amount" << "Type coins");
         ui->requestsView->setModel(request_view_model);
 
         ui->requestsView->setEditTriggers( QAbstractItemView::NoEditTriggers);
@@ -485,15 +497,15 @@ void MainWindow::requestsHistory()
         ui->requestsView->verticalHeader()->setVisible(false);
 
         ui->requestsView->setColumnWidth(0,300);
-        ui->requestsView->setColumnWidth(1,100);
+        ui->requestsView->setColumnWidth(1,280);
         ui->requestsView->setColumnWidth(2,80);
         ui->requestsView->setColumnWidth(3,100);
-        ui->requestsView->setColumnWidth(4,150);
+        //ui->requestsView->setColumnWidth(4,150);
 
         for(int index = 0; index < str_request.size(); index++)
         {
             QList<QStandardItem *> newRequestsList;
-            for(int c = 1; c <= 6; c++)
+            for(int c = 1; c <= 4; c++)
             {
                 switch(c){
                 case 1:
@@ -507,9 +519,6 @@ void MainWindow::requestsHistory()
                     break;
                 case 4:
                     newRequestsList.append(new QStandardItem(str_request.at(index).section(',', 3, 3)));
-                    break;
-                case 5:
-                    newRequestsList.append(new QStandardItem(str_request.at(index).section(',', 4, 4)));
                     break;
                 default:
                     break;
@@ -525,8 +534,8 @@ void MainWindow::requestsHistory()
         JSON json_file("chain.json");
 
         history_view_model = new QStandardItemModel(this);
-        history_view_model->setColumnCount(5);
-        history_view_model->setHorizontalHeaderLabels(QStringList() << "№" << "From" << "To" << "Money" << "Currency");
+        history_view_model->setColumnCount(6);
+        history_view_model->setHorizontalHeaderLabels(QStringList() << "№" << "From" << "To" << "Money" << "Currency" << "type Coin" << "Time");
 
         ui->historyView->setModel(history_view_model);
 
@@ -553,31 +562,40 @@ void MainWindow::requestsHistory()
         ui->historyView->setColumnWidth(2,225);
         ui->historyView->setColumnWidth(3,108);
         ui->historyView->setColumnWidth(4,108);
+        ui->historyView->setColumnWidth(5,108);
+        ui->historyView->setColumnWidth(6,250);
 
-        for(int i = 1; i <= json_file.new_get_array_size_blockchain(); i++)
+        for(int i = 1; i <= json_file.get_array_size_blockchain(); i++)
         {
             QList<QStandardItem *> HistoryList;
             int count = 0;
-            for(int c = 0; c < 5; c++){
+            if((json_file.get_sender(i) == current_user.getAddress()) || (json_file.get_reciever(i) == current_user.getAddress())){
+            for(int c = 0; c < 7; c++){
                 if(c == 0){
-                    HistoryList.append(new QStandardItem(QString::number(json_file.new_get_id(i))));
+                    HistoryList.append(new QStandardItem(QString::number(json_file.get_id(i))));
                 }else if(c == 1){
-                    HistoryList.append(new QStandardItem(json_file.new_get_sender(i)));
+                    HistoryList.append(new QStandardItem(json_file.get_sender(i)));
                 }else if(c == 2){
-                    HistoryList.append(new QStandardItem(json_file.new_get_reciever(i)));
+                    HistoryList.append(new QStandardItem(json_file.get_reciever(i)));
                 }else if(c == 3){
-                    HistoryList.append(new QStandardItem(QString::number(json_file.new_get_amount(i))));
+                    HistoryList.append(new QStandardItem(QString::number(json_file.get_amount(i))));
                 }else if(c == 4){
-                    HistoryList.append(new QStandardItem(json_file.new_get_fee(i)));
+                    HistoryList.append(new QStandardItem(QString::number(json_file.get_fee(i))));
+                }else if(c == 5){
+                    HistoryList.append(new QStandardItem(toCoinsType2(json_file.get_CoinsType(i))));
+                }else if(c == 6){
+                    HistoryList.append(new QStandardItem(json_file.get_timestamp(i)));
                 }
-            count++;
+                count++;
             }
             for(int i = 0; i < count; i++)
             {
                 HistoryList[i]->setTextAlignment(Qt::AlignCenter);
             }
             history_view_model->appendRow(HistoryList);
+            }
         }
+
     }  catch (ProgramException &error) {
         error.getError();
     }
@@ -698,12 +716,15 @@ void MainWindow::setWindowLanguage(QVector<QString> language_vector, int languag
 
 void MainWindow::on_sendCoinsButton_clicked()
 {
+
     try {
         if(reciever_address.length() != 17)
         {
             throw ProgramException(INVALID_ADDRESS);
         }
-        QVector<QString> exists_address = getUsersInfo(ADDRESS);
+        JSON file_json("users.json");
+        QVector<QString> exists_address = file_json.get_users_info(JSON::ADDRESS);
+        //QVector<QString> exists_address = getUsersInfo(ADDRESS);
         int exist_flag = exists_address.indexOf(reciever_address);
         if(exist_flag == -1)
         {
@@ -770,7 +791,9 @@ void MainWindow::on_sendCoinsButton_clicked()
     }  catch (ProgramException &error) {
         error.getError();
     }
-
+    request_view_model->clear();
+    history_view_model->clear();
+    requestsHistory();
 }
 
 
