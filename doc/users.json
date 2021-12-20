@@ -23,6 +23,30 @@
             "admin": 0,
             "language": 1,
             "walletKey": "hamQFrtSiNc0vpVc"
+        },
+        {
+            "address": "BWHmBSTZOBkMmM18p",
+            "admin": 0,
+            "language": 1,
+            "walletKey": "zZiziSydhtdZGbsy"
+        },
+        {
+            "address": "BWsnrIQY1a1DQdYSM",
+            "admin": 0,
+            "language": 1,
+            "walletKey": "rcNhlyRGoEUdxczU"
+        },
+        {
+            "address": "BWGGwwmQxWVoqzbas",
+            "admin": 0,
+            "language": 2,
+            "walletKey": "ggbFWLnqwoWiPijE"
+        },
+        {
+            "address": "BWPcZnSeThV0XQUf5",
+            "admin": 0,
+            "language": 2,
+            "walletKey": "ruQQnLoxkGvgy0G0"
         }
     ]
 }
