@@ -18,7 +18,6 @@
 #include <QParallelAnimationGroup>
 #include <QStandardItemModel>
 #include <QDate>
-#include <QQueue>
 #include <QMetaType>
 
 #include "auth_form.h"
@@ -98,7 +97,6 @@ private:
     bool recomActivated = true;
 
     QString reciever_address;
-    QString transaction_label;
     double amount;
     CoinsType coins_type = BWC;
     double fee;
@@ -167,7 +165,6 @@ private slots:
     void newTransaction(QString wallet_address, TransactionData data);
 
     void on_payToAddress_textChanged(const QString &arg1);
-    void on_sendTransactionLabel_textChanged(const QString &arg1);
     void on_messageLine_textChanged(const QString &arg1);
 
     void on_sendCoinsButton_clicked();

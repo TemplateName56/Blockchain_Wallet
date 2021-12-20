@@ -17,8 +17,6 @@ MainWindow::MainWindow(QWidget *parent)
     val_2.setAuthority(75);
     val_3.setAuthority(1);
 
-    val_1.getBlockChain().show();
-
     qRegisterMetaType<TransactionData>("TransactionData");
 
     createActions();
@@ -457,7 +455,6 @@ void MainWindow::newTransaction(QString wallet_address, TransactionData data)
 void MainWindow::on_payToAddress_textChanged(const QString &arg1)
 {
     this->reciever_address = arg1;
-    //qDebug() << arg1;
 }
 
 QString toCoinsType2(int CoinId)
@@ -480,12 +477,8 @@ QString toCoinsType2(int CoinId)
 void MainWindow::requestsHistory()
 {
     try {
-        //request_view_model->clear();
         CSV file("requestsList.csv");
-        //CSV file("requestsList.csv");
-        //CSV file("request2.csv");
         QVector<QString> str_request = file.find_user(current_user.getAddress()); //вместо BW000000000000001 нужен адрес текущего пользователя
-        //qDebug() << str_request;
 
         request_view_model = new QStandardItemModel(this);
         request_view_model->setColumnCount(4);
@@ -803,6 +796,7 @@ void MainWindow::on_sendCoinsButton_clicked()
         default:
             break;
         }
+        throw ProgramException(SEND_SUCCESSFUL);
     }  catch (ProgramException &error) {
         error.getError();
     }
@@ -887,11 +881,6 @@ void MainWindow::on_coinsBox_currentIndexChanged(int index)
     default:
         break;
     }
-}
-
-void MainWindow::on_sendTransactionLabel_textChanged(const QString &arg1)
-{
-    this->transaction_label = arg1;
 }
 
 void MainWindow::on_clearSendButton_clicked()
