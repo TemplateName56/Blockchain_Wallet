@@ -12,8 +12,8 @@ settings_Form::settings_Form(QWidget *parent) :
     this->setWindowIcon(QIcon("icons/programIcon.png"));
 
     setWindowFlags(Qt::Dialog | Qt::MSWindowsFixedSizeDialogHint);
-
-    readSettings();
+    languageIndex = 1;
+    //readSettings();
     ui->languagesBox->setCurrentIndex(languageIndex);
     setWindowLanguage();
 }
@@ -65,12 +65,9 @@ void settings_Form::readSettings()
      //вместо BW000000000000001 нужен адрес текущего пользователя
     //qDebug() << "languageIndex: " << settings_Form::languageIndex ;
     //settings_Form::languageIndex = current_json.value("Language").toInt();
-    try {
-        JSON file("users.json");
+
         languageIndex = 1;
-    }  catch (ProgramException &error) {
-        error.getError();
-    }
+
 }
 
 void settings_Form::closeEvent(QCloseEvent *event)

@@ -41,7 +41,6 @@ private:
     Ui::settings_Form *ui;
     friend class mainwindow;
     void readSettings();
-    void writeSettings();
 
 public slots:
     void settingsShow();

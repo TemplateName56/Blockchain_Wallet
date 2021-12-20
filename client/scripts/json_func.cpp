@@ -1,7 +1,5 @@
 #include "json_func.h"
 #include "client/blockchain/blockchain.h"
-//#include "client/classes/users.cpp"
-//#include "client/blockchain/blockchain.cpp"
 #include "client/classes/users.h"
 
 languages tolanguages1(int language)
@@ -16,7 +14,7 @@ languages tolanguages1(int language)
     case 2:
         return RUSSIAN;
     default:
-        return UKRANIAN; //тут по идее должно быть что-то типа languageTypeERROR как в функции toCoinsType
+        return UKRANIAN;
         break;
     }
 }
