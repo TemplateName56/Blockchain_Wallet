@@ -40,9 +40,7 @@ void CSV:: append_csv_request(QString link, QString message, QString amount,QStr
         throw ProgramException(FILE_READ_ERROR);
     } else {
         QTextStream out(&file_out);
-        for(int i = 0; i < 1; i++){
             out << link << "," << message << "," << amount << "," << type_amount << "," << reciever << "," << "\n";
-        }
         QString line = link + "," + message + "," + amount + "," + type_amount+"," + reciever + ",";
         lines.append(line);
         file_out.close();
