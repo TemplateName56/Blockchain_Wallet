@@ -72,11 +72,13 @@ public:
 
 class Block
 {
-     friend class JSON;
+    friend class JSON;
     int id;
 
     QString hash;
     QString prev_hash;
+
+    QVector<Balance> users_balance;
 
     TransactionData block_data;
 public:
@@ -84,8 +86,8 @@ public:
     Block(int index, TransactionData data, QString prev_hash);
     Block(int index, TransactionData data, QString prev_hash, QString hash);
 
-
-    QVector<Balance> users_balance;
+    QVector<Balance> getBalances();
+    void setBalances(QVector<Balance> users_balance);
 
     QString generateHash();
 
@@ -119,14 +121,9 @@ public:
     bool isChainValid();
     void collisionCheck();
 
-    void readChain();
-    void writeChain();
-
     void addBlock(int index, TransactionData data, QString prev_hash);
     void addBlock(int index, TransactionData data, QString prev_hash, QString hash, bool genesis);
     void addBlock(Block new_block);
-
-    void show();
 
     ~Blockchain();
 };
