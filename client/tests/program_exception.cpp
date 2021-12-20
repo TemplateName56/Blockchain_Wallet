@@ -127,12 +127,18 @@ void ProgramException::getError()
         break;
     case REQUEST_MESSAGE_EMPTY:
         error_messageBox.setText("Empty message text");
-        error_messageBox.setIcon(QMessageBox::Information);
+        error_messageBox.setIcon(QMessageBox::Critical);
 
         error_messageBox.exec();
         break;
     case REQUEST_AMOUNT_INVALID:
         error_messageBox.setText("Incorrect amount");
+        error_messageBox.setIcon(QMessageBox::Critical);
+
+        error_messageBox.exec();
+        break;
+    case SEND_SUCCESSFUL:
+        error_messageBox.setText("Your transaction send to validator");
         error_messageBox.setIcon(QMessageBox::Information);
 
         error_messageBox.exec();

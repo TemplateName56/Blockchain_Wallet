@@ -184,6 +184,16 @@ Block::Block(int index, TransactionData data, QString prev_hash, QString hash)
     this->prev_hash = prev_hash;
 }
 
+QVector<Balance> Block::getBalances()
+{
+    return this->users_balance;
+}
+
+void Block::setBalances(QVector<Balance> users_balance)
+{
+    this->users_balance = users_balance;
+}
+
 QString Block::generateHash()
 {
     algoritms hash_block;
@@ -270,7 +280,6 @@ Block::~Block()
 Blockchain::Blockchain()
 {
     //createGenesisBlock();
-    //readChain();
 }
 
 void Blockchain::createGenesisBlock()
@@ -282,8 +291,6 @@ void Blockchain::createGenesisBlock()
 
 QVector<Block> Blockchain::getChain()
 {
-    //readChain();
-    //return this->chain;
     if(this->chain.length() != 0)
     {
         return this->chain;
@@ -349,50 +356,18 @@ void Blockchain::collisionCheck()
     }
 }
 
-
-void Blockchain::readChain()
-{
-    try {
-        JSON file("chain.json");
-
-        bool genesis = true;
-        for(int index = 0; index < file.get_array_size_blockchain(); index++)
-        {
-            if(index > 0)
-            {
-                genesis = false;
-            }
-            addBlock(file.get_id(index),
-                     TransactionData(file.get_sender(index),
-                                     file.get_reciever(index),
-                                     file.get_amount(index),
-                                     toCoinsType(file.get_CoinsType(index)),
-                                     file.get_fee(index),
-                                     file.get_priority(index),
-                                     file.get_timestamp(index)),
-                     file.get_prev_hash(index),
-                     file.get_hash(index),
-                     genesis);
-        }
-    }  catch (ProgramException &error) {
-        error.getError();
-    }
-}
-
-
 void Blockchain::addBlock(int index, TransactionData data, QString prev_hash)
 {
     try {
         this->chain.push_back(Block(index, data, prev_hash));
         collisionCheck();
-        chain.last().users_balance = chain[chain.length() - 2].users_balance;
+        chain.last().setBalances(chain[chain.length() - 2].getBalances());
         chain.last().setUserBalance(chain.last().getBlockData().getSender());
         chain.last().setUserBalance(chain.last().getBlockData().getReciever(), true);
     }  catch (ProgramException &error) {
         error.getError();
         this->chain.pop_back();
     }
-
 }
 
 void Blockchain::addBlock(int index, TransactionData data, QString prev_hash, QString hash, bool genesis)
@@ -400,7 +375,7 @@ void Blockchain::addBlock(int index, TransactionData data, QString prev_hash, QS
     this->chain.push_back(Block(index, data, prev_hash, hash));
     if(!genesis)
     {
-        chain.last().users_balance = chain[chain.length() - 2].users_balance;
+        chain.last().setBalances(chain[chain.length() - 2].getBalances());
         chain.last().setUserBalance(chain.last().getBlockData().getSender());
     }
     chain.last().setUserBalance(chain.last().getBlockData().getReciever(), true);
@@ -409,28 +384,9 @@ void Blockchain::addBlock(int index, TransactionData data, QString prev_hash, QS
 void Blockchain::addBlock(Block new_block)
 {
     this->chain.push_back(new_block);
-    chain.last().users_balance = chain[chain.length() - 2].users_balance;
+    chain.last().setBalances(chain[chain.length() - 2].getBalances());
     chain.last().setUserBalance(chain.last().getBlockData().getSender());
     chain.last().setUserBalance(chain.last().getBlockData().getReciever(), true);
-}
-
-void Blockchain::show()
-{
-    // temp show func
-    qDebug() << chain.length();
-    for(int index = 0; index < chain.length(); index++)
-    {
-        qDebug() << "------------------------------------------";
-        qDebug() << chain[index].getIndex();
-        qDebug() << chain[index].getBlockHash();
-        qDebug() << chain[index].getPrevBlockHash();
-        qDebug() << chain[index].getBlockData().getSender();
-        qDebug() << chain[index].getBlockData().getReciever();
-        qDebug() << chain[index].getBlockData().getAmount();
-        qDebug() << chain[index].getBlockData().getCoinsType();
-        qDebug() << chain[index].getBlockData().getTimeStamp();
-        qDebug() << "------------------------------------------";
-    }
 }
 
 Blockchain::~Blockchain()

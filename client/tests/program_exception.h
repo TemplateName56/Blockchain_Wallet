@@ -28,7 +28,8 @@ enum ErrorsNames
     CHAIN_LENGTH_ERROR,
     CURRENT_USER_ADDRESS,
     REQUEST_MESSAGE_EMPTY,
-    REQUEST_AMOUNT_INVALID
+    REQUEST_AMOUNT_INVALID,
+    SEND_SUCCESSFUL
 };
 
 class ProgramException : public QException
