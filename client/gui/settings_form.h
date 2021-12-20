@@ -40,7 +40,6 @@ signals:
 private:
     Ui::settings_Form *ui;
     friend class mainwindow;
-    void readSettings();
 
 public slots:
     void settingsShow();

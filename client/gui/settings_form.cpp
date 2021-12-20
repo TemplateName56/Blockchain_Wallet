@@ -13,7 +13,6 @@ settings_Form::settings_Form(QWidget *parent) :
 
     setWindowFlags(Qt::Dialog | Qt::MSWindowsFixedSizeDialogHint);
     languageIndex = 1;
-    //readSettings();
     ui->languagesBox->setCurrentIndex(languageIndex);
     setWindowLanguage();
 }
@@ -44,31 +43,6 @@ void settings_Form::on_trayCheckBox_toggled(bool checked)
     emit trayCheckBoxToggled();
 }
 
-void settings_Form::readSettings()
-{
-//    QFileInfo file_info("settings.json");
-//    QDir::setCurrent(file_info.path());
-//    QFile json_file("settings.json");
-
-//    if (!json_file.open(QIODevice::ReadOnly))
-//    {+
-//        //throw ProgramException(FILE_READ_ERROR); i think this dont need
-//    }
-
-//    QJsonDocument json_document(QJsonDocument::fromJson(json_file.readAll()));
-//    json_file.close();
-
-//    QJsonObject current_json = json_document.object();
-
-
-    //file.get_language_user("BW000000000000000");
-     //вместо BW000000000000001 нужен адрес текущего пользователя
-    //qDebug() << "languageIndex: " << settings_Form::languageIndex ;
-    //settings_Form::languageIndex = current_json.value("Language").toInt();
-
-        languageIndex = 1;
-
-}
 
 void settings_Form::closeEvent(QCloseEvent *event)
 {
