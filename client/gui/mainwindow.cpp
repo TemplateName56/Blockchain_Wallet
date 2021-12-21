@@ -126,7 +126,7 @@ void MainWindow::authorizeUser()
 
             emit on_coinsBox_currentIndexChanged(current_user.getUserPreferCoinsType());
             emit loadUserSettings(current_user);
-
+            qDebug() << "PreferCoinsType: " << current_user.getUserPreferCoinsType();
             ui->walletAddressLabel->setText(current_user.getAddress());
             ui->walletKeyLabel->setText(wallet_key);
 

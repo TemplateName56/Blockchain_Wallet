@@ -117,12 +117,14 @@ void JSON::set_language_user(QString address, int language){
             QString address_file = subtree.value("address").toString();
             int admin = subtree.value("admin").toInt();
             QString walletKey = subtree.value("walletKey").toString();
+            int coins_type = subtree.value("coins type").toInt();
 
             QJsonObject jsonObj3;
             jsonObj3.insert("address", address_file);
             jsonObj3.insert("admin", admin);
             jsonObj3.insert("walletKey", walletKey);
             jsonObj3.insert("language", language );
+            jsonObj3.insert("coins type", coins_type );
             jsonArray.replace(i, jsonObj3);
         }
     }
@@ -287,6 +289,7 @@ void JSON::read_users_file(Users &a)
     QString wallet_key;
     bool admin;
     int language;
+    int coins_type;
 
     for(int index = 0; index < jsonArray.size(); index++){
         QJsonObject subtree = jsonArray.at(index).toObject();
@@ -294,10 +297,11 @@ void JSON::read_users_file(Users &a)
         wallet_key = subtree.value("walletKey").toString();
         admin = subtree.value("admin").toInt();
         language = subtree.value("language").toInt();
+        coins_type = subtree.value("coins type").toInt();
     a.users_information.push_back(User(address_file,
                                     wallet_key,
                                     tolanguages1(language),
-                                    admin));
+                                    admin, coins_type));
     }
 }
 
@@ -317,11 +321,11 @@ void JSON::write_users_file(Users &a)
         user_obj.insert("admin", a.getUser(i).isAdmin());
         user_obj.insert("walletKey", a.getUser(i).getPassword());
         user_obj.insert("language", a.getUser(i).getUserLanguage());
+        user_obj.insert("coins type", a.getUser(i).getUserPreferCoinsType());
 
         users_array.append(user_obj);
-
+        qDebug() << "Prefer Coins Type: " << a.getUser(i).getUserPreferCoinsType();
     }
-    qDebug() << users_array;
 
     users_obj["users"] = users_array;
     doc.setObject(users_obj);

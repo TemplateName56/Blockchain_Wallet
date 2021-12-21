@@ -3,14 +3,23 @@
         {
             "address": "BW000000000000000",
             "admin": 1,
+            "coins type": 0,
             "language": 1,
             "walletKey": "Xx0MsyDsMzlqzyQE"
         },
         {
             "address": "BW000000000000001",
             "admin": 0,
+            "coins type": 0,
             "language": 2,
             "walletKey": "gfMgaUusfDlMZaVR"
+        },
+        {
+            "address": "BWzKuTmkNTvSitn78",
+            "admin": 0,
+            "coins type": 2,
+            "language": 1,
+            "walletKey": "YZNTryfOMrNexalM"
         }
     ]
 }
