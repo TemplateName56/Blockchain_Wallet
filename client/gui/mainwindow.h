@@ -26,11 +26,12 @@
 #include "about_of_authors.h"
 #include "change_passphrase_form.h"
 #include "transactionscardview.h"
-#include "client/tests/program_exception.h"
+
+#include "client/classes/program_exception.h"
 #include "client/scripts/json_func.h"
 #include "client/scripts/new_wallet.h"
 #include "client/scripts/csv_func.h"
-#include "client/blockchain/blockchain.h"
+#include "client/classes/blockchain.h"
 #include "client/classes/users.h"
 
 
@@ -139,10 +140,11 @@ private:
     int counter = 0;
     QList<transactionsCardView> card_list;
 
+    QVector<QString> table_translation;
+
     void createActions();
     void createMenus();
     void createTrayMenu();
-    void uiChanges();
 
 private slots:
     void authorizeUser();
@@ -166,6 +168,7 @@ private slots:
 
     void on_payToAddress_textChanged(const QString &arg1);
     void on_messageLine_textChanged(const QString &arg1);
+    void on_putLinkLE_textChanged(const QString &arg1);
 
     void on_sendCoinsButton_clicked();
     void on_customValueButton_clicked();
@@ -183,13 +186,13 @@ private slots:
     void on_coinsBox_currentIndexChanged(int index);
     void on_coinsBox_2_currentIndexChanged(int index);
 
+    void on_linkCB_stateChanged(int arg1);
+
     void blocksPrev();
     void blocksNext();
 
     void sendWalletPassToChangeForm();
 
     void createLink();
-    void on_linkCB_stateChanged(int arg1);
-    void on_putLinkLE_textChanged(const QString &arg1);
 };
 #endif // MAINWINDOW_H

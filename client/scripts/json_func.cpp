@@ -1,5 +1,6 @@
 #include "json_func.h"
-#include "client/blockchain/blockchain.h"
+
+#include "client/classes/blockchain.h"
 #include "client/classes/users.h"
 
 languages tolanguages1(int language)

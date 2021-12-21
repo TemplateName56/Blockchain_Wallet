@@ -9,9 +9,9 @@
 #include <QJsonObject>
 #include <QJsonDocument>
 #include <QJsonArray>
-#include "client/tests/program_exception.h"
+#include "client/classes/program_exception.h"
 #include "client/scripts/program_algorithms.h"
-#include "client/blockchain/blockchain.h"
+#include "client/classes/blockchain.h"
 #include "client/classes/users.h"
 
 #include <iostream>

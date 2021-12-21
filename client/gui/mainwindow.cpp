@@ -13,6 +13,9 @@ MainWindow::MainWindow(QWidget *parent)
     JSON file_json("users.json");
     file_json.read_users_file(users_information);
 
+    request_view_model = new QStandardItemModel(this);
+    history_view_model = new QStandardItemModel(this);
+
     val_1.setAuthority(100);
     val_2.setAuthority(75);
     val_3.setAuthority(1);
@@ -22,7 +25,6 @@ MainWindow::MainWindow(QWidget *parent)
     createActions();
     createMenus();
     createTrayMenu();
-    uiChanges();
 
     connect(&ui_Auth, SIGNAL(login_button_clicked()), this, SLOT(authorizeUser()));
     connect(&ui_Auth, SIGNAL(register_button_clicked()), this, SLOT(registerUser()));
@@ -126,14 +128,14 @@ void MainWindow::authorizeUser()
             ui->bwcQBalance->setText(QString::number(current_user_balance.getBalance(BWC_Q)));
 
             emit on_coinsBox_currentIndexChanged(current_user.getUserPreferCoinsType());
-            requestsHistory();
+            emit loadUserSettings(current_user);
+
+            //requestsHistory();
 
             ui->walletAddressLabel->setText(current_user.getAddress());
             ui->walletKeyLabel->setText(wallet_key);
 
             ui->walletKeyLabel->setStyleSheet("* { background-color: rgba(0, 0, 0, 0); }");
-
-            emit loadUserSettings(current_user);
 
             val_1.loadTransactions();
 
@@ -309,16 +311,6 @@ void MainWindow::createTrayMenu()
     tray_icon->show();
 }
 
-void MainWindow::uiChanges()
-{
-//    ui->payToAddress->setPlaceholderText("Enter wallet-address");
-//    ui->sendTransactionLabel->setPlaceholderText("Enter a label for this address to add it to your address book");
-
-//    ui->requestLabelLine->setPlaceholderText("263 stroka, plz changed");
-//    ui->messageLine->setPlaceholderText("264 stroka, plz changed");
-
-}
-
 void MainWindow::iconActivated(QSystemTrayIcon::ActivationReason reason)
 {
     switch (reason) {
@@ -480,10 +472,10 @@ void MainWindow::requestsHistory()
         CSV file("requestsList.csv");
         QVector<QString> str_request = file.find_user(current_user.getAddress()); //вместо BW000000000000001 нужен адрес текущего пользователя
 
-        request_view_model = new QStandardItemModel(this);
+        //request_view_model = new QStandardItemModel(this);
         request_view_model->setColumnCount(4);
 
-        //request_view_model->setHorizontalHeaderLabels(QStringList() << language_vector.at(84) << language_vector.at(85) << language_vector.at(86) << language_vector.at(87);
+        request_view_model->setHorizontalHeaderLabels(QStringList() << table_translation.at(0) << table_translation.at(1) << table_translation.at(2) << table_translation.at(3));
 
         ui->requestsView->setModel(request_view_model);
 
@@ -543,10 +535,10 @@ void MainWindow::requestsHistory()
 
         JSON json_file("chain.json");
 
-        history_view_model = new QStandardItemModel(this);
+        //history_view_model = new QStandardItemModel(this);
         history_view_model->setColumnCount(6);
 
-       // history_view_model->setHorizontalHeaderLabels(QStringList() << "№" << language_vector.at(88) << language_vector.at(89) << language_vector.at(90) << language_vector.at(91) << language_vector.at(87) << language_vector.at(92);
+        history_view_model->setHorizontalHeaderLabels(QStringList() << "№" << table_translation.at(4) << table_translation.at(5) << table_translation.at(6) << table_translation.at(7) << table_translation.at(3) << table_translation.at(8));
 
         ui->historyView->setModel(history_view_model);
 
@@ -644,85 +636,119 @@ void MainWindow::setWindowLanguage(QVector<QString> language_vector, int languag
 {
     this->setWindowTitle(language_vector.at(57));
 
-           main_menu->setTitle(language_vector.at(1));
-           settings_menu->setTitle(language_vector.at(0));
-           help_menu->setTitle(language_vector.at(41));
+    main_menu->setTitle(language_vector.at(1));
+    settings_menu->setTitle(language_vector.at(0));
+    help_menu->setTitle(language_vector.at(41));
 
-           home->setText(language_vector.at(42));
-           send->setText(language_vector.at(43));
-           recieve->setText(language_vector.at(44));
-           transactions->setText(language_vector.at(45));
+    home->setText(language_vector.at(42));
+    send->setText(language_vector.at(43));
+    recieve->setText(language_vector.at(44));
+    transactions->setText(language_vector.at(45));
 
-           help->setText(language_vector.at(46));
-           quit->setText(language_vector.at(47));
+    help->setText(language_vector.at(46));
+    quit->setText(language_vector.at(47));
 
-           change_passphrase->setText(language_vector.at(48));
-           options->setText(language_vector.at(0));
+    change_passphrase->setText(language_vector.at(48));
+    options->setText(language_vector.at(0));
 
-           about_program->setText(language_vector.at(49));
-           about_of_authors->setText(language_vector.at(65));
-           view_window->setText(language_vector.at(50));
+    about_program->setText(language_vector.at(49));
+    about_of_authors->setText(language_vector.at(65));
+    view_window->setText(language_vector.at(50));
 
-           ui->sendCoinsButton->setText(language_vector.at(43));
-           //ui->addToAddressBookLabel->setText(language_vector.at(25));
-           ui->payToLabel->setText(language_vector.at(22));
-           ui->amountLabel->setText(language_vector.at(36));
-           ui->balanceLabel->setText(language_vector.at(18));
-           ui->commissionLabel->setText(language_vector.at(38));
-           //ui->feeCheckBox->setText(language_vector.at(51));
+    ui->sendCoinsButton->setText(language_vector.at(43));
+    //ui->addToAddressBookLabel->setText(language_vector.at(25));
+    ui->payToLabel->setText(language_vector.at(22));
+    ui->amountLabel->setText(language_vector.at(36));
+    ui->balanceLabel->setText(language_vector.at(18));
+    ui->commissionLabel->setText(language_vector.at(38));
+    //ui->feeCheckBox->setText(language_vector.at(51));
 
-           ui->transactionsOverviewLabel->setText(language_vector.at(21));
-           ui->addresslabel->setText(language_vector.at(19));
-           ui->keylabel->setText(language_vector.at(20));
+    ui->transactionsOverviewLabel->setText(language_vector.at(21));
+    ui->addresslabel->setText(language_vector.at(19));
+    ui->keylabel->setText(language_vector.at(20));
 
-           ui->recomValueButton->setText(language_vector.at(52));
-           ui->customValueButton->setText(language_vector.at(53));
+    ui->recomValueButton->setText(language_vector.at(52));
+    ui->customValueButton->setText(language_vector.at(53));
 
-           ui->balanceTextLabel->setText(language_vector.at(18));
-           ui->sendCoinsButton->setText(language_vector.at(43));
-           ui->clearSendButton->setText(language_vector.at(17));
+    ui->balanceTextLabel->setText(language_vector.at(18));
+    ui->sendCoinsButton->setText(language_vector.at(43));
+    ui->clearSendButton->setText(language_vector.at(17));
 
-           ui->requestLabel->setText(language_vector.at(23));
-           ui->amountToRecieveLabel->setText(language_vector.at(24));
-           ui->messageLabel->setText(language_vector.at(25));
+    ui->requestLabel->setText(language_vector.at(23));
+    ui->amountToRecieveLabel->setText(language_vector.at(24));
+    ui->messageLabel->setText(language_vector.at(25));
 
-           ui->requestButton->setText(language_vector.at(26));
-           ui->clearRequestButton->setText(language_vector.at(27));
+    ui->requestButton->setText(language_vector.at(26));
+    ui->clearRequestButton->setText(language_vector.at(27));
 
-           ui->historyLabel->setText(language_vector.at(28));
+    ui->historyLabel->setText(language_vector.at(28));
 
-           ui->transactionsLabel->setText(language_vector.at(29));
+    ui->transactionsLabel->setText(language_vector.at(29));
 
-           ui->idLabel->setText(language_vector.at(30));
-           ui->hashLabel->setText(language_vector.at(31));
-           ui->prevHashLabel->setText(language_vector.at(32));
-           ui->senderLabel->setText(language_vector.at(33));
-           ui->recieverLabel->setText(language_vector.at(34));
-           ui->timestampLabel->setText(language_vector.at(35));
-           ui->amountLabel_2->setText(language_vector.at(36));
-           ui->coinstypeLabel->setText(language_vector.at(37));
-           ui->feeLabel->setText(language_vector.at(38));
+    ui->idLabel->setText(language_vector.at(30));
+    ui->hashLabel->setText(language_vector.at(31));
+    ui->prevHashLabel->setText(language_vector.at(32));
+    ui->senderLabel->setText(language_vector.at(33));
+    ui->recieverLabel->setText(language_vector.at(34));
+    ui->timestampLabel->setText(language_vector.at(35));
+    ui->amountLabel_2->setText(language_vector.at(36));
+    ui->coinstypeLabel->setText(language_vector.at(37));
+    ui->feeLabel->setText(language_vector.at(38));
 
-           ui->prevBlockBTN->setText(language_vector.at(39));
-           ui->nextBlockBTN->setText(language_vector.at(40));
+    ui->prevBlockBTN->setText(language_vector.at(39));
+    ui->nextBlockBTN->setText(language_vector.at(40));
 
-           ui->priorityComboBox->setItemText(0, language_vector.at(54));
-           ui->priorityComboBox->setItemText(1, language_vector.at(55));
-           ui->priorityComboBox->setItemText(2, language_vector.at(56));
+    ui->priorityComboBox->setItemText(0, language_vector.at(54));
+    ui->priorityComboBox->setItemText(1, language_vector.at(55));
+    ui->priorityComboBox->setItemText(2, language_vector.at(56));
 
-           ui->payToAddress->setPlaceholderText(language_vector.at(61));
-           //ui->sendTransactionLabel->setPlaceholderText(language_vector.at(62));
+    ui->payToAddress->setPlaceholderText(language_vector.at(61));
+    //ui->sendTransactionLabel->setPlaceholderText(language_vector.at(62));
 
-           ui->requestLabelLine->setPlaceholderText(language_vector.at(63));
-           ui->messageLine->setPlaceholderText(language_vector.at(64));
+    ui->requestLabelLine->setPlaceholderText(language_vector.at(63));
+    ui->messageLine->setPlaceholderText(language_vector.at(64));
 
-           ui->linkLabel->setText(language_vector.at(82));
-           ui->linkCB->setText(language_vector.at(83));
+    ui->linkLabel->setText(language_vector.at(82));
+    ui->linkCB->setText(language_vector.at(83));
 
-           statusBar()->showMessage(language_vector.at(58));
+    qDebug() << request_view_model->rowCount();
+    if(table_translation.length() != 0)
+    {
+        table_translation.clear();
 
-           emit languageChanged(language_vector);
-           emit languageChanged(language_index);
+        table_translation.push_back(language_vector.at(84));
+        table_translation.push_back(language_vector.at(85));
+        table_translation.push_back(language_vector.at(86));
+        table_translation.push_back(language_vector.at(87));
+
+        table_translation.push_back(language_vector.at(88));
+        table_translation.push_back(language_vector.at(89));
+        table_translation.push_back(language_vector.at(90));
+        table_translation.push_back(language_vector.at(91));
+        table_translation.push_back(language_vector.at(92));
+
+        request_view_model->clear();
+        history_view_model->clear();
+        requestsHistory();
+    }
+    else
+    {
+        table_translation.push_back(language_vector.at(84));
+        table_translation.push_back(language_vector.at(85));
+        table_translation.push_back(language_vector.at(86));
+        table_translation.push_back(language_vector.at(87));
+
+        table_translation.push_back(language_vector.at(88));
+        table_translation.push_back(language_vector.at(89));
+        table_translation.push_back(language_vector.at(90));
+        table_translation.push_back(language_vector.at(91));
+        table_translation.push_back(language_vector.at(92));
+    }
+
+    statusBar()->showMessage(language_vector.at(58));
+
+    emit languageChanged(language_vector);
+    emit languageChanged(language_index);
 }
 
 void MainWindow::on_sendCoinsButton_clicked()
