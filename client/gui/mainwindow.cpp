@@ -110,6 +110,8 @@ void MainWindow::authorizeUser()
 
         wallet_key = ui_Auth.getInputKey();
 
+        qDebug() << QString::fromStdString(use_algoritm.Hash(wallet_key.toStdString() + "SALT"));
+
         if(users_information.isPasswordExists(wallet_key))
         {
             ui_Auth.close();
@@ -1128,7 +1130,7 @@ void MainWindow::on_putLinkLE_textChanged(const QString &arg1)
 
             if(encrypted_link.at(3) == current_user.getAddress())
             {
-                throw ProgramException(CURRENT_USER_ADDRESS);
+                //throw ProgramException(CURRENT_USER_ADDRESS);
             }
             ui->amountSpinBox->setValue(encrypted_link.at(1).toDouble());
             ui->coinsBox->setCurrentIndex(coinsTypeStringToInt(encrypted_link.at(2)));
