@@ -79,7 +79,11 @@ string algoritms::GenerateLink(string link)
     for (int i = 0; i < link.size(); i++)
         {
 
-            if (link[i]>=97&&link[i]<=118)
+            if(link[i]==46)
+            {
+                link[i]= 125;
+                continue;
+            }if (link[i]>=97&&link[i]<=118)
             {
                 link[i]= link[i] + 4;
                 continue;
@@ -114,7 +118,7 @@ string algoritms::GenerateLink(string link)
                 continue;
             }
 
-            link[i] = link[i] + 4;
+            link[i] = link[i] + 2;
         }
         string prevlink = "https://";
         string nextlink = ".ua";
@@ -138,8 +142,11 @@ string algoritms::DecryptionLink(string link)
 
         for (int i = 0; i < result.size(); i++)
         {
-
-            if (result[i] >= 101 && result[i] <= 122)
+            if(result[i]==125)
+            {
+                result[i]= 46;
+                continue;
+            }if (result[i] >= 101 && result[i] <= 122)
             {
                 result[i] = result[i] - 4;
                 continue;
@@ -175,7 +182,7 @@ string algoritms::DecryptionLink(string link)
             }
 
 
-            result[i] = result[i] - 4;
+            result[i] = result[i] - 2;
         }
         return result;
 }
