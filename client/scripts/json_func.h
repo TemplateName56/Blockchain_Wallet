@@ -49,6 +49,8 @@ public:
     void read_all_chain(Blockchain &a);
     void write_all_chain(Block block);
 
+    void set_prefer_coins_type_user(QString address, int prefer_coins_type);
+
     int get_language_user(QString address);
     void set_language_user(QString address, int language);
 

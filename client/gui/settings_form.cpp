@@ -13,7 +13,9 @@ settings_Form::settings_Form(QWidget *parent) :
 
     setWindowFlags(Qt::Dialog | Qt::MSWindowsFixedSizeDialogHint);
     languageIndex = 1;
+    preferCoinsIndex = 0;
     ui->languagesBox->setCurrentIndex(languageIndex);
+    ui->defaultCoinsTypeCB->setCurrentIndex(preferCoinsIndex);
     setWindowLanguage();
 }
 
@@ -29,7 +31,7 @@ void settings_Form::settingsShow()
 
 void settings_Form::on_languagesBox_currentIndexChanged(int index)
 {
-    settings_Form::languageIndex = index;
+    this->languageIndex = index;
     emit setWindowLanguage();
 }
 
@@ -48,7 +50,8 @@ void settings_Form::closeEvent(QCloseEvent *event)
 {
     try {
         JSON file("users.json");
-        file.set_language_user(this->current_user->getAddress(), settings_Form::languageIndex);
+        file.set_language_user(this->current_user->getAddress(), this->languageIndex);
+        file.set_prefer_coins_type_user(this->current_user->getAddress(), this->preferCoinsIndex);
     }  catch (ProgramException &error) {
         error.getError();
     }
@@ -78,7 +81,8 @@ void settings_Form::setWindowLanguage()
 
 void settings_Form::on_defaultCoinsTypeCB_currentIndexChanged(int index)
 {
-    emit coinsTypeChanged(index);
+    preferCoinsIndex = index;
+    emit coinsTypeChanged(preferCoinsIndex);
 }
 
 void settings_Form::loadSettings(User &current_user)
@@ -86,7 +90,8 @@ void settings_Form::loadSettings(User &current_user)
     this->current_user = &current_user;
     try {
         JSON file("users.json");
-        ui->languagesBox->setCurrentIndex(file.get_language_user(this->current_user->getAddress()));
+        ui->languagesBox->setCurrentIndex(this->current_user->getUserLanguage());
+        ui->defaultCoinsTypeCB->setCurrentIndex((this->current_user->getUserPreferCoinsType()));
     }  catch (ProgramException &error) {
         error.getError();
     }

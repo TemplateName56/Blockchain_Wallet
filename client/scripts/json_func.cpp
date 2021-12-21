@@ -85,12 +85,12 @@ void JSON::read_all_chain(Blockchain &a){
             {
                 genesis = false;
             }
-            qDebug() << "Index: " << index;
-            qDebug() << "\nreadChain:";
-            qDebug() << "Amount:" << amount;
-            qDebug() << "Reciever:" << reciever;
-            qDebug() << "Sender:" << sender;
-            qDebug() << "TimeStamp:" << timestamp;
+//            qDebug() << "Index: " << index;
+//            qDebug() << "\nreadChain:";
+//            qDebug() << "Amount:" << amount;
+//            qDebug() << "Reciever:" << reciever;
+//            qDebug() << "Sender:" << sender;
+//            qDebug() << "TimeStamp:" << timestamp;
             a.addBlock(id,TransactionData(sender, reciever, amount,
                                           toCoinsType1(coins_type), fee,
                                           priority, timestamp),Prev_hash, hash,
@@ -98,6 +98,43 @@ void JSON::read_all_chain(Blockchain &a){
 
 
     }
+}
+
+void JSON::set_prefer_coins_type_user(QString address, int prefer_coins_type){
+    QFile json_file(filename);
+    QJsonObject json = doc.object();
+    QJsonArray jsonArray = json["users"].toArray();
+
+    QJsonObject GBjsonObj;
+    GBjsonObj = doc.object();
+
+    for(int i = 0; i <  jsonArray.size(); i++){
+        QJsonObject subtree = jsonArray.at(i).toObject();
+        QString str = subtree.value("address").toString();
+        if(str == address){
+            QJsonObject subtree = jsonArray.at(i).toObject();
+            QString address_file = subtree.value("address").toString();
+            int admin = subtree.value("admin").toInt();
+            int language = subtree.value("language").toInt();
+            QString walletKey = subtree.value("walletKey").toString();
+
+            QJsonObject jsonObj3;
+            jsonObj3.insert("address", address_file);
+            jsonObj3.insert("admin", admin);
+            jsonObj3.insert("walletKey", walletKey);
+            jsonObj3.insert("language", language);
+            jsonObj3.insert("coins type", prefer_coins_type);
+            jsonArray.replace(i, jsonObj3);
+        }
+    }
+    GBjsonObj["users"] = jsonArray;
+    doc.setObject(GBjsonObj);
+
+    if(!json_file.open(QFile::WriteOnly))
+    {
+        throw ProgramException(FILE_WRITE_ERROR);
+    }
+    json_file.write(doc.toJson());
 }
 
 
