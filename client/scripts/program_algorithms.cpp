@@ -78,11 +78,7 @@ string algoritms::GenerateLink(string link)
 {
     for (int i = 0; i < link.size(); i++)
         {
-            if (link[i] == 40)
-            {
-                link[i] = link[i] + 43;
-                continue;
-            }
+
             if (link[i]>=97&&link[i]<=118)
             {
                 link[i]= link[i] + 4;
@@ -142,11 +138,7 @@ string algoritms::DecryptionLink(string link)
 
         for (int i = 0; i < result.size(); i++)
         {
-            if (result[i] == 83)
-            {
-                result[i] = result[i] - 43;
-                continue;
-            }
+
             if (result[i] >= 101 && result[i] <= 122)
             {
                 result[i] = result[i] - 4;
