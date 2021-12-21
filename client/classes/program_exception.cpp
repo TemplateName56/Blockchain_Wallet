@@ -1,7 +1,9 @@
 #include "program_exception.h"
+
 #include "QApplication"
 #include <QTimer>
 #include <QIcon>
+
 #include "client/scripts/csv_func.h"
 
 ProgramException::ProgramException()

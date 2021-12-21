@@ -46,18 +46,18 @@ set(PROJECT_SOURCES
         # Script files
         client/scripts/new_wallet.h
         client/scripts/new_wallet.cpp
-        client/tests/program_exception.h
-        client/tests/program_exception.cpp
         client/scripts/program_algorithms.h
         client/scripts/program_algorithms.cpp
         # Other libraries
         includes/effolkronium/random.hpp
         # Blockchain files
-        client/blockchain/blockchain.h
-        client/blockchain/blockchain.cpp
+        client/classes/blockchain.h
+        client/classes/blockchain.cpp
         # Classes
         client/classes/users.h
         client/classes/users.cpp
+        client/classes/program_exception.h
+        client/classes/program_exception.cpp
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)

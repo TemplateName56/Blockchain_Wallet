@@ -5,7 +5,7 @@
 #include <QMap>
 #include <QVector>
 
-#include "client/tests/program_exception.h"
+#include "client/classes/program_exception.h"
 #include "client/scripts/program_algorithms.h"
 
 enum languages

@@ -1,6 +1,7 @@
 #include "blockchain.h"
 #include "client/scripts/json_func.h"
- #include <QCoreApplication>
+
+#include <QCoreApplication>
 
 CoinsType toCoinsType(int CoinId)
 {

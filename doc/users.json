@@ -4,49 +4,13 @@
             "address": "BW000000000000000",
             "admin": 1,
             "language": 1,
-            "walletKey": "vuPFMnFxNzWPjFwL"
+            "walletKey": "Xx0MsyDsMzlqzyQE"
         },
         {
             "address": "BW000000000000001",
             "admin": 0,
             "language": 2,
-            "walletKey": "0F0Up0y1GYoyRtmn"
-        },
-        {
-            "address": "BWpxpKRvW9HkHPwxl",
-            "admin": 0,
-            "language": 1,
-            "walletKey": "QMdDkfhbOGaqGyjM"
-        },
-        {
-            "address": "BWrVffaWPhmsMyHDD",
-            "admin": 0,
-            "language": 1,
-            "walletKey": "hamQFrtSiNc0vpVc"
-        },
-        {
-            "address": "BWHmBSTZOBkMmM18p",
-            "admin": 0,
-            "language": 1,
-            "walletKey": "zZiziSydhtdZGbsy"
-        },
-        {
-            "address": "BWsnrIQY1a1DQdYSM",
-            "admin": 0,
-            "language": 1,
-            "walletKey": "rcNhlyRGoEUdxczU"
-        },
-        {
-            "address": "BWGGwwmQxWVoqzbas",
-            "admin": 0,
-            "language": 2,
-            "walletKey": "ggbFWLnqwoWiPijE"
-        },
-        {
-            "address": "BWPcZnSeThV0XQUf5",
-            "admin": 0,
-            "language": 2,
-            "walletKey": "ruQQnLoxkGvgy0G0"
+            "walletKey": "gfMgaUusfDlMZaVR"
         }
     ]
 }

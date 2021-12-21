@@ -3,7 +3,7 @@
 
 #include <QWidget>
 
-#include "client/tests/program_exception.h"
+#include "client/classes/program_exception.h"
 #include "client/classes/users.h"
 
 namespace Ui {

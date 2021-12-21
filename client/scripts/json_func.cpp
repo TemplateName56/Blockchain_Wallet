@@ -1,5 +1,6 @@
 #include "json_func.h"
-#include "client/blockchain/blockchain.h"
+
+#include "client/classes/blockchain.h"
 #include "client/classes/users.h"
 
 languages tolanguages1(int language)
@@ -57,12 +58,28 @@ JSON::JSON(QString fileName)
 }
 
 void JSON::read_all_chain(Blockchain &a){
-    JSON file(filename);
+
+    QFile json_file(filename);
+    QJsonObject root = doc.object();
+    QJsonArray jsonArray = root["Blockchain"].toArray();
 
     bool genesis = true;
-    qDebug() << "\narray_size:" << file.get_array_size_blockchain();
-    for(int index = 0; index < file.get_array_size_blockchain(); index++)
+    for(int index = 0; index < jsonArray.size(); index++)
     {
+        QJsonValue value = jsonArray.at(index);
+        int id = value["Id"].toInt();
+        QString hash = value["Hash"].toString();
+        QString Prev_hash = value["Previous Hash"].toString();
+
+        QJsonObject obj_data = value["Block Data"].toObject();
+        QString sender = obj_data["Sender"].toString();
+        QString reciever = obj_data["Reciever"].toString();
+        double amount = obj_data["Amount"].toDouble();
+        int coins_type = obj_data["Coins Type"].toInt();
+        double fee = obj_data["Fee"].toDouble();
+        QString timestamp = obj_data["TimeStamp"].toString();
+        int priority = obj_data["Priority"].toInt();
+
 
             if(index > 0)
             {
@@ -70,56 +87,14 @@ void JSON::read_all_chain(Blockchain &a){
             }
             qDebug() << "Index: " << index;
             qDebug() << "\nreadChain:";
-            qDebug() << "Amount:" << file.get_amount(index);
-            qDebug() << "Reciever:" << file.get_reciever(index);
-            qDebug() << "Sender:" << file.get_sender(index);
-            qDebug() << "TimeStamp:" << file.get_timestamp(index);
-            a.addBlock(file.get_id(index),
-                     TransactionData(file.get_sender(index),
-                                     file.get_reciever(index),
-                                     file.get_amount(index),
-                                     toCoinsType1(file.get_CoinsType(index)),
-                                     file.get_fee(index),
-                                     file.get_priority(index),
-                                     file.get_timestamp(index)),
-                    file.get_prev_hash(index),
-                    file.get_hash(index),
-                     genesis);
-
-
-    }
-}
-
-void JSON::read_all_chain(Validator &a){
-    JSON file(filename);
-
-    bool genesis = true;
-    qDebug() << "\narray_size:" << file.get_array_size_blockchain();
-    for(int index = 0; index < file.get_array_size_blockchain(); index++)
-    {
-
-            if(index > 0)
-            {
-                genesis = false;
-            }
-            qDebug() << "Index: " << index;
-            qDebug() << "\nreadChain:";
-            qDebug() << "Amount:" << file.get_amount(index);
-            qDebug() << "Reciever:" << file.get_reciever(index);
-            qDebug() << "Sender:" << file.get_sender(index);
-            qDebug() << "TimeStamp:" << file.get_timestamp(index);
-
-            a.getBlockChain().addBlock(file.get_id(index),
-                     TransactionData(file.get_sender(index),
-                                     file.get_reciever(index),
-                                     file.get_amount(index),
-                                     toCoinsType1(file.get_CoinsType(index)),
-                                     file.get_fee(index),
-                                     file.get_priority(index),
-                                     file.get_timestamp(index)),
-                    file.get_prev_hash(index),
-                    file.get_hash(index),
-                     genesis);
+            qDebug() << "Amount:" << amount;
+            qDebug() << "Reciever:" << reciever;
+            qDebug() << "Sender:" << sender;
+            qDebug() << "TimeStamp:" << timestamp;
+            a.addBlock(id,TransactionData(sender, reciever, amount,
+                                          toCoinsType1(coins_type), fee,
+                                          priority, timestamp),Prev_hash, hash,
+                       genesis);
 
 
     }
@@ -142,7 +117,6 @@ void JSON::set_language_user(QString address, int language){
             QString address_file = subtree.value("address").toString();
             int admin = subtree.value("admin").toInt();
             QString walletKey = subtree.value("walletKey").toString();
-            //int language_file = subtree.value("language").toInt();
 
             QJsonObject jsonObj3;
             jsonObj3.insert("address", address_file);
@@ -234,23 +208,6 @@ void JSON::write_all_chain(Block chain){
      json_file.write(document.toJson());
 }
 
-
-QString JSON:: get_hash(int number_block){
-    QJsonObject root = doc.object();
-    QJsonArray jsonArray = root["Blockchain"].toArray();
-    QJsonValue value = jsonArray.at(number_block);
-    QString address = value["Hash"].toString();;
-    return address;
-}
-
-QString JSON:: get_prev_hash(int number_block){
-    QJsonObject root = doc.object();
-    QJsonArray jsonArray = root["Blockchain"].toArray();
-    QJsonValue value = jsonArray.at(number_block);
-    QString Prev_hash = value["Previous Hash"].toString();;
-    return Prev_hash;
-}
-
 int JSON:: get_id(int number_block){
     QJsonObject root = doc.object();
     QJsonArray jsonArray = root["Blockchain"].toArray();
@@ -275,15 +232,6 @@ double JSON:: get_fee(int number_block){
     QJsonObject obj_data = value["Block Data"].toObject();
     double fee = obj_data["Fee"].toDouble();
     return fee;
-}
-
-int JSON:: get_priority(int number_block){
-    QJsonObject root = doc.object();
-    QJsonArray jsonArray = root.value("Blockchain").toArray();
-    QJsonValue value = jsonArray.at(number_block);
-    QJsonObject obj_data = value["Block Data"].toObject();
-    int priority = obj_data["Priority"].toInt();
-    return priority;
 }
 
 QString JSON:: get_reciever(int number_block){
@@ -327,14 +275,6 @@ int JSON:: get_array_size_blockchain(){
     QJsonObject root = doc.object();
     QJsonArray jsonArray = root["Blockchain"].toArray();
     return jsonArray.size();
-}
-
-int JSON:: get_array_size_balances(int number_block){
-    QJsonObject json = doc.object();
-    QJsonArray jsonArray = json["Blockchain"].toArray();
-    QJsonObject obj_balanse = jsonArray[number_block-1].toObject();
-    QJsonArray gps_array = obj_balanse.value("Balances").toArray();
-    return gps_array.size();
 }
 
 void JSON::read_users_file(Users &a)

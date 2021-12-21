@@ -1,7 +1,7 @@
 #ifndef CSV_FUNC_H
 #define CSV_FUNC_H
 
-#include "client/tests/program_exception.h"
+#include "client/classes/program_exception.h"
 
 #include <QCoreApplication>
 #include <iostream>
