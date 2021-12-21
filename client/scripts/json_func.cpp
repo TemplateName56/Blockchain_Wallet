@@ -175,23 +175,6 @@ void JSON::set_language_user(QString address, int language){
     json_file.write(doc.toJson());
 }
 
-int JSON::get_language_user(QString address){
-    QFile json_file(filename);
-    QJsonObject json = doc.object();
-    QJsonArray jsonArray = json["users"].toArray();
-    for(int i = 0; i <  jsonArray.size(); i++){
-        QJsonObject subtree = jsonArray.at(i).toObject();
-        QString str = subtree.value("address").toString();
-        if(str == address){
-            int language_file = subtree.value("language").toInt();
-            //qDebug() << "-=-=-=-Get_language-=-=-=" <<jsonArray;
-            return language_file ;
-        }
-    }
-    return 0;
-
-}
-
 int JSON::get_array_size_users(){
     QJsonObject json = doc.object();
     QJsonArray jsonArray = json["users"].toArray();
