@@ -48,11 +48,10 @@ void settings_Form::closeEvent(QCloseEvent *event)
 {
     try {
         JSON file("users.json");
-        file.set_language_user(this->current_user->getAddress(), settings_Form::languageIndex);  //вместо BW000000000000001 нужен адрес текущего пользователя
+        file.set_language_user(this->current_user->getAddress(), settings_Form::languageIndex);
     }  catch (ProgramException &error) {
         error.getError();
     }
-
 }
 
 void settings_Form::setWindowLanguage()
@@ -65,11 +64,7 @@ void settings_Form::setWindowLanguage()
         this->setWindowTitle(str.at(0));
 
         ui->settingsLabel->setText(str.at(0));
-        //ui->tabWidget->setTabText(0,str.at(1));
-        //ui->tabWidget->setTabText(1,str.at(2));
-        //ui->tabWidget->setTabText(2,str.at(3));
 
-        //ui->label->setText(str.at(4));
         ui->trayCheckBox->setText(str.at(5));
         ui->languageLabel->setText(str.at(6));
         ui->coinsTypeLabel->setText(str.at(7));

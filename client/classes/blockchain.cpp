@@ -351,7 +351,6 @@ void Blockchain::collisionCheck()
     {
         if(hashes.lastIndexOf(hashes[index]) != index)
         {
-            qDebug() << "More than two, but less then four!";
             throw ProgramException(HASH_COLLISION);
         }
     }

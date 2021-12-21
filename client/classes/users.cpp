@@ -109,8 +109,7 @@ User::~User()
 
 Users::Users()
 {
-    //read_file();
-    // file read func
+
 }
 
 const QVector<User>& Users::getUsersInformation() const
@@ -161,7 +160,7 @@ const User& Users::getUser(QString password) const&
             return users_information[index];
         }
     }
-    //throw ProgramException(USER_NOT_EXIST);
+    throw ProgramException(USER_NOT_EXIST);
 }
 
 User Users::getUser(QString password) &&
@@ -175,7 +174,7 @@ User Users::getUser(QString password) &&
             return std::move(users_information[index]);
         }
     }
-    //throw ProgramException(USER_NOT_EXIST);
+    throw ProgramException(USER_NOT_EXIST);
 }
 
 void Users::setUserPassword(QString address, QString password)
@@ -184,11 +183,7 @@ void Users::setUserPassword(QString address, QString password)
     {
         if(users_information[index].getAddress() == address)
         {
-            qDebug() << users_information[index].getAddress();
-            qDebug() << users_information[index].getPassword();
             users_information[index].setPassword(password, false);
-            qDebug() << users_information[index].getAddress();
-            qDebug() << users_information[index].getPassword();
         }
     }
 }
@@ -224,20 +219,7 @@ bool Users::isAddressExists(QString address)
     return false;
 }
 
-/*
-void Users:: read_file(){
-    JSON file_user("users.json");
-    for(int index = 0; index < file_user.get_array_size_users(); index++){
-        users_information.push_back(User(file_user.get_address_user(index),
-                                        file_user.get_wallet_key_user(index),
-                                        tolanguages(file_user.get_language_user(index)),
-                                        file_user.get_admin_user(index)));
-    }
-}
-*/
-
 Users::~Users()
 {
-    // file save func
-    //getUser(1).getAddress();
+
 }
