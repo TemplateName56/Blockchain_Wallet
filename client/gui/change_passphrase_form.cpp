@@ -1,8 +1,9 @@
 #include "change_passphrase_form.h"
 #include "ui_change_passphrase_form.h"
 
-#include "client/scripts/json_func.h"
 #include "settings_form.h"
+
+#include "client/scripts/json_func.h"
 
 change_passphrase_Form::change_passphrase_Form(QWidget *parent) :
     QWidget(parent),

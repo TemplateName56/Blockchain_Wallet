@@ -12,7 +12,7 @@
 #include <QJsonArray>
 
 #include "client/classes/users.h"
-#include "client/tests/program_exception.h"
+#include "client/classes/program_exception.h"
 
 namespace Ui { class settings_Form; }
 

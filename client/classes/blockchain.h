@@ -8,7 +8,7 @@
 #include <QObject>
 
 #include "client/scripts/program_algorithms.h"
-#include "client/tests/program_exception.h"
+#include "client/classes/program_exception.h"
 
 enum CoinsType
 {

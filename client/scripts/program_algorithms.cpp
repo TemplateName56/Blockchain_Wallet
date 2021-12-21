@@ -1,5 +1,6 @@
 #include "program_algorithms.h"
-#include "client/blockchain/blockchain.h"
+
+#include "client/classes/blockchain.h"
 #include <QVector>
 
 void algoritms::Sort(int *arr,int n)

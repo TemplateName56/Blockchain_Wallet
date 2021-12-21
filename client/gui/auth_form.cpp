@@ -1,5 +1,6 @@
 #include "auth_form.h"
 #include "ui_auth_form.h"
+
 #include "client/scripts/csv_func.h"
 
 auth_Form::auth_Form(QWidget *parent) :

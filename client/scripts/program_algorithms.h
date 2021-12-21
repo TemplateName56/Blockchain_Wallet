@@ -2,7 +2,7 @@
 #define PROGRAM_ALGORITHMS_H
 
 #include<string>
-#include "client/blockchain/blockchain.h"
+#include "client/classes/blockchain.h"
 
 using std::string;
 using std::swap;

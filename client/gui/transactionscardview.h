@@ -5,7 +5,7 @@
 #include <QPainter>
 #include <QIcon>
 
-#include "client/blockchain/blockchain.h"
+#include "client/classes/blockchain.h"
 
 namespace Ui {
 class transactionsCardView;

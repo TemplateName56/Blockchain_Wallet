@@ -1,5 +1,6 @@
 #include "about_of_authors.h"
 #include "ui_about_of_authors.h"
+
 #include "settings_form.h"
 
 about_of_authors::about_of_authors(QWidget *parent) :
