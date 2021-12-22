@@ -78,7 +78,6 @@ void settings_Form::setWindowLanguage()
     }
 }
 
-
 void settings_Form::on_defaultCoinsTypeCB_currentIndexChanged(int index)
 {
     preferCoinsIndex = index;
