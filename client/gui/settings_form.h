@@ -25,6 +25,7 @@ public:
     ~settings_Form();
 
     int languageIndex;
+    int preferCoinsIndex;
     User *current_user;
 
     bool minimizeInTray();

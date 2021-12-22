@@ -98,7 +98,7 @@ TransactionData::TransactionData()
 
 TransactionData::TransactionData(QString sender, QString reciever,
                                  double amount, CoinsType coins_type,
-                                 double fee, short priority)
+                                 double fee, int priority)
 {
     QDateTime current_time = QDateTime::currentDateTime();
     this->sender = sender;
@@ -115,7 +115,7 @@ TransactionData::TransactionData(QString sender, QString reciever,
 
 TransactionData::TransactionData(QString sender, QString reciever,
                                  double amount, CoinsType coins_type,
-                                 double fee, short priority, QString timestamp)
+                                 double fee, int priority, QString timestamp)
 {
     this->sender = sender;
     this->reciever = reciever;
@@ -154,7 +154,7 @@ double TransactionData::getFee()
     return this->fee_amount;
 }
 
-short TransactionData::getPriority() const
+int TransactionData::getPriority()
 {
     return this->priority;
 }
@@ -342,17 +342,19 @@ bool Blockchain::isChainValid()
 
 void Blockchain::collisionCheck()
 {
-    QVector<QString> hashes;
-    for(int index = 0; index < chain.length(); index++)
+    if(chain.length() != 0)
     {
-        hashes.push_back(chain[index].getBlockHash());
-    }
-    for(int index = 0; index < hashes.length(); index++)
-    {
-        if(hashes.lastIndexOf(hashes[index]) != index)
+        QVector<QString> hashes;
+        for(int index = 0; index < chain.length(); index++)
         {
-            qDebug() << "More than two, but less then four!";
-            throw ProgramException(HASH_COLLISION);
+            hashes.push_back(chain[index].getBlockHash());
+        }
+        for(int index = 0; index < hashes.length(); index++)
+        {
+            if(hashes.lastIndexOf(hashes[index]) != index)
+            {
+                throw ProgramException(HASH_COLLISION);
+            }
         }
     }
 }
@@ -373,21 +375,19 @@ void Blockchain::addBlock(int index, TransactionData data, QString prev_hash)
 
 void Blockchain::addBlock(int index, TransactionData data, QString prev_hash, QString hash, bool genesis)
 {
-    this->chain.push_back(Block(index, data, prev_hash, hash));
-    if(!genesis)
-    {
-        chain.last().setBalances(chain[chain.length() - 2].getBalances());
-        chain.last().setUserBalance(chain.last().getBlockData().getSender());
+    try {
+        this->chain.push_back(Block(index, data, prev_hash, hash));
+        if(!genesis)
+        {
+            collisionCheck();
+            chain.last().setBalances(chain[chain.length() - 2].getBalances());
+            chain.last().setUserBalance(chain.last().getBlockData().getSender());
+        }
+        chain.last().setUserBalance(chain.last().getBlockData().getReciever(), true);
+    }  catch (ProgramException &error) {
+        error.getError();
+        this->chain.pop_back();
     }
-    chain.last().setUserBalance(chain.last().getBlockData().getReciever(), true);
-}
-
-void Blockchain::addBlock(Block new_block)
-{
-    this->chain.push_back(new_block);
-    chain.last().setBalances(chain[chain.length() - 2].getBalances());
-    chain.last().setUserBalance(chain.last().getBlockData().getSender());
-    chain.last().setUserBalance(chain.last().getBlockData().getReciever(), true);
 }
 
 Blockchain::~Blockchain()

@@ -46,17 +46,17 @@ class TransactionData
     CoinsType coins_type;
 
     double fee_amount;
-    short priority;
+    int priority;
 
     QString timestamp;
 public:
     TransactionData();
     TransactionData(QString sender, QString reciever,
                     double amount, CoinsType coins_type,
-                    double fee, short priority);
+                    double fee, int priority);
     TransactionData(QString sender, QString reciever,
                     double amount, CoinsType coins_type,
-                    double fee, short priority, QString timestamp);
+                    double fee, int priority, QString timestamp);
 
     QString getSender();
     QString getReciever();
@@ -65,7 +65,7 @@ public:
     CoinsType getCoinsType();
 
     double getFee();
-    short getPriority() const;
+    int getPriority();
 
     QString getTimeStamp();
 };

@@ -85,12 +85,12 @@ void JSON::read_all_chain(Blockchain &a){
             {
                 genesis = false;
             }
-            qDebug() << "Index: " << index;
-            qDebug() << "\nreadChain:";
-            qDebug() << "Amount:" << amount;
-            qDebug() << "Reciever:" << reciever;
-            qDebug() << "Sender:" << sender;
-            qDebug() << "TimeStamp:" << timestamp;
+//            qDebug() << "Index: " << index;
+//            qDebug() << "\nreadChain:";
+//            qDebug() << "Amount:" << amount;
+//            qDebug() << "Reciever:" << reciever;
+//            qDebug() << "Sender:" << sender;
+//            qDebug() << "TimeStamp:" << timestamp;
             a.addBlock(id,TransactionData(sender, reciever, amount,
                                           toCoinsType1(coins_type), fee,
                                           priority, timestamp),Prev_hash, hash,
@@ -98,6 +98,43 @@ void JSON::read_all_chain(Blockchain &a){
 
 
     }
+}
+
+void JSON::set_prefer_coins_type_user(QString address, int prefer_coins_type){
+    QFile json_file(filename);
+    QJsonObject json = doc.object();
+    QJsonArray jsonArray = json["users"].toArray();
+
+    QJsonObject GBjsonObj;
+    GBjsonObj = doc.object();
+
+    for(int i = 0; i <  jsonArray.size(); i++){
+        QJsonObject subtree = jsonArray.at(i).toObject();
+        QString str = subtree.value("address").toString();
+        if(str == address){
+            QJsonObject subtree = jsonArray.at(i).toObject();
+            QString address_file = subtree.value("address").toString();
+            int admin = subtree.value("admin").toInt();
+            int language = subtree.value("language").toInt();
+            QString walletKey = subtree.value("walletKey").toString();
+
+            QJsonObject jsonObj3;
+            jsonObj3.insert("address", address_file);
+            jsonObj3.insert("admin", admin);
+            jsonObj3.insert("walletKey", walletKey);
+            jsonObj3.insert("language", language);
+            jsonObj3.insert("coins type", prefer_coins_type);
+            jsonArray.replace(i, jsonObj3);
+        }
+    }
+    GBjsonObj["users"] = jsonArray;
+    doc.setObject(GBjsonObj);
+
+    if(!json_file.open(QFile::WriteOnly))
+    {
+        throw ProgramException(FILE_WRITE_ERROR);
+    }
+    json_file.write(doc.toJson());
 }
 
 
@@ -117,12 +154,14 @@ void JSON::set_language_user(QString address, int language){
             QString address_file = subtree.value("address").toString();
             int admin = subtree.value("admin").toInt();
             QString walletKey = subtree.value("walletKey").toString();
+            int coins_type = subtree.value("coins type").toInt();
 
             QJsonObject jsonObj3;
             jsonObj3.insert("address", address_file);
             jsonObj3.insert("admin", admin);
             jsonObj3.insert("walletKey", walletKey);
             jsonObj3.insert("language", language );
+            jsonObj3.insert("coins type", coins_type );
             jsonArray.replace(i, jsonObj3);
         }
     }
@@ -134,23 +173,6 @@ void JSON::set_language_user(QString address, int language){
         throw ProgramException(FILE_WRITE_ERROR);
     }
     json_file.write(doc.toJson());
-}
-
-int JSON::get_language_user(QString address){
-    QFile json_file(filename);
-    QJsonObject json = doc.object();
-    QJsonArray jsonArray = json["users"].toArray();
-    for(int i = 0; i <  jsonArray.size(); i++){
-        QJsonObject subtree = jsonArray.at(i).toObject();
-        QString str = subtree.value("address").toString();
-        if(str == address){
-            int language_file = subtree.value("language").toInt();
-            //qDebug() << "-=-=-=-Get_language-=-=-=" <<jsonArray;
-            return language_file ;
-        }
-    }
-    return 0;
-
 }
 
 int JSON::get_array_size_users(){
@@ -287,6 +309,7 @@ void JSON::read_users_file(Users &a)
     QString wallet_key;
     bool admin;
     int language;
+    int coins_type;
 
     for(int index = 0; index < jsonArray.size(); index++){
         QJsonObject subtree = jsonArray.at(index).toObject();
@@ -294,10 +317,11 @@ void JSON::read_users_file(Users &a)
         wallet_key = subtree.value("walletKey").toString();
         admin = subtree.value("admin").toInt();
         language = subtree.value("language").toInt();
+        coins_type = subtree.value("coins type").toInt();
     a.users_information.push_back(User(address_file,
                                     wallet_key,
                                     tolanguages1(language),
-                                    admin));
+                                    admin, coins_type));
     }
 }
 
@@ -317,11 +341,11 @@ void JSON::write_users_file(Users &a)
         user_obj.insert("admin", a.getUser(i).isAdmin());
         user_obj.insert("walletKey", a.getUser(i).getPassword());
         user_obj.insert("language", a.getUser(i).getUserLanguage());
+        user_obj.insert("coins type", a.getUser(i).getUserPreferCoinsType());
 
         users_array.append(user_obj);
-
+        qDebug() << "Prefer Coins Type: " << a.getUser(i).getUserPreferCoinsType();
     }
-    qDebug() << users_array;
 
     users_obj["users"] = users_array;
     doc.setObject(users_obj);

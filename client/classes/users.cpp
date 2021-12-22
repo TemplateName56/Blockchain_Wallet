@@ -48,12 +48,12 @@ User::User(QString address, QString password, languages user_language, bool admi
     this->admin = admin;
 }
 
-const QString& User::getAddress() const
+QString User::getAddress()
 {
     return this->address;
 }
 
-const QString& User::getPassword() const
+QString User::getPassword()
 {
     return this->password;
 }
@@ -76,7 +76,7 @@ void User::setPassword(QString password, bool hash_pass)
     }
 }
 
-bool User::isPasswordCorrect(QString password) const
+bool User::isPasswordCorrect(QString password)
 {
     algoritms use_algoritm;
     password = QString::fromStdString(use_algoritm.Hash(password.toStdString() + "SALT"));
@@ -87,17 +87,17 @@ bool User::isPasswordCorrect(QString password) const
     return false;
 }
 
-const languages& User::getUserLanguage() const
+languages User::getUserLanguage()
 {
     return this->user_language;
 }
 
-const int& User::getUserPreferCoinsType() const
+int User::getUserPreferCoinsType()
 {
     return this->coins_type_index;
 }
 
-int User::isAdmin() const
+int User::isAdmin()
 {
     return this->admin;
 }
@@ -109,16 +109,15 @@ User::~User()
 
 Users::Users()
 {
-    //read_file();
-    // file read func
+
 }
 
-const QVector<User>& Users::getUsersInformation() const
+QVector<User>& Users::getUsersInformation()
 {
     return this->users_information;
 }
 
-const User& Users::getUser(int index) const&
+User Users::getUser(int index)
 {
     try {
         if(index >= 0 && index < users_information.length())
@@ -134,23 +133,7 @@ const User& Users::getUser(int index) const&
     }
 }
 
-User Users::getUser(int index) &&
-{
-    try {
-        if(index >= 0 && index < users_information.length())
-        {
-            return std::move(users_information[index]);
-        }
-        else
-        {
-            throw ProgramException(OUT_OF_RANGE, "Users Vector");
-        }
-    }  catch (ProgramException &error) {
-        error.getError();
-    }
-}
-
-const User& Users::getUser(QString password) const&
+User Users::getUser(QString password)
 {
     algoritms use_algoritm;
     password = QString::fromStdString(use_algoritm.Hash(password.toStdString() + "SALT"));
@@ -161,21 +144,7 @@ const User& Users::getUser(QString password) const&
             return users_information[index];
         }
     }
-    //throw ProgramException(USER_NOT_EXIST);
-}
-
-User Users::getUser(QString password) &&
-{
-    algoritms use_algoritm;
-    password = QString::fromStdString(use_algoritm.Hash(password.toStdString() + "SALT"));
-    for(int index = 0; index < getUsersInformation().length(); index++)
-    {
-        if(users_information[index].getPassword() == password)
-        {
-            return std::move(users_information[index]);
-        }
-    }
-    //throw ProgramException(USER_NOT_EXIST);
+    throw ProgramException(USER_NOT_EXIST);
 }
 
 void Users::setUserPassword(QString address, QString password)
@@ -184,11 +153,7 @@ void Users::setUserPassword(QString address, QString password)
     {
         if(users_information[index].getAddress() == address)
         {
-            qDebug() << users_information[index].getAddress();
-            qDebug() << users_information[index].getPassword();
             users_information[index].setPassword(password, false);
-            qDebug() << users_information[index].getAddress();
-            qDebug() << users_information[index].getPassword();
         }
     }
 }
@@ -224,20 +189,7 @@ bool Users::isAddressExists(QString address)
     return false;
 }
 
-/*
-void Users:: read_file(){
-    JSON file_user("users.json");
-    for(int index = 0; index < file_user.get_array_size_users(); index++){
-        users_information.push_back(User(file_user.get_address_user(index),
-                                        file_user.get_wallet_key_user(index),
-                                        tolanguages(file_user.get_language_user(index)),
-                                        file_user.get_admin_user(index)));
-    }
-}
-*/
-
 Users::~Users()
 {
-    // file save func
-    //getUser(1).getAddress();
+
 }
