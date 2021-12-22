@@ -123,7 +123,6 @@ public:
 
     void addBlock(int index, TransactionData data, QString prev_hash);
     void addBlock(int index, TransactionData data, QString prev_hash, QString hash, bool genesis);
-    void addBlock(Block new_block);
 
     ~Blockchain();
 };
@@ -140,6 +139,7 @@ public:
 
     Blockchain &getBlockChain();
     void setBlockChain(Blockchain temp);
+
     int getAuthority();
 
     void setAuthority(int authority);
