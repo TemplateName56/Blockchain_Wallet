@@ -18,12 +18,6 @@ CSV::CSV(QString fileName)
     file.close();
 }
 
-QVector<QString> CSV::getList()
-{
-
-    return this->lines;
-}
-
 QVector<QString> CSV::get_tr(int language_index){
     QVector <QString> words;
     for(int i = 0; i < lines.size(); i++){
@@ -45,22 +39,6 @@ void CSV:: append_csv_request(QString link, QString message, QString amount,QStr
         lines.append(line);
         file_out.close();
     }
-}
-
-int CSV:: get_amount_row(){
-    QFile file(filename);
-    if(!file.open(QFile::ReadOnly | QFile::Text))
-    {
-        throw ProgramException(FILE_READ_ERROR, filename);
-    }
-    int counter = 0;
-    while (!file.atEnd())
-    {
-        QString line = file.readLine();
-        counter++;
-    }
-    file.close();
-    return counter;
 }
 
 QVector<QString> CSV:: find_user(QString str_user){
