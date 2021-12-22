@@ -6,7 +6,7 @@ CSV::CSV(QString fileName)
     QFile file(filename);
     if(!file.open(QFile::ReadOnly | QFile::Text))
     {
-        throw ProgramException(FILE_READ_ERROR);
+        throw ProgramException(FILE_READ_ERROR, filename);
     }
     int counter = 0;
     while (!file.atEnd())
@@ -37,7 +37,7 @@ void CSV:: append_csv_request(QString link, QString message, QString amount,QStr
     QFile file_out(filename);
     if (!file_out.open(QFile::Append) )
     {
-        throw ProgramException(FILE_READ_ERROR);
+        throw ProgramException(FILE_READ_ERROR, filename);
     } else {
         QTextStream out(&file_out);
             out << link << "," << message << "," << amount << "," << type_amount << "," << reciever << "," << "\n";
@@ -51,7 +51,7 @@ int CSV:: get_amount_row(){
     QFile file(filename);
     if(!file.open(QFile::ReadOnly | QFile::Text))
     {
-        throw ProgramException(FILE_READ_ERROR);
+        throw ProgramException(FILE_READ_ERROR, filename);
     }
     int counter = 0;
     while (!file.atEnd())
