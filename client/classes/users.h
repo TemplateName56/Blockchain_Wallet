@@ -60,7 +60,6 @@ public:
 
     void setUserPassword(QString address, QString password);
 
-
     void addUser(User new_user);
 
     bool isPasswordExists(QString password);
