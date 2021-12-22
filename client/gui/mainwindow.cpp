@@ -179,7 +179,7 @@ void MainWindow::registerUser()
 
         emit loadUserSettings(current_user);
         this->show();
-        throw ProgramException(SAVE_PASSPHRASE, wallet_key);
+        throw ProgramException(SAVE_PASSWORD, wallet_key);
     }  catch (ProgramException &error) {
         error.getError();
     }
@@ -743,6 +743,10 @@ void MainWindow::on_sendCoinsButton_clicked()
         if(reciever_address.length() != 17)
         {
             throw ProgramException(INVALID_ADDRESS);
+        }
+        if(reciever_address == current_user.getAddress())
+        {
+            throw ProgramException(CURRENT_USER_ADDRESS);
         }
         JSON file_json("users.json");
 

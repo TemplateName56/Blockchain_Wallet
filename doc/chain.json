@@ -18,9 +18,53 @@
                 "Sender": "genesis",
                 "TimeStamp": "Wed Dec 1 14:57:29 2021"
             },
-            "Hash": "lspeDSTfbZZSjmRO",
+            "Hash": "pTah0flUsOSkufoD",
             "Id": 0,
             "Previous Hash": "0"
+        },
+        {
+            "Balances": [
+                {
+                    "Address": "BW000000000000000",
+                    "Balance BWC": 10000,
+                    "Balance BWC-N": 1000,
+                    "Balance BWC-Q": 0
+                }
+            ],
+            "Block Data": {
+                "Amount": 1000,
+                "Coins Type": 1,
+                "Fee": 0,
+                "Priority": 1,
+                "Reciever": "BW000000000000000",
+                "Sender": "genesis",
+                "TimeStamp": "Wed Dec 1 14:57:30 2021"
+            },
+            "Hash": "ycGUjxuZhLYPoXNc",
+            "Id": 1,
+            "Previous Hash": "ykaUjxLZSEEPoXQc"
+        },
+        {
+            "Balances": [
+                {
+                    "Address": "BW000000000000000",
+                    "Balance BWC": 10000,
+                    "Balance BWC-N": 1000,
+                    "Balance BWC-Q": 100
+                }
+            ],
+            "Block Data": {
+                "Amount": 100,
+                "Coins Type": 2,
+                "Fee": 0,
+                "Priority": 1,
+                "Reciever": "BW000000000000000",
+                "Sender": "genesis",
+                "TimeStamp": "Wed Dec 1 14:57:31 2021"
+            },
+            "Hash": "ykaUjxLZSEEPoXQc",
+            "Id": 2,
+            "Previous Hash": "ycGUjxuZhLYPoXNc"
         }
     ]
 }
