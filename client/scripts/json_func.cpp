@@ -33,7 +33,6 @@ CoinsType toCoinsType1(int CoinId)
         return BWC_Q;
         break;
     default:
-        return CoinsTypeERROR;
         break;
     }
 }
@@ -49,7 +48,7 @@ JSON::JSON(QString fileName)
 
          if(!json_file.open(QIODevice::ReadOnly | QIODevice::Text))
          {
-             throw ProgramException(FILE_READ_ERROR);
+             throw ProgramException(FILE_READ_ERROR, filename);
          }
          val2 = json_file.readAll();
          json_file.close();
@@ -132,7 +131,7 @@ void JSON::set_prefer_coins_type_user(QString address, int prefer_coins_type){
 
     if(!json_file.open(QFile::WriteOnly))
     {
-        throw ProgramException(FILE_WRITE_ERROR);
+        throw ProgramException(FILE_WRITE_ERROR, filename);
     }
     json_file.write(doc.toJson());
 }
@@ -170,7 +169,7 @@ void JSON::set_language_user(QString address, int language){
 
     if(!json_file.open(QFile::WriteOnly))
     {
-        throw ProgramException(FILE_WRITE_ERROR);
+        throw ProgramException(FILE_WRITE_ERROR, filename);
     }
     json_file.write(doc.toJson());
 }
@@ -225,7 +224,7 @@ void JSON::write_all_chain(Block chain){
      //qDebug() << "\ndoc_after_set :" << doc;
      if(!json_file.open(QFile::WriteOnly))
      {
-         throw ProgramException(FILE_WRITE_ERROR);
+         throw ProgramException(FILE_WRITE_ERROR, filename);
      }
      json_file.write(document.toJson());
 }
@@ -344,7 +343,7 @@ void JSON::write_users_file(Users &a)
         user_obj.insert("coins type", a.getUser(i).getUserPreferCoinsType());
 
         users_array.append(user_obj);
-        qDebug() << "Prefer Coins Type: " << a.getUser(i).getUserPreferCoinsType();
+        //qDebug() << "Prefer Coins Type: " << a.getUser(i).getUserPreferCoinsType();
     }
 
     users_obj["users"] = users_array;
@@ -352,7 +351,7 @@ void JSON::write_users_file(Users &a)
 
     if(!json_file.open(QFile::WriteOnly))
     {
-        throw ProgramException(FILE_WRITE_ERROR);
+        throw ProgramException(FILE_WRITE_ERROR, filename);
     }
     json_file.write(doc.toJson());
 }
@@ -394,10 +393,9 @@ QVector<QString> JSON:: get_users_info(getInfo what_u_need){
 
 void fileExists(const QString &file_path)
 {
-    // ProgramExceptions Path
     QFileInfo check_file(file_path);
     if(!check_file.exists() && !check_file.isFile())
     {
-        throw ProgramException(FILE_EXIST_ERROR);
+        throw ProgramException(FILE_EXIST_ERROR, file_path);
     }
 }

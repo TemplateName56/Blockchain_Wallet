@@ -118,7 +118,7 @@ public:
     Block getLastBlock();
     int getChainLenght();
 
-    bool isChainValid();
+    void isChainValid();
     void collisionCheck();
 
     void addBlock(int index, TransactionData data, QString prev_hash);
@@ -135,8 +135,6 @@ private:
     friend class JSON;
     Blockchain chain;
     int authority = 1;
-    bool blocked = false;
-
 public:
     explicit Validator(QObject *parent = nullptr);
 

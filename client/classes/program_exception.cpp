@@ -28,16 +28,14 @@ void ProgramException::getError()
     error_messageBox.setWindowIcon(QIcon("icons/programIcon.png"));
 
     switch (error_name) {
-    case INVALID_INPUT:
-        break;
     case INVALID_KEY:
-        error_messageBox.setText("This key not exists");
+        error_messageBox.setText("Невірний пароль.");
         error_messageBox.setIcon(QMessageBox::Critical);
 
         error_messageBox.exec();
         break;
     case FILE_EXIST_ERROR:
-        error_messageBox.setText("File: " + exception_source + "\nNot Exist");
+        error_messageBox.setText("Файлу: " + exception_source + "\nНе існує");
         error_messageBox.setIcon(QMessageBox::Critical);
 
         error_messageBox.exec();
@@ -45,55 +43,59 @@ void ProgramException::getError()
         QTimer::singleShot(0, qApp, &QCoreApplication::quit);
         break;
     case FILE_READ_ERROR:
-        error_messageBox.setText("File: " + exception_source + "\nRead Error");
+        error_messageBox.setText("Файл: " + exception_source + "\nПомилка зчитування");
         error_messageBox.setIcon(QMessageBox::Critical);
 
         error_messageBox.exec();
         QTimer::singleShot(0, qApp, &QCoreApplication::quit);
         break;
     case FILE_WRITE_ERROR:
-        error_messageBox.setText("File: " + exception_source + "\nWrite Error");
+        error_messageBox.setText("Файл: " + exception_source + "\nПомилка запису");
         error_messageBox.setIcon(QMessageBox::Critical);
 
         error_messageBox.exec();
         QTimer::singleShot(0, qApp, &QCoreApplication::quit);
         break;
     case INVALID_ADDRESS:
-        error_messageBox.setText("Address can consist only 17 symbols");
+        error_messageBox.setText("Адреса може складатися тільки з 17 символів");
         error_messageBox.setIcon(QMessageBox::Critical);
 
         error_messageBox.exec();
         break;
     case ADDRESS_NOT_EXISTS:
-        error_messageBox.setText("This address not available");
+        error_messageBox.setText("Даного адресу не існує");
         error_messageBox.setIcon(QMessageBox::Critical);
 
         error_messageBox.exec();
         break;
     case INVALID_COINS_VALUE:
-        error_messageBox.setText("You don't have enough money");
+        error_messageBox.setText("У вас недостатньо коштів");
         error_messageBox.setIcon(QMessageBox::Critical);
 
         error_messageBox.exec();
         break;
     case HASH_COLLISION:
+        error_messageBox.setText("Ваша транзакція заблокована");
+        error_messageBox.setIcon(QMessageBox::Critical);
+
+        error_messageBox.exec();
         break;
-    case SAVE_PASSPHRASE:
-        error_messageBox.setWindowTitle("Infomation");
-        error_messageBox.setText("Your passphrase: " + exception_source + "\nif u lose them, you should cant restore them.");
+    case SAVE_PASSWORD:
+        error_messageBox.setWindowTitle("Інформація");
+        error_messageBox.setText("Ваш пароль: " + exception_source + "\nякщо ви його втратите,\nйого відновлення буде неможливе");
         error_messageBox.setIcon(QMessageBox::Information);
         error_messageBox.setTextInteractionFlags(Qt::TextSelectableByMouse);
 
         error_messageBox.exec();
         break;
     case SAME_PASSWORD:
-        error_messageBox.setText("New password similar to old");
+        error_messageBox.setText("Новий пароль схожий зі старим");
         error_messageBox.setIcon(QMessageBox::Critical);
 
         error_messageBox.exec();
         break;
     case NOT_VALID_PASSWORD:
-        error_messageBox.setText("Not correct password, they must consist over 8 symbols");
+        error_messageBox.setText("Не коректний пароль, пароль повинен складитися мінімум з 8 симвлів");
         error_messageBox.setIcon(QMessageBox::Critical);
 
         error_messageBox.exec();
@@ -105,7 +107,7 @@ void ProgramException::getError()
         error_messageBox.exec();
         break;
     case PASSWORD_HASH_COLLISION:
-        error_messageBox.setText("Not correct password");
+        error_messageBox.setText("Не коректний пароль");
         error_messageBox.setIcon(QMessageBox::Critical);
 
         error_messageBox.exec();
@@ -116,34 +118,40 @@ void ProgramException::getError()
     case USER_NOT_EXIST:
         qDebug() << "User not exist";
         break;
-    case LANGUAGE_LOAD_ERROR:
-        break;
     case CHAIN_LENGTH_ERROR:
         qDebug() << "Chain is empty: " << exception_source;
         break;
     case CURRENT_USER_ADDRESS:
-        error_messageBox.setText("You can`t use your link");
+        error_messageBox.setText("Ви не можете відправити кошти самому собі");
         error_messageBox.setIcon(QMessageBox::Information);
 
         error_messageBox.exec();
         break;
     case REQUEST_MESSAGE_EMPTY:
-        error_messageBox.setText("Empty message text");
+        error_messageBox.setText("Пустий рядок повідомлення");
         error_messageBox.setIcon(QMessageBox::Critical);
 
         error_messageBox.exec();
         break;
     case REQUEST_AMOUNT_INVALID:
-        error_messageBox.setText("Incorrect amount");
+        error_messageBox.setText("Сумма запиту не коректна");
         error_messageBox.setIcon(QMessageBox::Critical);
 
         error_messageBox.exec();
         break;
     case SEND_SUCCESSFUL:
-        error_messageBox.setText("Your transaction send to validator");
+        error_messageBox.setText("Ваша транзакція відправлена до валідатора");
         error_messageBox.setIcon(QMessageBox::Information);
 
         error_messageBox.exec();
+        break;
+    case BLOCKCHAIN_HASH_COLLISION:
+        qDebug() << "Blockchain have collissions";
+        QTimer::singleShot(0, qApp, &QCoreApplication::quit);
+        break;
+    case CHAIN_NOT_VALID:
+        qDebug() << "Chain is not valid";
+        QTimer::singleShot(0, qApp, &QCoreApplication::quit);
         break;
     default:
         break;
@@ -153,99 +161,4 @@ void ProgramException::getError()
 ProgramException::~ProgramException()
 {
 
-}
-
-void ProgramException::setWindowLanguage(int index)
-{
-
-     //CSV file_tr("translation.csv");
-
-     //QVector<QString> str = file_tr.get_tr(languageIndex);
-
-     //language_vector.at(57)
-
-//this->error_messageBox.setWindowTitle(language_vector.at(68));
-     //this->error_messageBox.setText("This key not exists");
-
-
-
-//     error_messageBox.setWindowTitle(language_vector.at(68));
-//     error_messageBox.setWindowIcon(QIcon("icons/programIcon.png"));
-
-//     switch (error_name) {
-//     case INVALID_INPUT:
-//         break;
-//     case INVALID_KEY:
-//         error_messageBox.setText(language_vector.at(69));
-//         error_messageBox.setIcon(QMessageBox::Critical);
-
-//         error_messageBox.exec();
-//         break;
-//     case FILE_EXIST_ERROR:
-//         error_messageBox.setText(language_vector.at(70) + exception_source + "\n" + (language_vector.at(71));
-//         error_messageBox.setIcon(QMessageBox::Critical);
-
-//         error_messageBox.exec();
-
-//         QTimer::singleShot(0, qApp, &QCoreApplication::quit);
-//         break;
-//     case FILE_READ_ERROR:
-//         error_messageBox.setText(language_vector.at(70) + exception_source + "\n" + (language_vector.at(72));
-//         error_messageBox.setIcon(QMessageBox::Critical);
-
-//         error_messageBox.exec();
-//         QTimer::singleShot(0, qApp, &QCoreApplication::quit);
-//         break;
-//     case FILE_WRITE_ERROR:
-//         error_messageBox.setText(language_vector.at(70) + exception_source + "\n" + (language_vector.at(73));
-//         error_messageBox.setIcon(QMessageBox::Critical);
-
-//         error_messageBox.exec();
-//         QTimer::singleShot(0, qApp, &QCoreApplication::quit);
-//         break;
-//     case INVALID_ADDRESS:
-//         error_messageBox.setText(language_vector.at(74));
-//         error_messageBox.setIcon(QMessageBox::Critical);
-
-//         error_messageBox.exec();
-//         break;
-//     case ADDRESS_NOT_EXISTS:
-//         error_messageBox.setText(language_vector.at(75));
-//         error_messageBox.setIcon(QMessageBox::Critical);
-
-//         error_messageBox.exec();
-//         break;
-//     case INVALID_COINS_VALUE:
-//         error_messageBox.setText(language_vector.at(76));
-//         error_messageBox.setIcon(QMessageBox::Critical);
-
-//         error_messageBox.exec();
-//         break;
-//     case HASH_COLLISION:
-//         break;
-//     case SAVE_PASSPHRASE:
-//         error_messageBox.setWindowTitle(language_vector.at(76));
-//         error_messageBox.setText(language_vector.at(80) + exception_source + "\n" + language_vector.at(76));
-//         error_messageBox.setIcon(QMessageBox::Information);
-//         error_messageBox.setTextInteractionFlags(Qt::TextSelectableByMouse);
-
-//         error_messageBox.exec();
-//         break;
-//     case SAME_PASSWORD:
-//         error_messageBox.setText(language_vector.at(79));
-//         error_messageBox.setIcon(QMessageBox::Critical);
-
-//         error_messageBox.exec();
-//         break;
-//     case NOT_VALID_PASSWORD:
-//         error_messageBox.setText(language_vector.at(78));
-//         error_messageBox.setIcon(QMessageBox::Critical);
-
-//         error_messageBox.exec();
-//         break;
-//     default:
-//         break;
-//     }
-
-     //emit languageChanged(str);
 }

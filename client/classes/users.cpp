@@ -126,7 +126,7 @@ User Users::getUser(int index)
         }
         else
         {
-            throw ProgramException(OUT_OF_RANGE, "Users Vector");
+            throw ProgramException(OUT_OF_RANGE, "Users::getUser");
         }
     }  catch (ProgramException &error) {
         error.getError();

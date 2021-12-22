@@ -260,15 +260,15 @@ void Block::setUserBalance(QString address, bool is_reciever)
             }
         }
     }
-    if(he_is_new)
+    if(he_is_new && address != "genesis")
     {
         if(is_reciever)
         {
-            users_balance.push_back(Balance(address, block_data.getAmount(), BWC));
+            users_balance.push_back(Balance(address, block_data.getAmount(), block_data.getCoinsType()));
         }
         else
         {
-            users_balance.push_back(Balance(address, -(block_data.getAmount() + block_data.getFee()), BWC));
+            users_balance.push_back(Balance(address, -(block_data.getAmount() + block_data.getFee()), block_data.getCoinsType()));
         }
     }
 }
@@ -328,16 +328,15 @@ int Blockchain::getChainLenght()
     return this->chain.length();
 }
 
-bool Blockchain::isChainValid()
+void Blockchain::isChainValid()
 {
     for(int index = (chain.length() - 2); index >= 0; index--)
     {
         if(chain[index].getBlockHash() != chain[index + 1].getPrevBlockHash())
         {
-            return false;
+            throw ProgramException(CHAIN_NOT_VALID);
         }
     }
-    return true;
 }
 
 void Blockchain::collisionCheck()
@@ -353,7 +352,8 @@ void Blockchain::collisionCheck()
         {
             if(hashes.lastIndexOf(hashes[index]) != index)
             {
-                throw ProgramException(HASH_COLLISION);
+                throw ProgramException(BLOCKCHAIN_HASH_COLLISION);
+                break;
             }
         }
     }
@@ -364,6 +364,7 @@ void Blockchain::addBlock(int index, TransactionData data, QString prev_hash)
     try {
         this->chain.push_back(Block(index, data, prev_hash));
         collisionCheck();
+        isChainValid();
         chain.last().setBalances(chain[chain.length() - 2].getBalances());
         chain.last().setUserBalance(chain.last().getBlockData().getSender());
         chain.last().setUserBalance(chain.last().getBlockData().getReciever(), true);
@@ -380,6 +381,7 @@ void Blockchain::addBlock(int index, TransactionData data, QString prev_hash, QS
         if(!genesis)
         {
             collisionCheck();
+            isChainValid();
             chain.last().setBalances(chain[chain.length() - 2].getBalances());
             chain.last().setUserBalance(chain.last().getBlockData().getSender());
         }
