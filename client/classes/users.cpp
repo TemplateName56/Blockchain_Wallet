@@ -48,12 +48,12 @@ User::User(QString address, QString password, languages user_language, bool admi
     this->admin = admin;
 }
 
-const QString& User::getAddress() const
+QString User::getAddress()
 {
     return this->address;
 }
 
-const QString& User::getPassword() const
+QString User::getPassword()
 {
     return this->password;
 }
@@ -76,7 +76,7 @@ void User::setPassword(QString password, bool hash_pass)
     }
 }
 
-bool User::isPasswordCorrect(QString password) const
+bool User::isPasswordCorrect(QString password)
 {
     algoritms use_algoritm;
     password = QString::fromStdString(use_algoritm.Hash(password.toStdString() + "SALT"));
@@ -87,17 +87,17 @@ bool User::isPasswordCorrect(QString password) const
     return false;
 }
 
-const languages& User::getUserLanguage() const
+languages User::getUserLanguage()
 {
     return this->user_language;
 }
 
-const int& User::getUserPreferCoinsType() const
+int User::getUserPreferCoinsType()
 {
     return this->coins_type_index;
 }
 
-int User::isAdmin() const
+int User::isAdmin()
 {
     return this->admin;
 }
@@ -112,12 +112,12 @@ Users::Users()
 
 }
 
-const QVector<User>& Users::getUsersInformation() const
+QVector<User>& Users::getUsersInformation()
 {
     return this->users_information;
 }
 
-const User& Users::getUser(int index) const&
+User Users::getUser(int index)
 {
     try {
         if(index >= 0 && index < users_information.length())
@@ -133,23 +133,7 @@ const User& Users::getUser(int index) const&
     }
 }
 
-User Users::getUser(int index) &&
-{
-    try {
-        if(index >= 0 && index < users_information.length())
-        {
-            return std::move(users_information[index]);
-        }
-        else
-        {
-            throw ProgramException(OUT_OF_RANGE, "Users Vector");
-        }
-    }  catch (ProgramException &error) {
-        error.getError();
-    }
-}
-
-const User& Users::getUser(QString password) const&
+User Users::getUser(QString password)
 {
     algoritms use_algoritm;
     password = QString::fromStdString(use_algoritm.Hash(password.toStdString() + "SALT"));
@@ -158,20 +142,6 @@ const User& Users::getUser(QString password) const&
         if(users_information[index].getPassword() == password)
         {
             return users_information[index];
-        }
-    }
-    throw ProgramException(USER_NOT_EXIST);
-}
-
-User Users::getUser(QString password) &&
-{
-    algoritms use_algoritm;
-    password = QString::fromStdString(use_algoritm.Hash(password.toStdString() + "SALT"));
-    for(int index = 0; index < getUsersInformation().length(); index++)
-    {
-        if(users_information[index].getPassword() == password)
-        {
-            return std::move(users_information[index]);
         }
     }
     throw ProgramException(USER_NOT_EXIST);

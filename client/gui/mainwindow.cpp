@@ -78,7 +78,6 @@ MainWindow::~MainWindow()
 
     delete all_blocks;
 
-    delete help;
     delete quit;
 
     delete change_passphrase;
@@ -126,7 +125,7 @@ void MainWindow::authorizeUser()
 
             emit on_coinsBox_currentIndexChanged(current_user.getUserPreferCoinsType());
             emit loadUserSettings(current_user);
-            qDebug() << "PreferCoinsType: " << current_user.getUserPreferCoinsType();
+
             ui->walletAddressLabel->setText(current_user.getAddress());
             ui->walletKeyLabel->setText(wallet_key);
 
@@ -217,7 +216,6 @@ void MainWindow::createActions()
     QPixmap homepix("icons/menuIcon.png");
     QPixmap sendpix("icons/sendIcon.png");
     QPixmap recievepix("icons/recieveIcon.jpg");
-    QPixmap helppix("icons/helpIcon.png");
     QPixmap transactionspix("icons/transactionsIcon.png");
     QPixmap all_blockspix("icons/all_blocksIcon.png");
     QPixmap quitpix("icons/quitIcon.png");
@@ -225,7 +223,6 @@ void MainWindow::createActions()
     home = new QAction(homepix, "&Home", this);
     send = new QAction(sendpix, "&Send", this);
     recieve = new QAction(recievepix, "&Recieve", this);
-    help = new QAction(helppix, "&Help", this);
     all_blocks = new QAction(all_blockspix, "&Blocks", this);
     quit = new QAction(quitpix, "&Quit", this);
 
@@ -260,7 +257,6 @@ void MainWindow::createMenus()
     main_menu->addAction(home);
     main_menu->addAction(send);
     main_menu->addAction(recieve);
-    main_menu->addAction(help);
     main_menu->addAction(all_blocks);
     main_menu->addSeparator();
     main_menu->addAction(quit);
@@ -638,7 +634,6 @@ void MainWindow::setWindowLanguage(QVector<QString> language_vector, int languag
     recieve->setText(language_vector.at(44));
     transactions->setText(language_vector.at(45));
 
-    help->setText(language_vector.at(46));
     quit->setText(language_vector.at(47));
 
     change_passphrase->setText(language_vector.at(48));
@@ -750,10 +745,8 @@ void MainWindow::on_sendCoinsButton_clicked()
             throw ProgramException(INVALID_ADDRESS);
         }
         JSON file_json("users.json");
-        QVector<QString> exists_address = file_json.get_users_info(JSON::ADDRESS);
-        int exist_flag = exists_address.indexOf(reciever_address);
 
-        if(exist_flag == -1)
+        if(!users_information.isAddressExists(reciever_address))
         {
             throw ProgramException(ADDRESS_NOT_EXISTS);
         }

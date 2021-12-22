@@ -119,7 +119,6 @@ private:
 
     QAction *all_blocks;
 
-    QAction *help;
     QAction *quit;
 
     QAction *change_passphrase;
