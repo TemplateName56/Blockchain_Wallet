@@ -101,7 +101,7 @@ void ProgramException::getError()
         error_messageBox.exec();
         break;
     case PASSWORD_NOT_CORRECT:
-        error_messageBox.setText("Old password not correct");
+        error_messageBox.setText("Старий пароль не коректний");
         error_messageBox.setIcon(QMessageBox::Critical);
 
         error_messageBox.exec();

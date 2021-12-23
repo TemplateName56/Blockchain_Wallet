@@ -989,6 +989,8 @@ void MainWindow::on_requestButton_clicked()
 void MainWindow::on_clearRequestButton_clicked()
 {
     ui->amountToRequestSpinBox->clear();
+    ui->messageLabel->clear();
+    ui->requestLabelLine->clear();
 }
 
 
