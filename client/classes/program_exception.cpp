@@ -146,12 +146,28 @@ void ProgramException::getError()
         error_messageBox.exec();
         break;
     case BLOCKCHAIN_HASH_COLLISION:
+        error_messageBox.setText("Critical Error");
+        error_messageBox.setIcon(QMessageBox::Critical);
+
+        error_messageBox.exec();
+
         qDebug() << "Blockchain have collissions";
         QTimer::singleShot(0, qApp, &QCoreApplication::quit);
         break;
     case CHAIN_NOT_VALID:
+        error_messageBox.setText("Critical Error");
+        error_messageBox.setIcon(QMessageBox::Critical);
+
+        error_messageBox.exec();
+
         qDebug() << "Chain is not valid";
         QTimer::singleShot(0, qApp, &QCoreApplication::quit);
+        break;
+    case PASSWORD_CHANGED:
+        error_messageBox.setText("Пароль успішно змінено");
+        error_messageBox.setIcon(QMessageBox::Information);
+
+        error_messageBox.exec();
         break;
     default:
         break;

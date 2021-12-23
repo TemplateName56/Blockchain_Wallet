@@ -28,7 +28,6 @@ public:
 signals:
     void changePassBTN_clicked();
     void clearPassEnterBTN_clicked();
-    void passwordChanged();
 
 public slots:
     void changePassphraseShow();
@@ -42,7 +41,6 @@ private slots:
     void on_clearPassEnterBTN_clicked();
 
     void currentUserPassChange(User &current_user, Users &users_information);
-    void setWindowLanguage(QVector<QString> language_vector);
 
 private:
     Ui::change_passphrase_Form *ui;

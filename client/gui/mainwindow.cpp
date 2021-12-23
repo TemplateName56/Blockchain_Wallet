@@ -56,7 +56,6 @@ MainWindow::MainWindow(QWidget *parent)
     connect(this, SIGNAL(allBlocksView_prev_clicked()), this, SLOT(blocksPrev()));
 
     connect(this, SIGNAL(sendUserInformation(User&,Users&)), &ui_ChangePass, SLOT(currentUserPassChange(User&, Users&)));
-    connect(&ui_ChangePass, SIGNAL(passwordChanged()), this, SLOT(currentUserPassChange()));
 
     connect(this, SIGNAL(requestButton_clicked()), this, SLOT(createLink()));
 
@@ -1056,14 +1055,6 @@ void MainWindow::createLink()
     }  catch (ProgramException &error) {
         error.getError();
     }
-}
-
-void MainWindow::currentUserPassChange()
-{
-    users_information.setUserPassword(current_user.getAddress(), current_user.getPassword());
-
-    JSON file_json("users.json");
-    file_json.write_users_file(users_information);
 }
 
 

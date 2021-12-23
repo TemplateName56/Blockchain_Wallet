@@ -149,8 +149,6 @@ private slots:
     void authorizeUser();
     void registerUser();
 
-    void currentUserPassChange();
-
     void homeTR();
     void sendTR();
     void recieveTR();

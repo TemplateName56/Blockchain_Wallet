@@ -28,7 +28,8 @@ enum ErrorsNames
     REQUEST_AMOUNT_INVALID,
     SEND_SUCCESSFUL,
     BLOCKCHAIN_HASH_COLLISION,
-    CHAIN_NOT_VALID
+    CHAIN_NOT_VALID,
+    PASSWORD_CHANGED
 };
 
 class ProgramException : public QException
