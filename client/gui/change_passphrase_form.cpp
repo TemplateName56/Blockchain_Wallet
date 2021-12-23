@@ -52,7 +52,12 @@ void change_passphrase_Form::on_changePassBTN_clicked()
         if(current_user->isPasswordCorrect(old_password))
         {
             current_user->setPassword(new_password);
-            emit passwordChanged();
+            users_information->setUserPassword(current_user->getAddress(), current_user->getPassword());
+
+            JSON file_json("users.json");
+            file_json.write_users_file(*users_information);
+            throw ProgramException(PASSWORD_CHANGED);
+            //emit passwordChanged();
         }
         else
         {
@@ -73,11 +78,6 @@ void change_passphrase_Form::currentUserPassChange(User &current_user, Users &us
 {
     this->current_user = &current_user;
     this->users_information = &users_information;
-}
-
-void change_passphrase_Form::setWindowLanguage(QVector<QString> language_vector)
-{
-
 }
 
 void change_passphrase_Form::setWindowLanguage(int index)
