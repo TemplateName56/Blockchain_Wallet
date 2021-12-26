@@ -461,7 +461,6 @@ void MainWindow::requestsHistory()
     try {
         CSV file("requestsList.csv");
         QVector<QString> str_request = file.find_user(current_user.getAddress());
-
         request_view_model->setColumnCount(4);
 
         request_view_model->setHorizontalHeaderLabels(QStringList() << table_translation.at(0) << table_translation.at(1) << table_translation.at(2) << table_translation.at(3));
@@ -555,15 +554,17 @@ void MainWindow::requestsHistory()
         ui->historyView->setColumnWidth(4,108);
         ui->historyView->setColumnWidth(5,108);
         ui->historyView->setColumnWidth(6,250);
-
+        int num = 0;
         for(int i = 1; i <= json_file.get_array_size_blockchain(); i++)
         {
             QList<QStandardItem *> HistoryList;
+
             int count = 0;
             if((json_file.get_sender(i) == current_user.getAddress()) || (json_file.get_reciever(i) == current_user.getAddress())){
+                num++;
             for(int c = 0; c < 7; c++){
                 if(c == 0){
-                    HistoryList.append(new QStandardItem(QString::number(json_file.get_id(i))));
+                    HistoryList.append(new QStandardItem(QString::number(num)));
                 }else if(c == 1){
                     HistoryList.append(new QStandardItem(json_file.get_sender(i)));
                 }else if(c == 2){
@@ -586,6 +587,7 @@ void MainWindow::requestsHistory()
             history_view_model->appendRow(HistoryList);
             }
         }
+        num = 0;
 
     }  catch (ProgramException &error) {
         error.getError();
