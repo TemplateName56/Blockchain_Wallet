@@ -6,22 +6,18 @@ CSV::CSV(QString fileName)
     QFile file(filename);
     if(!file.open(QFile::ReadOnly | QFile::Text))
     {
-        throw ProgramException(FILE_READ_ERROR);
+        throw ProgramException(FILE_READ_ERROR, filename);
     }
     int counter = 0;
     while (!file.atEnd())
     {
         QString line = file.readLine();
+        line.remove(QChar('\n'), Qt::CaseInsensitive);
         lines.append(line);
         counter++;
     }
+    //qDebug() << "lines:" << lines;
     file.close();
-}
-
-QVector<QString> CSV::getList()
-{
-
-    return this->lines;
 }
 
 QVector<QString> CSV::get_tr(int language_index){
@@ -37,30 +33,14 @@ void CSV:: append_csv_request(QString link, QString message, QString amount,QStr
     QFile file_out(filename);
     if (!file_out.open(QFile::Append) )
     {
-        throw ProgramException(FILE_READ_ERROR);
+        throw ProgramException(FILE_READ_ERROR, filename);
     } else {
         QTextStream out(&file_out);
-            out << link << "," << message << "," << amount << "," << type_amount << "," << reciever << "," << "\n";
+            out << link << "," << message << "," << amount << "," << type_amount << "," << reciever << "\n";
         QString line = link + "," + message + "," + amount + "," + type_amount+"," + reciever + ",";
         lines.append(line);
         file_out.close();
     }
-}
-
-int CSV:: get_amount_row(){
-    QFile file(filename);
-    if(!file.open(QFile::ReadOnly | QFile::Text))
-    {
-        throw ProgramException(FILE_READ_ERROR);
-    }
-    int counter = 0;
-    while (!file.atEnd())
-    {
-        QString line = file.readLine();
-        counter++;
-    }
-    file.close();
-    return counter;
 }
 
 QVector<QString> CSV:: find_user(QString str_user){

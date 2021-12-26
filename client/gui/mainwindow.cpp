@@ -56,7 +56,6 @@ MainWindow::MainWindow(QWidget *parent)
     connect(this, SIGNAL(allBlocksView_prev_clicked()), this, SLOT(blocksPrev()));
 
     connect(this, SIGNAL(sendUserInformation(User&,Users&)), &ui_ChangePass, SLOT(currentUserPassChange(User&, Users&)));
-    connect(&ui_ChangePass, SIGNAL(passwordChanged()), this, SLOT(currentUserPassChange()));
 
     connect(this, SIGNAL(requestButton_clicked()), this, SLOT(createLink()));
 
@@ -64,7 +63,6 @@ MainWindow::MainWindow(QWidget *parent)
 
     ui->stackedWidget->setCurrentIndex(0);
 
-    //statusBar()->showMessage("Connected...");
     ui_Settings.setWindowLanguage();
 }
 
@@ -79,7 +77,6 @@ MainWindow::~MainWindow()
 
     delete all_blocks;
 
-    delete help;
     delete quit;
 
     delete change_passphrase;
@@ -106,11 +103,7 @@ void MainWindow::display()
 void MainWindow::authorizeUser()
 {
     try {
-        algoritms use_algoritm;
-
         wallet_key = ui_Auth.getInputKey();
-
-        qDebug() << QString::fromStdString(use_algoritm.Hash(wallet_key.toStdString() + "SALT"));
 
         if(users_information.isPasswordExists(wallet_key))
         {
@@ -131,8 +124,6 @@ void MainWindow::authorizeUser()
 
             emit on_coinsBox_currentIndexChanged(current_user.getUserPreferCoinsType());
             emit loadUserSettings(current_user);
-
-            //requestsHistory();
 
             ui->walletAddressLabel->setText(current_user.getAddress());
             ui->walletKeyLabel->setText(wallet_key);
@@ -187,7 +178,7 @@ void MainWindow::registerUser()
 
         emit loadUserSettings(current_user);
         this->show();
-        throw ProgramException(SAVE_PASSPHRASE, wallet_key);
+        throw ProgramException(SAVE_PASSWORD, wallet_key);
     }  catch (ProgramException &error) {
         error.getError();
     }
@@ -224,7 +215,6 @@ void MainWindow::createActions()
     QPixmap homepix("icons/menuIcon.png");
     QPixmap sendpix("icons/sendIcon.png");
     QPixmap recievepix("icons/recieveIcon.jpg");
-    QPixmap helppix("icons/helpIcon.png");
     QPixmap transactionspix("icons/transactionsIcon.png");
     QPixmap all_blockspix("icons/all_blocksIcon.png");
     QPixmap quitpix("icons/quitIcon.png");
@@ -232,7 +222,6 @@ void MainWindow::createActions()
     home = new QAction(homepix, "&Home", this);
     send = new QAction(sendpix, "&Send", this);
     recieve = new QAction(recievepix, "&Recieve", this);
-    help = new QAction(helppix, "&Help", this);
     all_blocks = new QAction(all_blockspix, "&Blocks", this);
     quit = new QAction(quitpix, "&Quit", this);
 
@@ -267,7 +256,6 @@ void MainWindow::createMenus()
     main_menu->addAction(home);
     main_menu->addAction(send);
     main_menu->addAction(recieve);
-    main_menu->addAction(help);
     main_menu->addAction(all_blocks);
     main_menu->addSeparator();
     main_menu->addAction(quit);
@@ -472,9 +460,7 @@ void MainWindow::requestsHistory()
 {
     try {
         CSV file("requestsList.csv");
-        QVector<QString> str_request = file.find_user(current_user.getAddress()); //вместо BW000000000000001 нужен адрес текущего пользователя
-
-        //request_view_model = new QStandardItemModel(this);
+        QVector<QString> str_request = file.find_user(current_user.getAddress());
         request_view_model->setColumnCount(4);
 
         request_view_model->setHorizontalHeaderLabels(QStringList() << table_translation.at(0) << table_translation.at(1) << table_translation.at(2) << table_translation.at(3));
@@ -537,7 +523,6 @@ void MainWindow::requestsHistory()
 
         JSON json_file("chain.json");
 
-        //history_view_model = new QStandardItemModel(this);
         history_view_model->setColumnCount(6);
 
         history_view_model->setHorizontalHeaderLabels(QStringList() << "№" << table_translation.at(4) << table_translation.at(5) << table_translation.at(6) << table_translation.at(7) << table_translation.at(3) << table_translation.at(8));
@@ -569,15 +554,17 @@ void MainWindow::requestsHistory()
         ui->historyView->setColumnWidth(4,108);
         ui->historyView->setColumnWidth(5,108);
         ui->historyView->setColumnWidth(6,250);
-
+        int num = 0;
         for(int i = 1; i <= json_file.get_array_size_blockchain(); i++)
         {
             QList<QStandardItem *> HistoryList;
+
             int count = 0;
             if((json_file.get_sender(i) == current_user.getAddress()) || (json_file.get_reciever(i) == current_user.getAddress())){
+                num++;
             for(int c = 0; c < 7; c++){
                 if(c == 0){
-                    HistoryList.append(new QStandardItem(QString::number(json_file.get_id(i))));
+                    HistoryList.append(new QStandardItem(QString::number(num)));
                 }else if(c == 1){
                     HistoryList.append(new QStandardItem(json_file.get_sender(i)));
                 }else if(c == 2){
@@ -600,6 +587,7 @@ void MainWindow::requestsHistory()
             history_view_model->appendRow(HistoryList);
             }
         }
+        num = 0;
 
     }  catch (ProgramException &error) {
         error.getError();
@@ -647,7 +635,6 @@ void MainWindow::setWindowLanguage(QVector<QString> language_vector, int languag
     recieve->setText(language_vector.at(44));
     transactions->setText(language_vector.at(45));
 
-    help->setText(language_vector.at(46));
     quit->setText(language_vector.at(47));
 
     change_passphrase->setText(language_vector.at(48));
@@ -658,12 +645,11 @@ void MainWindow::setWindowLanguage(QVector<QString> language_vector, int languag
     view_window->setText(language_vector.at(50));
 
     ui->sendCoinsButton->setText(language_vector.at(43));
-    //ui->addToAddressBookLabel->setText(language_vector.at(25));
+
     ui->payToLabel->setText(language_vector.at(22));
     ui->amountLabel->setText(language_vector.at(36));
     ui->balanceLabel->setText(language_vector.at(18));
     ui->commissionLabel->setText(language_vector.at(38));
-    //ui->feeCheckBox->setText(language_vector.at(51));
 
     ui->transactionsOverviewLabel->setText(language_vector.at(21));
     ui->addresslabel->setText(language_vector.at(19));
@@ -705,7 +691,6 @@ void MainWindow::setWindowLanguage(QVector<QString> language_vector, int languag
     ui->priorityComboBox->setItemText(2, language_vector.at(56));
 
     ui->payToAddress->setPlaceholderText(language_vector.at(61));
-    //ui->sendTransactionLabel->setPlaceholderText(language_vector.at(62));
 
     ui->requestLabelLine->setPlaceholderText(language_vector.at(63));
     ui->messageLine->setPlaceholderText(language_vector.at(64));
@@ -713,7 +698,7 @@ void MainWindow::setWindowLanguage(QVector<QString> language_vector, int languag
     ui->linkLabel->setText(language_vector.at(82));
     ui->linkCB->setText(language_vector.at(83));
 
-    qDebug() << request_view_model->rowCount();
+
     if(table_translation.length() != 0)
     {
         table_translation.clear();
@@ -760,11 +745,13 @@ void MainWindow::on_sendCoinsButton_clicked()
         {
             throw ProgramException(INVALID_ADDRESS);
         }
+        if(reciever_address == current_user.getAddress())
+        {
+            throw ProgramException(CURRENT_USER_ADDRESS);
+        }
         JSON file_json("users.json");
-        QVector<QString> exists_address = file_json.get_users_info(JSON::ADDRESS);
-        int exist_flag = exists_address.indexOf(reciever_address);
 
-        if(exist_flag == -1)
+        if(!users_information.isAddressExists(reciever_address))
         {
             throw ProgramException(ADDRESS_NOT_EXISTS);
         }
@@ -1003,6 +990,8 @@ void MainWindow::on_requestButton_clicked()
 void MainWindow::on_clearRequestButton_clicked()
 {
     ui->amountToRequestSpinBox->clear();
+    ui->messageLabel->clear();
+    ui->requestLabelLine->clear();
 }
 
 
@@ -1061,7 +1050,6 @@ void MainWindow::createLink()
         }  catch (ProgramException &error) {
             error.getError();
         }
-        qDebug() << QString::fromStdString(algo.DecryptionLink(link.toStdString()));
 
         request_view_model->clear();
         history_view_model->clear();
@@ -1069,17 +1057,6 @@ void MainWindow::createLink()
     }  catch (ProgramException &error) {
         error.getError();
     }
-}
-
-void MainWindow::currentUserPassChange()
-{
-    qDebug() << current_user.getAddress();
-    qDebug() << current_user.getPassword();
-
-    users_information.setUserPassword(current_user.getAddress(), current_user.getPassword());
-
-    JSON file_json("users.json");
-    file_json.write_users_file(users_information);
 }
 
 
@@ -1123,14 +1100,14 @@ void MainWindow::on_putLinkLE_textChanged(const QString &arg1)
         algoritms algo;
         link = arg1;
 
-        if(link.length() >= 36 && -1 != link.indexOf("https://"))
+        if(link.length() >= 36 && 0 == link.indexOf("https://") && link.length() - 3 == link.indexOf(".ua"))
         {
             link = QString::fromStdString(algo.DecryptionLink(link.toStdString()));
             QStringList encrypted_link = link.split(";");
 
             if(encrypted_link.at(3) == current_user.getAddress())
             {
-                //throw ProgramException(CURRENT_USER_ADDRESS);
+                throw ProgramException(CURRENT_USER_ADDRESS);
             }
             ui->amountSpinBox->setValue(encrypted_link.at(1).toDouble());
             ui->coinsBox->setCurrentIndex(coinsTypeStringToInt(encrypted_link.at(2)));

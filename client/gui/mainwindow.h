@@ -119,7 +119,6 @@ private:
 
     QAction *all_blocks;
 
-    QAction *help;
     QAction *quit;
 
     QAction *change_passphrase;
@@ -149,8 +148,6 @@ private:
 private slots:
     void authorizeUser();
     void registerUser();
-
-    void currentUserPassChange();
 
     void homeTR();
     void sendTR();

@@ -30,17 +30,17 @@ public:
     User(QString address, QString password, bool hash_password = true);
     User(QString address, QString password, languages user_language = UKRANIAN, bool admin = 0, int coins_type_index = 0);
 
-    const QString& getAddress() const;
+    QString getAddress();
 
-    const QString& getPassword() const;
+    QString getPassword();
     void setPassword(QString password, bool hash_pass = true);
 
-    bool isPasswordCorrect(QString password) const;
+    bool isPasswordCorrect(QString password);
 
-    const languages &getUserLanguage() const;
-    const int &getUserPreferCoinsType() const;
+    languages getUserLanguage();
+    int getUserPreferCoinsType();
 
-    int isAdmin() const;
+    int isAdmin();
 
     ~User();
 };
@@ -52,23 +52,18 @@ class Users
 public:
     Users();
 
-    const QVector<User>& getUsersInformation() const;
+    QVector<User>& getUsersInformation();
 
-    const User& getUser(int index) const&;
-    User getUser(int index) &&;
+    User getUser(int index);
 
-    const User& getUser(QString password) const&;
-    User getUser( QString password) &&;
+    User getUser(QString password);
 
     void setUserPassword(QString address, QString password);
-
 
     void addUser(User new_user);
 
     bool isPasswordExists(QString password);
     bool isAddressExists(QString address);
-
-    void read_file();
 
     ~Users();
 };

@@ -118,7 +118,7 @@ string algoritms::GenerateLink(string link)
                 continue;
             }
 
-            link[i] = link[i] + 2;
+            link[i] = link[i] + 1;
         }
         string prevlink = "https://";
         string nextlink = ".ua";
@@ -182,7 +182,7 @@ string algoritms::DecryptionLink(string link)
             }
 
 
-            result[i] = result[i] - 2;
+            result[i] = result[i] - 1;
         }
         return result;
 }

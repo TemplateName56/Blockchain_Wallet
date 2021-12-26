@@ -1,7 +1,9 @@
 #include "new_wallet.h"
 #include "json_func.h"
 #include <QDebug>
+
 #include "includes/effolkronium/random.hpp"
+#include "program_algorithms.h"
 
 using Random = effolkronium::random_static;
 
@@ -11,13 +13,12 @@ QString randomWalletAdress()
 {
     JSON file_json("users.json");
     QVector<QString> valid_addresses = file_json.get_users_info(JSON::ADDRESS);
-    //QVector<QString> valid_addresses = getUsersInfo(ADDRESS);
     QString random_address;
     QString new_address = "BW";
 
-    bool i_don_want_using_goto = true;
+    bool address_in_generating = true;
 
-    while(i_don_want_using_goto)
+    while(address_in_generating)
     {
         random_address = "";
 
@@ -32,7 +33,7 @@ QString randomWalletAdress()
         }
         else
         {
-            i_don_want_using_goto = false;
+            address_in_generating = false;
             new_address += random_address;
         }
     }
@@ -43,13 +44,15 @@ QString randomWalletKey()
 {
     JSON file_json("users.json");
     QVector<QString> valid_keys = file_json.get_users_info(JSON::KEY);
-    //QVector<QString> valid_keys = getUsersInfo(KEY);
+
     QString random_key;
     QString new_key;
 
-    bool i_don_want_using_goto = true;
+    algoritms algo;
 
-    while(i_don_want_using_goto)
+    bool password_in_generating = true;
+
+    while(password_in_generating)
     {
         random_key = "";
 
@@ -67,14 +70,14 @@ QString randomWalletKey()
                 count++;
             }
         }
-        int index = valid_keys.indexOf(random_key);
+        int index = valid_keys.indexOf(QString::fromStdString(algo.Hash(random_key.toStdString())));
         if(index != -1)
         {
             qDebug() << "We have one";
         }
         else
         {
-            i_don_want_using_goto = false;
+            password_in_generating = false;
             new_key = random_key;
         }
     }
