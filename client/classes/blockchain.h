@@ -96,7 +96,7 @@ public:
     QString getBlockHash();
     QString getPrevBlockHash();
 
-    TransactionData getBlockData();
+    TransactionData &getBlockData();
 
     Balance getUserBalance(QString address);
     void setUserBalance(QString address, bool is_reciever = false);
@@ -112,10 +112,10 @@ class Blockchain
 public:
     Blockchain();
 
-    QVector<Block> getChain();
+    QVector<Block> &getChain();
 
-    Block getBlock(int index);
-    Block getLastBlock();
+    Block &getBlock(int index);
+    Block &getLastBlock();
     int getChainLenght();
 
     void isChainValid();

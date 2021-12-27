@@ -12,9 +12,11 @@ CSV::CSV(QString fileName)
     while (!file.atEnd())
     {
         QString line = file.readLine();
+        line.remove(QChar('\n'), Qt::CaseInsensitive);
         lines.append(line);
         counter++;
     }
+    //qDebug() << "lines:" << lines;
     file.close();
 }
 
@@ -34,7 +36,7 @@ void CSV:: append_csv_request(QString link, QString message, QString amount,QStr
         throw ProgramException(FILE_READ_ERROR, filename);
     } else {
         QTextStream out(&file_out);
-            out << link << "," << message << "," << amount << "," << type_amount << "," << reciever << "," << "\n";
+            out << link << "," << message << "," << amount << "," << type_amount << "," << reciever << "\n";
         QString line = link + "," + message + "," + amount + "," + type_amount+"," + reciever + ",";
         lines.append(line);
         file_out.close();

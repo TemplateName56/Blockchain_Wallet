@@ -33,7 +33,6 @@ public:
 
     JSON(QString fileName);
 
-    int get_id(int number_block);
     QString get_sender(int number_block);
     QString get_reciever(int number_block);
     QString get_timestamp(int number_block);

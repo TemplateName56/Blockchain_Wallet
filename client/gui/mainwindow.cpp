@@ -10,15 +10,19 @@ MainWindow::MainWindow(QWidget *parent)
     ui->priorityComboBox->setEnabled(false);
     ui->putLinkLE->setDisabled(true);
 
-    JSON file_json("users.json");
-    file_json.read_users_file(users_information);
+    try {
+        JSON file_json("users.json");
+        file_json.read_users_file(users_information);
+    }  catch (ProgramException &error) {
+        error.getError();
+    }
 
     request_view_model = new QStandardItemModel(this);
     history_view_model = new QStandardItemModel(this);
 
     val_1.setAuthority(100);
     val_2.setAuthority(75);
-    val_3.setAuthority(1);
+    val_3.setAuthority(25);
 
     qRegisterMetaType<TransactionData>("TransactionData");
 
@@ -118,6 +122,8 @@ void MainWindow::authorizeUser()
                 main_menu->removeAction(all_blocks);
                 toolbar->removeAction(all_blocks);
             }
+            emit allBlocksView_next_clicked();
+
             ui->bwcBalance->setText(QString::number(current_user_balance.getBalance(BWC)));
             ui->bwcNBalance->setText(QString::number(current_user_balance.getBalance(BWC_N)));
             ui->bwcQBalance->setText(QString::number(current_user_balance.getBalance(BWC_Q)));
@@ -288,6 +294,7 @@ void MainWindow::createTrayMenu()
     tray_menu = new QMenu(this);
 
     view_window = new QAction("&Show Window", this);
+
     connect(view_window, &QAction::triggered, this, &MainWindow::show);
 
     tray_menu->addAction(view_window);
@@ -341,6 +348,9 @@ void MainWindow::closeEvent(QCloseEvent *event)
     {
         ui_Settings.close();
         ui_AboutProgram.close();
+        ui_AboutAuthors.close();
+        ui_Auth.close();
+        ui_ChangePass.close();
     }
 }
 
@@ -376,62 +386,66 @@ void MainWindow::addTransactionCard(QString label, QString timeStamp, double amo
 
 void MainWindow::newTransaction(QString wallet_address, TransactionData data)
 {
-    if(val_1.getBlockChain().getChainLenght() > val_2.getBlockChain().getChainLenght())
-    {
-        val_2.setBlockChain(val_1.getBlockChain());
-    }
-    if(val_2.getBlockChain().getChainLenght() > val_1.getBlockChain().getChainLenght())
-    {
-        val_1.setBlockChain(val_2.getBlockChain());
-    }
-    if(val_1.getBlockChain().getChainLenght() > val_3.getBlockChain().getChainLenght())
-    {
-        val_3.setBlockChain(val_1.getBlockChain());
-    }
-    if(val_3.getBlockChain().getChainLenght() > val_1.getBlockChain().getChainLenght())
-    {
-        val_1.setBlockChain(val_3.getBlockChain());
-    }
-    if(val_3.getBlockChain().getChainLenght() > val_2.getBlockChain().getChainLenght())
-    {
-        val_2.setBlockChain(val_3.getBlockChain());
-    }
-    if(val_2.getBlockChain().getChainLenght() > val_3.getBlockChain().getChainLenght())
-    {
-        val_3.setBlockChain(val_2.getBlockChain());
-    }
+    try {
+        if(val_1.getBlockChain().getChainLenght() > val_2.getBlockChain().getChainLenght())
+        {
+            val_2.setBlockChain(val_1.getBlockChain());
+        }
+        if(val_2.getBlockChain().getChainLenght() > val_1.getBlockChain().getChainLenght())
+        {
+            val_1.setBlockChain(val_2.getBlockChain());
+        }
+        if(val_1.getBlockChain().getChainLenght() > val_3.getBlockChain().getChainLenght())
+        {
+            val_3.setBlockChain(val_1.getBlockChain());
+        }
+        if(val_3.getBlockChain().getChainLenght() > val_1.getBlockChain().getChainLenght())
+        {
+            val_1.setBlockChain(val_3.getBlockChain());
+        }
+        if(val_3.getBlockChain().getChainLenght() > val_2.getBlockChain().getChainLenght())
+        {
+            val_2.setBlockChain(val_3.getBlockChain());
+        }
+        if(val_2.getBlockChain().getChainLenght() > val_3.getBlockChain().getChainLenght())
+        {
+            val_3.setBlockChain(val_2.getBlockChain());
+        }
 
-    if(wallet_address == current_user.getAddress())
-    {
-        Balance current_user_balance = val_1.getBlockChain().getLastBlock().getUserBalance(current_user.getAddress());
+        if(wallet_address == current_user.getAddress())
+        {
+            Balance current_user_balance = val_1.getBlockChain().getLastBlock().getUserBalance(current_user.getAddress());
 
-        ui->bwcBalance->setText(QString::number(current_user_balance.getBalance(BWC)));
-        ui->bwcNBalance->setText(QString::number(current_user_balance.getBalance(BWC_N)));
-        ui->bwcQBalance->setText(QString::number(current_user_balance.getBalance(BWC_Q)));
+            ui->bwcBalance->setText(QString::number(current_user_balance.getBalance(BWC)));
+            ui->bwcNBalance->setText(QString::number(current_user_balance.getBalance(BWC_N)));
+            ui->bwcQBalance->setText(QString::number(current_user_balance.getBalance(BWC_Q)));
 
-        emit addTransactionCard(data.getSender(), data.getTimeStamp(), data.getAmount(), data.getCoinsType(), 1);
+            emit addTransactionCard(data.getSender(), data.getTimeStamp(), data.getAmount(), data.getCoinsType(), 1);
+        }
+        else if(data.getSender() == current_user.getAddress())
+        {
+            Balance current_user_balance = val_1.getBlockChain().getLastBlock().getUserBalance(current_user.getAddress());
+
+            ui->bwcBalance->setText(QString::number(current_user_balance.getBalance(BWC)));
+            ui->bwcNBalance->setText(QString::number(current_user_balance.getBalance(BWC_N)));
+            ui->bwcQBalance->setText(QString::number(current_user_balance.getBalance(BWC_Q)));
+
+            emit addTransactionCard(data.getReciever(), data.getTimeStamp(), data.getAmount(), data.getCoinsType(), 0);
+        }
+        else
+        {
+            Balance current_user_balance = val_1.getBlockChain().getLastBlock().getUserBalance(current_user.getAddress());
+
+            ui->bwcBalance->setText(QString::number(current_user_balance.getBalance(BWC)));
+            ui->bwcNBalance->setText(QString::number(current_user_balance.getBalance(BWC_N)));
+            ui->bwcQBalance->setText(QString::number(current_user_balance.getBalance(BWC_Q)));
+        }
+        request_view_model->clear();
+        history_view_model->clear();
+        requestsHistory();
+    }  catch (ProgramException &error) {
+        error.getError();
     }
-    else if(data.getSender() == current_user.getAddress())
-    {
-        Balance current_user_balance = val_1.getBlockChain().getLastBlock().getUserBalance(current_user.getAddress());
-
-        ui->bwcBalance->setText(QString::number(current_user_balance.getBalance(BWC)));
-        ui->bwcNBalance->setText(QString::number(current_user_balance.getBalance(BWC_N)));
-        ui->bwcQBalance->setText(QString::number(current_user_balance.getBalance(BWC_Q)));
-
-        emit addTransactionCard(data.getReciever(), data.getTimeStamp(), data.getAmount(), data.getCoinsType(), 0);
-    }
-    else
-    {
-        Balance current_user_balance = val_1.getBlockChain().getLastBlock().getUserBalance(current_user.getAddress());
-
-        ui->bwcBalance->setText(QString::number(current_user_balance.getBalance(BWC)));
-        ui->bwcNBalance->setText(QString::number(current_user_balance.getBalance(BWC_N)));
-        ui->bwcQBalance->setText(QString::number(current_user_balance.getBalance(BWC_Q)));
-    }
-    request_view_model->clear();
-    history_view_model->clear();
-    requestsHistory();
 }
 
 void MainWindow::on_payToAddress_textChanged(const QString &arg1)
@@ -461,7 +475,6 @@ void MainWindow::requestsHistory()
     try {
         CSV file("requestsList.csv");
         QVector<QString> str_request = file.find_user(current_user.getAddress());
-
         request_view_model->setColumnCount(4);
 
         request_view_model->setHorizontalHeaderLabels(QStringList() << table_translation.at(0) << table_translation.at(1) << table_translation.at(2) << table_translation.at(3));
@@ -555,15 +568,17 @@ void MainWindow::requestsHistory()
         ui->historyView->setColumnWidth(4,108);
         ui->historyView->setColumnWidth(5,108);
         ui->historyView->setColumnWidth(6,250);
-
+        int num = 0;
         for(int i = 1; i <= json_file.get_array_size_blockchain(); i++)
         {
             QList<QStandardItem *> HistoryList;
+
             int count = 0;
             if((json_file.get_sender(i) == current_user.getAddress()) || (json_file.get_reciever(i) == current_user.getAddress())){
+                num++;
             for(int c = 0; c < 7; c++){
                 if(c == 0){
-                    HistoryList.append(new QStandardItem(QString::number(json_file.get_id(i))));
+                    HistoryList.append(new QStandardItem(QString::number(num)));
                 }else if(c == 1){
                     HistoryList.append(new QStandardItem(json_file.get_sender(i)));
                 }else if(c == 2){
@@ -586,6 +601,7 @@ void MainWindow::requestsHistory()
             history_view_model->appendRow(HistoryList);
             }
         }
+        num = 0;
 
     }  catch (ProgramException &error) {
         error.getError();
@@ -594,30 +610,34 @@ void MainWindow::requestsHistory()
 
 bool MainWindow::isAmountCorrect(double amount, CoinsType coins_type)
 {
-    Balance this_user = val_1.getBlockChain().getLastBlock().getUserBalance(current_user.getAddress());
-    switch (coins_type) {
-    case BWC:
-        if(this_user.getBalance(BWC) >= amount)
-        {
-            return true;
+    try {
+        Balance this_user = val_1.getBlockChain().getLastBlock().getUserBalance(current_user.getAddress());
+        switch (coins_type) {
+        case BWC:
+            if(this_user.getBalance(BWC) >= amount)
+            {
+                return true;
+            }
+            break;
+        case BWC_N:
+            if(this_user.getBalance(BWC_N) >= amount)
+            {
+                return true;
+            }
+            break;
+        case BWC_Q:
+            if(this_user.getBalance(BWC_Q) >= amount)
+            {
+                return true;
+            }
+            break;
+        default:
+            break;
         }
-        break;
-    case BWC_N:
-        if(this_user.getBalance(BWC_N) >= amount)
-        {
-            return true;
-        }
-        break;
-    case BWC_Q:
-        if(this_user.getBalance(BWC_Q) >= amount)
-        {
-            return true;
-        }
-        break;
-    default:
-        break;
+        return false;
+    }  catch (ProgramException &error) {
+        error.getError();
     }
-    return false;
 }
 
 void MainWindow::setWindowLanguage(QVector<QString> language_vector, int language_index)
@@ -779,15 +799,15 @@ void MainWindow::on_sendCoinsButton_clicked()
             }
             break;
         case 2:
-            if(val_1.getAuthority() < max_authority && val_1.getAuthority() > min_authority)
+            if(val_1.getAuthority() <= max_authority && val_1.getAuthority() >= min_authority)
             {
                 emit sendButton_clicked_val_1(TransactionData(current_user.getAddress(), reciever_address, amount, coins_type, fee, priority));
             }
-            else if(val_2.getAuthority() < max_authority && val_2.getAuthority() > min_authority)
+            else if(val_2.getAuthority() <= max_authority && val_2.getAuthority() >= min_authority)
             {
                 emit sendButton_clicked_val_2(TransactionData(current_user.getAddress(), reciever_address, amount, coins_type, fee, priority));
             }
-            else if(val_3.getAuthority() < max_authority && val_3.getAuthority() > min_authority)
+            else if(val_3.getAuthority() <= max_authority && val_3.getAuthority() >= min_authority)
             {
                 emit sendButton_clicked_val_3(TransactionData(current_user.getAddress(), reciever_address, amount, coins_type, fee, priority));
             }
@@ -941,35 +961,43 @@ void MainWindow::on_nextBlockBTN_clicked()
 
 void MainWindow::blocksPrev()
 {
-    if(block_index > 0)
-    {
-        block_index--;
-        ui->idInf->setText(QString::number(val_1.getBlockChain().getBlock(block_index).getIndex()));
-        ui->hashInf->setText(val_1.getBlockChain().getBlock(block_index).getBlockHash());
-        ui->prevHashInf->setText(val_1.getBlockChain().getBlock(block_index).getPrevBlockHash());
-        ui->senderInf->setText(val_1.getBlockChain().getBlock(block_index).getBlockData().getSender());
-        ui->recieverInf->setText(val_1.getBlockChain().getBlock(block_index).getBlockData().getReciever());
-        ui->timestampInf->setText(val_1.getBlockChain().getBlock(block_index).getBlockData().getTimeStamp());
-        ui->amountInf->setText(QString::number(val_1.getBlockChain().getBlock(block_index).getBlockData().getAmount()));
-        ui->coinsTypeInf->setText(coinsTypeToString(val_1.getBlockChain().getBlock(block_index).getBlockData().getCoinsType()));
-        ui->feeInf->setText(QString::number(val_1.getBlockChain().getBlock(block_index).getBlockData().getFee()));
+    try {
+        if(block_index > 0)
+        {
+            block_index--;
+            ui->idInf->setText(QString::number(val_1.getBlockChain().getBlock(block_index).getIndex()));
+            ui->hashInf->setText(val_1.getBlockChain().getBlock(block_index).getBlockHash());
+            ui->prevHashInf->setText(val_1.getBlockChain().getBlock(block_index).getPrevBlockHash());
+            ui->senderInf->setText(val_1.getBlockChain().getBlock(block_index).getBlockData().getSender());
+            ui->recieverInf->setText(val_1.getBlockChain().getBlock(block_index).getBlockData().getReciever());
+            ui->timestampInf->setText(val_1.getBlockChain().getBlock(block_index).getBlockData().getTimeStamp());
+            ui->amountInf->setText(QString::number(val_1.getBlockChain().getBlock(block_index).getBlockData().getAmount()));
+            ui->coinsTypeInf->setText(coinsTypeToString(val_1.getBlockChain().getBlock(block_index).getBlockData().getCoinsType()));
+            ui->feeInf->setText(QString::number(val_1.getBlockChain().getBlock(block_index).getBlockData().getFee()));
+        }
+    }  catch (ProgramException &error) {
+        error.getError();
     }
 }
 
 void MainWindow::blocksNext()
 {
-    if(block_index < val_1.getBlockChain().getChainLenght() - 1)
-    {
-        block_index++;
-        ui->idInf->setText(QString::number(val_1.getBlockChain().getBlock(block_index).getIndex()));
-        ui->hashInf->setText(val_1.getBlockChain().getBlock(block_index).getBlockHash());
-        ui->prevHashInf->setText(val_1.getBlockChain().getBlock(block_index).getPrevBlockHash());
-        ui->senderInf->setText(val_1.getBlockChain().getBlock(block_index).getBlockData().getSender());
-        ui->recieverInf->setText(val_1.getBlockChain().getBlock(block_index).getBlockData().getReciever());
-        ui->timestampInf->setText(val_1.getBlockChain().getBlock(block_index).getBlockData().getTimeStamp());
-        ui->amountInf->setText(QString::number(val_1.getBlockChain().getBlock(block_index).getBlockData().getAmount()));
-        ui->coinsTypeInf->setText(coinsTypeToString(val_1.getBlockChain().getBlock(block_index).getBlockData().getCoinsType()));
-        ui->feeInf->setText(QString::number(val_1.getBlockChain().getBlock(block_index).getBlockData().getFee()));
+    try {
+        if(block_index < val_1.getBlockChain().getChainLenght() - 1)
+        {
+            block_index++;
+            ui->idInf->setText(QString::number(val_1.getBlockChain().getBlock(block_index).getIndex()));
+            ui->hashInf->setText(val_1.getBlockChain().getBlock(block_index).getBlockHash());
+            ui->prevHashInf->setText(val_1.getBlockChain().getBlock(block_index).getPrevBlockHash());
+            ui->senderInf->setText(val_1.getBlockChain().getBlock(block_index).getBlockData().getSender());
+            ui->recieverInf->setText(val_1.getBlockChain().getBlock(block_index).getBlockData().getReciever());
+            ui->timestampInf->setText(val_1.getBlockChain().getBlock(block_index).getBlockData().getTimeStamp());
+            ui->amountInf->setText(QString::number(val_1.getBlockChain().getBlock(block_index).getBlockData().getAmount()));
+            ui->coinsTypeInf->setText(coinsTypeToString(val_1.getBlockChain().getBlock(block_index).getBlockData().getCoinsType()));
+            ui->feeInf->setText(QString::number(val_1.getBlockChain().getBlock(block_index).getBlockData().getFee()));
+        }
+    }  catch (ProgramException &error) {
+        error.getError();
     }
 }
 

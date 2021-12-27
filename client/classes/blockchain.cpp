@@ -224,7 +224,7 @@ QString Block::getPrevBlockHash()
     return this->prev_hash;
 }
 
-TransactionData Block::getBlockData()
+TransactionData& Block::getBlockData()
 {
     return this->block_data;
 }
@@ -290,7 +290,7 @@ void Blockchain::createGenesisBlock()
     chain.last().setUserBalance(chain.last().getBlockData().getReciever(), true);
 }
 
-QVector<Block> Blockchain::getChain()
+QVector<Block>& Blockchain::getChain()
 {
     if(this->chain.length() != 0)
     {
@@ -302,7 +302,7 @@ QVector<Block> Blockchain::getChain()
     }
 }
 
-Block Blockchain::getBlock(int index)
+Block& Blockchain::getBlock(int index)
 {
     try {
         if(index >= 0 && index < chain.length())
@@ -318,7 +318,7 @@ Block Blockchain::getBlock(int index)
     }
 }
 
-Block Blockchain::getLastBlock()
+Block& Blockchain::getLastBlock()
 {
     return this->chain.last();
 }

@@ -229,14 +229,6 @@ void JSON::write_all_chain(Block chain){
      json_file.write(document.toJson());
 }
 
-int JSON:: get_id(int number_block){
-    QJsonObject root = doc.object();
-    QJsonArray jsonArray = root["Blockchain"].toArray();
-    QJsonValue value = jsonArray.at(number_block);
-    int id = value["Id"].toInt();
-    return id;
-}
-
 double JSON:: get_amount(int number_block){
     QJsonObject root = doc.object();
     QJsonArray jsonArray = root.value("Blockchain").toArray();
