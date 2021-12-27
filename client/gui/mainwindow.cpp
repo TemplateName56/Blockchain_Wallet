@@ -10,8 +10,12 @@ MainWindow::MainWindow(QWidget *parent)
     ui->priorityComboBox->setEnabled(false);
     ui->putLinkLE->setDisabled(true);
 
-    JSON file_json("users.json");
-    file_json.read_users_file(users_information);
+    try {
+        JSON file_json("users.json");
+        file_json.read_users_file(users_information);
+    }  catch (ProgramException &error) {
+        error.getError();
+    }
 
     request_view_model = new QStandardItemModel(this);
     history_view_model = new QStandardItemModel(this);

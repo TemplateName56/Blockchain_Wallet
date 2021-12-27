@@ -35,7 +35,7 @@ void ProgramException::getError()
         error_messageBox.exec();
         break;
     case FILE_EXIST_ERROR:
-        error_messageBox.setText("Файлу: " + exception_source + "\nНе існує");
+        error_messageBox.setText("Файл: " + exception_source + "\nВідсутній.");
         error_messageBox.setIcon(QMessageBox::Critical);
 
         error_messageBox.exec();
@@ -63,13 +63,13 @@ void ProgramException::getError()
         error_messageBox.exec();
         break;
     case ADDRESS_NOT_EXISTS:
-        error_messageBox.setText("Даного адресу не існує");
+        error_messageBox.setText("Гаманця з заданою адресою, не існує.");
         error_messageBox.setIcon(QMessageBox::Critical);
 
         error_messageBox.exec();
         break;
     case INVALID_COINS_VALUE:
-        error_messageBox.setText("У вас недостатньо коштів");
+        error_messageBox.setText("Недостатньо коштів на рахунку");
         error_messageBox.setIcon(QMessageBox::Critical);
 
         error_messageBox.exec();
