@@ -126,7 +126,7 @@ User Users::getUser(int index)
         }
         else
         {
-            throw ProgramException(OUT_OF_RANGE, "Users::getUser");
+            throw ProgramException(OUT_OF_RANGE, "Users getUser");
         }
     }  catch (ProgramException &error) {
         error.getError();
@@ -144,7 +144,6 @@ User Users::getUser(QString password)
             return users_information[index];
         }
     }
-    throw ProgramException(USER_NOT_EXIST);
 }
 
 void Users::setUserPassword(QString address, QString password)

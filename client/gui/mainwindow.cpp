@@ -13,6 +13,10 @@ MainWindow::MainWindow(QWidget *parent)
     try {
         JSON file_json("users.json");
         file_json.read_users_file(users_information);
+
+        val_1.setAuthority(100);
+        val_2.setAuthority(75);
+        val_3.setAuthority(25);
     }  catch (ProgramException &error) {
         error.getError();
     }
@@ -20,9 +24,6 @@ MainWindow::MainWindow(QWidget *parent)
     request_view_model = new QStandardItemModel(this);
     history_view_model = new QStandardItemModel(this);
 
-    val_1.setAuthority(100);
-    val_2.setAuthority(75);
-    val_3.setAuthority(25);
 
     qRegisterMetaType<TransactionData>("TransactionData");
 
