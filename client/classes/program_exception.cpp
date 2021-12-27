@@ -89,7 +89,7 @@ void ProgramException::getError()
         error_messageBox.exec();
         break;
     case SAME_PASSWORD:
-        error_messageBox.setText("Новий пароль схожий зі старим");
+        error_messageBox.setText("Новий пароль схожий на старий");
         error_messageBox.setIcon(QMessageBox::Critical);
 
         error_messageBox.exec();
@@ -113,7 +113,7 @@ void ProgramException::getError()
         error_messageBox.exec();
         break;
     case OUT_OF_RANGE:
-        error_messageBox.setText("Fatal Error!\n Out of range in: " + exception_source);
+        error_messageBox.setText("Фатальна помилка!\nВихід за межі у: " + exception_source);
         error_messageBox.setIcon(QMessageBox::Critical);
 
         error_messageBox.exec();
@@ -145,7 +145,7 @@ void ProgramException::getError()
         error_messageBox.exec();
         break;
     case BLOCKCHAIN_HASH_COLLISION:
-        error_messageBox.setText("Fatal Error\nBlockchain Collissions");
+        error_messageBox.setText("Фатальна помилка!\nБлокчейн має колізії");
         error_messageBox.setIcon(QMessageBox::Critical);
 
         error_messageBox.exec();
@@ -153,7 +153,7 @@ void ProgramException::getError()
         QTimer::singleShot(0, qApp, &QCoreApplication::quit);
         break;
     case CHAIN_NOT_VALID:
-        error_messageBox.setText("Fatal Error\n Chain is not valid");
+        error_messageBox.setText("Фатальна помилка!\nЛанцюг блокчейна не дійсний");
         error_messageBox.setIcon(QMessageBox::Critical);
 
         error_messageBox.exec();
@@ -167,7 +167,7 @@ void ProgramException::getError()
         error_messageBox.exec();
         break;
     case IS_EMPTY:
-        error_messageBox.setText("Fatal Error\n" + exception_source + " is empty");
+        error_messageBox.setText("Фатальна помилка!\n" + exception_source + " пустий");
         error_messageBox.setIcon(QMessageBox::Critical);
 
         error_messageBox.exec();
