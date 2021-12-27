@@ -35,7 +35,7 @@ void ProgramException::getError()
         error_messageBox.exec();
         break;
     case FILE_EXIST_ERROR:
-        error_messageBox.setText("Файл: " + exception_source + "\nВідсутній.");
+        error_messageBox.setText("Файл: " + exception_source + "\nВідсутній.\nДодайте його з теки\n /Blockchain Wallet/doc/" + exception_source);
         error_messageBox.setIcon(QMessageBox::Critical);
 
         error_messageBox.exec();
@@ -82,7 +82,7 @@ void ProgramException::getError()
         break;
     case SAVE_PASSWORD:
         error_messageBox.setWindowTitle("Інформація");
-        error_messageBox.setText("Ваш пароль: " + exception_source + "\nякщо ви його втратите,\nйого відновлення буде неможливе");
+        error_messageBox.setText("Ваш пароль: " + exception_source + "\nякщо ви його втратите,\n відновлення буде неможливе");
         error_messageBox.setIcon(QMessageBox::Information);
         error_messageBox.setTextInteractionFlags(Qt::TextSelectableByMouse);
 
@@ -95,7 +95,7 @@ void ProgramException::getError()
         error_messageBox.exec();
         break;
     case NOT_VALID_PASSWORD:
-        error_messageBox.setText("Не коректний пароль, пароль повинен складитися мінімум з 8 симвлів");
+        error_messageBox.setText("Не коректний пароль, пароль повинен складитися мінімум з 8 символів");
         error_messageBox.setIcon(QMessageBox::Critical);
 
         error_messageBox.exec();
@@ -113,13 +113,12 @@ void ProgramException::getError()
         error_messageBox.exec();
         break;
     case OUT_OF_RANGE:
-        qDebug() << "Out of range in: " << exception_source;
-        break;
-    case USER_NOT_EXIST:
-        qDebug() << "User not exist";
-        break;
-    case CHAIN_LENGTH_ERROR:
-        qDebug() << "Chain is empty: " << exception_source;
+        error_messageBox.setText("Fatal Error!\n Out of range in: " + exception_source);
+        error_messageBox.setIcon(QMessageBox::Critical);
+
+        error_messageBox.exec();
+
+        QTimer::singleShot(0, qApp, &QCoreApplication::quit);
         break;
     case CURRENT_USER_ADDRESS:
         error_messageBox.setText("Ви не можете відправити кошти самому собі");
@@ -146,21 +145,19 @@ void ProgramException::getError()
         error_messageBox.exec();
         break;
     case BLOCKCHAIN_HASH_COLLISION:
-        error_messageBox.setText("Critical Error");
+        error_messageBox.setText("Fatal Error\nBlockchain Collissions");
         error_messageBox.setIcon(QMessageBox::Critical);
 
         error_messageBox.exec();
 
-        qDebug() << "Blockchain have collissions";
         QTimer::singleShot(0, qApp, &QCoreApplication::quit);
         break;
     case CHAIN_NOT_VALID:
-        error_messageBox.setText("Critical Error");
+        error_messageBox.setText("Fatal Error\n Chain is not valid");
         error_messageBox.setIcon(QMessageBox::Critical);
 
         error_messageBox.exec();
 
-        qDebug() << "Chain is not valid";
         QTimer::singleShot(0, qApp, &QCoreApplication::quit);
         break;
     case PASSWORD_CHANGED:
@@ -168,6 +165,14 @@ void ProgramException::getError()
         error_messageBox.setIcon(QMessageBox::Information);
 
         error_messageBox.exec();
+        break;
+    case IS_EMPTY:
+        error_messageBox.setText("Fatal Error\n" + exception_source + " is empty");
+        error_messageBox.setIcon(QMessageBox::Critical);
+
+        error_messageBox.exec();
+
+        QTimer::singleShot(0, qApp, &QCoreApplication::quit);
         break;
     default:
         break;

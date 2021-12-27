@@ -298,7 +298,7 @@ QVector<Block>& Blockchain::getChain()
     }
     else
     {
-        throw ProgramException(CHAIN_LENGTH_ERROR, "Blockchain Class");
+        throw ProgramException(IS_EMPTY, "Blockchain getChain()");
     }
 }
 
@@ -361,35 +361,25 @@ void Blockchain::collisionCheck()
 
 void Blockchain::addBlock(int index, TransactionData data, QString prev_hash)
 {
-    try {
-        this->chain.push_back(Block(index, data, prev_hash));
-        collisionCheck();
-        isChainValid();
-        chain.last().setBalances(chain[chain.length() - 2].getBalances());
-        chain.last().setUserBalance(chain.last().getBlockData().getSender());
-        chain.last().setUserBalance(chain.last().getBlockData().getReciever(), true);
-    }  catch (ProgramException &error) {
-        error.getError();
-        this->chain.pop_back();
-    }
+    this->chain.push_back(Block(index, data, prev_hash));
+    collisionCheck();
+    isChainValid();
+    chain.last().setBalances(chain[chain.length() - 2].getBalances());
+    chain.last().setUserBalance(chain.last().getBlockData().getSender());
+    chain.last().setUserBalance(chain.last().getBlockData().getReciever(), true);
 }
 
 void Blockchain::addBlock(int index, TransactionData data, QString prev_hash, QString hash, bool genesis)
 {
-    try {
-        this->chain.push_back(Block(index, data, prev_hash, hash));
-        if(!genesis)
-        {
-            collisionCheck();
-            isChainValid();
-            chain.last().setBalances(chain[chain.length() - 2].getBalances());
-            chain.last().setUserBalance(chain.last().getBlockData().getSender());
-        }
-        chain.last().setUserBalance(chain.last().getBlockData().getReciever(), true);
-    }  catch (ProgramException &error) {
-        error.getError();
-        this->chain.pop_back();
+    this->chain.push_back(Block(index, data, prev_hash, hash));
+    if(!genesis)
+    {
+        collisionCheck();
+        isChainValid();
+        chain.last().setBalances(chain[chain.length() - 2].getBalances());
+        chain.last().setUserBalance(chain.last().getBlockData().getSender());
     }
+    chain.last().setUserBalance(chain.last().getBlockData().getReciever(), true);
 }
 
 Blockchain::~Blockchain()
@@ -402,6 +392,10 @@ Validator::Validator(QObject *parent) : QObject(parent)
     try {
         JSON blockchain_json("chain.json");
         blockchain_json.read_all_chain(getBlockChain());
+        if(getBlockChain().getChainLenght() == 0)
+        {
+            throw ProgramException(IS_EMPTY, "Blockchain");
+        }
     }  catch (ProgramException &error) {
         error.getError();
     }
@@ -436,7 +430,14 @@ int Validator::getAuthority()
 
 void Validator::setAuthority(int authority)
 {
-    this->authority = authority;
+    if(authority < INT_MAX && authority >= 0)
+    {
+        this->authority = authority;
+    }
+    else
+    {
+        throw ProgramException(OUT_OF_RANGE, "Validator setAuthority");
+    }
 }
 
 void Validator::loadTransactions()
